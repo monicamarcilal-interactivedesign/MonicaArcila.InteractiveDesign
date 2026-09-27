@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" role="img" aria-label="Placeholder photo of you">
+  <rect width="400" height="400" fill="#e5e7eb"/>
+  <circle cx="200" cy="160" r="70" fill="#c7cbd1"/>
+  <path d="M80 360c0-66 54-120 120-120s120 54 120 120z" fill="#c7cbd1"/>
+  <text x="200" y="390" fill="#9ca3af" font-family="-apple-system, Segoe UI, Roboto, sans-serif" font-size="18" text-anchor="middle">Your photo here</text>
+</svg>
