@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<!--
+  =============================================================
+  PROJECT PAGE — "A Night at the Museum" (case study)
+  =============================================================
+  No written brief survived for this one — but a full one-page
+  design summary and a slide deck applying Don Norman's Model of
+  Action to the core interaction did. That's exactly the "media
+  was lost, show what survives" case: the surviving artefacts ARE
+  the content here (a flow diagram + a storyboard + a UX-theory
+  breakdown), not a narrative substitute for missing screenshots.
+
+  Sources: "OnePage Experiencia VR.png" and "Interacción Principal
+  VR según Norman.pdf" (both in Videojuegos y Experiencias).
+
+  Confirmed from Mónica's "Una Noche en el Museo - personal
+  context.docx": team of 6, built in Unity for Meta Quest 3, EAFIT
+  semester 6 (2026). Mónica was the lead Unity developer — NOT in
+  charge of the narrative. The final build/video was lost (a
+  teammate handled submission); her own dev screen recordings
+  survive (the "Gallery ... .mp4" files).
+  =============================================================
+-->
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>A Night at the Museum — Mónica Arcila</title>
+  <meta name="description" content="A VR/mixed-reality narrative prototype where a magic paintbrush is both the story's core object and an interaction validated step-by-step against Don Norman's Model of Action." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="nav__logo">Mónica Arcila</a>
+      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links">
+        <a href="index.html#work">Projects</a>
+        <a href="index.html#seedbeds">Research</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.html#work">← Back to projects</a>
+
+      <h1 class="project__title">A Night at the Museum</h1>
+      <p class="project__meta">VR narrative experience · Narrativas en Realidad Virtual y Mixta, Universidad EAFIT · 2026</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>My role</dt>
+          <dd>Team of 6. I was the lead Unity developer and coordinated the build</dd>
+        </div>
+        <div>
+          <dt>Tools</dt>
+          <dd>Unity · Meta Quest 3 · GitHub · AI-assisted scripting</dd>
+        </div>
+        <div>
+          <dt>Core mechanic</dt>
+          <dd>A single magic paintbrush</dd>
+        </div>
+      </dl>
+
+      <!-- ===== PROBLEM ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The problem</h2>
+        <div class="project__description">
+          <p>
+            The experience needed one interaction — a magic paintbrush —
+            to carry the entire story: the user wakes inside a museum and
+            must escape the night by "activating" paintings, each one a
+            portal into the emotional world it depicts. The paintbrush had
+            to work as a piece of narrative (a believable in-fiction object)
+            and, at the same time, hold up as a real piece of interaction
+            design — the player has to always know what the brush can do,
+            when their input has registered, and what's about to happen
+            next, without a single line of on-screen instruction once
+            they're inside the headset.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== MY ROLE ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">My role</h2>
+        <div class="project__description">
+          <p>
+            We were a team of six. My teammates wrote the narrative, and I
+            took the lead on turning our one-page design into a working VR
+            experience, developing it alongside one other teammate. I
+            was responsible for bringing it to life in Unity:
+          </p>
+          <ul>
+            <li>Built the scenes, set up the assets, and organised the folders and scripts.</li>
+            <li>Programmed and tested every mechanic, and got imported animations working.</li>
+            <li>Fixed texture and lighting import problems, and adjusted the scenery and colour scheme to match our one-page design and the paintings we chose.</li>
+            <li>Taught the team to use GitHub, so everyone could work on the same project from their own computers.</li>
+            <li>Used AI to draft a development schedule with tasks for each member before our meetings, which we then refined together. I also checked in with people and assigned responsibilities as deadlines got closer.</li>
+            <li>Used AI to help write scripts and debug Unity problems, with very specific prompts so it did exactly what I asked and nothing more.</li>
+          </ul>
+          <p>
+            We ran into real problems along the way: syncing each other's
+            changes, mechanics that broke, optimisation, and transitions
+            between levels. We still shipped a complete experience.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== PROCESS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Process</h2>
+        <div class="project__description">
+          <p>
+            The world is built as four connected paintings-turned-realities:
+            the Museum (the starting point), Dreaming Hills (an oneiric
+            forest), the home of "the old blind guitarist" (a coastal
+            village built from a blue-period Picasso), and The Blue Grotto
+            (a dark reef). The brush starts as a simple activation tool —
+            opening portals, lighting spaces, interacting with the
+            environment — and evolves into "magic ink": first a way into
+            new worlds, then a light source and orientation tool in the
+            dark, and finally a creative tool for transforming the
+            environment itself. Each world was mapped with its own
+            emotional arc, its own map, and its own set of active
+            mechanics, worked out as a one-page design summary before
+            anything was built.
+          </p>
+          <p>
+            The core interaction sequence — point, hold, activate — was
+            worked out as a four-panel storyboard: the player aims the
+            brush at a painting, holds the action for a few seconds while
+            the system registers it, and watches the painting light up as
+            it activates. That storyboard became the spec for the feedback
+            system: over roughly five seconds, progressive haptic vibration
+            in the controller runs alongside visual changes — the painting
+            beginning to glow, brushstrokes moving, particles of paint
+            appearing — so the player never has to guess whether their
+            input registered.
+          </p>
+          <p>
+            To check that the mechanic worked as interaction design and
+            not just as part of the story, the team mapped it directly onto
+            Norman's seven-stage Model of Action: <em>intention</em>
+            (decide to use the brush on the painting), <em>specify the
+            action</em> (aim, guided by signifiers — a voice giving
+            instructions and a ghostly hand pointing), <em>execute</em>
+            (hold the brush against the frame) — causing a change in the
+            world — then <em>perceive</em> (the painting starts glowing),
+            <em>interpret</em> (understand the portal is activating), and
+            <em>evaluate</em> (the portal opens and the goal — entering the
+            new world — is met). Walking the mechanic through every stage
+            surfaced exactly where a signifier was still missing rather
+            than leaving it to guesswork.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== SOLUTION ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Solution</h2>
+        <div class="project__description">
+          <p>
+            A single, legible interaction — aim, hold, feel it respond,
+            watch it open — reused across four completely different worlds.
+            The transition itself is treated as its own beat: the painting
+            stops being static, its brushstrokes expand to engulf the
+            player's field of view, and the environment changes around them
+            before they realise they've already arrived in the new level.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== RESULT ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Result &amp; reflection</h2>
+        <div class="project__description">
+          <p>
+            A playable VR experience on Meta Quest 3, with a menu, a
+            tutorial, transitions between portals and interactive levels
+            (the boat, the sculpture and the full brush interaction). I
+            didn't make the final video or submit the project, and that
+            final build was lost. What survives are the screen recordings
+            I made during development to keep the team updated. They show
+            the experience working step by step.
+          </p>
+          <p>
+            This project taught me how to turn a team's design into
+            something that actually runs. I learnt to keep six people
+            working on one codebase and to use AI as a precise tool rather
+            than a shortcut. When the pressure was on, the job was keeping
+            the whole thing together.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== TOOLS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Tools &amp; software</h2>
+        <ul class="tag-list">
+          <li class="tag">Unity</li>
+          <li class="tag">Meta Quest 3</li>
+          <li class="tag">GitHub</li>
+          <li class="tag">AI-assisted scripting</li>
+        </ul>
+      </section>
+
+      <!-- ===== PROJECT GALLERY =====
+        Web-sized exports live in assets/night-at-the-museum/. Each image links to its full-size
+        file; the alt text says what it shows. -->
+      <div class="project__gallery">
+        <video controls preload="none" poster="assets/night-at-the-museum/museum-menu-tutorial-poster.jpg" aria-label="Recording in Meta Quest 3 of the menu, the tutorial and the start of the experience.">
+          <source src="assets/night-at-the-museum/museum-menu-tutorial.mp4" type="video/mp4" />
+          Your browser can't play this video.
+        </video>
+        <video controls preload="none" poster="assets/night-at-the-museum/museum-boat-interaction-poster.jpg" aria-label="Screen recording of the boat interaction in level two and the transition to the next level.">
+          <source src="assets/night-at-the-museum/museum-boat-interaction.mp4" type="video/mp4" />
+          Your browser can't play this video.
+        </video>
+        <a href="assets/night-at-the-museum/01-one-page-design.jpg" class="gallery__wide" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/01-one-page-design.jpg" alt="The team's one-page design for Noche en el Museo: narrative, magic brush mechanics and four worlds with maps and emotional journeys." width="3000" height="1817" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/02-start-menu.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/02-start-menu.jpg" alt="The start menu in Meta Quest 3 with the title Noche en el Museo and Iniciar and Tutorial buttons." width="848" height="478" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/03-gallery-corridor.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/03-gallery-corridor.jpg" alt="First-person view down the museum gallery corridor, lined with framed paintings." width="848" height="478" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/04-portal-activating.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/04-portal-activating.jpg" alt="The player holding the magic brush against a painting that is beginning to glow and become a portal." width="670" height="674" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/05-blue-village.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/05-blue-village.jpg" alt="The night-time blue coastal village level with subtitles guiding the player." width="1280" height="656" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/06-norman-slide-title.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/06-norman-slide-title.jpg" alt="Slide &quot;Una noche en el museo: interacción con pincel y portales&quot; over a painting of a dark blue cave." width="3000" height="1688" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/07-activation-process.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/07-activation-process.jpg" alt="Slide &quot;Proceso de activación&quot; showing the steps of pointing, holding and activating a painting with the brush." width="3000" height="1688" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/08-system-feedback.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/08-system-feedback.jpg" alt="Slide &quot;Feedback del sistema&quot;: haptic vibration in the controller plus visual changes over about five seconds." width="3000" height="1688" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/09-norman-model.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/09-norman-model.jpg" alt="Norman's Model of Action diagram applied to activating a painting portal with the magic brush." width="3000" height="1688" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/10-reef-cave.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/10-reef-cave.jpg" alt="Unity editor view of the dark blue reef cave used in the last level." width="1476" height="797" loading="lazy" /></a>
+        <a href="assets/night-at-the-museum/11-reef-map.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/11-reef-map.jpg" alt="Top-down map view of the reef level with the blue path the player follows." width="1171" height="611" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

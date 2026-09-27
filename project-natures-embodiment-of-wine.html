@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!--
+  =============================================================
+  PROJECT PAGE — "Nature's Embodiment of Wine" (case study)
+  =============================================================
+  Source: "MonicaArcila_ThemedGenerator_WrittingF.pdf", Generative
+  Graphic Design COMD 342, VUW. One of the strongest-argued pieces
+  in the portfolio — grounded in Kate Compton's "10,000 Bowls of
+  Oatmeal" generative-design problem.
+
+  STILL TO ADD: the final grid + the two before/after example
+  images (a lettering-vs-no-lettering tortoise). Source PDF is
+  151MB (the grid-layout version) — needs a light re-export.
+  =============================================================
+-->
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nature's Embodiment of Wine — Mónica Arcila</title>
+  <meta name="description" content="A generative image system turning animals into Burlesque-staged portraits of wine, built around Kate Compton's 'ten thousand bowls of oatmeal' problem of generative design." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="nav__logo">Mónica Arcila</a>
+      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links">
+        <a href="index.html#work">Projects</a>
+        <a href="index.html#seedbeds">Research</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.html#work">← Back to projects</a>
+
+      <h1 class="project__title">Nature's Embodiment of Wine</h1>
+      <p class="project__meta">Themed AI image generator · Generative Graphic Design COMD 342, Victoria University of Wellington · 2026</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>My role</dt>
+          <dd>Solo — concept, prompt engineering &amp; curation</dd>
+        </div>
+        <div>
+          <dt>Tools</dt>
+          <dd>Gemini (3.6 Extended Thinking)</dd>
+        </div>
+        <div>
+          <dt>Date</dt>
+          <dd>August 2026</dd>
+        </div>
+      </dl>
+
+      <!-- ===== PROBLEM ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The problem</h2>
+        <div class="project__description">
+          <p>
+            The brief was to design a themed generative system — one prompt
+            "recipe" that could produce a whole grid of images sharing a
+            visual identity. The real problem underneath that is what Kate
+            Compton calls the "10,000 Bowls of Oatmeal" problem: a
+            generator can produce thousands of mathematically unique
+            outputs that a viewer still perceives as "a lot of oatmeal" —
+            differentiated in theory, but not distinct in practice. My
+            process ran directly into this.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== MY ROLE ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">My role</h2>
+        <div class="project__description">
+          <p>
+            Solo project: I developed the concept, wrote and diagnosed every
+            iteration of the prompt, and curated the final grid.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== PROCESS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Process</h2>
+        <div class="project__description">
+          <p>
+            My concept turns animals into portraits of wine, staged in a
+            Burlesque aesthetic — sitting at the intersection of three
+            personal starting points: the sheer variety of animal species,
+            wine as one of my preferred drinks, and Burlesque as the
+            aesthetic most likely to give each animal-wine pairing a strong
+            sense of personality. I deliberately moved the tone away from
+            an early, more flirtatious framing and toward something
+            gentler — closer to imagining a pet in a costume than anything
+            seductive.
+          </p>
+          <p>
+            About fifteen prompt iterations in, my instinct was that being
+            highly specific — exact expressions, exact framing, exact
+            accessories — would give the model more to work with and
+            therefore produce more variety. The opposite happened:
+            over-specifying the character produced images that repeated the
+            same background, the same pose, and the same attempt to spell
+            the wine's name onto the animal, regardless of which animal or
+            wine I asked for.
+          </p>
+          <p>
+            The fix wasn't more detail — it was a change in what the detail
+            controlled. Instead of prescribing a fixed expression or scene,
+            I isolated each recurring failure point one at a time
+            (background repetition, pose repetition, literal text
+            appearing in the image) and added a narrow, targeted constraint
+            against just that failure, while leaving everything else — the
+            animal's specific personality, its exact posture — open for the
+            model to interpret. That shift, from prescribing the outcome to
+            constraining the failure modes, is what let each animal read as
+            a distinct character instead of a re-used template.
+          </p>
+          <p>
+            The same logic shaped the final prompt's anatomy constraint:
+            "the animal's natural anatomy must not be changed more than
+            80%." I wanted the animals to stay recognisable, real creatures
+            rather than fully invented mascots, so the constraint gives the
+            model a defined, non-zero margin (roughly 20%) to interpret
+            personality through physical detail — instead of leaving
+            "realism" as an unmeasurable, subjective instruction. Framing it
+            as a percentage made it something I could actually check the
+            output against.
+          </p>
+          <p>
+            One specific, testable example: an earlier version of the
+            prompt was missing the line "avoid at all costs including
+            letters or words in the animal" — and, tested on a tortoise
+            embodying a bottle of Port, produced a shell lettered with
+            "VINTAGE PORT" and "BURLESQUE." Adding that single explicit
+            constraint fixed it: the same tortoise, same props (a vest, a
+            chair, a gramophone), but with personality carried entirely
+            through pose and staging instead of text.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== SOLUTION ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Solution</h2>
+        <div class="project__description">
+          <p>
+            The final recipe: <em>"…generate a quite unrealistic image of
+            an [animal] embodying and expressing in their character a
+            bottle of [wine] wine… soft diffused lighting, velvet drapery,
+            warm gold and deep red tones, vintage cabaret staging… the
+            animal's natural anatomy must not be changed more than 80%, it
+            must be recognisable, so no forced facial expressions or human
+            features… avoid at all costs including letters or words…
+            personality is expressed through pose, props and attitude, not
+            through altering the animal's face."</em> Two variables —
+            animal and wine — run through one fixed staging system.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== RESULT ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Result &amp; reflection</h2>
+        <div class="project__description">
+          <p>
+            I consider the final grid a strong resolution of the brief I set
+            for myself: each animal-wine pairing is recognisable as the
+            same animal, staged in one coherent Burlesque system, while
+            still carrying its own distinct idea — a porcupine reclining
+            like royalty, a cobra in a top hat, a jaguar draped over velvet,
+            a chameleon holding a cocktail glass — rather than blending into
+            the rest of the set.
+          </p>
+          <p>
+            The clearest lesson was that fixing a generative-design problem
+            like "10,000 Bowls of Oatmeal" isn't about adding more
+            instructions — it's about finding exactly which failure mode is
+            repeating and constraining only that, one at a time, and
+            checking each fix against a visible before/after result.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== TOOLS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Tools &amp; software</h2>
+        <ul class="tag-list">
+          <li class="tag">Gemini</li>
+        </ul>
+      </section>
+
+      <!-- ===== PROJECT GALLERY =====
+        Web-sized exports live in assets/natures-embodiment-of-wine/. Each image links to its full-size
+        file; the alt text says what it shows. -->
+      <div class="project__gallery">
+        <a href="assets/natures-embodiment-of-wine/01-full-grid.jpg" class="gallery__wide" target="_blank" rel="noopener"><img src="assets/natures-embodiment-of-wine/01-full-grid.jpg" alt="The full grid of generated portraits: animals in a Burlesque cabaret setting, each embodying a bottle of wine." width="4000" height="2829" loading="lazy" /></a>
+        <a href="assets/natures-embodiment-of-wine/02-ostrich.jpg" target="_blank" rel="noopener"><img src="assets/natures-embodiment-of-wine/02-ostrich.jpg" alt="An ostrich in a velvet-and-gold cabaret setting, dressed as a bottle of wine." width="1361" height="758" loading="lazy" /></a>
+        <a href="assets/natures-embodiment-of-wine/03-chinchilla.jpg" target="_blank" rel="noopener"><img src="assets/natures-embodiment-of-wine/03-chinchilla.jpg" alt="A chinchilla on a small stage under pink spotlights, holding a glass of red wine." width="1361" height="754" loading="lazy" /></a>
+        <a href="assets/natures-embodiment-of-wine/04-albatross.jpg" target="_blank" rel="noopener"><img src="assets/natures-embodiment-of-wine/04-albatross.jpg" alt="A large white bird with red and gold wings spread wide on a cabaret stage." width="1361" height="758" loading="lazy" /></a>
+        <a href="assets/natures-embodiment-of-wine/05-ocelot.jpg" target="_blank" rel="noopener"><img src="assets/natures-embodiment-of-wine/05-ocelot.jpg" alt="A spotted wild cat reclining on a red velvet couch in a golden crown." width="1132" height="630" loading="lazy" /></a>
+        <a href="assets/natures-embodiment-of-wine/06-rhinoceros.jpg" target="_blank" rel="noopener"><img src="assets/natures-embodiment-of-wine/06-rhinoceros.jpg" alt="A rhinoceros covered in gold ornament under stage lights." width="1132" height="630" loading="lazy" /></a>
+        <a href="assets/natures-embodiment-of-wine/07-pelican.jpg" target="_blank" rel="noopener"><img src="assets/natures-embodiment-of-wine/07-pelican.jpg" alt="A pelican in a top hat on a cabaret stage with a glass of wine." width="1132" height="630" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

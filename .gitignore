@@ -1,0 +1,26 @@
+# Files that stay on Mónica's computer and are NOT published to GitHub.
+# (If the repository is ever made public, anything listed here stays private.)
+
+# Private working notes and course scaffolding
+PROJECT.md
+CLAUDE.md
+README.md
+glossary.md
+
+# The blank template for new project pages (contains REPLACE text)
+project.html
+
+# Retired pages and system junk
+_archive/
+.DS_Store
+Thumbs.db
+
+# Video excerpts that will be replaced by YouTube embeds. They stay on this
+# computer until then, so the big files never enter the repository history.
+# (Remove a line here if that video should be hosted on the site instead.)
+assets/nuris-greenhouse/nuris-gameplay-excerpt.mp4
+assets/hansel-gretel/hansel-gameplay-excerpt.mp4
+assets/meldiria/meldiria-trailer-excerpt.mp4
+assets/meldiria/meldiria-gameplay-excerpt.mp4
+assets/capitanas-del-fuego/capitanas-visuals-excerpt.mp4
+assets/designing-choices/designing-choices-excerpt.mp4

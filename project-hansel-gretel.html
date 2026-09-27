@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<!--
+  =============================================================
+  PROJECT PAGE — "Hansel & Gretel: Blood and Crumbs" (case study)
+  =============================================================
+  No written brief or design doc survived for this one, and no
+  gameplay footage was confirmed as this specific build — but one
+  extremely dense one-page design summary did (narrative, floor
+  plans, a 6-beat story structure, mechanics, sound design and a
+  hand-drawn storyboard, all on a single page). This is the
+  clearest "media was lost, the process artefact IS the content"
+  case in the whole portfolio.
+
+  Confirmed from "Hansel y Gretel - personal context.docx": team
+  project for Intro. a la Computación Gráfica, EAFIT semester 4
+  (2025). Mónica was the main developer and made the final build;
+  the submitted gameplay video survives ("02. Gameplay Videojuego
+  3D.mp4"). The "Unity - Partículas, sonido, NPC y NavMesh" clips
+  (EXTRAS - unity) are earlier course exercises, not footage of
+  this game.
+  =============================================================
+-->
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hansel &amp; Gretel: Blood and Crumbs — Mónica Arcila</title>
+  <meta name="description" content="A 3D horror survival game in Unity where a skeptic gets lost in the same forest as a local legend. Mónica led development on a team project and made the final build." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="nav__logo">Mónica Arcila</a>
+      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links">
+        <a href="index.html#work">Projects</a>
+        <a href="index.html#seedbeds">Research</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.html#work">← Back to projects</a>
+
+      <h1 class="project__title">Hansel &amp; Gretel: Blood and Crumbs</h1>
+      <p class="project__meta">3D horror survival game · Intro. a la Computación Gráfica, Universidad EAFIT · 2025</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>My role</dt>
+          <dd>Team of about six. I led development and made the final build</dd>
+        </div>
+        <div>
+          <dt>Tools</dt>
+          <dd>Unity</dd>
+        </div>
+        <div>
+          <dt>Genre</dt>
+          <dd>First/third-person survival horror</dd>
+        </div>
+      </dl>
+
+      <!-- ===== PROBLEM ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The problem</h2>
+        <div class="project__description">
+          <p>
+            Local legend says two siblings, Hansel and Gretel, vanished
+            without a trace in the forest near their village. The
+            protagonist mocks the story — until a prank by his friends
+            leaves him genuinely lost and disoriented in that same forest.
+            The design challenge was to build a horror game where the
+            player's skepticism collapses in real time, one clue at a
+            time, without ever telling them outright what's actually
+            happening.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== MY ROLE ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">My role</h2>
+        <div class="project__description">
+          <p>
+            During the course we practised the basics of Unity: NavMesh,
+            NPCs that follow the player, particles, trigger-based
+            interactions, Mixamo animations and basic coding. For the
+            final project we wrote a narrative, planned it on a single
+            page and then built a 3D game from it.
+          </p>
+          <p>
+            I took the lead on development, alongside one other developer.
+            Anything to do with making it work was my job. I wrote
+            the scripts, worked with multiple scenes and shaders, and
+            checked every mechanic and interaction against the one-page
+            plan. I asked teammates for the assets, animations and
+            interfaces we needed, and pushed to update the plan when
+            something had to change. When a script, a piece of logic or a
+            transition broke, I debugged it with my lecturer, online
+            research or AI. I used AI only for code and mechanics. When a
+            teammate fell behind, I worked out how to help them and how to
+            keep the project moving towards the deadline. A friend
+            sometimes programmed with me so we could take turns and
+            breaks.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== PROCESS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Process</h2>
+        <div class="project__description">
+          <p>
+            The written brief didn't survive, but a dense one-page design
+            summary did, and it's detailed enough to stand in for it. The
+            objective is simple to state and hard to survive: find a way
+            home, or at least survive the night, evading "the witch." Five
+            mechanics carry that objective — exploration, escape,
+            collection, reading, and mini-puzzles — colour-coded on the
+            design page alongside a sixth, jumpscares, that punctuates key
+            story beats.
+          </p>
+          <p>
+            The house is mapped across four levels — ground floor, second
+            floor, basement and attic — and the story is structured as six
+            escalating moments. It opens in the forest, where scattered
+            objects left by the protagonist's friends nudge him deeper in
+            as the atmosphere shifts from calm to watched. Inside the
+            house, a note confirms Hansel and Gretel are being held
+            somewhere below, triggering the first scare. In the basement,
+            candlelight reveals a room of bones the moment the flame goes
+            out — and a now-monstrous Hansel and Gretel begin the chase.
+            Escaping locks the door behind him, but the house keeps
+            escalating: objects move on their own, distorted voices stalk
+            him from nearby rooms. The second floor's ruined children's
+            bedrooms and library hide a note pointing him to a key in the
+            attic — the game's final, darkest space, where the actual
+            truth surfaces: Hansel and Gretel are trapped in a repeating
+            horror cycle and need someone to take their place to be freed.
+            The protagonist is left with one way out — a window — and one
+            question the design leaves genuinely open: will he jump, or be
+            caught?
+          </p>
+          <p>
+            Storytelling is deliberately split between explicit and
+            implicit layers: voiceover and written notes carry the
+            explicit narrative, while abandoned toys, blood on the walls
+            and shadows projected without explanation carry the rest — the
+            same "show, don't tell" logic that runs through the sound
+            design too (creaking wood, distorted voices, sudden silence
+            when a candle goes out).
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== SOLUTION ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Solution</h2>
+        <div class="project__description">
+          <p>
+            A four-level house built specifically to support a six-beat
+            horror structure, with escalation handled through
+            environment rather than exposition — degrading lighting,
+            objects that move between visits, a locking door that removes
+            the option to backtrack, and a jumpscare reserved for the exact
+            moment the player's skepticism should break (reading Hansel and
+            Gretel's note in the kitchen).
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== RESULT ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Result &amp; reflection</h2>
+        <div class="project__description">
+          <p>
+            A finished, playable Unity game. I made the final build, and
+            the gameplay video we submitted survives. The one-page design
+            summary behind it is a complete game plan on its own:
+            narrative, floor plans, a six-beat structure, mechanics, sound
+            design and a hand-drawn storyboard.
+          </p>
+          <p>
+            It also led to something bigger. After I presented the game,
+            my lecturer invited me into his research seedbed as a
+            developer (see <a href="project-vr-emotion-research.html">VR
+            &amp; Emotion Research</a>).
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== TOOLS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Tools &amp; software</h2>
+        <ul class="tag-list">
+          <li class="tag">Unity</li>
+        </ul>
+      </section>
+
+      <!-- ===== PROJECT GALLERY =====
+        Web-sized exports live in assets/hansel-gretel/. Each image links to its full-size
+        file; the alt text says what it shows. -->
+      <div class="project__gallery">
+        <video controls preload="none" poster="assets/hansel-gretel/hansel-gameplay-excerpt-poster.jpg" aria-label="Excerpt of the gameplay video: exploring the dark house with a candle count and hearts on screen.">
+          <source src="assets/hansel-gretel/hansel-gameplay-excerpt.mp4" type="video/mp4" />
+          Your browser can't play this video.
+        </video>
+        <a href="assets/hansel-gretel/01-one-page-design.jpg" class="gallery__wide" target="_blank" rel="noopener"><img src="assets/hansel-gretel/01-one-page-design.jpg" alt="The one-page design for the game: narrative, objective, mechanics, floor plans, cinematic beats and storyboard." width="3000" height="1688" loading="lazy" /></a>
+        <a href="assets/hansel-gretel/02-opening-map.jpg" target="_blank" rel="noopener"><img src="assets/hansel-gretel/02-opening-map.jpg" alt="Opening card: a hand-drawn map with a red route and the label Sopetown 1972." width="1656" height="920" loading="lazy" /></a>
+        <a href="assets/hansel-gretel/03-forest-opening.jpg" target="_blank" rel="noopener"><img src="assets/hansel-gretel/03-forest-opening.jpg" alt="Silhouetted forest with glowing eyes and bats in the opening sequence." width="1656" height="920" loading="lazy" /></a>
+        <a href="assets/hansel-gretel/04-red-room.jpg" target="_blank" rel="noopener"><img src="assets/hansel-gretel/04-red-room.jpg" alt="First-person view of a blood-splattered red room with a candle counter and hearts on screen." width="1656" height="920" loading="lazy" /></a>
+        <a href="assets/hansel-gretel/05-green-figure.jpg" target="_blank" rel="noopener"><img src="assets/hansel-gretel/05-green-figure.jpg" alt="A ghostly green figure glowing in a dark red room." width="1656" height="920" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

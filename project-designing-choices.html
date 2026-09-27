@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<!--
+  =============================================================
+  PROJECT PAGE — "What Kind of Animal Would You Be During a
+  Life Crisis?" (case study)
+  =============================================================
+  This page follows the same case-study shape as the other project
+  pages will: Problem → My Role → Process → Solution → Result.
+  Copy this file's structure (not its content) when writing up the
+  next project — see PROJECT.md for the list of what's still to add.
+  =============================================================
+-->
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What Kind of Animal Would You Be During a Life Crisis? — Mónica Arcila</title>
+  <meta name="description" content="A two-path branching interactive quiz built in Figma and Figma Make, exploring how choices, tone and AI-assisted content can shape a decision-driven web experience." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="nav__logo">Mónica Arcila</a>
+      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links">
+        <a href="index.html#work">Projects</a>
+        <a href="index.html#seedbeds">Research</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.html#work">← Back to projects</a>
+
+      <h1 class="project__title">What Kind of Animal Would You Be During a Life Crisis?</h1>
+      <p class="project__meta">Branching interactive quiz · DSDN142, Victoria University of Wellington · 2026</p>
+
+      <!-- Quick facts: role, tools, timeframe -->
+      <dl class="project__facts">
+        <div>
+          <dt>My role</dt>
+          <dd>Solo — concept, UX writing, interaction design, visual system and AI-assisted build</dd>
+        </div>
+        <div>
+          <dt>Tools</dt>
+          <dd>Figma Design, Figma Make, Claude, Gemini</dd>
+        </div>
+        <div>
+          <dt>Timeframe</dt>
+          <dd>13 August – 3 September 2026</dd>
+        </div>
+      </dl>
+
+      <!-- ===== PROBLEM ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The problem</h2>
+        <div class="project__description">
+          <p>
+            The brief asked for a decision-driven interactive web experience
+            with a landing page, at least five choices the user must
+            interact with, and at least three distinct endings — built in
+            Figma and made functional with Figma Make. Because it's an
+            interaction design brief and not just a visual one, looking good
+            wasn't enough: every choice had to genuinely change the tone and
+            outcome, and the whole thing had to stay intuitive enough for
+            someone who had never seen it before to click through
+            confidently.
+          </p>
+          <p>
+            The hardest part was holding two things at once: real
+            interaction design (choices that meaningfully branch, not just
+            look different) and a style simple enough to build with my own
+            skills in the time available.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== MY ROLE ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">My role</h2>
+        <div class="project__description">
+          <p>
+            This was a solo project. I wrote the branching narrative for
+            both paths, designed the interaction model (affordances,
+            feedback, navigation), built the visual system (colour,
+            type, a small reactive character), and used Claude and Gemini
+            throughout — not to generate the design for me, but to test
+            branching logic, draft and revise choice text, and translate
+            what I wanted structurally into the exact language Figma Make
+            needs (variables and conditional actions).
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== PROCESS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Process</h2>
+        <div class="project__description">
+          <p>
+            My concept is a two-path personality quiz: at the start, the
+            user picks which "crisis" to live through — a Millennial path
+            (the slow realisation that divorce is an option at 40) or a Gen
+            Z path (a workplace-and-dating crisis). Both paths share the
+            same underlying mechanism — five escalating choices, three
+            pattern-based endings — but each has its own scenario, tone and
+            set of animal archetypes, so the format itself comments on
+            generational difference rather than just swapping the setting.
+          </p>
+        </div>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">13 August — Pure confusion</span>
+            <p>
+              Started from a Figma flowchart brief-check with Claude. My
+              first low-fidelity wireframe only had "start → decision" nodes
+              with no visible connections, and duplicate screens instead of
+              one clean path. I chose to build the Millennial path properly
+              before touching Gen Z, and ideated the starter situations and
+              options with Claude until the concept felt right.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">28 August — Style and desktop design</span>
+            <p>
+              With all five Millennial choices written as a breakup
+              narrative, I moved to how the quiz looked. I built a very
+              basic reactive character with Gemini to carry facial
+              expressions for each choice, and chose a five-colour palette —
+              a near-black background with fully saturated neon accents
+              (pink, cyan, lime) — deliberately pushed past "clean and
+              modern" toward something closer to a warning label, so the
+              visual tone would escalate the same way the choice text does.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">29 August — Structural problems</span>
+            <p>
+              A rubric re-check caught that choices 1–4 weren't actually
+              affecting which ending a user got — only choice 5 was. I fixed
+              this by tagging every option across all five choices to one of
+              three archetypes and switching to a tally-based system, which
+              also meant dropping a fourth possible ending to keep the
+              pattern legible.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">1 September — Building the second path</span>
+            <p>
+              Once the Millennial path's tagging system worked, I mirrored
+              the structure into the Gen Z path with an entirely different
+              scenario, grounding the situations in real generational
+              research (a BBC article on how today's 20-somethings have it
+              worse, plus current internet culture) and landing on a
+              distinct set of archetypes: Cat, Possum and Capybara.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">3 September — Feedback mechanism</span>
+            <p>
+              Finished the Gen Z endings and built the feedback layer in
+              Figma Make: a reactive "echo" line that responds to the
+              specific option just picked, so the interface always
+              acknowledges the user's last action even without a visible
+              running score.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ===== SOLUTION ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Solution</h2>
+        <div class="project__description">
+          <p>
+            The final experience is a two-path branching quiz, each path
+            built from five escalating choices that tally toward one of
+            three animal archetypes. A few interaction decisions carry most
+            of the design intent:
+          </p>
+          <p>
+            <strong>Locked choices.</strong> Once an option is picked, there's
+            no going back — simpler to build reliably in Figma Make, and it
+            reinforces the emotional weight of each choice, the way you
+            don't get to undo the decision in the situation being lived,
+            either.
+          </p>
+          <p>
+            <strong>Visible affordances.</strong> Buttons have a clear rest
+            state (a thin border) and hover state (a solid fill, the box
+            widens slightly), following Norman's principle of visible
+            signifiers — interactivity reads before the click.
+          </p>
+          <p>
+            <strong>A reactive character.</strong> On each choice, everything
+            blurs except an avatar and a reaction bubble matching the option
+            picked; that same line follows the user onto the next screen as
+            a plain italic reminder, so a choice's emotional consequence
+            stays visible for one extra screen instead of disappearing the
+            moment you move on.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== RESULT ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Result &amp; reflection</h2>
+        <div class="project__description">
+          <p>
+            A fully functional, two-path branching experience in Figma Make
+            that meets every requirement of the brief: a landing page, five
+            choices per path, and three distinct endings that are actually
+            earned by the path taken rather than decided by the last click.
+          </p>
+          <p>
+            The biggest thing I learned was to use AI as a translation
+            layer, not a content generator: Claude and Gemini were most
+            useful for turning a structural idea already in my head into the
+            exact variable-and-conditional-logic language Figma Make needed,
+            and for pressure-testing whether a branching pattern actually
+            held together before I built it.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== TOOLS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Tools &amp; software</h2>
+        <ul class="tag-list">
+          <li class="tag">Figma Design</li>
+          <li class="tag">Figma Make</li>
+          <li class="tag">Claude</li>
+          <li class="tag">Gemini</li>
+        </ul>
+      </section>
+
+      <!-- ===== PROJECT GALLERY =====
+        Web-sized exports live in assets/designing-choices/. Each image links to its full-size
+        file; the alt text says what it shows. -->
+      <div class="project__gallery">
+        <video controls preload="none" poster="assets/designing-choices/designing-choices-excerpt-poster.jpg" aria-label="Excerpt of the finished quiz prototype being used, from choices to a result screen.">
+          <source src="assets/designing-choices/designing-choices-excerpt.mp4" type="video/mp4" />
+          Your browser can't play this video.
+        </video>
+        <a href="assets/designing-choices/01-flow-overview.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/01-flow-overview.jpg" alt="Overview of the quiz screens: welcome, Pick a Crisis and The Receipt." width="1278" height="290" loading="lazy" /></a>
+        <a href="assets/designing-choices/02-wedding-china.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/02-wedding-china.jpg" alt="The wedding china: a choice screen with three options in green, pink and blue." width="1055" height="638" loading="lazy" /></a>
+        <a href="assets/designing-choices/03-freaking-dog.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/03-freaking-dog.jpg" alt="The freaking dog: a choice screen with the small reactive character." width="1046" height="633" loading="lazy" /></a>
+        <a href="assets/designing-choices/04-ending-orange-cat.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/04-ending-orange-cat.jpg" alt="Ending screen &quot;You're an Orange Cat&quot; with a Replay button." width="285" height="186" loading="lazy" /></a>
+        <a href="assets/designing-choices/05-character-expressions.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/05-character-expressions.jpg" alt="Sheet of the reactive character's facial expressions." width="892" height="510" loading="lazy" /></a>
+        <a href="assets/designing-choices/06-branching-flowchart.jpg" class="gallery__wide" target="_blank" rel="noopener"><img src="assets/designing-choices/06-branching-flowchart.jpg" alt="Branching flowchart of the choices and endings across both paths." width="1253" height="437" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

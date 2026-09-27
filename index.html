@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<!--
+  =============================================================
+  HOME PAGE  (index.html)
+  =============================================================
+  This is the front page of your portfolio.
+
+  It has three sections, which cover the minimum requirements
+  from the brief:
+    1. HERO      - your name + one line about you
+    2. WORK      - a grid of your projects       (required)
+    3. ABOUT     - a short paragraph about you    (required)
+
+  Anywhere you see the word REPLACE, that is content for YOU
+  to change. Don't leave any REPLACE text in your final site!
+
+  TIP: Ask Claude things like
+    "Change the hero heading to my name and make the subtitle
+     say I'm a photography student."
+  =============================================================
+-->
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8" />
+  <!-- This meta tag is what makes the site work on phones. Leave it in. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Mónica Arcila — Interactive Designer</title>
+
+  <meta name="description" content="Portfolio of Mónica Arcila, an Interactive Designer specialising in UI implementation, design systems and AI-driven design workflows, studying between EAFIT (Colombia) and Te Herenga Waka — Victoria University of Wellington." />
+
+  <!-- The little icon in the browser tab. Replace assets/favicon.svg with your own. -->
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- Skip link: lets keyboard users jump straight to the main content
+       instead of tabbing through the menu. It's hidden until focused. -->
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== NAVIGATION BAR ===================== -->
+  <header class="site-header">
+    <div class="container nav">
+      <!-- REPLACE: your name / logo text -->
+      <a href="index.html" class="nav__logo">Mónica Arcila</a>
+
+      <!-- The button below only shows on small screens (phones). -->
+      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+
+      <nav class="nav__links">
+        <a href="#work">Projects</a>
+        <a href="#seedbeds">Research</a>
+        <a href="#experience">Experience</a>
+        <a href="#skills">Skills</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+
+    <!-- ===================== 1. HERO ===================== -->
+    <section class="hero container">
+      <p class="hero__eyebrow">Interactive Designer</p>
+      <h1 class="hero__title">Mónica Arcila</h1>
+      <p class="hero__subtitle">
+        I design interactive experiences, design systems and AI-driven
+        workflows — moving between UX research, game design and immersive
+        media, from Medellín to Wellington.
+      </p>
+    </section>
+
+    <!-- ===================== 2. PERSONAL PROJECTS (required) ===================== -->
+    <section id="work" class="section container">
+      <h2 class="section__title">Personal Projects</h2>
+      <p class="section__intro">
+        Work from my Interactive Design degree at EAFIT (Medellín) and my
+        exchange semester at Te Herenga Waka — Victoria University of
+        Wellington. At EAFIT I always worked with teammates, so each
+        project says what my part was. Pick a category to filter the list;
+        the tags on each project are the skills I used and the ones I
+        picked up from the project itself and from my teammates. Research
+        I did at EAFIT beyond the course syllabus is in its own section
+        below.
+      </p>
+
+      <!--
+        HOW THIS SECTION WORKS
+        The projects are one list. Each <li class="project-row"> has a
+        data-category (ux, immersive, game, ai or motion) that the filter
+        buttons above the list use — script.js does the filtering. The
+        category NAME shown under the title is just text: keep it in step
+        with data-category if you change one.
+
+        ★ EASIEST WAY TO ADD ANOTHER PROJECT:
+          Just tell Claude:  "add another project"
+          Claude will add a row here AND a new project page, and link
+          them together for you.
+      -->
+
+      <!-- The filter buttons are hidden until script.js runs, so the full
+           list still shows if JavaScript is off. -->
+      <div class="filter" role="group" aria-label="Filter projects by category" hidden>
+        <button class="filter__button" type="button" data-filter="all" aria-pressed="true">All projects</button>
+        <button class="filter__button" type="button" data-filter="featured" aria-pressed="false">Featured</button>
+        <button class="filter__button" type="button" data-filter="ux" aria-pressed="false">UX, Research &amp; Product Design</button>
+        <button class="filter__button" type="button" data-filter="immersive" aria-pressed="false">Immersive &amp; VR Experiences</button>
+        <button class="filter__button" type="button" data-filter="game" aria-pressed="false">Game Design &amp; Narrative Worlds</button>
+        <button class="filter__button" type="button" data-filter="ai" aria-pressed="false">AI-Driven Interactive Design</button>
+        <button class="filter__button" type="button" data-filter="motion" aria-pressed="false">3D, Motion &amp; Visual Design</button>
+      </div>
+      <p class="filter__status" aria-live="polite"></p>
+
+      <ul class="project-list">
+
+        <li class="project-row" data-category="ux ai featured">
+          <img class="project-row__image" src="assets/siata/cover.jpg" alt="Prototype map screen with an active-layers panel to switch rain, air quality and river level on and off." loading="lazy" />
+          <div class="project-row__body">
+            <span class="project-row__label">Featured</span>
+            <h3 class="project-row__title"><a href="project-siata.html">SIATA Geoportal Ciudadanos</a></h3>
+            <p class="project-row__category">UX, Research &amp; Product Design · AI-Driven Interactive Design</p>
+            <p class="project-row__meta">Lean UX redesign · Mobile web prototype · EAFIT · 2026</p>
+            <p class="project-row__highlight">
+              A team of five redesigned Medellín's public weather-and-risk
+              portal for everyday citizens. I ran interviews and tests and
+              built the working prototype, which was then evaluated through
+              36 Hotjar sessions and Maze missions.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">User interviews</li>
+              <li class="tag">Lean UX</li>
+              <li class="tag">Prototyping (Figma, HTML)</li>
+              <li class="tag">UX writing</li>
+              <li class="tag">Usability testing</li>
+              <li class="tag">Vector UI assets</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="ux motion">
+          <img class="project-row__image" src="assets/el-feeling/cover.jpg" alt="Prototype home screen &quot;Deslízate hacia la aventura&quot; with roller skates on a colourful retro background." loading="lazy" />
+          <div class="project-row__body">
+            <h3 class="project-row__title"><a href="project-el-feeling.html">El Feeling</a></h3>
+            <p class="project-row__category">UX, Research &amp; Product Design · 3D, Motion &amp; Visual Design</p>
+            <p class="project-row__meta">Team of five · E-commerce prototype, UI kit &amp; brand manual · Figma</p>
+            <ul class="tag-list">
+              <li class="tag">Information architecture</li>
+              <li class="tag">UX/UI in Figma</li>
+              <li class="tag">UI kit &amp; components</li>
+              <li class="tag">Interaction design</li>
+              <li class="tag">User research</li>
+              <li class="tag">Responsive design</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="ux">
+          <img class="project-row__image" src="assets/hugger-island/cover.jpg" alt="Buyer persona card for Carolina Restrepo, the primary buyer, with her context, motivations, criteria and trusted channels." loading="lazy" />
+          <div class="project-row__body">
+            <h3 class="project-row__title"><a href="project-hugger-island.html">Hugger Island</a></h3>
+            <p class="project-row__category">UX, Research &amp; Product Design</p>
+            <p class="project-row__meta">Team of five · Market research &amp; positioning · Pitched to the client · 2026</p>
+            <ul class="tag-list">
+              <li class="tag">Market research</li>
+              <li class="tag">Buyer personas</li>
+              <li class="tag">Interviews &amp; surveys</li>
+              <li class="tag">Social media observation</li>
+              <li class="tag">Report writing &amp; pitching</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="ux game">
+          <img class="project-row__image" src="assets/botcito-parque-explora/cover.jpg" alt="Diagram of scanning a QR code with a phone to open the Parque Explora companion app on a red home screen." loading="lazy" />
+          <div class="project-row__body">
+            <h3 class="project-row__title"><a href="project-botcito-parque-explora.html">Botcito for Parque Explora</a></h3>
+            <p class="project-row__category">UX, Research &amp; Product Design · Game Design &amp; Narrative Worlds</p>
+            <p class="project-row__meta">Team project · Mobile app prototype · Design Thinking</p>
+            <ul class="tag-list">
+              <li class="tag">Mobile UI/UX</li>
+              <li class="tag">Gamification</li>
+              <li class="tag">Interaction flows</li>
+              <li class="tag">Figma</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="immersive game featured">
+          <img class="project-row__image" src="assets/night-at-the-museum/cover.jpg" alt="The start menu in Meta Quest 3 with the title Noche en el Museo and Iniciar and Tutorial buttons." loading="lazy" />
+          <div class="project-row__body">
+            <span class="project-row__label">Featured</span>
+            <h3 class="project-row__title"><a href="project-night-at-the-museum.html">A Night at the Museum</a></h3>
+            <p class="project-row__category">Immersive &amp; VR Experiences · Game Design &amp; Narrative Worlds</p>
+            <p class="project-row__meta">VR narrative experience · Unity · Meta Quest 3 · EAFIT · 2026</p>
+            <p class="project-row__highlight">
+              Lead Unity developer in a team of six: I led the work of
+              turning the team's one-page design into a working VR build,
+              set up our GitHub workflow and planned the development
+              schedule.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Unity development</li>
+              <li class="tag">VR interaction</li>
+              <li class="tag">GitHub collaboration</li>
+              <li class="tag">Project planning</li>
+              <li class="tag">AI-assisted scripting</li>
+              <li class="tag">VR narrative</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="immersive game featured">
+          <img class="project-row__image" src="assets/nuris-greenhouse/cover.jpg" alt="The final constellation dome: glowing golden threads forming a star map around a pale orb." loading="lazy" />
+          <div class="project-row__body">
+            <span class="project-row__label">Featured</span>
+            <h3 class="project-row__title"><a href="project-nuris-greenhouse.html">Nuri's Greenhouse</a></h3>
+            <p class="project-row__category">Immersive &amp; VR Experiences · Game Design &amp; Narrative Worlds</p>
+            <p class="project-row__meta">VR environment · Unreal Engine · Virtual Reality Studio, VUW · 2026</p>
+            <p class="project-row__highlight">
+              A solo room-scale VR world. It was my first build in Unreal
+              Engine: after about three semesters working in Unity, I
+              moved to a new engine for a semester.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Unreal Engine</li>
+              <li class="tag">Environmental storytelling</li>
+              <li class="tag">Spatial audio</li>
+              <li class="tag">VR level design</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="game featured">
+          <img class="project-row__image" src="assets/meldiria/cover.jpg" alt="Personality quiz slide &quot;¿Qué personaje eres?&quot; showing five characters from the Meldiria universe." loading="lazy" />
+          <div class="project-row__body">
+            <span class="project-row__label">Featured</span>
+            <span class="project-row__label">Most Creative Project · Inventiva 2024</span>
+            <h3 class="project-row__title"><a href="project-meldiria.html">Meldiria</a></h3>
+            <p class="project-row__category">Game Design &amp; Narrative Worlds</p>
+            <p class="project-row__meta">Narrative universe, 2D videogame &amp; world bible · Unity · EAFIT · 2024</p>
+            <p class="project-row__highlight">
+              In a team of six, I led the game's development and built the
+              world's Mythos, Ethos and Topos. One universe became a 2D
+              game, an animation, a personality quiz and a world bible.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Unity 2D development</li>
+              <li class="tag">Worldbuilding</li>
+              <li class="tag">Technical writing</li>
+              <li class="tag">Transmedia storytelling</li>
+              <li class="tag">2D animation</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="game">
+          <img class="project-row__image" src="assets/hansel-gretel/cover.jpg" alt="The one-page design for the game: narrative, objective, mechanics, floor plans, cinematic beats and storyboard." loading="lazy" />
+          <div class="project-row__body">
+            <h3 class="project-row__title"><a href="project-hansel-gretel.html">Hansel &amp; Gretel: Blood and Crumbs</a></h3>
+            <p class="project-row__category">Game Design &amp; Narrative Worlds</p>
+            <p class="project-row__meta">Team of about six · 3D horror game · Led development · Unity · 2025</p>
+            <ul class="tag-list">
+              <li class="tag">Unity 3D development</li>
+              <li class="tag">Scripting &amp; game mechanics</li>
+              <li class="tag">NavMesh &amp; NPCs</li>
+              <li class="tag">Debugging</li>
+              <li class="tag">Horror game design</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="ai ux featured">
+          <img class="project-row__image" src="assets/designing-choices/cover.jpg" alt="Overview of the quiz screens: welcome, Pick a Crisis and The Receipt." loading="lazy" />
+          <div class="project-row__body">
+            <span class="project-row__label">Featured</span>
+            <h3 class="project-row__title"><a href="project-designing-choices.html">What Kind of Animal Would You Be During a Life Crisis?</a></h3>
+            <p class="project-row__category">AI-Driven Interactive Design · UX, Research &amp; Product Design</p>
+            <p class="project-row__meta">Branching interactive quiz · Figma Make · DSDN142, VUW · 2026</p>
+            <p class="project-row__highlight">
+              A solo two-path quiz with five choices and three earned
+              endings per path. I used Claude and Gemini to test the
+              branching logic, not to design it for me.
+            </p>
+            <ul class="tag-list">
+              <li class="tag">Interaction design</li>
+              <li class="tag">Branching narrative</li>
+              <li class="tag">UX writing</li>
+              <li class="tag">Figma Make</li>
+              <li class="tag">AI-assisted logic testing</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="ai motion">
+          <img class="project-row__image" src="assets/surviving-amongst-nature/cover.jpg" alt="A hooded figure aiming a dragonfly-bodied rocket launcher in an overgrown glasshouse." loading="lazy" />
+          <div class="project-row__body">
+            <h3 class="project-row__title"><a href="project-surviving-amongst-nature.html">Surviving Amongst Nature</a></h3>
+            <p class="project-row__category">AI-Driven Interactive Design · 3D, Motion &amp; Visual Design</p>
+            <p class="project-row__meta">AI-generated image grid · Gemini · VUW · 2026</p>
+            <ul class="tag-list">
+              <li class="tag">Prompt engineering</li>
+              <li class="tag">Generative AI imagery</li>
+              <li class="tag">Process documentation</li>
+              <li class="tag">Visual curation</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="ai motion">
+          <img class="project-row__image" src="assets/natures-embodiment-of-wine/cover.jpg" alt="The full grid of generated portraits: animals in a Burlesque cabaret setting, each embodying a bottle of wine." loading="lazy" />
+          <div class="project-row__body">
+            <h3 class="project-row__title"><a href="project-natures-embodiment-of-wine.html">Nature's Embodiment of Wine</a></h3>
+            <p class="project-row__category">AI-Driven Interactive Design · 3D, Motion &amp; Visual Design</p>
+            <p class="project-row__meta">Themed AI image generator · Gemini · VUW · 2026</p>
+            <ul class="tag-list">
+              <li class="tag">Generative design</li>
+              <li class="tag">Prompt engineering</li>
+              <li class="tag">Visual curation</li>
+              <li class="tag">Concept development</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="motion">
+          <img class="project-row__image" src="assets/capitanas-del-fuego/cover.jpg" alt="Title slide &quot;Las Capitanas del Fuego&quot;, an interactive audiovisual experience for a Dancehall and Sunset party, over a fiery gradient." loading="lazy" />
+          <div class="project-row__body">
+            <h3 class="project-row__title"><a href="project-capitanas-del-fuego.html">Capitanas del Fuego</a></h3>
+            <p class="project-row__category">3D, Motion &amp; Visual Design</p>
+            <p class="project-row__meta">Team of three · Live audio-reactive visuals for a DJ · TouchDesigner · Kinect</p>
+            <ul class="tag-list">
+              <li class="tag">TouchDesigner</li>
+              <li class="tag">Audio-reactive visuals</li>
+              <li class="tag">Kinect interaction</li>
+              <li class="tag">Pitching to a client</li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="project-row" data-category="motion">
+          <img class="project-row__image" src="assets/3d-reel/cover.jpg" alt="Collage of modelled scenes: a toy blaster, a colourful steam train, a cow with glowing patterns and a small house." loading="lazy" />
+          <div class="project-row__body">
+            <h3 class="project-row__title"><a href="project-3d-reel.html">3D Modelling &amp; Animation Reel</a></h3>
+            <p class="project-row__category">3D, Motion &amp; Visual Design</p>
+            <p class="project-row__meta">Modelling solo · Team animation project of six · Maya</p>
+            <ul class="tag-list">
+              <li class="tag">3D modelling (Maya)</li>
+              <li class="tag">Basic rigging</li>
+              <li class="tag">Animation</li>
+              <li class="tag">Lighting &amp; rendering</li>
+              <li class="tag">Sound &amp; music</li>
+            </ul>
+          </div>
+        </li>
+
+      </ul>
+    </section>
+
+    <!-- ===================== RESEARCH SEEDBEDS ===================== -->
+    <!-- EAFIT research work done alongside the degree, NOT part of any
+         course in the syllabus, so it sits apart from Personal Projects. -->
+    <section id="seedbeds" class="section container">
+      <h2 class="section__title">Research Seedbeds</h2>
+      <p class="section__intro">
+        Research projects I took part in at EAFIT alongside my degree
+        (semilleros de investigación). They were not part of any course.
+      </p>
+      <div class="grid grid--compact">
+        <a class="card card--compact" href="project-ciudades-posibles.html">
+          <img class="card__image" src="assets/ciudades-posibles/cover.jpg" alt="3D render of the exhibition setup: a round table with the hexagon city map, two poster stands and a green pedestal on an orange mat." loading="lazy" />
+          <div class="card__body">
+            <h3 class="card__title">Ciudades Posibles</h3>
+            <p class="card__meta">Team of ten · speculative urban research · Semillero Cosmogénesis · RedColsi</p>
+          </div>
+        </a>
+
+        <a class="card card--compact" href="project-vr-emotion-research.html">
+          <img class="card__image" src="assets/vr-emotion-research/cover.jpg" alt="Tutorial scene in Unity: VR controllers pointing at a glowing marker beside a table, with the prompt &quot;Avance al punto iluminado&quot;." loading="lazy" />
+          <div class="card__body">
+            <h3 class="card__title">VR &amp; Emotion Research</h3>
+            <p class="card__meta">One of three developers · haptics, onboarding &amp; emotion survey · Unity</p>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ===================== EXPERIENCE ===================== -->
+    <section id="experience" class="section container">
+      <h2 class="section__title">Experience</h2>
+
+      <div class="experience__item">
+        <h3 class="experience__role">Communications Assistant (Monitora Administrativa)</h3>
+        <p class="experience__meta">Escuela de Finanzas, Economía y Gobierno (FEG), Universidad EAFIT · Jan 2024 – Jun 2026 · part-time</p>
+        <p>
+          I joined as a graphic designer and ended up as the communications
+          lead's right hand, in a team that always had to adapt fast.
+        </p>
+        <ul>
+          <li>Main designer for the School's Instagram posts, stories and event pieces, both static and animated.</li>
+          <li>Wrote technical, visual and narrative scripts for videos and events, and live-covered events on X in Spanish and English.</li>
+          <li>Managed the content calendar, assigned and reviewed the team's work, and wrote copy.</li>
+          <li>Started the Boletín Especial, a newsletter with the most interesting news from the School each month (it moved from every three months to roughly monthly). I was the only person on it: I researched the stories, rewrote them in EAFIT's and the School's tone of voice, designed the newsletter and emailed it to a specific list of people from the School's main email account.</li>
+          <li>Helped put into practice a monthly content strategy, whose main idea came from the communications lead, to make women in finance, economics and political science visible: talks, events and the <a href="project-gender-equality-content.html">#YoHagoParte campaign</a>. With one teammate I designed its Instagram content, and at one point I led that work.</li>
+          <li>Co-designed a character-based strategy to give the School a more personal voice online.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- ===================== SKILLS ===================== -->
+    <!-- Grouped by area. Add or remove <li> items freely; each group is one
+         <div class="skills__group">. Keep the numbers in order. -->
+    <section id="skills" class="section container">
+      <h2 class="section__title">Skills</h2>
+      <p class="section__intro">
+        What I can do as an interactive designer, grouped by area. They come
+        from what I did in my projects and jobs, and from what I learned
+        alongside my teammates.
+      </p>
+
+      <div class="skills">
+
+        <div class="skills__group">
+          <span class="skills__number">01</span>
+          <h3 class="skills__title">UX &amp; User Research</h3>
+          <ul class="skills__list">
+            <li>User interviews</li>
+            <li>Surveys &amp; questionnaires</li>
+            <li>Personas &amp; proto-personas</li>
+            <li>Lean UX &amp; design thinking</li>
+            <li>Cognitive walkthroughs &amp; tree testing</li>
+            <li>Usability testing (Hotjar, Maze)</li>
+            <li>Information architecture</li>
+            <li>Market research &amp; observation</li>
+            <li>Synthesising results, with AI support</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">02</span>
+          <h3 class="skills__title">Interaction &amp; Product Design</h3>
+          <ul class="skills__list">
+            <li>UI/UX design in Figma</li>
+            <li>Interactive prototypes (Figma, Figma Make, HTML)</li>
+            <li>Interaction flows &amp; feedback</li>
+            <li>UI kits &amp; components</li>
+            <li>Responsive design</li>
+            <li>Mobile app design</li>
+            <li>Gamification</li>
+            <li>UX writing</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">03</span>
+          <h3 class="skills__title">Game &amp; Interactive Development</h3>
+          <ul class="skills__list">
+            <li>Unity (2D and 3D)</li>
+            <li>Unreal Engine</li>
+            <li>Scripting &amp; game mechanics</li>
+            <li>NavMesh, NPCs &amp; particles</li>
+            <li>Debugging</li>
+            <li>Version control with GitHub</li>
+            <li>Leading a build through to delivery</li>
+            <li>Development planning &amp; schedules</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">04</span>
+          <h3 class="skills__title">VR &amp; Immersive</h3>
+          <ul class="skills__list">
+            <li>VR interaction design (Meta Quest 3)</li>
+            <li>Haptic feedback</li>
+            <li>Onboarding &amp; tutorial design</li>
+            <li>In-experience emotion check-ins</li>
+            <li>Environmental storytelling</li>
+            <li>Spatial audio</li>
+            <li>VR level &amp; layout design</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">05</span>
+          <h3 class="skills__title">Narrative &amp; Worldbuilding</h3>
+          <ul class="skills__list">
+            <li>Worldbuilding (Mythos, Ethos, Topos)</li>
+            <li>Branching narrative &amp; endings</li>
+            <li>Transmedia storytelling</li>
+            <li>World bibles &amp; technical writing</li>
+            <li>Game and experience one-pagers</li>
+            <li>Scriptwriting for video and events</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">06</span>
+          <h3 class="skills__title">Generative &amp; AI-Driven Design</h3>
+          <ul class="skills__list">
+            <li>Prompt engineering &amp; recipe design</li>
+            <li>Generative image systems</li>
+            <li>AI-assisted scripting &amp; debugging</li>
+            <li>AI-assisted logic testing</li>
+            <li>Documenting process and AI use openly</li>
+            <li>Claude, ChatGPT, Gemini, Midjourney</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">07</span>
+          <h3 class="skills__title">3D, Motion &amp; Visual</h3>
+          <ul class="skills__list">
+            <li>Maya (modelling, basic rigging, animation)</li>
+            <li>Lighting &amp; rendering</li>
+            <li>Sound design &amp; music for animation</li>
+            <li>Substance 3D Painter</li>
+            <li>TouchDesigner &amp; audio-reactive visuals</li>
+            <li>Kinect &amp; camera interaction</li>
+            <li>After Effects &amp; Animate</li>
+            <li>Illustrator, Photoshop, Affinity, Canva</li>
+            <li>Vector UI assets</li>
+            <li>Social media graphics, static &amp; animated</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">08</span>
+          <h3 class="skills__title">Communication &amp; Collaboration</h3>
+          <ul class="skills__list">
+            <li>Pitching to real clients</li>
+            <li>Presenting to teachers and clients</li>
+            <li>Content calendars &amp; copywriting</li>
+            <li>Newsletter production: research, institutional tone of voice, design and email distribution</li>
+            <li>Live event coverage in Spanish and English</li>
+            <li>Reviewing and coordinating team work</li>
+            <li>Working in teams of three to ten</li>
+            <li>Project planning</li>
+            <li>Bilingual: Spanish &amp; English</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== 3. ABOUT ME (required) ===================== -->
+    <section id="about" class="section container">
+      <h2 class="section__title">About me</h2>
+      <div class="about">
+        <!-- A monogram stands in until there's a photo. To use a photo:
+             put it in assets/, point src at it, and give it real alt text
+             (e.g. "Mónica smiling in front of ..."). -->
+        <img
+          class="about__photo"
+          src="assets/monogram.svg"
+          alt=""
+        />
+        <div class="about__text">
+          <p>
+            I'm an Interactive Designer currently based in Wellington, New
+            Zealand, specialising in UI implementation, design systems and
+            AI-driven design workflows. My path has taken me through six
+            semesters at EAFIT (Medellín, Colombia) and, this year, an
+            exchange in Interactive Media Design at Te Herenga Waka —
+            Victoria University of Wellington.
+          </p>
+          <p>
+            Design, to me, is a partnership — I like to show the thinking
+            behind the pixels: the research, the wireframes, the awkward
+            first drafts, not just the polished final screen. My work spans
+            UX research, interactive prototypes, game design, virtual
+            reality and generative/AI-assisted design, and I'm currently
+            looking for an interactive design internship in Wellington or
+            Auckland.
+          </p>
+
+          <h3 class="about__tools-title">Tools &amp; software</h3>
+          <ul class="tag-list">
+            <li class="tag">Figma</li>
+            <li class="tag">Figma Make</li>
+            <li class="tag">Adobe Illustrator</li>
+            <li class="tag">Adobe Photoshop</li>
+            <li class="tag">Adobe After Effects</li>
+            <li class="tag">Adobe Animate</li>
+            <li class="tag">Adobe Audition</li>
+            <li class="tag">Affinity</li>
+            <li class="tag">Canva</li>
+            <li class="tag">Maya</li>
+            <li class="tag">Substance 3D Painter</li>
+            <li class="tag">Unity</li>
+            <li class="tag">Unreal Engine</li>
+            <li class="tag">TouchDesigner</li>
+            <li class="tag">Meta Quest 3 / Oculus</li>
+            <li class="tag">HTML &amp; CSS</li>
+            <li class="tag">C++</li>
+            <li class="tag">Python</li>
+            <li class="tag">Visual Studio Code</li>
+            <li class="tag">Arduino &amp; Wokwi</li>
+            <li class="tag">Google Sites</li>
+            <li class="tag">Claude</li>
+            <li class="tag">ChatGPT</li>
+            <li class="tag">Gemini</li>
+            <li class="tag">Midjourney</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACT ===================== -->
+    <section id="contact" class="section container contact">
+      <p class="contact__eyebrow">Let's work together</p>
+      <h2 class="contact__cta">
+        <span class="contact__question">Have an internship in mind?</span>
+        <a class="contact__link" href="mailto:monicamarcilal.design@gmail.com">Let's talk <span aria-hidden="true">↗</span></a>
+      </h2>
+
+      <div class="contact__grid">
+        <div>
+          <h3 class="contact__label">Email</h3>
+          <p><a href="mailto:monicamarcilal.design@gmail.com">monicamarcilal.design@gmail.com</a></p>
+        </div>
+        <div>
+          <h3 class="contact__label">Based in</h3>
+          <p>Wellington, New Zealand</p>
+        </div>
+        <div>
+          <h3 class="contact__label">Social</h3>
+          <ul class="contact__list">
+            <li><a href="https://www.linkedin.com/in/m%C3%B3nica-arcila-478575387" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            <li><a href="https://www.instagram.com/monicaarcila_design" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="contact__label">Availability</h3>
+          <p>Open to interactive design internships in Wellington and Auckland</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ===================== FOOTER ===================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <!-- The year fills in automatically (see script.js). -->
+      <p>© <span id="year"></span> Mónica Arcila</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<!--
+  =============================================================
+  PROJECT PAGE — "SIATA Geoportal Ciudadanos" (case study)
+  =============================================================
+  Sources (folder "SIATA Geoportal Ciudadanos - course User
+  Experience"): 0.Lean UX Canvas, 1.Declaración de supuestos,
+  2.Mínimo producto viable, 3.Definición de protopersonas,
+  4.Definiciones de funciones, "SIATA _ Sistematizacion de
+  resultados experimento UX.docx" (team results), "Informe UX_
+  Mónica Arcila_PDF.pdf" (Mónica's individual analytics report,
+  29 May 2026) and her "SIATA - personal context.docx".
+
+  Team of 5 (teammates' names are left off the site on purpose).
+  =============================================================
+-->
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIATA Geoportal Ciudadanos — Mónica Arcila</title>
+  <meta name="description" content="A Lean UX redesign of SIATA's citizen weather-and-risk portal for Medellín: interviews, tree testing, collaborative prototyping, a working mobile-web prototype and a Hotjar + Maze evaluation." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container nav">
+      <a href="index.html" class="nav__logo">Mónica Arcila</a>
+      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav__links">
+        <a href="index.html#work">Projects</a>
+        <a href="index.html#seedbeds">Research</a>
+        <a href="index.html#experience">Experience</a>
+        <a href="index.html#skills">Skills</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.html#work">← Back to projects</a>
+
+      <h1 class="project__title">SIATA Geoportal Ciudadanos</h1>
+      <p class="project__meta">Lean UX redesign · Mobile web prototype · User Experience, Universidad EAFIT · 2026</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>My role</dt>
+          <dd>Team of 5. I did the user interviews and testing, built the working prototype and wrote the analytics report</dd>
+        </div>
+        <div>
+          <dt>Tools</dt>
+          <dd>Figma, Gemini Canvas (HTML prototype), Optimal Workshop, Maze, Hotjar</dd>
+        </div>
+        <div>
+          <dt>Timeframe</dt>
+          <dd>March – May 2026</dd>
+        </div>
+      </dl>
+
+      <!-- ===== PROBLEM ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The problem</h2>
+        <div class="project__description">
+          <p>
+            SIATA is the early-warning and environmental monitoring system
+            for Medellín's metropolitan area. It runs two websites: a
+            technical one and one meant for ordinary citizens. Most people
+            don't know the citizen portal exists. When they search for
+            SIATA they land on the technical site, where they meet
+            unexplained abbreviations, crowded screens and no guidance.
+          </p>
+          <p>
+            The course brief asked us to pick a public website or app and
+            redesign it with a Lean UX process. We chose the citizen
+            portal and asked one question: how can someone check the
+            weather and environmental risks, such as rain or overflowing
+            streams, without needing to understand meteorology?
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== MY ROLE ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">My role</h2>
+        <div class="project__description">
+          <p>
+            This was a five-person team project. I ran and recorded user
+            interviews, shared the test links and helped build the Figma
+            baseline prototype. I then developed the final working
+            prototype as HTML using Gemini Canvas. In our weekly meetings
+            I helped decide which functions to change, rewrote SIATA's
+            technical terms in plain language and made the vector assets
+            that explain the UI and buttons. I also wrote an individual
+            analytics report on how people actually used the prototype.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== PROCESS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Process</h2>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">1 — Frame the assumptions</span>
+            <p>
+              We started with a Lean UX Canvas (Jeff Gothelf). It set out
+              the business problem, two proto-personas (young adults aged
+              17–28 and adults aged 29–50) and the risky assumptions to
+              test first. Could people understand the current terms and
+              icons? Which alerts mattered to them? Would a widget
+              actually be useful?
+            </p>
+          </li>
+          <li>
+            <span class="step__date">2 — Interviews (27 March 2026)</span>
+            <p>
+              We interviewed six students from different degrees and heard
+              the same thing again and again. Most people only check the
+              weather when they have a practical decision to make, like
+              whether to take an umbrella. Most used Apple Weather or
+              Google instead of SIATA, because SIATA felt complex and
+              overly technical. In their own words: <em>"It should be
+              simple and just show me if it's going to rain."</em>
+            </p>
+          </li>
+          <li>
+            <span class="step__date">3 — Cognitive walkthroughs, Likert, tree testing</span>
+            <p>
+              We ran in-person walkthroughs and a Likert survey, then a
+              tree test of the navigation. People went straight for the
+              most visual elements, like the cloud, the location pin and
+              the rain layer. They hesitated over technical category names
+              and sometimes didn't recognise cards as buttons. The
+              information architecture was partly clear, but the labels
+              needed to be written in everyday language.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">4 — Collaborative prototyping</span>
+            <p>
+              We gave participants our first structure and asked them to
+              rearrange it. They consistently asked for fewer categories,
+              a more direct route to navigation and alerts, and current
+              conditions on the home screen.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">5 — Build and evaluate (May 2026)</span>
+            <p>
+              I rebuilt the prototype as a working mobile web app. It
+              opens with a splash screen and an "Explorar" (Explore)
+              button, then goes to a live map with switchable layers for
+              rain, air quality and river levels. It also has two
+              practical tools: <em>Clima origen–destino</em>, which checks
+              the weather along your route, and <em>Mejor hora para
+              salir</em>, which suggests the best time to leave to avoid
+              rain or traffic. We tested it without a moderator, using
+              Maze missions and Hotjar recordings and heatmaps.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ===== SOLUTION ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Solution</h2>
+        <div class="project__description">
+          <p>
+            A map-first citizen portal that answers one question quickly:
+            is it going to rain where I'm going, and what should I do
+            about it? Technical variables are still available as optional
+            map layers but no longer lead the page. Labels are written in
+            everyday Spanish. The two route-based functions turn weather
+            data into a decision about when and how to travel.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== RESULT ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Result &amp; reflection</h2>
+        <div class="project__description">
+          <p>
+            Hotjar recorded <strong>36 sessions</strong> (half on phones,
+            half on computers), with an average of 4:52 minutes and 15.4
+            pages per session, 981 clicks and no rage clicks. Clicks
+            clustered on the Explorar button and the map controls, so
+            people found the entry point and treated the map as the heart
+            of the experience. "Consultar ruta" (check your route, 17
+            sessions) and "Mejor hora para salir" (16 sessions) were
+            among the most-used features.
+          </p>
+          <p>
+            Not everything worked, and I reported the problems too. Maze
+            showed 0% mission success. That wasn't because everyone
+            failed: the paths were never reviewed and categorised by hand,
+            so the tool couldn't score them. Hotjar also couldn't track
+            parts of the prototype that were embedded as iframes. I
+            recorded both as limitations instead of treating the numbers
+            as final. My recommendations were clearer active and inactive
+            states for the layer buttons, short helper text, less visual
+            load when many layers are on, and a re-test with light
+            moderation. For me, being honest about what the data can't
+            show is part of doing UX research properly.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== METHODS & TOOLS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Methods &amp; tools</h2>
+        <ul class="tag-list">
+          <li class="tag">Lean UX Canvas</li>
+          <li class="tag">Proto-personas</li>
+          <li class="tag">User interviews</li>
+          <li class="tag">Cognitive walkthrough</li>
+          <li class="tag">Likert survey</li>
+          <li class="tag">Tree testing</li>
+          <li class="tag">Collaborative prototyping</li>
+          <li class="tag">Maze</li>
+          <li class="tag">Hotjar</li>
+          <li class="tag">Figma</li>
+          <li class="tag">Gemini Canvas</li>
+        </ul>
+      </section>
+
+      <!-- ===== PROJECT GALLERY =====
+        Web-sized exports live in assets/siata/. Each image links to its full-size
+        file; the alt text says what it shows. -->
+      <div class="project__gallery">
+        <video controls preload="none" poster="assets/siata/siata-prototype-poster.jpg" aria-label="Screen recording of the working SIATA mobile prototype: the map, layers, route weather and best time to leave.">
+          <source src="assets/siata/siata-prototype.mp4" type="video/mp4" />
+          Your browser can't play this video.
+        </video>
+        <a href="assets/siata/01-weather-panel.jpg" target="_blank" rel="noopener"><img src="assets/siata/01-weather-panel.jpg" alt="Phone screen of the SIATA citizen prototype showing 24 degrees, rain and humidity readings above a search bar." width="576" height="1280" loading="lazy" /></a>
+        <a href="assets/siata/02-map-layers.jpg" target="_blank" rel="noopener"><img src="assets/siata/02-map-layers.jpg" alt="Prototype map screen with an active-layers panel to switch rain, air quality and river level on and off." width="576" height="1280" loading="lazy" /></a>
+        <a href="assets/siata/03-route-weather.jpg" target="_blank" rel="noopener"><img src="assets/siata/03-route-weather.jpg" alt="Prototype screen &quot;Clima en la ruta&quot; with an origin and destination and weather warnings along the route." width="576" height="1280" loading="lazy" /></a>
+        <a href="assets/siata/04-best-time.jpg" target="_blank" rel="noopener"><img src="assets/siata/04-best-time.jpg" alt="Prototype screen &quot;Mejor hora para salir&quot; listing the best times to leave with coloured bars for each hour." width="576" height="1280" loading="lazy" /></a>
+        <a href="assets/siata/05-personalised-info.jpg" target="_blank" rel="noopener"><img src="assets/siata/05-personalised-info.jpg" alt="Prototype panel &quot;Información personalizada&quot; offering weather at the origin and destination and the best time to leave." width="576" height="1280" loading="lazy" /></a>
+        <a href="assets/siata/06-lean-ux-canvas.jpg" target="_blank" rel="noopener"><img src="assets/siata/06-lean-ux-canvas.jpg" alt="The Lean UX Canvas for the SIATA citizen portal, with the business problem, users, ideas and hypotheses in boxes." width="3000" height="2319" loading="lazy" /></a>
+        <a href="assets/siata/07-hotjar-heatmaps.jpg" target="_blank" rel="noopener"><img src="assets/siata/07-hotjar-heatmaps.jpg" alt="Page from my analytics report with two Hotjar heatmaps showing where people clicked on the prototype." width="3000" height="3883" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
