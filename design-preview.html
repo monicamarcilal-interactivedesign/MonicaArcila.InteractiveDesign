@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<!--
+  =============================================================
+  DESIGN PREVIEW — rough identity test (not linked from the site)
+  =============================================================
+  This is a sandbox, not a real page. It exists so Mónica has
+  something concrete to react to instead of a blank Figma page
+  (see DESIGN_DIRECTION.md, section 15).
+
+  It is Lesson 1 + a first look at Lesson 3/4/5/7 from
+  VISUAL_DESIGN_CHECKLIST.md section 18, all in one page:
+    - a dark theme, default, with a light toggle (Lesson 1)
+    - a glass, asymmetric project card (Lessons 3 + 5)
+    - a glow that reacts to your mouse (Lesson 7)
+    - one purely decorative glow, just because it looks pretty —
+      per "decoration for its own sake may be good"
+
+  HOW TO EXPERIMENT: every value under
+  "1. TRY IT — identity tokens" below is safe to change. Open this
+  file, change a number or a colour, save, and refresh your browser
+  to see what happens. Nothing here can break the real site.
+  =============================================================
+-->
+<html lang="en-NZ" data-theme="dark">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>Design preview — Mónica Arcila</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Beau+Rivage&family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+<style>
+
+/* =====================================================
+   1. TRY IT — identity tokens
+   Change any of these and refresh. Dark values are the
+   defaults; the [data-theme="light"] block below overrides
+   the same names for the toggle.
+   ===================================================== */
+:root {
+  /* ink / surface */
+  --bg:            #050318;
+  --surface:       rgba(255, 255, 255, 0.06);
+  --surface-strong: rgba(255, 255, 255, 0.1);
+  --border:        rgba(255, 255, 255, 0.16);
+  --text:          #f4f1ff;
+  --muted:         #b6aede;
+
+  /* accents — three families from the reference boards, plus
+     Mónica's favourite blue given real weight, not just a token */
+  --violet:  #8747f8;
+  --pink:    #f887fa;
+  --blue:    #4d7dff;   /* her favourite colour */
+  --coral:   #fd7069;   /* the one warm accent, used sparingly */
+
+  /* how strong the glows are (turn this down on a phone) */
+  --glow-strength: 0.55;
+  --lotus-opacity: 0.5;
+  --lotus-blend: screen;
+
+  --radius-soft: 28px;
+  --radius-tight: 12px;
+  --font-display: "Beau Rivage", cursive;   /* the illustrated, slanted voice — used sparingly */
+  --font-body: "Sora", -apple-system, "Segoe UI", sans-serif; /* the structural voice */
+}
+
+/* the SAME token names, flipped for light mode — this is the
+   "duality" test: nothing else in the CSS below needs to change */
+:root[data-theme="light"] {
+  --bg:            #f7f4ff;
+  --surface:       rgba(20, 10, 50, 0.045);
+  --surface-strong: rgba(20, 10, 50, 0.08);
+  --border:        rgba(20, 10, 50, 0.14);
+  --text:          #1a1330;
+  --muted:         #5b5478;
+
+  --violet:  #6a1fd0;
+  --pink:    #c31f96;
+  --blue:    #1c4fd6;
+  --coral:   #c9463c;
+
+  --glow-strength: 0.28;
+  --lotus-opacity: 0.35;
+  --lotus-blend: multiply;
+}
+
+* { box-sizing: border-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  transition: background 0.4s ease, color 0.4s ease;
+  overflow-x: hidden;
+}
+
+a { color: inherit; }
+
+/* ---------- top bar: what this page is + the toggle ---------- */
+.preview-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.5rem;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.85rem;
+  color: var(--muted);
+  position: relative;
+  z-index: 5;
+}
+
+.theme-toggle {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+}
+.theme-toggle:focus-visible { outline: 3px solid var(--blue); outline-offset: 2px; }
+
+/* ---------- decorative ambient glow (no purpose but to look nice) ---------- */
+.ambient-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.ambient-glow span {
+  position: absolute;
+  width: 46vw;
+  height: 46vw;
+  border-radius: 50%;
+  filter: blur(90px);
+  opacity: var(--glow-strength);
+  animation: drift 26s ease-in-out infinite alternate;
+}
+.ambient-glow span:nth-child(1) { background: var(--violet); top: -10%; left: -8%; }
+.ambient-glow span:nth-child(2) { background: var(--blue); bottom: -14%; right: -6%; animation-duration: 32s; }
+.ambient-glow span:nth-child(3) { background: var(--coral); top: 40%; left: 60%; width: 26vw; height: 26vw; animation-duration: 20s; opacity: calc(var(--glow-strength) * 0.7); }
+
+@keyframes drift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(4%, 6%) scale(1.12); }
+}
+
+/* ---------- hero ---------- */
+.hero {
+  position: relative;
+  min-height: 78vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 3rem;
+  z-index: 2;
+}
+
+.hero__lotus {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(640px, 90vw);
+  height: min(640px, 90vw);
+  transform: translate(-56%, -50%);
+  z-index: -1;
+  opacity: var(--lotus-opacity);
+  mix-blend-mode: var(--lotus-blend);
+  filter: drop-shadow(0 0 26px rgba(135, 71, 248, 0.45));
+  transition: opacity 0.4s ease;
+  will-change: transform;
+}
+
+.hero__eyebrow {
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue);
+  margin: 0 0 0.75rem;
+}
+
+.hero__name {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(3.5rem, 11vw, 7.5rem);
+  line-height: 0.95;
+  margin: 0 0 0.75rem;
+  background: linear-gradient(100deg, var(--violet), var(--pink) 55%, var(--blue));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hero__subtitle {
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  line-height: 1.6;
+  color: var(--muted);
+  max-width: 42ch;
+}
+
+/* ---------- note box explaining the sandbox ---------- */
+.note {
+  max-width: 900px;
+  margin: 0 auto 3rem;
+  padding: 1rem 1.25rem;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-tight);
+  font-size: 0.85rem;
+  color: var(--muted);
+  position: relative;
+  z-index: 2;
+}
+.note strong { color: var(--text); }
+
+/* ---------- one project card, asymmetric + "peeking" ---------- */
+.card-section {
+  max-width: 900px;
+  margin: 0 auto 6rem;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 2;
+}
+.card-section__label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.25rem;
+}
+
+.glass-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  gap: 1.5rem;
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-soft) var(--radius-tight) var(--radius-soft) var(--radius-tight);
+  backdrop-filter: blur(18px) saturate(140%);
+  -webkit-backdrop-filter: blur(18px) saturate(140%);
+  padding: 2rem 2.25rem 2rem 1.75rem;
+  transform: rotate(-1.1deg);
+  box-shadow: 0 30px 60px -30px rgba(0, 0, 0, 0.6);
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.glass-card:hover,
+.glass-card:focus-within {
+  transform: rotate(0deg) translateY(-6px);
+  box-shadow: 0 40px 70px -28px rgba(135, 71, 248, 0.35);
+}
+
+.glass-card__media {
+  position: relative;
+  margin: -3.5rem -1rem -3.5rem 0.5rem;
+}
+.glass-card__media img {
+  width: 100%;
+  border-radius: var(--radius-tight);
+  display: block;
+  box-shadow: 0 24px 48px -20px rgba(0, 0, 0, 0.55);
+  border: 1px solid var(--border);
+}
+
+.pill {
+  display: inline-block;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--blue) 22%, transparent);
+  border: 1px solid color-mix(in srgb, var(--blue) 55%, transparent);
+  color: var(--blue);
+  margin-bottom: 0.75rem;
+}
+
+.glass-card__title {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: clamp(1.3rem, 2.4vw, 1.7rem);
+  margin: 0 0 0.5rem;
+}
+
+.glass-card__meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0 0 0.9rem;
+}
+
+.glass-card__text {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 1.1rem;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.tags span {
+  font-size: 0.72rem;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  background: var(--surface-strong);
+}
+
+@media (max-width: 700px) {
+  .glass-card { grid-template-columns: 1fr; padding: 1.75rem 1.5rem; }
+  .glass-card__media { margin: 0 0 1rem; }
+}
+
+</style>
+</head>
+<body>
+
+  <div class="preview-bar">
+    <span><strong style="color:var(--text)">Rough version</strong> — not linked from the real site. Dark is the default; try the toggle.</span>
+    <button class="theme-toggle" id="themeToggle" type="button" aria-pressed="false">Switch to light</button>
+  </div>
+
+  <div class="ambient-glow" aria-hidden="true">
+    <span></span><span></span><span></span>
+  </div>
+
+  <section class="hero">
+    <svg class="hero__lotus" id="lotus" viewBox="0 0 400 400" aria-hidden="true">
+      <defs>
+        <linearGradient id="lotusGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="var(--violet)" />
+          <stop offset="55%" stop-color="var(--pink)" />
+          <stop offset="100%" stop-color="var(--blue)" />
+        </linearGradient>
+      </defs>
+      <defs>
+        <path id="petalOuter" d="M200,200 C165,158 160,88 200,28 C240,88 235,158 200,200 Z" />
+        <path id="petalInner" d="M200,200 C182,176 180,142 200,112 C220,142 218,176 200,200 Z" />
+      </defs>
+      <g fill="none" stroke="url(#lotusGradient)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <!-- outer ring: 8 petals, one shape rotated round the centre -->
+        <use href="#petalOuter" transform="rotate(0 200 200)" />
+        <use href="#petalOuter" transform="rotate(45 200 200)" />
+        <use href="#petalOuter" transform="rotate(90 200 200)" />
+        <use href="#petalOuter" transform="rotate(135 200 200)" />
+        <use href="#petalOuter" transform="rotate(180 200 200)" />
+        <use href="#petalOuter" transform="rotate(225 200 200)" />
+        <use href="#petalOuter" transform="rotate(270 200 200)" />
+        <use href="#petalOuter" transform="rotate(315 200 200)" />
+        <!-- inner ring: 8 shorter petals, offset by half a step -->
+        <use href="#petalInner" transform="rotate(22.5 200 200)" />
+        <use href="#petalInner" transform="rotate(67.5 200 200)" />
+        <use href="#petalInner" transform="rotate(112.5 200 200)" />
+        <use href="#petalInner" transform="rotate(157.5 200 200)" />
+        <use href="#petalInner" transform="rotate(202.5 200 200)" />
+        <use href="#petalInner" transform="rotate(247.5 200 200)" />
+        <use href="#petalInner" transform="rotate(292.5 200 200)" />
+        <use href="#petalInner" transform="rotate(337.5 200 200)" />
+        <circle cx="200" cy="200" r="13" />
+      </g>
+    </svg>
+
+    <p class="hero__eyebrow">Interactive Designer</p>
+    <h1 class="hero__name">Mónica Arcila</h1>
+    <p class="hero__subtitle">
+      I design interactive experiences, design systems and AI-driven
+      workflows — moving between UX research, game design and immersive
+      media, from Medellín to Wellington.
+    </p>
+  </section>
+
+  <p class="note">
+    <strong>What you're looking at:</strong> the hero glow around the flower
+    shifts a little as you move your mouse (that's the "signature interaction"
+    idea) — the three big blurred colour circles behind everything just drift
+    on their own, no purpose except to look nice, per what you said about
+    decoration. The flower is one abstract line-drawing, not a literal photo of
+    your tattoo — see if this treatment feels right, too much, or not enough.
+  </p>
+
+  <section class="card-section">
+    <p class="card-section__label">Personal projects — one card, rough</p>
+    <article class="glass-card" tabindex="0">
+      <div class="glass-card__media">
+        <img src="assets/siata/cover.jpg" alt="Prototype map screen with an active-layers panel to switch rain, air quality and river level on and off." loading="lazy" />
+      </div>
+      <div class="glass-card__body">
+        <span class="pill">Featured</span>
+        <h3 class="glass-card__title">SIATA Geoportal Ciudadanos</h3>
+        <p class="glass-card__meta">Lean UX redesign · Mobile web prototype · EAFIT · 2026</p>
+        <p class="glass-card__text">
+          A team of five redesigned Medellín's public weather-and-risk portal
+          for everyday citizens. I ran interviews and usability tests and led
+          the interaction design.
+        </p>
+        <div class="tags">
+          <span>UX research</span>
+          <span>Usability testing</span>
+          <span>Prototyping</span>
+          <span>Figma</span>
+        </div>
+      </div>
+    </article>
+  </section>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var toggle = document.getElementById('themeToggle');
+  toggle.addEventListener('click', function () {
+    var isLight = root.getAttribute('data-theme') === 'light';
+    root.setAttribute('data-theme', isLight ? 'dark' : 'light');
+    toggle.textContent = isLight ? 'Switch to light' : 'Switch to dark';
+    toggle.setAttribute('aria-pressed', String(!isLight));
+  });
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var lotus = document.getElementById('lotus');
+  if (!reduceMotion && lotus) {
+    var hero = document.querySelector('.hero');
+    var targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+    hero.addEventListener('mousemove', function (e) {
+      var rect = hero.getBoundingClientRect();
+      targetX = ((e.clientX - rect.left) / rect.width - 0.5) * 24;
+      targetY = ((e.clientY - rect.top) / rect.height - 0.5) * 24;
+    });
+    (function raf() {
+      currentX += (targetX - currentX) * 0.06;
+      currentY += (targetY - currentY) * 0.06;
+      lotus.style.transform = 'translate(calc(-56% + ' + currentX + 'px), calc(-50% + ' + currentY + 'px))';
+      requestAnimationFrame(raf);
+    })();
+  }
+})();
+</script>
+
+</body>
+</html>
