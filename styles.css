@@ -196,6 +196,21 @@ button:focus-visible,
   gap: 1.5rem;
 }
 
+/* Desktop navigation moved to the side (2026-09-29) — see GROWTH TRAIL /
+   SITE NAV below. Above 900px the whole top header hides and the side
+   rail takes over; at/under 900px nothing here changes (the header with
+   its hamburger menu is still the only nav, exactly as before). */
+@media (min-width: 901px) {
+  .site-header {
+    display: none;
+  }
+
+  /* No header to subtract the height of any more, on this breakpoint. */
+  .landing-stage {
+    min-height: 100vh;
+  }
+}
+
 .nav__links a,
 .nav__links a:visited {
   text-decoration: none;
@@ -224,13 +239,20 @@ button:focus-visible,
 }
 
 /* -------------------------------------------------------------
-   GROWTH TRAIL — a second way to move through the home page,
-   beyond scrolling. One bud per section, fixed to the right edge.
-   Dashed = not visited yet (still a real link — click it to jump
-   straight there). Solid coral = bloomed (scrolled past already).
-   Glowing violet = the section on screen right now. script.js job 5
-   sets is-bloomed / is-current as you scroll; nothing here needs a
-   click to work except the buds themselves.
+   GROWTH TRAIL / SITE NAV (2026-09-29) — the site's main navigation
+   on desktop now, not just a home-page extra: the top header hides
+   above 900px (see the rule above .nav__links) and this side rail
+   takes over everywhere, home page and every project page alike.
+   Each link is a lotus petal; the link back to the lotus landing
+   screen (or, from a project page, back to the home page) is the
+   full lotus itself.
+
+   On the home page only, script.js job 5 tracks which sections
+   you've visited this browsing session (any order, not scroll
+   position) and sets is-bloomed / is-current: dashed outline = not
+   visited yet (still a real link), solid coral = bloomed, glowing
+   violet = on screen right now. Project pages don't track this —
+   the petals just sit in their plain outline state, still real links.
    ------------------------------------------------------------- */
 .growth-trail {
   position: fixed;
@@ -241,7 +263,7 @@ button:focus-visible,
   flex-direction: column;
   align-items: center;
   gap: 22px;
-  z-index: 8;
+  z-index: 20;
 }
 
 .growth-trail::before {
@@ -259,21 +281,28 @@ button:focus-visible,
 
 .growth-trail__bud {
   position: relative;
-  display: block;
-  width: 13px;
-  height: 13px;
-  border-radius: 50% 50% 50% 0;
-  transform: rotate(45deg);
-  background: transparent;
-  border: 1.5px dashed var(--color-muted);
-  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+}
+
+.growth-trail__bud .petal-icon {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--color-muted);
+  stroke-width: 1.4;
+  stroke-dasharray: 3 2.5;
+  transition: fill 0.3s ease, stroke 0.3s ease, transform 0.3s ease, filter 0.3s ease;
 }
 
 .growth-trail__bud span {
   position: absolute;
-  right: 22px;
+  right: 34px;
   top: 50%;
-  transform: translateY(-50%) rotate(-45deg);
+  transform: translateY(-50%);
   white-space: nowrap;
   font-size: 0.75rem;
   color: var(--color-text);
@@ -294,20 +323,26 @@ button:focus-visible,
 .growth-trail__bud:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 4px;
+  border-radius: 50%;
 }
 
-.growth-trail__bud.is-bloomed {
-  background: var(--color-coral);
-  border-style: solid;
-  border-color: var(--color-coral);
+.growth-trail__bud:hover .petal-icon {
+  stroke: var(--color-text);
+  transform: scale(1.15);
 }
 
-.growth-trail__bud.is-current {
-  background: var(--color-violet);
-  border-style: solid;
-  border-color: var(--color-violet);
-  transform: rotate(45deg) scale(1.4);
-  box-shadow: 0 0 16px 2px color-mix(in srgb, var(--color-violet) 55%, transparent);
+.growth-trail__bud.is-bloomed .petal-icon {
+  fill: var(--color-coral);
+  stroke: var(--color-coral);
+  stroke-dasharray: none;
+}
+
+.growth-trail__bud.is-current .petal-icon {
+  fill: var(--color-violet);
+  stroke: var(--color-violet);
+  stroke-dasharray: none;
+  transform: scale(1.3);
+  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--color-violet) 65%, transparent));
 }
 
 /* Keep it to desktop for now — on phones the hamburger menu already
@@ -319,19 +354,30 @@ button:focus-visible,
   }
 }
 
-/* The ✦ button that opens the portal map. Sits above the first bud. */
+/* The lotus that opens the portal map (home page) or links back to the
+   home page (project pages). Sits above the first petal, bigger than
+   any of them since it's what they all "come from". */
 .growth-trail__map-toggle {
-  width: 26px;
-  height: 26px;
-  margin-bottom: 6px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 8px;
   border-radius: 50%;
   background: var(--color-surface-strong);
   border: 1px solid var(--color-border);
-  color: var(--color-violet);
-  font-size: 0.85rem;
-  line-height: 1;
   cursor: pointer;
+  text-decoration: none;
   transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.growth-trail__map-toggle .lotus-icon {
+  width: 24px;
+  height: 24px;
+  fill: var(--color-violet);
+  transition: fill 0.2s ease;
 }
 
 .growth-trail__map-toggle:hover {
@@ -339,21 +385,58 @@ button:focus-visible,
   transform: scale(1.1);
 }
 
+.growth-trail__map-toggle:hover .lotus-icon {
+  fill: var(--color-accent);
+}
+
+.growth-trail__map-toggle:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.growth-trail__map-toggle span {
+  position: absolute;
+  right: 48px;
+  top: 50%;
+  transform: translateY(-50%);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-surface-strong);
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.growth-trail__map-toggle:hover span,
+.growth-trail__map-toggle:focus-visible span {
+  opacity: 1;
+}
+
 /* -------------------------------------------------------------
    ORB LINES — the faint web connecting every orb to every other
-   orb, and to the 3 highlighted motto words. A single full-viewport
-   SVG; script.js (job 5) draws real <line> elements into it, because
-   the endpoints depend on actual rendered positions (responsive).
+   orb, and to the 3 highlighted motto words, drawn as growing "stems"
+   (script.js job 5). Absolutely positioned to cover .landing-stage
+   (its own containing block — see position: relative there) instead
+   of the whole viewport, so it scrolls and sizes as one rigid piece
+   with the orbs it's connecting, rather than a separate fixed layer
+   that could visually detach from them on scroll.
    ------------------------------------------------------------- */
 .orb-lines {
-  position: fixed;
+  position: absolute;
   inset: 0;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   z-index: 7; /* above the hero text, below the orbs themselves */
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.6s ease;
+  /* Quick switch, not a slow fade — the "appearing" effect is each
+     line's own stroke-dashoffset growth (script.js), not this. */
+  transition: opacity 0.15s ease;
 }
 
 .orb-lines.is-visible {
@@ -414,8 +497,11 @@ button:focus-visible,
   animation-play-state: paused;
 }
 
+/* Sized off viewport height, same as .lotus below, at exactly half its
+   clamp() so the lotus always reads as the bigger shape the orbs came
+   from — at any screen size, not just the ones we happened to test. */
 .orb__img {
-  width: 92px;
+  width: clamp(56px, 8vh, 80px);
   height: auto;
   filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 18px var(--orb-glow, transparent));
   transition: transform 0.25s ease, filter 0.25s ease;
@@ -446,14 +532,15 @@ button:focus-visible,
   border-radius: 50%;
 }
 
-/* Each orb's own colour (sampled from its image) and floating position.
-   Position is a rough scatter across the cluster box, echoing Mónica's
-   own reference layout — not a strict grid, on purpose. */
-.orb--about     { --orb-glow: #F49625; left: 42%; top: 0%; }
-.orb--skills    { --orb-glow: #F960CA; left: 8%;  top: 46%; }
-.orb--case-studies { --orb-glow: #A471F0; left: 74%; top: 32%; }
-.orb--experience{ --orb-glow: #00FFBD; left: 2%;  top: 74%; }
-.orb--contact   { --orb-glow: #3FE4FA; left: 84%; top: 70%; }
+/* Each orb's own colour (sampled from its image) and its position on an
+   arc, evenly spaced by angle (37.5° apart, fanning out ±75° from
+   straight up) around the lotus below — equal spacing between every
+   orb, instead of the old hand-placed scatter. */
+.orb--experience{ --orb-glow: #00FFBD; left: 17.2%; top: 76.2%; }
+.orb--skills    { --orb-glow: #F960CA; left: 29.3%; top: 27%; }
+.orb--about     { --orb-glow: #F49625; left: 50%;   top: 8%; }
+.orb--case-studies { --orb-glow: #A471F0; left: 70.7%; top: 27%; }
+.orb--contact   { --orb-glow: #3FE4FA; left: 82.8%; top: 76.2%; }
 
 @keyframes orb-float {
   0%, 100% { margin-top: 0; }
@@ -478,11 +565,14 @@ button:focus-visible,
 .lotus {
   /* Sits inside .landing-stage's flex column, last item — see the note
      above .landing-stage. Sized with clamp() so it shrinks on shorter
-     screens along with .orb-cluster, instead of getting pushed off. */
+     screens along with .orb-cluster, instead of getting pushed off.
+     Exactly double .orb__img's clamp() (same vh coefficient, doubled),
+     so the lotus always reads as bigger than any orb, at any screen
+     size, since it's what they "come from". */
   position: relative;
   flex: none;
-  width: clamp(96px, 14vh, 150px);
-  height: clamp(96px, 14vh, 150px);
+  width: clamp(120px, 16vh, 180px);
+  height: clamp(120px, 16vh, 180px);
   padding: 0;
   border: none;
   background: none;
@@ -554,7 +644,10 @@ button:focus-visible,
   /* Normal flow (not fixed) so it reserves real space and the footer
      still lands right after it, like before — min-height just makes
      that reserved space roughly one screen tall, so hero/orbs/lotus have
-     room to spread out and centre themselves via flexbox. */
+     room to spread out and centre themselves via flexbox. position:
+     relative makes it the containing block for .orb-lines (absolute),
+     so the lines scroll and size together with the orbs. */
+  position: relative;
   min-height: calc(100vh - 64px);
   display: flex;
   flex-direction: column;

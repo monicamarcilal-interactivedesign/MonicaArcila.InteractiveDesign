@@ -44,6 +44,47 @@
     </div>
   </header>
 
+  <!-- ===================== GROWTH TRAIL / SITE NAV ===================== -->
+  <!-- The site's main navigation on desktop (2026-09-29) — the top header
+       above hides above 900px (see styles.css) and this side rail takes
+       over, matching the home page's. Each link is a lotus petal; the
+       lotus itself links back to the home page. No visited/current
+       tracking here (that's a home-page-only thing, see script.js job 5)
+       — these are just plain links to index.html#section. -->
+  <nav class="growth-trail" aria-label="Jump to a section">
+    <a href="index.html" class="growth-trail__map-toggle" aria-label="Back to the home page">
+      <svg class="lotus-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" />
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(72 12 12)" />
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(144 12 12)" />
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(216 12 12)" />
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(288 12 12)" />
+        <circle cx="12" cy="12" r="1.3" />
+      </svg>
+      <span>Mónica Arcila</span>
+    </a>
+    <a href="index.html#case-studies" class="growth-trail__bud">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>Case Studies</span>
+    </a>
+    <a href="index.html#experience" class="growth-trail__bud">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>Experience</span>
+    </a>
+    <a href="index.html#skills" class="growth-trail__bud">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>Skills</span>
+    </a>
+    <a href="index.html#about" class="growth-trail__bud">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>About</span>
+    </a>
+    <a href="index.html#contact" class="growth-trail__bud">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>Contact</span>
+    </a>
+  </nav>
+
   <main id="main">
     <article class="section container project">
 

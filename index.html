@@ -61,27 +61,51 @@
     </div>
   </header>
 
-  <!-- ===================== GROWTH TRAIL ===================== -->
-  <!-- A second way to move through the page, beyond scrolling: a vine
-       of small buds, one per section, fixed to the side of the screen.
-       Sections you've visited this browsing session "bloom" solid, in
-       any order; the section on screen right now glows; the rest stay
-       dashed but are still real links, so you can jump straight to
-       Contact without visiting anything in between. script.js job 5
-       tracks visited sections (sessionStorage) and updates the
-       is-bloomed / is-current classes whenever you switch scenes. Only
-       5 buds now — Hero isn't a destination any more, it's the landing/
-       lotus screen itself (see below). The ✦ button returns to that
-       landing screen from inside any section. Desktop only for now (see
-       the max-width: 900px rule in styles.css) — on phones the hamburger
-       menu switches scenes the same way, just without this visual. -->
+  <!-- ===================== GROWTH TRAIL / SITE NAV ===================== -->
+  <!-- The site's main navigation on desktop (2026-09-29) — the top header
+       hides above 900px (see styles.css) and this side rail takes over.
+       Each link is a lotus petal (SVG, shared shape, coloured by state);
+       the lotus itself returns to the landing screen. Sections you've
+       visited this browsing session "bloom" solid, in any order; the
+       section on screen right now glows; the rest stay dashed outlines
+       but are still real links, so you can jump straight to Contact
+       without visiting anything in between. script.js job 5 tracks
+       visited sections (sessionStorage) and updates the is-bloomed /
+       is-current classes whenever you switch scenes. On phones (≤900px)
+       the hamburger menu switches scenes the same way, just without
+       this visual — see the max-width: 900px rule in styles.css. -->
   <nav class="growth-trail" aria-label="Jump to a section">
-    <button class="growth-trail__map-toggle" id="portalToggle" type="button" aria-label="Back to the lotus">✦</button>
-    <a href="#case-studies" class="growth-trail__bud" data-section="case-studies"><span>Case Studies</span></a>
-    <a href="#experience" class="growth-trail__bud" data-section="experience"><span>Experience</span></a>
-    <a href="#skills" class="growth-trail__bud" data-section="skills"><span>Skills</span></a>
-    <a href="#about" class="growth-trail__bud" data-section="about"><span>About</span></a>
-    <a href="#contact" class="growth-trail__bud" data-section="contact"><span>Contact</span></a>
+    <a href="index.html" class="growth-trail__map-toggle" id="portalToggle" aria-label="Back to the lotus">
+      <svg class="lotus-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" />
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(72 12 12)" />
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(144 12 12)" />
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(216 12 12)" />
+        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(288 12 12)" />
+        <circle cx="12" cy="12" r="1.3" />
+      </svg>
+      <span>Mónica Arcila</span>
+    </a>
+    <a href="#case-studies" class="growth-trail__bud" data-section="case-studies">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>Case Studies</span>
+    </a>
+    <a href="#experience" class="growth-trail__bud" data-section="experience">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>Experience</span>
+    </a>
+    <a href="#skills" class="growth-trail__bud" data-section="skills">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>Skills</span>
+    </a>
+    <a href="#about" class="growth-trail__bud" data-section="about">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>About</span>
+    </a>
+    <a href="#contact" class="growth-trail__bud" data-section="contact">
+      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
+      <span>Contact</span>
+    </a>
   </nav>
 
   <main id="main">
@@ -125,8 +149,16 @@
       <section id="hero" class="hero container">
         <img class="hero__logo-bg" src="assets/site/logo-mark.png" alt="" aria-hidden="true" />
         <p class="hero__eyebrow">Interactive Designer</p>
-        <h1 class="hero__title"><span class="hero__accent hero__word" id="wordDesigning">Designing</span> to be <span class="hero__accent hero__word" id="wordFelt">felt</span> and <span class="hero__accent hero__word" id="wordValued">valued</span>, not just seen.</h1>
+        <h1 class="hero__title"><span class="hero__accent hero__word" id="wordDesigning">Designing</span> to be <span class="hero__accent hero__word" id="wordFelt">felt</span> and <span class="hero__accent hero__word" id="wordValued">valued</span>,<br />not just seen.</h1>
       </section>
+
+      <!-- Lives inside .landing-stage (not a fixed, full-viewport overlay
+           any more) so it scrolls and sizes together with the orbs it's
+           connecting — a separate fixed layer used to visually detach
+           from the orbs if the page ever scrolled. script.js draws real
+           <line> elements into it, positioned relative to this same
+           stage, since the endpoints depend on actual rendered layout. -->
+      <svg class="orb-lines" id="orbLines" aria-hidden="true"></svg>
 
       <!-- NOT aria-hidden: these are real navigation links, just visually
            deferred until the lotus opens (pointer-events re-enabled by
@@ -164,8 +196,6 @@
         <img class="lotus__img lotus__img--open" src="assets/site/lotus-open-neon.png" alt="" />
       </button>
     </div>
-
-    <svg class="orb-lines" id="orbLines" aria-hidden="true"></svg>
 
     <!-- ===================== CASE STUDIES (merged, 2026-09-28) ===================== -->
     <!-- Personal Projects + Research Seedbeds now live under one shared
@@ -753,7 +783,9 @@
   </main>
 
   <!-- ===================== FOOTER ===================== -->
-  <footer class="site-footer">
+  <!-- Hidden on the lotus landing screen itself (script.js job 5) — kept
+       for every other section, and always shown on every other page. -->
+  <footer class="site-footer" id="siteFooter">
     <div class="container">
       <!-- The year fills in automatically (see script.js). -->
       <p>© <span id="year"></span> Mónica Arcila</p>

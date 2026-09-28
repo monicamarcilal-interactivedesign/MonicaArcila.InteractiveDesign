@@ -145,6 +145,7 @@ const landingStage = document.getElementById("landingStage");
 const lotusToggle = document.getElementById("lotusToggle");
 const orbCluster = document.getElementById("orbCluster");
 const orbLines = document.getElementById("orbLines");
+const siteFooter = document.getElementById("siteFooter");
 
 if (trailBuds.length && heroSection) {
   const sectionMeta = Array.from(trailBuds).map((bud) => ({
@@ -201,10 +202,13 @@ if (trailBuds.length && heroSection) {
   };
 
   const drawOrbLines = () => {
-    if (!orbLines || !orbCluster) return;
-    const vw = window.innerWidth;
-    const vh = window.innerHeight;
-    orbLines.setAttribute("viewBox", `0 0 ${vw} ${vh}`);
+    if (!orbLines || !orbCluster || !landingStage) return;
+    // Coordinates are relative to .landing-stage (its own containing
+    // block, position: relative in CSS) instead of the viewport, so the
+    // lines scroll and resize as one piece with the orbs — see the note
+    // on .orb-lines in styles.css.
+    const stageRect = landingStage.getBoundingClientRect();
+    orbLines.setAttribute("viewBox", `0 0 ${stageRect.width} ${stageRect.height}`);
     orbLines.innerHTML =
       '<defs><linearGradient id="orbLineGradient" x1="0" y1="0" x2="1" y2="1">' +
       '<stop offset="0%" stop-color="var(--color-violet)" /><stop offset="100%" stop-color="var(--color-accent)" />' +
@@ -212,10 +216,17 @@ if (trailBuds.length && heroSection) {
 
     const centerOf = (el) => {
       const r = el.getBoundingClientRect();
-      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+      return { x: r.left + r.width / 2 - stageRect.left, y: r.top + r.height / 2 - stageRect.top };
     };
+    // Each line grows from nothing like a stem, instead of just fading
+    // in — a dash covering the line's own length, pulled back to 0 via a
+    // CSS transition. The double rAF gives the browser one frame to
+    // register the starting (undrawn) state before the transition starts,
+    // otherwise it can just jump straight to fully drawn.
+    let stemIndex = 0;
     const addLine = (p1, p2, opacity) => {
       const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      const length = Math.hypot(p2.x - p1.x, p2.y - p1.y);
       line.setAttribute("x1", p1.x);
       line.setAttribute("y1", p1.y);
       line.setAttribute("x2", p2.x);
@@ -223,7 +234,16 @@ if (trailBuds.length && heroSection) {
       line.setAttribute("stroke", "url(#orbLineGradient)");
       line.setAttribute("stroke-width", "1");
       line.setAttribute("opacity", opacity);
+      line.style.strokeDasharray = String(length);
+      line.style.strokeDashoffset = String(length);
+      line.style.transition = `stroke-dashoffset 0.7s ease ${Math.min(stemIndex * 45, 400)}ms`;
+      stemIndex += 1;
       orbLines.appendChild(line);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          line.style.strokeDashoffset = "0";
+        });
+      });
     };
 
     const orbEls = Array.from(orbCluster.querySelectorAll(".orb"));
@@ -337,6 +357,7 @@ if (trailBuds.length && heroSection) {
     // hiding only #hero left that height behind as an empty gap above
     // whichever section was shown.
     if (landingStage) landingStage.hidden = true;
+    if (siteFooter) siteFooter.hidden = false;
     resetLanding();
     homeSections.forEach((section) => {
       section.hidden = section.id !== id;
@@ -352,6 +373,7 @@ if (trailBuds.length && heroSection) {
       section.hidden = true;
     });
     if (landingStage) landingStage.hidden = false;
+    if (siteFooter) siteFooter.hidden = true;
     resetLanding();
     activeId = null;
     updateTrail();
@@ -359,7 +381,13 @@ if (trailBuds.length && heroSection) {
   };
 
   if (portalToggle) {
-    portalToggle.addEventListener("click", showLanding);
+    // It's a real <a href="index.html"> now (so the same markup works
+    // as a plain home link on project pages) — prevent the reload here
+    // and just switch scenes instead, since we're already on this page.
+    portalToggle.addEventListener("click", (event) => {
+      event.preventDefault();
+      showLanding();
+    });
   }
 
   // Any link to #about, #contact... anywhere on the page (header nav, the
