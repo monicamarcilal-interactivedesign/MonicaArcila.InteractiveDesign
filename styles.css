@@ -412,132 +412,166 @@ button:focus-visible,
 }
 
 /* -------------------------------------------------------------
-   PORTAL OVERLAY — the ✦ button opens this: the current section as
-   a large glowing circle, the other six arranged around it. Each is
-   a real link; clicking one jumps and closes the overlay. Positions
-   are set inline by script.js (job 8) via --tx/--ty, computed fresh
-   each time it opens since "current" changes as you scroll.
+   ORB LINES — the faint web connecting every orb to every other
+   orb, and to the 3 highlighted motto words. A single full-viewport
+   SVG; script.js (job 6) draws real <line> elements into it, because
+   the endpoints depend on actual rendered positions (responsive).
    ------------------------------------------------------------- */
-.portal-overlay {
+.orb-lines {
   position: fixed;
   inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+  z-index: 7; /* above the hero text, below the orbs themselves */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
 }
 
-.portal-overlay[hidden] {
-  display: none;
-}
-
-.portal-overlay__backdrop {
-  position: absolute;
-  inset: 0;
-  background: color-mix(in srgb, var(--color-bg) 78%, transparent);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-}
-
-.portal {
-  position: relative;
-  width: min(560px, 90vw);
-  height: min(560px, 90vw);
-}
-
-.portal__close {
-  position: absolute;
-  top: -6px;
-  right: -6px;
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--color-surface-strong);
-  border: 1px solid var(--color-border);
-  color: var(--color-text);
-  font-size: 1.1rem;
-  cursor: pointer;
-  z-index: 2;
-}
-
-.portal__node {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  border-radius: 50%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  text-decoration: none;
-  color: var(--color-text);
-  background: var(--color-surface-strong);
-  border: 1px solid var(--color-border);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-}
-
-.portal__current {
-  width: 170px;
-  height: 170px;
-  transform: translate(-50%, -50%);
-  border-color: color-mix(in srgb, var(--color-violet) 60%, var(--color-border));
-  box-shadow: 0 0 60px -10px color-mix(in srgb, var(--color-violet) 55%, transparent);
-  cursor: default;
-}
-
-.portal__current small {
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--color-muted);
-}
-
-.portal__current strong {
-  font-size: 1.05rem;
-  margin-top: 0.2rem;
-}
-
-.portal__satellite {
-  width: 92px;
-  height: 92px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.25s ease, border-color 0.25s ease;
-  transform: translate(-50%, -50%) translate(var(--tx, 0px), var(--ty, 0px));
-}
-
-.portal__satellite:hover,
-.portal__satellite:focus-visible {
-  transform: translate(-50%, -50%) translate(var(--tx, 0px), var(--ty, 0px)) scale(1.08);
-  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .portal__satellite {
-    transition: none;
-  }
+.orb-lines.is-visible {
+  opacity: 0.5;
 }
 
 /* -------------------------------------------------------------
-   LOTUS — a quiet decorative touch, fixed to the left edge. Closed
-   by default; the first hover or click opens it and it stays open;
-   the next hover or click closes it again (script.js job 7).
+   ORB CLUSTER — the 5 sections, as orbs that pop out of the lotus.
+   Fixed to the viewport (not scroll-affected), centred above where
+   the lotus sits. Each orb starts scaled to nothing at the lotus's
+   own position (--ox/--oy, set inline by script.js from the lotus's
+   real on-screen position) and animates out to its final spot when
+   .orb-cluster gets .is-visible. Desktop only, like the lotus.
+   ------------------------------------------------------------- */
+.orb-cluster {
+  position: fixed;
+  left: 50%;
+  bottom: 110px;
+  z-index: 9;
+  width: min(760px, 92vw);
+  height: 380px;
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+
+.orb {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  text-decoration: none;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(var(--ox, 0), var(--oy, 0)) scale(0.15);
+  transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.45s ease;
+  transition-delay: calc(var(--i, 0) * 70ms);
+  animation: orb-float 6s ease-in-out infinite;
+  animation-play-state: paused;
+}
+
+.orb-cluster.is-visible .orb {
+  pointer-events: auto;
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+  animation-play-state: running;
+}
+
+/* Closing: no stagger, and skip straight back toward the lotus. */
+.orb-cluster.is-closing .orb {
+  transition-delay: 0ms;
+  opacity: 0;
+  transform: translate(var(--ox, 0), var(--oy, 0)) scale(0.15);
+  animation-play-state: paused;
+}
+
+.orb__img {
+  width: 92px;
+  height: auto;
+  filter: drop-shadow(0 12px 22px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 18px var(--orb-glow, transparent));
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.orb__label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-surface-strong);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.2rem 0.7rem;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  white-space: nowrap;
+}
+
+.orb:hover .orb__img,
+.orb:focus-visible .orb__img {
+  transform: scale(1.12);
+  filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 30px var(--orb-glow, transparent));
+}
+
+.orb:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+  border-radius: 50%;
+}
+
+/* Each orb's own colour (sampled from its image) and floating position.
+   Position is a rough scatter across the cluster box, echoing Mónica's
+   own reference layout — not a strict grid, on purpose. */
+.orb--about     { --orb-glow: #F49625; left: 42%; top: 0%; }
+.orb--skills    { --orb-glow: #F960CA; left: 8%;  top: 46%; }
+.orb--case-studies { --orb-glow: #A471F0; left: 74%; top: 32%; }
+.orb--experience{ --orb-glow: #00FFBD; left: -4%; top: 74%; }
+.orb--contact   { --orb-glow: #3FE4FA; left: 88%; top: 70%; }
+
+@keyframes orb-float {
+  0%, 100% { margin-top: 0; }
+  50% { margin-top: -14px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .orb, .orb__img { transition: none; animation: none; }
+}
+
+@media (max-width: 900px) {
+  .orb-lines, .orb-cluster { display: none; }
+}
+
+/* -------------------------------------------------------------
+   LOTUS — the source the 5 orbs "pop out of," so it now sits
+   bottom-centre instead of the corner. Closed by default; the first
+   hover or click wiggles it, then opens it and pops the orbs out;
+   the next hover or click wiggles, then pops them back in and closes
+   (script.js job 6).
    ------------------------------------------------------------- */
 .lotus {
   position: fixed;
-  left: 20px;
+  left: 50%;
   bottom: 24px;
   width: 150px;
   height: 150px;
+  transform: translateX(-50%);
   padding: 0;
   border: none;
   background: none;
   cursor: pointer;
-  z-index: 8;
+  z-index: 10;
   filter: drop-shadow(0 0 24px color-mix(in srgb, var(--color-violet) 35%, transparent));
+}
+
+.lotus.is-wiggling {
+  animation: lotus-wiggle 0.48s ease-in-out;
+}
+
+@keyframes lotus-wiggle {
+  0%, 100% { transform: translateX(-50%) rotate(0deg); }
+  20% { transform: translateX(-50%) rotate(-6deg); }
+  40% { transform: translateX(-50%) rotate(5deg); }
+  60% { transform: translateX(-50%) rotate(-4deg); }
+  80% { transform: translateX(-50%) rotate(3deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lotus.is-wiggling { animation: none; }
 }
 
 .lotus__img {

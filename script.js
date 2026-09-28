@@ -1,7 +1,7 @@
 /* =============================================================
    SCRIPT.JS  —  a tiny bit of JavaScript
    =============================================================
-   This file does just seven small jobs. You probably don't need to
+   This file does just six small jobs. You probably don't need to
    touch it, but here's what it does so nothing feels like magic.
    ============================================================= */
 
@@ -166,27 +166,31 @@ if (filterBar && projectRows.length) {
 })();
 
 /* -------------------------------------------------------------
-   6. HOME PAGE NAVIGATION — scenes, the growth trail and the portal
-   Replaces plain scrolling between sections with a "jump to a scene"
-   model: only one section is visible at a time, so moving between
-   them is never scroll-only. The portal is the very first thing you
-   see on a fresh visit (desktop, no #section in the address) — pick a
-   sphere to enter the site. Once inside, the ✦ button above the
-   growth trail reopens the portal to jump anywhere else. The trail's
-   buds track every section visited this browsing session, in any
-   order, not scroll position — see updateTrail() below.
+   6. HOME PAGE NAVIGATION — scenes, the growth trail, and the lotus
+   Only one of the 5 sections (About, Contact, Skills, Experience,
+   Case Studies) is visible at a time, so moving between them is
+   never scroll-only. Hero isn't one of the 5 — it's the landing
+   screen itself: eyebrow, motto, and the lotus. Closed by default,
+   the lotus wiggles on the first hover/click, then opens and pops
+   5 orbs out of itself, one per section; the next hover/click
+   wiggles, then pops them back in and closes. Clicking an orb (or
+   any nav link / growth-trail bud) shows that section full-screen,
+   same as before. The ✦ button returns to the landing screen from
+   inside any section. The growth trail's buds track every section
+   visited this browsing session, in any order, not scroll position.
 
    PROGRESSIVE ENHANCEMENT: if this script doesn't run, nothing gets
    hidden — every section is right there in the HTML, and the page is
-   simply one long scrolling document, exactly like before. Nothing
-   here is the only way to use the site.
+   simply one long scrolling document, exactly like before.
    ------------------------------------------------------------- */
 const trailBuds = document.querySelectorAll(".growth-trail__bud");
 const portalToggle = document.getElementById("portalToggle");
-const portalOverlay = document.getElementById("portalOverlay");
-const portalInner = portalOverlay ? portalOverlay.querySelector(".portal") : null;
+const heroSection = document.getElementById("hero");
+const lotusToggle = document.getElementById("lotusToggle");
+const orbCluster = document.getElementById("orbCluster");
+const orbLines = document.getElementById("orbLines");
 
-if (trailBuds.length && portalToggle && portalOverlay && portalInner) {
+if (trailBuds.length && heroSection) {
   const sectionMeta = Array.from(trailBuds).map((bud) => ({
     id: bud.dataset.section,
     label: bud.querySelector("span").textContent,
@@ -194,6 +198,10 @@ if (trailBuds.length && portalToggle && portalOverlay && portalInner) {
   const homeSections = sectionMeta
     .map((section) => document.getElementById(section.id))
     .filter(Boolean);
+
+  // Old links (from before Projects + Research merged into Case Studies,
+  // and before Hero stopped being a destination) still work.
+  const legacyAliases = { work: "case-studies", seedbeds: "case-studies", hero: null };
 
   const getVisited = () => {
     try {
@@ -213,7 +221,7 @@ if (trailBuds.length && portalToggle && portalOverlay && portalInner) {
     }
   };
 
-  let activeId = null; // null = the portal is the landing screen, nothing chosen yet
+  let activeId = null; // null = landing on Hero, nothing chosen yet
 
   const updateTrail = () => {
     const visited = getVisited();
@@ -224,130 +232,203 @@ if (trailBuds.length && portalToggle && portalOverlay && portalInner) {
     });
   };
 
-  const ringPosition = (index, total, radius) => {
-    const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
-    return { x: Math.round(Math.cos(angle) * radius), y: Math.round(Math.sin(angle) * radius) };
+  /* ---- the lotus + its 5 orbs ---- */
+  let lotusState = "closed"; // closed | animating | open
+  const WIGGLE_MS = 480;
+  const POP_MS = 950;
+  const CLOSE_MS = 500;
+
+  const clearOrbLines = () => {
+    if (!orbLines) return;
+    orbLines.classList.remove("is-visible");
+    orbLines.innerHTML = "";
   };
 
-  const buildPortal = () => {
-    const radius = 190;
-    let html = activeId !== null
-      ? `<button class="portal__close" type="button" data-close aria-label="Close the map">&times;</button>`
-      : "";
+  const drawOrbLines = () => {
+    if (!orbLines || !orbCluster) return;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    orbLines.setAttribute("viewBox", `0 0 ${vw} ${vh}`);
+    orbLines.innerHTML =
+      '<defs><linearGradient id="orbLineGradient" x1="0" y1="0" x2="1" y2="1">' +
+      '<stop offset="0%" stop-color="var(--color-violet)" /><stop offset="100%" stop-color="var(--color-accent)" />' +
+      "</linearGradient></defs>";
 
-    if (activeId === null) {
-      // Landing: no "current" section yet, so all seven spheres share one ring.
-      sectionMeta.forEach((section, index) => {
-        const { x, y } = ringPosition(index, sectionMeta.length, radius);
-        html += `<a href="#${section.id}" class="portal__node portal__satellite" style="--tx:${x}px;--ty:${y}px">${section.label}</a>`;
-      });
-      html += `<div class="portal__node portal__current"><small>Choose where to start</small><strong>Mónica Arcila</strong></div>`;
-    } else {
-      const current = sectionMeta.find((section) => section.id === activeId);
-      const others = sectionMeta.filter((section) => section.id !== activeId);
-      html += `<div class="portal__node portal__current"><small>You are here</small><strong>${current.label}</strong></div>`;
-      others.forEach((section, index) => {
-        const { x, y } = ringPosition(index, others.length, radius);
-        html += `<a href="#${section.id}" class="portal__node portal__satellite" style="--tx:${x}px;--ty:${y}px">${section.label}</a>`;
-      });
+    const centerOf = (el) => {
+      const r = el.getBoundingClientRect();
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+    };
+    const addLine = (p1, p2, opacity) => {
+      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+      line.setAttribute("x1", p1.x);
+      line.setAttribute("y1", p1.y);
+      line.setAttribute("x2", p2.x);
+      line.setAttribute("y2", p2.y);
+      line.setAttribute("stroke", "url(#orbLineGradient)");
+      line.setAttribute("stroke-width", "1");
+      line.setAttribute("opacity", opacity);
+      orbLines.appendChild(line);
+    };
+
+    const orbEls = Array.from(orbCluster.querySelectorAll(".orb"));
+    const orbCenters = orbEls.map(centerOf);
+    for (let i = 0; i < orbCenters.length; i++) {
+      for (let j = i + 1; j < orbCenters.length; j++) {
+        addLine(orbCenters[i], orbCenters[j], 0.3);
+      }
     }
 
-    portalInner.innerHTML = html;
+    const wordEls = ["wordDesigning", "wordFelt", "wordValued"]
+      .map((id) => document.getElementById(id))
+      .filter(Boolean);
+    wordEls.forEach((word) => {
+      const wp = centerOf(word);
+      let nearest = null;
+      let nearestDist = Infinity;
+      orbCenters.forEach((oc) => {
+        const d = Math.hypot(oc.x - wp.x, oc.y - wp.y);
+        if (d < nearestDist) {
+          nearestDist = d;
+          nearest = oc;
+        }
+      });
+      if (nearest) addLine(wp, nearest, 0.55);
+    });
   };
 
-  const openPortal = () => {
-    buildPortal();
-    portalOverlay.hidden = false;
-    portalToggle.setAttribute("aria-expanded", "true");
-    document.body.style.overflow = "hidden";
+  const positionOrbsAtLotus = () => {
+    if (!lotusToggle || !orbCluster) return;
+    const orbs = Array.from(orbCluster.querySelectorAll(".orb"));
+    // Reset first so getBoundingClientRect reads each orb's real resting
+    // spot, not wherever it was left transformed to last time.
+    orbs.forEach((orb) => {
+      orb.style.setProperty("--ox", "0px");
+      orb.style.setProperty("--oy", "0px");
+    });
+    const lotusRect = lotusToggle.getBoundingClientRect();
+    const lotusCenter = { x: lotusRect.left + lotusRect.width / 2, y: lotusRect.top + lotusRect.height / 2 };
+    orbs.forEach((orb) => {
+      const r = orb.getBoundingClientRect();
+      const orbCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+      orb.style.setProperty("--ox", `${lotusCenter.x - orbCenter.x}px`);
+      orb.style.setProperty("--oy", `${lotusCenter.y - orbCenter.y}px`);
+    });
   };
 
-  const closePortal = () => {
-    if (activeId === null) return; // landing has nowhere to "close" back to yet
-    portalOverlay.hidden = true;
-    portalToggle.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
+  const openOrbs = () => {
+    if (!orbCluster) return;
+    positionOrbsAtLotus();
+    void orbCluster.offsetWidth; // force layout so the start position is registered before animating
+    orbCluster.classList.remove("is-closing");
+    orbCluster.classList.add("is-visible");
+    window.setTimeout(() => {
+      drawOrbLines();
+      if (orbLines) orbLines.classList.add("is-visible");
+    }, POP_MS);
   };
 
+  const closeOrbs = () => {
+    if (!orbCluster) return;
+    clearOrbLines();
+    orbCluster.classList.add("is-closing");
+    window.setTimeout(() => {
+      orbCluster.classList.remove("is-visible", "is-closing");
+    }, CLOSE_MS);
+  };
+
+  const resetLanding = () => {
+    // Always closed again when you arrive at/return to the landing screen.
+    lotusState = "closed";
+    if (lotusToggle) {
+      lotusToggle.classList.remove("is-open", "is-wiggling");
+      lotusToggle.setAttribute("aria-pressed", "false");
+    }
+    if (orbCluster) orbCluster.classList.remove("is-visible", "is-closing");
+    clearOrbLines();
+  };
+
+  if (lotusToggle && orbCluster) {
+    const triggerLotus = () => {
+      if (lotusState === "animating") return;
+      const opening = lotusState === "closed";
+      lotusState = "animating";
+      lotusToggle.classList.add("is-wiggling");
+      window.setTimeout(() => {
+        lotusToggle.classList.remove("is-wiggling");
+        lotusToggle.classList.toggle("is-open", opening);
+        lotusToggle.setAttribute("aria-pressed", String(opening));
+        if (opening) openOrbs();
+        else closeOrbs();
+        lotusState = opening ? "open" : "closed";
+      }, WIGGLE_MS);
+    };
+    lotusToggle.addEventListener("mouseenter", triggerLotus);
+    lotusToggle.addEventListener("click", triggerLotus);
+
+    let resizeTimer = null;
+    window.addEventListener("resize", () => {
+      if (!orbCluster.classList.contains("is-visible")) return;
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(drawOrbLines, 150);
+    });
+  }
+
+  /* ---- scene switching ---- */
   const showSection = (id) => {
     if (!sectionMeta.some((section) => section.id === id)) return;
+    heroSection.hidden = true;
+    resetLanding();
+    if (lotusToggle) lotusToggle.hidden = true;
     homeSections.forEach((section) => {
       section.hidden = section.id !== id;
     });
     activeId = id;
     markVisited(id);
     updateTrail();
-    portalOverlay.hidden = true;
-    portalToggle.setAttribute("aria-expanded", "false");
-    document.body.style.overflow = "";
-    // Deliberately NOT updating the address bar's #hash here: this only
-    // runs for in-app navigation (clicking a sphere/bud/nav link), and
-    // Mónica wants every reload to land back on the portal regardless of
-    // which section she was last on. If the hash changed on every
-    // showSection() call, reloading would just reopen that same section
-    // — the address bar only carries a #section when someone arrives via
-    // an actual link to it (e.g. a project page's "back to projects").
     window.scrollTo(0, 0);
   };
 
-  // Any link to #hero, #work, #seedbeds... anywhere on the page (header
-  // nav, the mobile menu, the growth trail, the portal's own spheres)
-  // switches scenes instead of the browser's default anchor scroll.
+  const showLanding = () => {
+    homeSections.forEach((section) => {
+      section.hidden = true;
+    });
+    heroSection.hidden = false;
+    resetLanding();
+    if (lotusToggle) lotusToggle.hidden = false;
+    activeId = null;
+    updateTrail();
+    window.scrollTo(0, 0);
+  };
+
+  if (portalToggle) {
+    portalToggle.addEventListener("click", showLanding);
+  }
+
+  // Any link to #about, #contact... anywhere on the page (header nav, the
+  // mobile menu, the growth trail, an orb) switches scenes instead of the
+  // browser's default anchor scroll.
   document.addEventListener("click", (event) => {
     const link = event.target.closest('a[href^="#"]');
     if (!link) return;
-    const id = link.getAttribute("href").slice(1);
-    if (!sectionMeta.some((section) => section.id === id)) return;
+    let id = link.getAttribute("href").slice(1);
+    if (id in legacyAliases) id = legacyAliases[id];
+    if (!id || !sectionMeta.some((section) => section.id === id)) return;
     event.preventDefault();
     showSection(id);
   });
 
-  portalToggle.addEventListener("click", openPortal);
-
-  portalOverlay.addEventListener("click", (event) => {
-    if (event.target.closest("[data-close]")) closePortal();
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !portalOverlay.hidden) closePortal();
-  });
-
-  // Start on the portal (desktop, nothing requested yet) or jump straight
-  // to whatever section the URL names — e.g. a project page's "back to
-  // projects" link pointing at index.html#work. Phones skip the portal's
-  // ring (no room for it) and open on Hero; the hamburger menu still
-  // switches scenes exactly the same way underneath.
-  const requestedId = location.hash.slice(1);
-  const isWideEnoughForPortal = window.matchMedia("(min-width: 901px)").matches;
+  // Land on whatever section the URL names (e.g. a project page's "back
+  // to projects" link pointing at index.html#work, resolved through the
+  // legacy alias above) — otherwise always the Hero/lotus landing screen.
+  // Deliberately NOT updating the address bar on in-app navigation (see
+  // showSection): a reload should always come back here, regardless of
+  // which section was open before.
+  let requestedId = location.hash.slice(1);
+  if (requestedId in legacyAliases) requestedId = legacyAliases[requestedId];
 
   if (requestedId && sectionMeta.some((section) => section.id === requestedId)) {
     showSection(requestedId);
-  } else if (isWideEnoughForPortal) {
-    homeSections.forEach((section) => {
-      section.hidden = true;
-    });
-    updateTrail();
-    openPortal();
   } else {
-    showSection("hero");
+    showLanding();
   }
-}
-
-/* -------------------------------------------------------------
-   7. LOTUS TOGGLE (home page only)
-   Closed by default. The first hover or click opens it and it stays
-   open; the next hover or click closes it again. Always starts
-   closed again on reload — nothing is saved. A <button> already
-   responds to Enter/Space on its own, so there's no extra keyboard
-   handling to write here.
-   ------------------------------------------------------------- */
-const lotusToggle = document.getElementById("lotusToggle");
-
-if (lotusToggle) {
-  const toggleLotus = () => {
-    const isOpen = lotusToggle.classList.toggle("is-open");
-    lotusToggle.setAttribute("aria-pressed", String(isOpen));
-  };
-  lotusToggle.addEventListener("mouseenter", toggleLotus);
-  lotusToggle.addEventListener("click", toggleLotus);
 }

@@ -53,8 +53,7 @@
       </button>
 
       <nav class="nav__links">
-        <a href="#work">Projects</a>
-        <a href="#seedbeds">Research</a>
+        <a href="#case-studies">Case Studies</a>
         <a href="#experience">Experience</a>
         <a href="#skills">Skills</a>
         <a href="#about">About</a>
@@ -71,71 +70,109 @@
        dashed but are still real links, so you can jump straight to
        Contact without visiting anything in between. script.js job 6
        tracks visited sections (sessionStorage) and updates the
-       is-bloomed / is-current classes whenever you switch scenes.
-       Desktop only for now (see the max-width: 900px rule in
-       styles.css) — on phones the hamburger menu switches scenes the
-       same way, just without this visual. -->
+       is-bloomed / is-current classes whenever you switch scenes. Only
+       5 buds now — Hero isn't a destination any more, it's the landing/
+       lotus screen itself (see below). The ✦ button returns to that
+       landing screen from inside any section. Desktop only for now (see
+       the max-width: 900px rule in styles.css) — on phones the hamburger
+       menu switches scenes the same way, just without this visual. -->
   <nav class="growth-trail" aria-label="Jump to a section">
-    <button class="growth-trail__map-toggle" id="portalToggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Open a map of every section">✦</button>
-    <a href="#hero" class="growth-trail__bud" data-section="hero"><span>Hero</span></a>
-    <a href="#work" class="growth-trail__bud" data-section="work"><span>Projects</span></a>
-    <a href="#seedbeds" class="growth-trail__bud" data-section="seedbeds"><span>Research</span></a>
+    <button class="growth-trail__map-toggle" id="portalToggle" type="button" aria-label="Back to the lotus">✦</button>
+    <a href="#case-studies" class="growth-trail__bud" data-section="case-studies"><span>Case Studies</span></a>
     <a href="#experience" class="growth-trail__bud" data-section="experience"><span>Experience</span></a>
     <a href="#skills" class="growth-trail__bud" data-section="skills"><span>Skills</span></a>
     <a href="#about" class="growth-trail__bud" data-section="about"><span>About</span></a>
     <a href="#contact" class="growth-trail__bud" data-section="contact"><span>Contact</span></a>
   </nav>
 
-  <!-- ===================== PORTAL OVERLAY ===================== -->
-  <!-- This is the FIRST thing shown on a fresh visit (desktop, no
-       #section in the address): all seven sections as spheres in a
-       ring, nothing chosen yet — pick one to enter the site. From
-       inside a section, the ✦ button above the growth trail reopens it
-       to jump anywhere else, now with the current section large and
-       centred. script.js job 6 builds the sphere layout fresh each
-       time. Escape, the backdrop, or the × close it (once something
-       has been chosen — the very first landing has nowhere to close
-       back to yet). -->
-  <div class="portal-overlay" id="portalOverlay" hidden>
-    <div class="portal-overlay__backdrop" data-close></div>
-    <div class="portal" role="dialog" aria-modal="true" aria-label="Jump to a section"></div>
-  </div>
-
-  <!-- ===================== LOTUS ===================== -->
-  <!-- A quiet decorative touch, fixed to the left edge. Closed by
-       default; the first hover or click opens it and it stays open;
-       the next hover or click closes it again (script.js job 7).
-       Always starts closed again on reload — nothing is saved.
-       Desktop only, like the growth trail. Pastel pair for light mode,
-       neon pair for dark mode (CSS below shows/hides by theme) — both
-       are now real matched closed/open photos. -->
-  <button class="lotus" id="lotusToggle" type="button" aria-pressed="false" aria-label="Toggle the lotus open or closed">
-    <img class="lotus__img lotus__img--closed lotus__img--light" src="assets/site/lotus-closed.png" alt="" />
-    <img class="lotus__img lotus__img--open lotus__img--light" src="assets/site/lotus-open.png" alt="" />
-    <img class="lotus__img lotus__img--closed lotus__img--dark" src="assets/site/lotus-closed-neon.png" alt="" />
-    <img class="lotus__img lotus__img--open lotus__img--dark" src="assets/site/lotus-open-neon.png" alt="" />
-  </button>
-
   <main id="main">
 
-    <!-- ===================== 1. HERO ===================== -->
+    <!-- ===================== 1. HERO / LANDING ===================== -->
     <!-- Mónica's motto (2026-09-28). "felt" and "valued" render in Pinyon
          Script (see .hero__accent in styles.css); the weight balance
          against it comes from .hero__title's own font-weight (600), not
-         a stroke on the script — matching her reference boards, where the
-         straight font sits at a medium weight rather than razor-thin. The
-         logo-bg image is Mónica's own personal-brand mark, blurred and
-         static (not mouse-reactive) behind the text. -->
+         a stroke on the script. The logo-bg image is Mónica's own
+         personal-brand mark, blurred and static (not mouse-reactive)
+         behind the text.
+
+         Hero is no longer a destination you navigate to — it's the
+         landing screen itself (see script.js job 6). Its old subtitle
+         paragraph moved to the Case Studies section below.
+
+         The lotus + 5 orbs (2026-09-28): closed by default. The first
+         hover or click makes the lotus wiggle, then opens and the 5 orbs
+         pop out of it — one per remaining section (Case Studies isn't a
+         separate orb; About/Contact/Skills/Experience/Case Studies are
+         the five). The next hover or click wiggles, then the orbs pop
+         back in and the lotus closes. Faint lines connect every orb to
+         every other orb, and to the 3 highlighted motto words — drawn by
+         script.js since their positions depend on the real, responsive
+         layout. Desktop only, like the growth trail; phones use the
+         hamburger menu instead. -->
     <section id="hero" class="hero container">
       <img class="hero__logo-bg" src="assets/site/logo-mark.png" alt="" aria-hidden="true" />
       <p class="hero__eyebrow">Interactive Designer</p>
-      <h1 class="hero__title">Designing to be <span class="hero__accent">felt</span> and <span class="hero__accent">valued</span>, not just seen.</h1>
-      <p class="hero__subtitle">
-        I design interactive experiences, design systems and AI-driven
-        workflows — moving between UX research, game design and immersive
-        media, from Medellín to Wellington.
-      </p>
+      <h1 class="hero__title"><span class="hero__word" id="wordDesigning">Designing</span> to be <span class="hero__accent hero__word" id="wordFelt">felt</span> and <span class="hero__accent hero__word" id="wordValued">valued</span>, not just seen.</h1>
     </section>
+
+    <svg class="orb-lines" id="orbLines" aria-hidden="true"></svg>
+
+    <!-- NOT aria-hidden: these are real navigation links, just visually
+         deferred until the lotus opens (pointer-events re-enabled by
+         .orb-cluster.is-visible in styles.css). Keyboard/AT users can
+         still reach and activate them even before that plays. -->
+    <div class="orb-cluster" id="orbCluster">
+      <a href="#about" class="orb orb--about" data-section="about" style="--i:0">
+        <img class="orb__img" src="assets/site/orb-about.png" alt="" />
+        <span class="orb__label">About</span>
+      </a>
+      <a href="#skills" class="orb orb--skills" data-section="skills" style="--i:1">
+        <img class="orb__img" src="assets/site/orb-skills.png" alt="" />
+        <span class="orb__label">Skills</span>
+      </a>
+      <a href="#case-studies" class="orb orb--case-studies" data-section="case-studies" style="--i:2">
+        <img class="orb__img" src="assets/site/orb-case-studies.png" alt="" />
+        <span class="orb__label">Case Studies</span>
+      </a>
+      <a href="#experience" class="orb orb--experience" data-section="experience" style="--i:3">
+        <img class="orb__img" src="assets/site/orb-experience.png" alt="" />
+        <span class="orb__label">Experience</span>
+      </a>
+      <a href="#contact" class="orb orb--contact" data-section="contact" style="--i:4">
+        <img class="orb__img" src="assets/site/orb-contact.png" alt="" />
+        <span class="orb__label">Contact</span>
+      </a>
+    </div>
+
+    <!-- ===================== LOTUS ===================== -->
+    <!-- Closed by default; the first hover or click wiggles, then opens
+         and pops the 5 orbs above out of it; the next hover or click
+         wiggles, then pops them back in and closes (script.js job 6).
+         Always starts closed again on reload — nothing is saved. Pastel
+         pair for light mode, neon pair for dark mode. -->
+    <button class="lotus" id="lotusToggle" type="button" aria-pressed="false" aria-label="Open the site's sections">
+      <img class="lotus__img lotus__img--closed lotus__img--light" src="assets/site/lotus-closed.png" alt="" />
+      <img class="lotus__img lotus__img--open lotus__img--light" src="assets/site/lotus-open.png" alt="" />
+      <img class="lotus__img lotus__img--closed lotus__img--dark" src="assets/site/lotus-closed-neon.png" alt="" />
+      <img class="lotus__img lotus__img--open lotus__img--dark" src="assets/site/lotus-open-neon.png" alt="" />
+    </button>
+
+    <!-- ===================== CASE STUDIES (merged, 2026-09-28) ===================== -->
+    <!-- Personal Projects + Research Seedbeds now live under one shared
+         destination/orb ("Case Studies"), so this whole div is what
+         shows/hides as a unit in script.js job 6. Scrolling still moves
+         you between the two sub-sections normally — it's only the jump
+         *to* Case Studies from elsewhere that skips scrolling past
+         everything else. -->
+    <div id="case-studies">
+      <section class="section container">
+        <h2 class="section__title">Case Studies</h2>
+        <p class="section__intro">
+          I design interactive experiences, design systems and AI-driven
+          workflows — moving between UX research, game design and
+          immersive media, from Medellín to Wellington.
+        </p>
+      </section>
 
     <!-- ===================== 2. PERSONAL PROJECTS (required) ===================== -->
     <section id="work" class="section container">
@@ -449,6 +486,7 @@
         </a>
       </div>
     </section>
+    </div><!-- /#case-studies -->
 
     <!-- ===================== EXPERIENCE ===================== -->
     <section id="experience" class="section container">
