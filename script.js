@@ -141,6 +141,7 @@ if (filterBar && projectRows.length) {
 const trailBuds = document.querySelectorAll(".growth-trail__bud");
 const portalToggle = document.getElementById("portalToggle");
 const heroSection = document.getElementById("hero");
+const landingStage = document.getElementById("landingStage");
 const lotusToggle = document.getElementById("lotusToggle");
 const orbCluster = document.getElementById("orbCluster");
 const orbLines = document.getElementById("orbLines");
@@ -331,9 +332,12 @@ if (trailBuds.length && heroSection) {
   /* ---- scene switching ---- */
   const showSection = (id) => {
     if (!sectionMeta.some((section) => section.id === id)) return;
-    heroSection.hidden = true;
+    // Hide the whole landing stage, not just #hero inside it — .landing-stage
+    // reserves its own flow height (min-height, for the orb layout), so
+    // hiding only #hero left that height behind as an empty gap above
+    // whichever section was shown.
+    if (landingStage) landingStage.hidden = true;
     resetLanding();
-    if (lotusToggle) lotusToggle.hidden = true;
     homeSections.forEach((section) => {
       section.hidden = section.id !== id;
     });
@@ -347,9 +351,8 @@ if (trailBuds.length && heroSection) {
     homeSections.forEach((section) => {
       section.hidden = true;
     });
-    heroSection.hidden = false;
+    if (landingStage) landingStage.hidden = false;
     resetLanding();
-    if (lotusToggle) lotusToggle.hidden = false;
     activeId = null;
     updateTrail();
     window.scrollTo(0, 0);
@@ -378,12 +381,21 @@ if (trailBuds.length && heroSection) {
   // Deliberately NOT updating the address bar on in-app navigation (see
   // showSection): a reload should always come back here, regardless of
   // which section was open before.
-  let requestedId = location.hash.slice(1);
-  if (requestedId in legacyAliases) requestedId = legacyAliases[requestedId];
+  const routeFromHash = () => {
+    let requestedId = location.hash.slice(1);
+    if (requestedId in legacyAliases) requestedId = legacyAliases[requestedId];
 
-  if (requestedId && sectionMeta.some((section) => section.id === requestedId)) {
-    showSection(requestedId);
-  } else {
-    showLanding();
-  }
+    if (requestedId && sectionMeta.some((section) => section.id === requestedId)) {
+      showSection(requestedId);
+    } else {
+      showLanding();
+    }
+  };
+
+  routeFromHash();
+
+  // Covers arriving at a hash the page was already sitting on (e.g. typing
+  // a new #section into the address bar without a full reload) — the
+  // click-delegated navigation above handles every in-app link already.
+  window.addEventListener("hashchange", routeFromHash);
 }

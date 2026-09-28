@@ -564,6 +564,14 @@ button:focus-visible,
   overflow: hidden;
 }
 
+/* Its own display:flex above has the same specificity as the browser's
+   default [hidden]{display:none} and comes later, so it silently won —
+   script.js hiding #landingStage while switching sections did nothing
+   visually without this override. */
+.landing-stage[hidden] {
+  display: none;
+}
+
 /* -------------------------------------------------------------
    HERO (the big intro at the top of the home page)
    ------------------------------------------------------------- */
@@ -1172,6 +1180,18 @@ button:focus-visible,
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 2rem;
+}
+
+/* Grid items default to min-width: auto, so an unbreakable string (the
+   email address) could overflow its own column into the next one instead
+   of wrapping. min-width: 0 lets the column shrink; overflow-wrap breaks
+   the address itself when it still doesn't fit on one line. */
+.contact__grid > div {
+  min-width: 0;
+}
+
+.contact__grid a {
+  overflow-wrap: break-word;
 }
 
 .contact__label {
