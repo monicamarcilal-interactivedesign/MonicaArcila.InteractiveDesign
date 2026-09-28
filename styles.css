@@ -14,32 +14,71 @@
      "Make everything feel more spacious."
    ============================================================= */
 
-:root {
-  /* ---- COLOURS ---- */
-  --color-bg:      #ffffff;   /* page background */
-  --color-surface: #f4f4f5;   /* cards, panels */
-  --color-text:    #1a1a1a;   /* main text */
-  --color-muted:   #57606a;   /* secondary text (kept dark enough to stay readable on white and on cards) */
-  --color-border:  #e5e7eb;   /* thin lines */
-  --color-accent:  #3b5bdb;   /* links & buttons — CHANGE ME to make it yours */
-  --color-accent-text: #ffffff; /* text on top of the accent colour */
+/* Sora: the structural typeface (nav, body text, tags, the hero name for
+   now). Self-hosting it as WOFF2 is a later optimisation (see
+   VISUAL_DESIGN_CHECKLIST.md 2.2) — the CDN link is fine while we're
+   still deciding the identity. */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
 
-  /* Used only by the About section's mouse-reactive background below —
-     a warm and a violet tone that blend with the blue accent. */
-  --about-blob-warm:   #ff9a76;
-  --about-blob-violet: #8f7bff;
+/* =====================================================
+   DESIGN TOKENS — dark is the default theme; the
+   [data-theme="light"] block further down overrides the
+   same names for the toggle in the header. Change a value
+   here and it updates across the ENTIRE site.
+   ===================================================== */
+:root {
+  /* ---- COLOURS (dark, default) ---- */
+  --color-bg:      #050318;   /* page background */
+  --color-surface: rgba(255, 255, 255, 0.06);   /* cards, panels — translucent for the glass look */
+  --color-surface-strong: rgba(255, 255, 255, 0.1);
+  --color-text:    #f4f1ff;   /* main text */
+  --color-muted:   #b6aede;   /* secondary text */
+  --color-border:  rgba(255, 255, 255, 0.16);   /* thin lines */
+  --color-accent:  #4d7dff;   /* links & buttons — Mónica's favourite blue */
+  --color-accent-text: #ffffff; /* text on top of the accent colour */
+  --color-violet:  #8747f8;   /* second accent, from the reference boards */
+  --color-pink:    #f887fa;   /* third accent — dark mode only, see below */
+  --color-coral:   #fd7069;   /* the one warm accent, used sparingly */
+  --frame-bezel:   #14101f;   /* the dark "device" bezel around project images, both themes */
+
+  /* Used by the About section's mouse-reactive background. */
+  --about-blob-warm:   var(--color-coral);
+  --about-blob-violet: var(--color-violet);
+
+  --glass-blur: 18px;      /* how blurred the glass surfaces are */
+  --glow-strength: 0.5;    /* how strong decorative glows are (turn down on phones) */
 
   /* ---- FONTS ---- */
-  /* These are "system fonts" — they use whatever the computer has, so
-     there is nothing to download. Swap them for a Google Font if you
-     like (ask Claude how). */
-  --font-body:    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-body:    "Sora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-heading: var(--font-body);
+  --font-display: var(--font-body); /* swap for Mónica's own font kit once it arrives */
 
   /* ---- SPACING & SIZES ---- */
   --space:        1rem;       /* the base spacing unit */
   --radius:       10px;       /* how round corners are */
+  --radius-soft:  26px;       /* the larger radius used for card asymmetry */
   --max-width:    1080px;     /* how wide content gets on big screens */
+}
+
+/* The SAME token names, flipped for light mode — nothing else in this
+   file needs to change for the toggle to work. Kept blue/violet-led on
+   purpose (no pink) per Mónica's note that light mode shouldn't feel pink. */
+:root[data-theme="light"] {
+  --color-bg:      #f7f5ff;
+  --color-surface: rgba(20, 10, 50, 0.045);
+  --color-surface-strong: rgba(20, 10, 50, 0.08);
+  --color-text:    #1a1330;
+  --color-muted:   #5b5478;
+  --color-border:  rgba(20, 10, 50, 0.14);
+  --color-accent:  #1c4fd6;
+  --color-violet:  #6a1fd0;
+  --color-pink:    #6a1fd0;   /* reuse violet — no pink in light mode */
+  --color-coral:   #c9463c;
+
+  --about-blob-warm:   var(--color-coral);
+  --about-blob-violet: var(--color-violet);
+
+  --glow-strength: 0.22;
 }
 
 /* -------------------------------------------------------------
@@ -59,6 +98,7 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   line-height: 1.6;
+  transition: background 0.4s ease, color 0.4s ease;
 }
 
 img {
@@ -118,9 +158,34 @@ button:focus-visible,
 .site-header {
   position: sticky;   /* the nav stays at the top as you scroll */
   top: 0;
-  background: var(--color-bg);
+  background: color-mix(in srgb, var(--color-bg) 80%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
   border-bottom: 1px solid var(--color-border);
   z-index: 10;
+  transition: background 0.4s ease, border-color 0.4s ease;
+}
+
+/* Dark/light toggle button, next to the logo in every page's header. */
+.theme-toggle {
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.35rem 0.85rem;
+  cursor: pointer;
+  margin-left: 1rem;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }
 
 .nav {
@@ -176,17 +241,27 @@ button:focus-visible,
 }
 
 .hero__eyebrow {
-  color: var(--color-muted);
+  color: var(--color-accent);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  font-size: 0.8rem;
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  font-size: 0.82rem;
+  margin-bottom: 0.6rem;
 }
 
 .hero__title {
-  font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 6vw, 4rem); /* grows with screen size */
-  line-height: 1.1;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2.75rem, 7vw, 5.25rem); /* grows with screen size */
+  line-height: 1.02;
+  letter-spacing: -0.01em;
+  /* the three accents as one gradient — becomes a two-tone violet→blue
+     gradient in light mode automatically, since --color-pink is set to
+     the same value as --color-violet there (see the tokens above). */
+  background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .hero__subtitle {
@@ -301,6 +376,8 @@ button:focus-visible,
 
 .tag {
   background: var(--color-surface);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 0.3rem 0.8rem;
@@ -331,10 +408,13 @@ button:focus-visible,
   font-size: 0.9rem;
   cursor: pointer;
   background: var(--color-surface);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--color-text);
   border: 1px solid var(--color-border);
   border-radius: 999px;
   padding: 0.35rem 0.9rem;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
 .filter__button:hover {
@@ -356,11 +436,15 @@ button:focus-visible,
 
 /* PROJECT LIST: one row per project — image, title, the category name
    under the title, a short line of facts, and skill tags. The whole row
-   is clickable (the link's ::after stretches over it). */
+   is clickable (the link's ::after stretches over it). Each row is its
+   own glass card (asymmetric corners alternate row to row); it sits flat
+   until you hover or focus it, when it tilts and lifts slightly. */
 .project-list {
   list-style: none;
   padding: 0;
-  border-top: 1px solid var(--color-border);
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
 .project-row {
@@ -368,20 +452,59 @@ button:focus-visible,
   display: grid;
   grid-template-columns: 160px 1fr;
   gap: 1.25rem;
-  padding-block: 1.25rem;
-  border-bottom: 1px solid var(--color-border);
+  align-items: center;
+  padding: 1.5rem 1.75rem 1.5rem 1.25rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-soft) var(--radius) var(--radius-soft) var(--radius);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  box-shadow: 0 24px 48px -30px rgba(0, 0, 0, 0.55);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+/* Alternating corners is the "card asymmetry" from the brief — a small,
+   cheap way to stop every card looking identical. */
+.project-row:nth-child(even) {
+  border-radius: var(--radius) var(--radius-soft) var(--radius) var(--radius-soft);
+}
+
+.project-row:hover,
+.project-row:focus-within {
+  transform: rotate(-0.6deg) translateY(-4px);
+  box-shadow: 0 30px 55px -26px color-mix(in srgb, var(--color-violet) 45%, transparent);
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
 }
 
 .project-row[hidden] {
   display: none;
 }
 
+/* The image sits in a small "device" bezel and pokes slightly past the
+   card's own edge — the "peeking" idea, without needing a real cut-out
+   asset yet (see VISUAL_DESIGN_CHECKLIST.md 19 for the real one). */
+.project-row__frame {
+  position: relative;
+  width: 168px;
+  margin: -0.75rem 0 -0.75rem -0.5rem;
+  z-index: 2;
+  transition: transform 0.3s ease;
+}
+
+.project-row:hover .project-row__frame,
+.project-row:focus-within .project-row__frame {
+  transform: rotate(2deg) translateY(-4px);
+}
+
 .project-row__image {
-  width: 160px;
+  width: 100%;
   aspect-ratio: 4 / 3;
   object-fit: cover;
+  display: block;
   border-radius: var(--radius);
   background: var(--color-surface);
+  border: 6px solid var(--frame-bezel);
+  box-shadow: 0 18px 34px -18px rgba(0, 0, 0, 0.6);
 }
 
 /* "Featured" (and award) tags: small outlined pills above the title. */
@@ -462,15 +585,19 @@ button:focus-visible,
   text-decoration: none;
   color: inherit;
   background: var(--color-surface);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
   border: 1px solid var(--color-border);
   border-radius: var(--radius);
   overflow: hidden;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-.card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.08);
+.card:hover,
+.card:focus-visible {
+  transform: translateY(-4px) rotate(-0.4deg);
+  box-shadow: 0 26px 46px -24px color-mix(in srgb, var(--color-violet) 40%, transparent);
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
 }
 
 .card__image {
@@ -879,14 +1006,20 @@ button:focus-visible,
     width: 160px;
   }
 
-  /* Project rows: image on top of the text instead of beside it. */
+  /* Project rows: image on top of the text instead of beside it, and the
+     "peeking" bezel goes back to sitting flat inside the card. */
   .project-row {
     grid-template-columns: 1fr;
     gap: 0.9rem;
+    padding: 1.25rem;
+  }
+
+  .project-row__frame {
+    width: 100%;
+    margin: 0;
   }
 
   .project-row__image {
-    width: 100%;
     aspect-ratio: 16 / 9;
   }
 
