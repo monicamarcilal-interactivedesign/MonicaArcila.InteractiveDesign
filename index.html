@@ -107,30 +107,27 @@
        the next hover or click closes it again (script.js job 7).
        Always starts closed again on reload — nothing is saved.
        Desktop only, like the growth trail. Pastel pair for light mode,
-       neon pair for dark mode (CSS below shows/hides by theme). There's
-       no real "open" photo for the neon one yet — it reuses the closed
-       image with a brightness/glow boost as a stand-in. -->
+       neon pair for dark mode (CSS below shows/hides by theme) — both
+       are now real matched closed/open photos. -->
   <button class="lotus" id="lotusToggle" type="button" aria-pressed="false" aria-label="Toggle the lotus open or closed">
     <img class="lotus__img lotus__img--closed lotus__img--light" src="assets/site/lotus-closed.png" alt="" />
     <img class="lotus__img lotus__img--open lotus__img--light" src="assets/site/lotus-open.png" alt="" />
     <img class="lotus__img lotus__img--closed lotus__img--dark" src="assets/site/lotus-closed-neon.png" alt="" />
-    <img class="lotus__img lotus__img--open lotus__img--dark" src="assets/site/lotus-closed-neon.png" alt="" />
+    <img class="lotus__img lotus__img--open lotus__img--dark" src="assets/site/lotus-open-neon.png" alt="" />
   </button>
 
   <main id="main">
 
     <!-- ===================== 1. HERO ===================== -->
-    <!-- Draft motto — Claude wrote this from what's in PROJECT.md, it is
-         NOT Mónica's own words yet. Change the text freely; keep the
-         <span class="hero__accent"> around whichever single word should
-         render in the script font (Great Vibes here — swap the font-family
-         in styles.css .hero__accent for Pinyon Script if preferred). The
-         logo-bg image is Mónica's own personal-brand mark, blurred and
-         static (not mouse-reactive) behind the text. -->
+    <!-- Mónica's motto (2026-09-28). "felt" and "valued" render in the
+         script font (Great Vibes) with extra weight added via a stroke,
+         since Great Vibes has no bold cut of its own — see .hero__accent
+         in styles.css. The logo-bg image is Mónica's own personal-brand
+         mark, blurred and static (not mouse-reactive) behind the text. -->
     <section id="hero" class="hero container">
       <img class="hero__logo-bg" src="assets/site/logo-mark.png" alt="" aria-hidden="true" />
       <p class="hero__eyebrow">Interactive Designer</p>
-      <h1 class="hero__title">Designed to be <span class="hero__accent">felt</span>, not just seen.</h1>
+      <h1 class="hero__title">Designing to be <span class="hero__accent">felt</span> and <span class="hero__accent">valued</span>, not just seen.</h1>
       <p class="hero__subtitle">
         I design interactive experiences, design systems and AI-driven
         workflows — moving between UX research, game design and immersive

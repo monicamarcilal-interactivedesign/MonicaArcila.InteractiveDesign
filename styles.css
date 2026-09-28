@@ -39,6 +39,7 @@
   --color-violet:  #8747f8;   /* second accent, from the reference boards */
   --color-pink:    #f887fa;   /* third accent — dark mode only, see below */
   --color-coral:   #fd7069;   /* the one warm accent, used sparingly */
+  --gradient-end:  var(--color-accent);   /* the cool tip of the hero/about gradient — warmed in light mode below */
   --frame-bezel:   #14101f;   /* the dark "device" bezel around project images, both themes */
 
   /* Used by the About section's mouse-reactive background. */
@@ -69,8 +70,18 @@
 }
 
 /* The SAME token names, flipped for light mode — nothing else in this
-   file needs to change for the toggle to work. Kept blue/violet-led on
-   purpose (no pink) per Mónica's note that light mode shouldn't feel pink. */
+   file needs to change for the toggle to work.
+
+   2026-09-28: reworked to an "inverse" temperature, not just a paler dark
+   mode. Dark mode's cool violet/blue glow suits a night mood on a near-
+   black page; on a warm cream page the same cool colours read as a clash
+   (Mónica's note). So light mode leads warm instead — the decorative
+   glow, the gradient and the logo all shift toward amber/plum/gold, all
+   in the same warm family as the background so they blend into it rather
+   than sitting on top of it. --color-accent (blue) stays put: it's kept
+   for small functional things only (links, buttons, focus rings) —
+   Mónica's favourite colour, but no longer part of the big decorative
+   gradient/glow, which is what was actually clashing. */
 :root[data-theme="light"] {
   --color-bg:      #f8f0dd;   /* creamy, not the cool lavender-white this used to be */
   --color-surface: rgba(40, 25, 10, 0.045);
@@ -78,19 +89,20 @@
   --color-text:    #1a1330;
   --color-muted:   #5b5478;
   --color-border:  rgba(40, 25, 10, 0.14);
-  --color-accent:  #1c4fd6;
-  --color-violet:  #6a1fd0;
-  --color-pink:    #6a1fd0;   /* reuse violet — no pink in light mode */
+  --color-accent:  #1c4fd6;   /* kept for links/buttons only now, not the big gradient/glow */
+  --color-violet:  #9c4a6e;   /* warm plum, not cool violet — used in gradients + hover glows */
+  --color-pink:    #9c4a6e;   /* reuse the warm plum — no pink in light mode */
   --color-coral:   #c9463c;
+  --gradient-end:  #c98a2e;   /* warm gold tip for the hero/about gradient, replacing blue */
 
   --about-blob-warm:   var(--color-coral);
   --about-blob-violet: var(--color-violet);
 
-  /* A different palette from dark mode, not just a fainter version of it:
-     warm amber + a fresh teal, with blue kept as the through-line. */
-  --ambient-1: #e0a239;
-  --ambient-2: #2f9e8f;
-  --ambient-3: var(--color-accent);
+  /* A warm, tonal trio (gold / peach / sand) so the three circles melt
+     into the cream background instead of sitting on top of it. */
+  --ambient-1: #e6a94a;
+  --ambient-2: #dd8f66;
+  --ambient-3: #cf9a7c;
 
   --glow-strength: 0.28;
 }
@@ -566,13 +578,6 @@ button:focus-visible,
   display: none;
 }
 
-/* No real "open" photo for the neon lotus yet, so the open state reuses
-   the closed image with more brightness/saturation — a stand-in for a
-   real open-bloom photo of the same flower. */
-.lotus.is-open .lotus__img--dark.lotus__img--open {
-  filter: brightness(1.4) saturate(1.3);
-}
-
 .lotus:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 6px;
@@ -595,18 +600,25 @@ button:focus-visible,
   padding-block: 4rem 3rem;
 }
 
-/* Mónica's own personal-brand mark, blurred and static behind the hero
-   text — deliberately NOT mouse-reactive (that's reserved for About). */
+/* Mónica's own personal-brand mark, centred behind the hero text —
+   deliberately NOT mouse-reactive (that's reserved for About). Recoloured
+   per theme (it's drawn in blue, which reads cold against the warm light
+   background) via hue-rotate rather than a second image. */
 .hero__logo-bg {
   position: absolute;
   top: 50%;
-  right: -8%;
+  left: 50%;
   z-index: -1;
-  width: min(56%, 620px);
-  transform: translateY(-50%);
-  opacity: 0.22;
-  filter: blur(42px) saturate(130%);
+  width: min(62%, 680px);
+  transform: translate(-50%, -50%);
+  opacity: 0.5;
+  filter: blur(14px) saturate(135%);
   pointer-events: none;
+}
+
+:root[data-theme="light"] .hero__logo-bg {
+  opacity: 0.4;
+  filter: blur(14px) saturate(120%) hue-rotate(150deg);
 }
 
 .hero__eyebrow {
@@ -624,23 +636,27 @@ button:focus-visible,
   font-size: clamp(2.1rem, 4.8vw, 3.6rem); /* grows with screen size */
   line-height: 1.15;
   letter-spacing: -0.01em;
-  max-width: 18ch;
-  /* the three accents as one gradient — becomes a two-tone violet→blue
-     gradient in light mode automatically, since --color-pink is set to
-     the same value as --color-violet there (see the tokens above). */
-  background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--color-accent));
+  max-width: 21ch;
+  /* --gradient-end is the cool blue tip in dark mode, but a warm gold in
+     light mode (see the tokens above) — keeps this gradient from mixing
+     a cold colour into the warm light background. */
+  background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--gradient-end));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
-/* The one word of the motto that gets the script-font flourish. Swap the
-   font-family to "Pinyon Script" if that's the one Mónica prefers. */
+/* The two words of the motto that get the script-font flourish. Swap the
+   font-family to "Pinyon Script" if that's the one Mónica prefers. Great
+   Vibes has no bold cut, so a stroke is added to give it more weight
+   against the sans-serif words around it, per her request. */
 .hero__accent {
   font-family: "Great Vibes", cursive;
   font-weight: 400;
   font-size: 1.4em;
   line-height: 1;
+  -webkit-text-stroke: 1.6px var(--color-violet);
+  text-stroke: 1.6px var(--color-violet);
 }
 
 .hero__subtitle {
@@ -712,7 +728,7 @@ button:focus-visible,
   background:
     radial-gradient(38% 50% at var(--mx) var(--my), var(--about-blob-warm) 0%, transparent 70%),
     radial-gradient(45% 60% at calc(var(--mx) + 22%) calc(var(--my) - 16%), var(--about-blob-violet) 0%, transparent 70%),
-    radial-gradient(50% 65% at calc(var(--mx) - 20%) calc(var(--my) + 18%), var(--color-accent) 0%, transparent 70%),
+    radial-gradient(50% 65% at calc(var(--mx) - 20%) calc(var(--my) + 18%), var(--gradient-end) 0%, transparent 70%),
     var(--color-bg);
   filter: blur(70px) saturate(140%);
   opacity: 0.55;
@@ -735,7 +751,7 @@ button:focus-visible,
   font-size: clamp(2rem, 5vw, 3.25rem);
   line-height: 1.05;
   margin-bottom: 1.5rem;
-  background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--color-accent));
+  background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--gradient-end));
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
