@@ -489,6 +489,23 @@ button:focus-visible,
   transition: transform 0.25s ease, filter 0.25s ease;
 }
 
+/* Neon pair for dark mode, pastel pair for light mode — same as the lotus. */
+.orb__img--light {
+  display: none;
+}
+
+.orb__img--dark {
+  display: block;
+}
+
+:root[data-theme="light"] .orb__img--light {
+  display: block;
+}
+
+:root[data-theme="light"] .orb__img--dark {
+  display: none;
+}
+
 .orb__label {
   font-size: 0.78rem;
   font-weight: 600;
@@ -522,6 +539,15 @@ button:focus-visible,
 .orb--case-studies { --orb-glow: #A471F0; left: 74%; top: 32%; }
 .orb--experience{ --orb-glow: #00FFBD; left: -4%; top: 74%; }
 .orb--contact   { --orb-glow: #3FE4FA; left: 88%; top: 70%; }
+
+/* Light mode gets the pastel orb images, so the glow colour is sampled
+   from those instead — the dark-mode neon hexes above would clash with
+   the warm cream background. */
+:root[data-theme="light"] .orb--about     { --orb-glow: #F4D05F; }
+:root[data-theme="light"] .orb--skills    { --orb-glow: #DE7D64; }
+:root[data-theme="light"] .orb--case-studies { --orb-glow: #AB87BF; }
+:root[data-theme="light"] .orb--experience{ --orb-glow: #83AC69; }
+:root[data-theme="light"] .orb--contact   { --orb-glow: #69B0BD; }
 
 @keyframes orb-float {
   0%, 100% { margin-top: 0; }
