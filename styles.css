@@ -45,6 +45,14 @@
   --about-blob-warm:   var(--color-coral);
   --about-blob-violet: var(--color-violet);
 
+  /* The three big blurred colour circles that drift behind the whole
+     site (body::before, further down). Dark and light mode each get
+     their own colours AND their own positions — see the light override
+     below and the [data-theme="light"] body::before rule. */
+  --ambient-1: var(--color-violet);
+  --ambient-2: var(--color-accent);
+  --ambient-3: var(--color-coral);
+
   --glass-blur: 18px;      /* how blurred the glass surfaces are */
   --glow-strength: 0.5;    /* how strong decorative glows are (turn down on phones) */
 
@@ -64,12 +72,12 @@
    file needs to change for the toggle to work. Kept blue/violet-led on
    purpose (no pink) per Mónica's note that light mode shouldn't feel pink. */
 :root[data-theme="light"] {
-  --color-bg:      #f7f5ff;
-  --color-surface: rgba(20, 10, 50, 0.045);
-  --color-surface-strong: rgba(20, 10, 50, 0.08);
+  --color-bg:      #f8f0dd;   /* creamy, not the cool lavender-white this used to be */
+  --color-surface: rgba(40, 25, 10, 0.045);
+  --color-surface-strong: rgba(40, 25, 10, 0.08);
   --color-text:    #1a1330;
   --color-muted:   #5b5478;
-  --color-border:  rgba(20, 10, 50, 0.14);
+  --color-border:  rgba(40, 25, 10, 0.14);
   --color-accent:  #1c4fd6;
   --color-violet:  #6a1fd0;
   --color-pink:    #6a1fd0;   /* reuse violet — no pink in light mode */
@@ -78,7 +86,13 @@
   --about-blob-warm:   var(--color-coral);
   --about-blob-violet: var(--color-violet);
 
-  --glow-strength: 0.22;
+  /* A different palette from dark mode, not just a fainter version of it:
+     warm amber + a fresh teal, with blue kept as the through-line. */
+  --ambient-1: #e0a239;
+  --ambient-2: #2f9e8f;
+  --ambient-3: var(--color-accent);
+
+  --glow-strength: 0.28;
 }
 
 /* -------------------------------------------------------------
@@ -91,14 +105,49 @@
 
 html {
   scroll-behavior: smooth; /* smooth scrolling to #about, #work, etc. */
+  background: var(--color-bg);
+  transition: background 0.4s ease;
 }
 
 body {
+  position: relative;
   font-family: var(--font-body);
   color: var(--color-text);
-  background: var(--color-bg);
+  background: transparent; /* the colour lives on <html>, so the glow below can sit between the two */
   line-height: 1.6;
-  transition: background 0.4s ease, color 0.4s ease;
+  transition: color 0.4s ease;
+}
+
+/* The three big blurred colour circles that drift behind the whole site —
+   decorative, no purpose beyond looking good. One rule draws all three
+   (as layered radial-gradients, same trick as #about::before below);
+   the [data-theme="light"] override swaps both the colours (--ambient-*)
+   and their positions, so light mode isn't just a dimmer dark mode. */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -10%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 42% at 10% 15%, var(--ambient-1) 0%, transparent 70%),
+    radial-gradient(42% 42% at 90% 85%, var(--ambient-2) 0%, transparent 70%),
+    radial-gradient(28% 28% at 80% 30%, var(--ambient-3) 0%, transparent 70%);
+  filter: blur(90px);
+  opacity: var(--glow-strength);
+  animation: ambient-drift 28s ease-in-out infinite alternate;
+}
+
+:root[data-theme="light"] body::before {
+  background:
+    radial-gradient(38% 38% at 88% 10%, var(--ambient-1) 0%, transparent 70%),
+    radial-gradient(42% 42% at 8% 92%, var(--ambient-2) 0%, transparent 70%),
+    radial-gradient(24% 24% at 48% 45%, var(--ambient-3) 0%, transparent 70%);
+}
+
+@keyframes ambient-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(3%, 4%) scale(1.08); }
 }
 
 img {
