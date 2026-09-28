@@ -60,7 +60,7 @@
   /* ---- FONTS ---- */
   --font-body:    "Sora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   --font-heading: var(--font-body);
-  --font-display: var(--font-body); /* swap for Mónica's own font kit once it arrives */
+  --font-display: var(--font-body); /* Sora, deliberately — see .hero__title's font-weight: 300 for why */
 
   /* ---- SPACING & SIZES ---- */
   --space:        1rem;       /* the base spacing unit */
@@ -609,7 +609,14 @@ button:focus-visible,
   top: 50%;
   left: 50%;
   z-index: -1;
-  width: min(62%, 680px);
+  /* max-width + max-height (with width/height left to auto) is what makes
+     an image "fit inside a box" without cropping, keeping its own aspect
+     ratio — a fixed width alone was taller than .hero and getting cut off
+     by its overflow: hidden. */
+  max-width: min(62%, 680px);
+  max-height: 92%;
+  width: auto;
+  height: auto;
   transform: translate(-50%, -50%);
   opacity: 0.5;
   filter: blur(14px) saturate(135%);
@@ -632,7 +639,7 @@ button:focus-visible,
 
 .hero__title {
   font-family: var(--font-display);
-  font-weight: 800;
+  font-weight: 300; /* light on purpose — see .hero__accent below */
   font-size: clamp(2.1rem, 4.8vw, 3.6rem); /* grows with screen size */
   line-height: 1.15;
   letter-spacing: -0.01em;
@@ -647,16 +654,18 @@ button:focus-visible,
 }
 
 /* The two words of the motto that get the script-font flourish. Swap the
-   font-family to "Pinyon Script" if that's the one Mónica prefers. Great
-   Vibes has no bold cut, so a stroke is added to give it more weight
-   against the sans-serif words around it, per her request. */
+   font-family to "Pinyon Script" if that's the one Mónica prefers.
+   Great Vibes has no bold cut, so a stroke was tried to fake weight —
+   Mónica didn't like it (wrong colour against the gradient, still didn't
+   read as bolder). The fix instead: keep the script at its natural
+   weight, and make .hero__title lighter (300) so Great Vibes' own strokes
+   read as the heavier, more confident element by contrast, not by faking
+   a bold cut that doesn't exist. */
 .hero__accent {
   font-family: "Great Vibes", cursive;
   font-weight: 400;
-  font-size: 1.4em;
+  font-size: 1.5em;
   line-height: 1;
-  -webkit-text-stroke: 1.6px var(--color-violet);
-  text-stroke: 1.6px var(--color-violet);
 }
 
 .hero__subtitle {

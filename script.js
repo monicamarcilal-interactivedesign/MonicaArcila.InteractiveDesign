@@ -280,7 +280,13 @@ if (trailBuds.length && portalToggle && portalOverlay && portalInner) {
     portalOverlay.hidden = true;
     portalToggle.setAttribute("aria-expanded", "false");
     document.body.style.overflow = "";
-    history.replaceState(null, "", "#" + id);
+    // Deliberately NOT updating the address bar's #hash here: this only
+    // runs for in-app navigation (clicking a sphere/bud/nav link), and
+    // Mónica wants every reload to land back on the portal regardless of
+    // which section she was last on. If the hash changed on every
+    // showSection() call, reloading would just reopen that same section
+    // — the address bar only carries a #section when someone arrives via
+    // an actual link to it (e.g. a project page's "back to projects").
     window.scrollTo(0, 0);
   };
 
