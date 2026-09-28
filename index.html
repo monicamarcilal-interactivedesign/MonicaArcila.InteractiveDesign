@@ -109,58 +109,69 @@
          script.js since their positions depend on the real, responsive
          layout. Desktop only, like the growth trail; phones use the
          hamburger menu instead. -->
-    <section id="hero" class="hero container">
-      <img class="hero__logo-bg" src="assets/site/logo-mark.png" alt="" aria-hidden="true" />
-      <p class="hero__eyebrow">Interactive Designer</p>
-      <h1 class="hero__title"><span class="hero__accent hero__word" id="wordDesigning">Designing</span> to be <span class="hero__accent hero__word" id="wordFelt">felt</span> and <span class="hero__accent hero__word" id="wordValued">valued</span>, not just seen.</h1>
-    </section>
+    <!-- landing-stage (2026-09-29): hero text, the orb cluster and the
+         lotus all live inside ONE fixed, full-height flex column now,
+         instead of each guessing its own position independently. That's
+         what stops them ever overlapping again — a fixed viewport offset
+         for the orbs/lotus and a responsive (viewport-width-scaled) hero
+         title used to be two unrelated coordinate systems, which drifted
+         apart and collided at wide/short screens (caught from Mónica's
+         own screenshot: the About orb sitting on top of "not just
+         seen."). Flexbox now lays all three out as one stack, so they
+         space themselves out and can't collide, at any screen size. -->
+    <div class="landing-stage" id="landingStage">
+      <section id="hero" class="hero container">
+        <img class="hero__logo-bg" src="assets/site/logo-mark.png" alt="" aria-hidden="true" />
+        <p class="hero__eyebrow">Interactive Designer</p>
+        <h1 class="hero__title"><span class="hero__accent hero__word" id="wordDesigning">Designing</span> to be <span class="hero__accent hero__word" id="wordFelt">felt</span> and <span class="hero__accent hero__word" id="wordValued">valued</span>, not just seen.</h1>
+      </section>
 
-    <svg class="orb-lines" id="orbLines" aria-hidden="true"></svg>
+      <!-- NOT aria-hidden: these are real navigation links, just visually
+           deferred until the lotus opens (pointer-events re-enabled by
+           .orb-cluster.is-visible in styles.css). Keyboard/AT users can
+           still reach and activate them even before that plays. -->
+      <div class="orb-cluster" id="orbCluster">
+        <a href="#about" class="orb orb--about" data-section="about" style="--i:0">
+          <img class="orb__img orb__img--dark" src="assets/site/orb-about.png" alt="" />
+          <img class="orb__img orb__img--light" src="assets/site/orb-about-light.png" alt="" />
+          <span class="orb__label">About</span>
+        </a>
+        <a href="#skills" class="orb orb--skills" data-section="skills" style="--i:1">
+          <img class="orb__img orb__img--dark" src="assets/site/orb-skills.png" alt="" />
+          <img class="orb__img orb__img--light" src="assets/site/orb-skills-light.png" alt="" />
+          <span class="orb__label">Skills</span>
+        </a>
+        <a href="#case-studies" class="orb orb--case-studies" data-section="case-studies" style="--i:2">
+          <img class="orb__img orb__img--dark" src="assets/site/orb-case-studies.png" alt="" />
+          <img class="orb__img orb__img--light" src="assets/site/orb-case-studies-light.png" alt="" />
+          <span class="orb__label">Case Studies</span>
+        </a>
+        <a href="#experience" class="orb orb--experience" data-section="experience" style="--i:3">
+          <img class="orb__img orb__img--dark" src="assets/site/orb-experience.png" alt="" />
+          <img class="orb__img orb__img--light" src="assets/site/orb-experience-light.png" alt="" />
+          <span class="orb__label">Experience</span>
+        </a>
+        <a href="#contact" class="orb orb--contact" data-section="contact" style="--i:4">
+          <img class="orb__img orb__img--dark" src="assets/site/orb-contact.png" alt="" />
+          <img class="orb__img orb__img--light" src="assets/site/orb-contact-light.png" alt="" />
+          <span class="orb__label">Contact</span>
+        </a>
+      </div>
 
-    <!-- NOT aria-hidden: these are real navigation links, just visually
-         deferred until the lotus opens (pointer-events re-enabled by
-         .orb-cluster.is-visible in styles.css). Keyboard/AT users can
-         still reach and activate them even before that plays. -->
-    <div class="orb-cluster" id="orbCluster">
-      <a href="#about" class="orb orb--about" data-section="about" style="--i:0">
-        <img class="orb__img orb__img--dark" src="assets/site/orb-about.png" alt="" />
-        <img class="orb__img orb__img--light" src="assets/site/orb-about-light.png" alt="" />
-        <span class="orb__label">About</span>
-      </a>
-      <a href="#skills" class="orb orb--skills" data-section="skills" style="--i:1">
-        <img class="orb__img orb__img--dark" src="assets/site/orb-skills.png" alt="" />
-        <img class="orb__img orb__img--light" src="assets/site/orb-skills-light.png" alt="" />
-        <span class="orb__label">Skills</span>
-      </a>
-      <a href="#case-studies" class="orb orb--case-studies" data-section="case-studies" style="--i:2">
-        <img class="orb__img orb__img--dark" src="assets/site/orb-case-studies.png" alt="" />
-        <img class="orb__img orb__img--light" src="assets/site/orb-case-studies-light.png" alt="" />
-        <span class="orb__label">Case Studies</span>
-      </a>
-      <a href="#experience" class="orb orb--experience" data-section="experience" style="--i:3">
-        <img class="orb__img orb__img--dark" src="assets/site/orb-experience.png" alt="" />
-        <img class="orb__img orb__img--light" src="assets/site/orb-experience-light.png" alt="" />
-        <span class="orb__label">Experience</span>
-      </a>
-      <a href="#contact" class="orb orb--contact" data-section="contact" style="--i:4">
-        <img class="orb__img orb__img--dark" src="assets/site/orb-contact.png" alt="" />
-        <img class="orb__img orb__img--light" src="assets/site/orb-contact-light.png" alt="" />
-        <span class="orb__label">Contact</span>
-      </a>
+      <!-- Closed by default; the first hover or click wiggles, then opens
+           and pops the 5 orbs above out of it; the next hover or click
+           wiggles, then pops them back in and closes (script.js job 6).
+           Always starts closed again on reload — nothing is saved. Pastel
+           pair for light mode, neon pair for dark mode. -->
+      <button class="lotus" id="lotusToggle" type="button" aria-pressed="false" aria-label="Open the site's sections">
+        <img class="lotus__img lotus__img--closed lotus__img--light" src="assets/site/lotus-closed.png" alt="" />
+        <img class="lotus__img lotus__img--open lotus__img--light" src="assets/site/lotus-open.png" alt="" />
+        <img class="lotus__img lotus__img--closed lotus__img--dark" src="assets/site/lotus-closed-neon.png" alt="" />
+        <img class="lotus__img lotus__img--open lotus__img--dark" src="assets/site/lotus-open-neon.png" alt="" />
+      </button>
     </div>
 
-    <!-- ===================== LOTUS ===================== -->
-    <!-- Closed by default; the first hover or click wiggles, then opens
-         and pops the 5 orbs above out of it; the next hover or click
-         wiggles, then pops them back in and closes (script.js job 6).
-         Always starts closed again on reload — nothing is saved. Pastel
-         pair for light mode, neon pair for dark mode. -->
-    <button class="lotus" id="lotusToggle" type="button" aria-pressed="false" aria-label="Open the site's sections">
-      <img class="lotus__img lotus__img--closed lotus__img--light" src="assets/site/lotus-closed.png" alt="" />
-      <img class="lotus__img lotus__img--open lotus__img--light" src="assets/site/lotus-open.png" alt="" />
-      <img class="lotus__img lotus__img--closed lotus__img--dark" src="assets/site/lotus-closed-neon.png" alt="" />
-      <img class="lotus__img lotus__img--open lotus__img--dark" src="assets/site/lotus-open-neon.png" alt="" />
-    </button>
+    <svg class="orb-lines" id="orbLines" aria-hidden="true"></svg>
 
     <!-- ===================== CASE STUDIES (merged, 2026-09-28) ===================== -->
     <!-- Personal Projects + Research Seedbeds now live under one shared

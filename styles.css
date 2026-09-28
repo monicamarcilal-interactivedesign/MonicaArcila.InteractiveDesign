@@ -441,13 +441,15 @@ button:focus-visible,
    .orb-cluster gets .is-visible. Desktop only, like the lotus.
    ------------------------------------------------------------- */
 .orb-cluster {
-  position: fixed;
-  left: 50%;
-  bottom: 110px;
+  /* Sits inside .landing-stage's flex column now, not independently
+     fixed to the viewport — see the note above .landing-stage. Height
+     scales with viewport height (clamp) so the whole stack keeps fitting
+     one screen instead of pushing the lotus off the bottom. */
+  position: relative;
+  flex: none;
   z-index: 9;
   width: min(760px, 92vw);
-  height: 380px;
-  transform: translateX(-50%);
+  height: clamp(220px, 36vh, 380px);
   pointer-events: none;
 }
 
@@ -570,12 +572,13 @@ button:focus-visible,
    (script.js job 6).
    ------------------------------------------------------------- */
 .lotus {
-  position: fixed;
-  left: 50%;
-  bottom: 24px;
-  width: 150px;
-  height: 150px;
-  transform: translateX(-50%);
+  /* Sits inside .landing-stage's flex column, last item — see the note
+     above .landing-stage. Sized with clamp() so it shrinks on shorter
+     screens along with .orb-cluster, instead of getting pushed off. */
+  position: relative;
+  flex: none;
+  width: clamp(96px, 14vh, 150px);
+  height: clamp(96px, 14vh, 150px);
   padding: 0;
   border: none;
   background: none;
@@ -589,11 +592,11 @@ button:focus-visible,
 }
 
 @keyframes lotus-wiggle {
-  0%, 100% { transform: translateX(-50%) rotate(0deg); }
-  20% { transform: translateX(-50%) rotate(-6deg); }
-  40% { transform: translateX(-50%) rotate(5deg); }
-  60% { transform: translateX(-50%) rotate(-4deg); }
-  80% { transform: translateX(-50%) rotate(3deg); }
+  0%, 100% { transform: rotate(0deg); }
+  20% { transform: rotate(-6deg); }
+  40% { transform: rotate(5deg); }
+  60% { transform: rotate(-4deg); }
+  80% { transform: rotate(3deg); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -651,13 +654,38 @@ button:focus-visible,
 }
 
 /* -------------------------------------------------------------
+   LANDING STAGE (2026-09-29) — hero text, the orb cluster and the
+   lotus as ONE fixed, full-height flex column, so they always stack
+   top-to-bottom in order and can never overlap, at any screen size.
+   Previously the hero text was normal-flow (its height changes with
+   the responsive title's font-size) while the orbs/lotus were fixed
+   to the viewport independently — the two drifted apart and collided
+   on wide/short screens. gap/clamp()s below keep the whole stack
+   scaling down together to fit shorter viewports too.
+   ------------------------------------------------------------- */
+.landing-stage {
+  /* Normal flow (not fixed) so it reserves real space and the footer
+     still lands right after it, like before — min-height just makes
+     that reserved space roughly one screen tall, so hero/orbs/lotus have
+     room to spread out and centre themselves via flexbox. */
+  min-height: calc(100vh - 64px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(0.25rem, 1.5vh, 1rem);
+  overflow: hidden;
+}
+
+/* -------------------------------------------------------------
    HERO (the big intro at the top of the home page)
    ------------------------------------------------------------- */
 .hero {
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-block: 4rem 3rem;
+  flex: none;
+  padding-block: 1rem;
 }
 
 /* Mónica's own personal-brand mark, centred behind the hero text —
