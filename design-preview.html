@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="styles.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,900&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
 
 <style>
 .preview-bar {
@@ -51,7 +51,10 @@
   -webkit-background-clip: text; background-clip: text; color: transparent;
 }
 .type-sample--fraunces .type-sample__name { font-family: "Fraunces", serif; }
-.type-sample--instrument .type-sample__name { font-family: "Instrument Serif", serif; font-style: italic; }
+.type-sample--instrument .type-sample__name { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400; }
+.type-sample--instrument-faux .type-sample__name { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 700; }
+.type-sample--instrument-stroke .type-sample__name { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400; -webkit-text-stroke: 1.1px var(--color-violet); text-stroke: 1.1px var(--color-violet); }
+.type-sample--fraunces-black .type-sample__name { font-family: "Fraunces", serif; font-weight: 900; }
 .type-sample__eyebrow { font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 0.6rem; }
 
 /* ---------- 2. Cut-out test card ---------- */
@@ -78,10 +81,8 @@
 }
 .lotus-test__closed { opacity: 1; }
 .lotus-test__open { opacity: 0; }
-.lotus-test:hover .lotus-test__closed,
-.lotus-test:focus-visible .lotus-test__closed { opacity: 0; }
-.lotus-test:hover .lotus-test__open,
-.lotus-test:focus-visible .lotus-test__open { opacity: 1; }
+.lotus-test.is-open .lotus-test__closed { opacity: 0; }
+.lotus-test.is-open .lotus-test__open { opacity: 1; }
 
 /* ---------- 4. Growth trail nav ---------- */
 .trail-svg { width: 100%; height: auto; }
@@ -138,18 +139,25 @@
   </header>
 
   <section class="preview-section">
-    <p class="preview-section__label">1 · Type test — pick one</p>
-    <div class="type-sample type-sample--fraunces">
-      <p class="type-sample__label">Fraunces, italic</p>
-      <p class="type-sample__eyebrow">Interactive Designer</p>
-      <h2 class="type-sample__name">Mónica Arcila</h2>
-    </div>
+    <p class="preview-section__label">1 · Type test — making Instrument Serif bolder</p>
+    <p class="preview-note" style="margin-top:0 0 1.5rem;">You picked Instrument Serif italic — one honest thing first: it only exists as a single weight, there's no real bold cut to switch to. Here are three ways to get more weight anyway; the last one is a different, genuinely bold typeface, in case none of the fakes feel right.</p>
     <div class="type-sample type-sample--instrument">
-      <p class="type-sample__label">Instrument Serif, italic</p>
-      <p class="type-sample__eyebrow">Interactive Designer</p>
+      <p class="type-sample__label">A — as is (Instrument Serif, regular italic)</p>
       <h2 class="type-sample__name">Mónica Arcila</h2>
     </div>
-    <p class="preview-note">Both are free (Google Fonts, OFL, commercial use included). Tell me which one, and I'll set it as <code>--font-display</code> in the real <code>styles.css</code>.</p>
+    <div class="type-sample type-sample--instrument-faux">
+      <p class="type-sample__label">B — browser "faux bold" (font-weight: 700 on a font with no bold — the browser fattens it algorithmically)</p>
+      <h2 class="type-sample__name">Mónica Arcila</h2>
+    </div>
+    <div class="type-sample type-sample--instrument-stroke">
+      <p class="type-sample__label">C — outlined stroke added to the regular weight (a cleaner fake than B, no distortion)</p>
+      <h2 class="type-sample__name">Mónica Arcila</h2>
+    </div>
+    <div class="type-sample type-sample--fraunces-black">
+      <p class="type-sample__label">D — Fraunces at its heaviest weight, italic (a real bold, different typeface)</p>
+      <h2 class="type-sample__name">Mónica Arcila</h2>
+    </div>
+    <p class="preview-note">Tell me A, B, C or D (or "none of these"), and I'll set it as <code>--font-display</code> in the real <code>styles.css</code>.</p>
   </section>
 
   <section class="preview-section">
@@ -165,12 +173,12 @@
   </section>
 
   <section class="preview-section">
-    <p class="preview-section__label">3 · Lotus hover test — hover or tab to the image</p>
-    <div class="lotus-test" tabindex="0">
+    <p class="preview-section__label">3 · Lotus toggle test — hover or click once to open, again to close</p>
+    <div class="lotus-test" tabindex="0" role="button" aria-pressed="false" aria-label="Toggle the lotus open or closed">
       <img class="lotus-test__closed" src="assets/_test/lotus-closed-placeholder.png" alt="Closed lotus bud (placeholder)." />
       <img class="lotus-test__open" src="assets/_test/lotus-open-placeholder.jpg" alt="Open lotus in bloom (placeholder)." />
     </div>
-    <p class="preview-note">Closed by default, fades to open on hover/focus, and always starts closed again on reload (nothing is saved) — exactly what you asked for. <strong>Note:</strong> the two images here are deliberately mismatched (a watercolour bud cropped from your pond image, and your glowing 3D lotus) just to prove the fade works — send a matched closed + open pair of the same flower for the real version.</p>
+    <p class="preview-note">Closed by default. The first hover or click opens it and it <em>stays</em> open — the next hover or click closes it again. Always starts closed on reload (nothing is saved), like you asked. <strong>Note:</strong> the two images here are deliberately mismatched (a watercolour bud cropped from your pond image, and your glowing 3D lotus) just to prove the toggle works — send a matched closed + open pair of the same flower for the real version.</p>
   </section>
 
   <section class="preview-section">
@@ -230,5 +238,23 @@
   </section>
 
 <script src="script.js"></script>
+<script>
+(() => {
+  const lotusTest = document.querySelector(".lotus-test");
+  if (!lotusTest) return;
+  const toggle = () => {
+    const isOpen = lotusTest.classList.toggle("is-open");
+    lotusTest.setAttribute("aria-pressed", String(isOpen));
+  };
+  lotusTest.addEventListener("mouseenter", toggle);
+  lotusTest.addEventListener("click", toggle);
+  lotusTest.addEventListener("keydown", (event) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      toggle();
+    }
+  });
+})();
+</script>
 </body>
 </html>

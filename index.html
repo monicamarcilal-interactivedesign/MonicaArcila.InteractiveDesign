@@ -63,10 +63,30 @@
     </div>
   </header>
 
+  <!-- ===================== GROWTH TRAIL ===================== -->
+  <!-- A second way to move through the page, beyond scrolling: a vine
+       of small buds, one per section, fixed to the side of the screen.
+       Buds you've scrolled past "bloom" solid; the current one glows;
+       the rest stay dashed but are still real links, so you can jump
+       straight to Contact without visiting anything in between.
+       script.js job 6 tracks which section is on screen and updates
+       the is-bloomed / is-current classes. Desktop only for now (see
+       the max-width: 900px rule in styles.css) — on phones the
+       hamburger menu already jumps straight to any section. -->
+  <nav class="growth-trail" aria-label="Jump to a section">
+    <a href="#hero" class="growth-trail__bud" data-section="hero"><span>Hero</span></a>
+    <a href="#work" class="growth-trail__bud" data-section="work"><span>Projects</span></a>
+    <a href="#seedbeds" class="growth-trail__bud" data-section="seedbeds"><span>Research</span></a>
+    <a href="#experience" class="growth-trail__bud" data-section="experience"><span>Experience</span></a>
+    <a href="#skills" class="growth-trail__bud" data-section="skills"><span>Skills</span></a>
+    <a href="#about" class="growth-trail__bud" data-section="about"><span>About</span></a>
+    <a href="#contact" class="growth-trail__bud" data-section="contact"><span>Contact</span></a>
+  </nav>
+
   <main id="main">
 
     <!-- ===================== 1. HERO ===================== -->
-    <section class="hero container">
+    <section id="hero" class="hero container">
       <p class="hero__eyebrow">Interactive Designer</p>
       <h1 class="hero__title">Mónica Arcila</h1>
       <p class="hero__subtitle">

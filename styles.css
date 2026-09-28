@@ -283,6 +283,102 @@ button:focus-visible,
 }
 
 /* -------------------------------------------------------------
+   GROWTH TRAIL — a second way to move through the home page,
+   beyond scrolling. One bud per section, fixed to the right edge.
+   Dashed = not visited yet (still a real link — click it to jump
+   straight there). Solid coral = bloomed (scrolled past already).
+   Glowing violet = the section on screen right now. script.js job 6
+   sets is-bloomed / is-current as you scroll; nothing here needs a
+   click to work except the buds themselves.
+   ------------------------------------------------------------- */
+.growth-trail {
+  position: fixed;
+  right: 28px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  z-index: 8;
+}
+
+.growth-trail::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(var(--color-violet), var(--color-pink), var(--color-accent));
+  opacity: 0.3;
+  z-index: -1;
+}
+
+.growth-trail__bud {
+  position: relative;
+  display: block;
+  width: 13px;
+  height: 13px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(45deg);
+  background: transparent;
+  border: 1.5px dashed var(--color-muted);
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.growth-trail__bud span {
+  position: absolute;
+  right: 22px;
+  top: 50%;
+  transform: translateY(-50%) rotate(-45deg);
+  white-space: nowrap;
+  font-size: 0.75rem;
+  color: var(--color-text);
+  background: var(--color-surface-strong);
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease;
+}
+
+.growth-trail__bud:hover span,
+.growth-trail__bud:focus-visible span {
+  opacity: 1;
+}
+
+.growth-trail__bud:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 4px;
+}
+
+.growth-trail__bud.is-bloomed {
+  background: var(--color-coral);
+  border-style: solid;
+  border-color: var(--color-coral);
+}
+
+.growth-trail__bud.is-current {
+  background: var(--color-violet);
+  border-style: solid;
+  border-color: var(--color-violet);
+  transform: rotate(45deg) scale(1.4);
+  box-shadow: 0 0 16px 2px color-mix(in srgb, var(--color-violet) 55%, transparent);
+}
+
+/* Keep it to desktop for now — on phones the hamburger menu already
+   jumps straight to any section, and there isn't spare width for a
+   side rail without crowding the content. */
+@media (max-width: 900px) {
+  .growth-trail {
+    display: none;
+  }
+}
+
+/* -------------------------------------------------------------
    HERO (the big intro at the top of the home page)
    ------------------------------------------------------------- */
 .hero {

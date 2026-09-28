@@ -1,7 +1,7 @@
 /* =============================================================
    SCRIPT.JS  —  a tiny bit of JavaScript
    =============================================================
-   This file does just five small jobs. You probably don't need to
+   This file does just six small jobs. You probably don't need to
    touch it, but here's what it does so nothing feels like magic.
    ============================================================= */
 
@@ -164,3 +164,40 @@ if (filterBar && projectRows.length) {
     });
   }
 })();
+
+/* -------------------------------------------------------------
+   6. GROWTH TRAIL (home page only)
+   Watches each section with an IntersectionObserver and marks its
+   bud: "is-current" for whichever section fills the middle of the
+   screen right now, "is-bloomed" for every section above it (already
+   scrolled past). Sections below stay dashed but are still real
+   links — clicking one jumps straight there. Does nothing on pages
+   that don't have the trail in their HTML.
+   ------------------------------------------------------------- */
+const trailBuds = document.querySelectorAll(".growth-trail__bud");
+
+if (trailBuds.length) {
+  const sectionEls = Array.from(trailBuds)
+    .map((bud) => document.getElementById(bud.dataset.section))
+    .filter(Boolean);
+
+  const setCurrent = (currentIndex) => {
+    trailBuds.forEach((bud, index) => {
+      bud.classList.toggle("is-current", index === currentIndex);
+      bud.classList.toggle("is-bloomed", index < currentIndex);
+    });
+  };
+
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const index = sectionEls.indexOf(entry.target);
+        if (index !== -1) setCurrent(index);
+      });
+    },
+    { rootMargin: "-40% 0px -40% 0px" } // "current" = crossing the middle band of the screen
+  );
+
+  sectionEls.forEach((section) => sectionObserver.observe(section));
+}
