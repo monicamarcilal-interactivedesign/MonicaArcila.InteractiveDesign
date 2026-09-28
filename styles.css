@@ -18,7 +18,7 @@
    now). Self-hosting it as WOFF2 is a later optimisation (see
    VISUAL_DESIGN_CHECKLIST.md 2.2) — the CDN link is fine while we're
    still deciding the identity. */
-@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Great+Vibes&family=Pinyon+Script&display=swap');
 
 /* =====================================================
    DESIGN TOKENS — dark is the default theme; the
@@ -256,7 +256,8 @@ button:focus-visible,
   gap: 1.5rem;
 }
 
-.nav__links a {
+.nav__links a,
+.nav__links a:visited {
   text-decoration: none;
   color: var(--color-text);
 }
@@ -548,6 +549,30 @@ button:focus-visible,
   opacity: 1;
 }
 
+/* Pastel pair for light mode, neon pair for dark mode. */
+.lotus__img--light {
+  display: none;
+}
+
+.lotus__img--dark {
+  display: block;
+}
+
+:root[data-theme="light"] .lotus__img--light {
+  display: block;
+}
+
+:root[data-theme="light"] .lotus__img--dark {
+  display: none;
+}
+
+/* No real "open" photo for the neon lotus yet, so the open state reuses
+   the closed image with more brightness/saturation — a stand-in for a
+   real open-bloom photo of the same flower. */
+.lotus.is-open .lotus__img--dark.lotus__img--open {
+  filter: brightness(1.4) saturate(1.3);
+}
+
 .lotus:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 6px;
@@ -564,7 +589,24 @@ button:focus-visible,
    HERO (the big intro at the top of the home page)
    ------------------------------------------------------------- */
 .hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding-block: 4rem 3rem;
+}
+
+/* Mónica's own personal-brand mark, blurred and static behind the hero
+   text — deliberately NOT mouse-reactive (that's reserved for About). */
+.hero__logo-bg {
+  position: absolute;
+  top: 50%;
+  right: -8%;
+  z-index: -1;
+  width: min(56%, 620px);
+  transform: translateY(-50%);
+  opacity: 0.22;
+  filter: blur(42px) saturate(130%);
+  pointer-events: none;
 }
 
 .hero__eyebrow {
@@ -579,9 +621,10 @@ button:focus-visible,
 .hero__title {
   font-family: var(--font-display);
   font-weight: 800;
-  font-size: clamp(2.75rem, 7vw, 5.25rem); /* grows with screen size */
-  line-height: 1.02;
+  font-size: clamp(2.1rem, 4.8vw, 3.6rem); /* grows with screen size */
+  line-height: 1.15;
   letter-spacing: -0.01em;
+  max-width: 18ch;
   /* the three accents as one gradient — becomes a two-tone violet→blue
      gradient in light mode automatically, since --color-pink is set to
      the same value as --color-violet there (see the tokens above). */
@@ -589,6 +632,15 @@ button:focus-visible,
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+/* The one word of the motto that gets the script-font flourish. Swap the
+   font-family to "Pinyon Script" if that's the one Mónica prefers. */
+.hero__accent {
+  font-family: "Great Vibes", cursive;
+  font-weight: 400;
+  font-size: 1.4em;
+  line-height: 1;
 }
 
 .hero__subtitle {
@@ -664,6 +716,29 @@ button:focus-visible,
     var(--color-bg);
   filter: blur(70px) saturate(140%);
   opacity: 0.55;
+}
+
+/* Her name moved here from the hero (2026-09-28) — the hero now carries a
+   motto instead. Same gradient treatment as the old hero title. */
+.about__eyebrow {
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  font-weight: 600;
+  font-size: 0.82rem;
+  margin-bottom: 0.5rem;
+}
+
+.about__name {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  line-height: 1.05;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--color-accent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 .about {

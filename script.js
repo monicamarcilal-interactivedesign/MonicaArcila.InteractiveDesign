@@ -1,7 +1,7 @@
 /* =============================================================
    SCRIPT.JS  —  a tiny bit of JavaScript
    =============================================================
-   This file does just eight small jobs. You probably don't need to
+   This file does just seven small jobs. You probably don't need to
    touch it, but here's what it does so nothing feels like magic.
    ============================================================= */
 
@@ -166,40 +166,165 @@ if (filterBar && projectRows.length) {
 })();
 
 /* -------------------------------------------------------------
-   6. GROWTH TRAIL (home page only)
-   Watches each section with an IntersectionObserver and marks its
-   bud: "is-current" for whichever section fills the middle of the
-   screen right now, "is-bloomed" for every section above it (already
-   scrolled past). Sections below stay dashed but are still real
-   links — clicking one jumps straight there. Does nothing on pages
-   that don't have the trail in their HTML.
+   6. HOME PAGE NAVIGATION — scenes, the growth trail and the portal
+   Replaces plain scrolling between sections with a "jump to a scene"
+   model: only one section is visible at a time, so moving between
+   them is never scroll-only. The portal is the very first thing you
+   see on a fresh visit (desktop, no #section in the address) — pick a
+   sphere to enter the site. Once inside, the ✦ button above the
+   growth trail reopens the portal to jump anywhere else. The trail's
+   buds track every section visited this browsing session, in any
+   order, not scroll position — see updateTrail() below.
+
+   PROGRESSIVE ENHANCEMENT: if this script doesn't run, nothing gets
+   hidden — every section is right there in the HTML, and the page is
+   simply one long scrolling document, exactly like before. Nothing
+   here is the only way to use the site.
    ------------------------------------------------------------- */
 const trailBuds = document.querySelectorAll(".growth-trail__bud");
+const portalToggle = document.getElementById("portalToggle");
+const portalOverlay = document.getElementById("portalOverlay");
+const portalInner = portalOverlay ? portalOverlay.querySelector(".portal") : null;
 
-if (trailBuds.length) {
-  const sectionEls = Array.from(trailBuds)
-    .map((bud) => document.getElementById(bud.dataset.section))
+if (trailBuds.length && portalToggle && portalOverlay && portalInner) {
+  const sectionMeta = Array.from(trailBuds).map((bud) => ({
+    id: bud.dataset.section,
+    label: bud.querySelector("span").textContent,
+  }));
+  const homeSections = sectionMeta
+    .map((section) => document.getElementById(section.id))
     .filter(Boolean);
 
-  const setCurrent = (currentIndex) => {
-    trailBuds.forEach((bud, index) => {
-      bud.classList.toggle("is-current", index === currentIndex);
-      bud.classList.toggle("is-bloomed", index < currentIndex);
+  const getVisited = () => {
+    try {
+      return new Set(JSON.parse(sessionStorage.getItem("visitedSections") || "[]"));
+    } catch (error) {
+      return new Set();
+    }
+  };
+
+  const markVisited = (id) => {
+    const visited = getVisited();
+    visited.add(id);
+    try {
+      sessionStorage.setItem("visitedSections", JSON.stringify(Array.from(visited)));
+    } catch (error) {
+      /* Not essential — the trail still works for this page view. */
+    }
+  };
+
+  let activeId = null; // null = the portal is the landing screen, nothing chosen yet
+
+  const updateTrail = () => {
+    const visited = getVisited();
+    trailBuds.forEach((bud) => {
+      const id = bud.dataset.section;
+      bud.classList.toggle("is-current", id === activeId);
+      bud.classList.toggle("is-bloomed", id !== activeId && visited.has(id));
     });
   };
 
-  const sectionObserver = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (!entry.isIntersecting) return;
-        const index = sectionEls.indexOf(entry.target);
-        if (index !== -1) setCurrent(index);
-      });
-    },
-    { rootMargin: "-40% 0px -40% 0px" } // "current" = crossing the middle band of the screen
-  );
+  const ringPosition = (index, total, radius) => {
+    const angle = (index / total) * 2 * Math.PI - Math.PI / 2;
+    return { x: Math.round(Math.cos(angle) * radius), y: Math.round(Math.sin(angle) * radius) };
+  };
 
-  sectionEls.forEach((section) => sectionObserver.observe(section));
+  const buildPortal = () => {
+    const radius = 190;
+    let html = activeId !== null
+      ? `<button class="portal__close" type="button" data-close aria-label="Close the map">&times;</button>`
+      : "";
+
+    if (activeId === null) {
+      // Landing: no "current" section yet, so all seven spheres share one ring.
+      sectionMeta.forEach((section, index) => {
+        const { x, y } = ringPosition(index, sectionMeta.length, radius);
+        html += `<a href="#${section.id}" class="portal__node portal__satellite" style="--tx:${x}px;--ty:${y}px">${section.label}</a>`;
+      });
+      html += `<div class="portal__node portal__current"><small>Choose where to start</small><strong>Mónica Arcila</strong></div>`;
+    } else {
+      const current = sectionMeta.find((section) => section.id === activeId);
+      const others = sectionMeta.filter((section) => section.id !== activeId);
+      html += `<div class="portal__node portal__current"><small>You are here</small><strong>${current.label}</strong></div>`;
+      others.forEach((section, index) => {
+        const { x, y } = ringPosition(index, others.length, radius);
+        html += `<a href="#${section.id}" class="portal__node portal__satellite" style="--tx:${x}px;--ty:${y}px">${section.label}</a>`;
+      });
+    }
+
+    portalInner.innerHTML = html;
+  };
+
+  const openPortal = () => {
+    buildPortal();
+    portalOverlay.hidden = false;
+    portalToggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+  };
+
+  const closePortal = () => {
+    if (activeId === null) return; // landing has nowhere to "close" back to yet
+    portalOverlay.hidden = true;
+    portalToggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  };
+
+  const showSection = (id) => {
+    if (!sectionMeta.some((section) => section.id === id)) return;
+    homeSections.forEach((section) => {
+      section.hidden = section.id !== id;
+    });
+    activeId = id;
+    markVisited(id);
+    updateTrail();
+    portalOverlay.hidden = true;
+    portalToggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+    history.replaceState(null, "", "#" + id);
+    window.scrollTo(0, 0);
+  };
+
+  // Any link to #hero, #work, #seedbeds... anywhere on the page (header
+  // nav, the mobile menu, the growth trail, the portal's own spheres)
+  // switches scenes instead of the browser's default anchor scroll.
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest('a[href^="#"]');
+    if (!link) return;
+    const id = link.getAttribute("href").slice(1);
+    if (!sectionMeta.some((section) => section.id === id)) return;
+    event.preventDefault();
+    showSection(id);
+  });
+
+  portalToggle.addEventListener("click", openPortal);
+
+  portalOverlay.addEventListener("click", (event) => {
+    if (event.target.closest("[data-close]")) closePortal();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !portalOverlay.hidden) closePortal();
+  });
+
+  // Start on the portal (desktop, nothing requested yet) or jump straight
+  // to whatever section the URL names — e.g. a project page's "back to
+  // projects" link pointing at index.html#work. Phones skip the portal's
+  // ring (no room for it) and open on Hero; the hamburger menu still
+  // switches scenes exactly the same way underneath.
+  const requestedId = location.hash.slice(1);
+  const isWideEnoughForPortal = window.matchMedia("(min-width: 901px)").matches;
+
+  if (requestedId && sectionMeta.some((section) => section.id === requestedId)) {
+    showSection(requestedId);
+  } else if (isWideEnoughForPortal) {
+    homeSections.forEach((section) => {
+      section.hidden = true;
+    });
+    updateTrail();
+    openPortal();
+  } else {
+    showSection("hero");
+  }
 }
 
 /* -------------------------------------------------------------
@@ -219,70 +344,4 @@ if (lotusToggle) {
   };
   lotusToggle.addEventListener("mouseenter", toggleLotus);
   lotusToggle.addEventListener("click", toggleLotus);
-}
-
-/* -------------------------------------------------------------
-   8. PORTAL OVERLAY (home page only)
-   The ✦ button above the growth trail opens a map: the current
-   section as a big circle, the other six arranged around it in a
-   ring. Positions are computed fresh each time it opens (job 6 keeps
-   the trail's "is-current" class up to date, so this just reads it).
-   Clicking a satellite follows its link and closes the overlay.
-   ------------------------------------------------------------- */
-const portalToggle = document.getElementById("portalToggle");
-const portalOverlay = document.getElementById("portalOverlay");
-const portalInner = portalOverlay ? portalOverlay.querySelector(".portal") : null;
-
-if (portalToggle && portalOverlay && portalInner && trailBuds.length) {
-  const sectionMeta = Array.from(trailBuds).map((bud) => ({
-    href: bud.getAttribute("href"),
-    label: bud.querySelector("span").textContent,
-  }));
-
-  const buildPortal = () => {
-    let currentIndex = Array.from(trailBuds).findIndex((bud) =>
-      bud.classList.contains("is-current")
-    );
-    if (currentIndex === -1) currentIndex = 0;
-
-    const radius = 190;
-    const others = sectionMeta.filter((_, index) => index !== currentIndex);
-
-    let html = `<button class="portal__close" type="button" data-close aria-label="Close the map">&times;</button>`;
-    html += `<div class="portal__node portal__current"><small>You are here</small><strong>${sectionMeta[currentIndex].label}</strong></div>`;
-
-    others.forEach((section, index) => {
-      const angle = (index / others.length) * 2 * Math.PI - Math.PI / 2;
-      const x = Math.round(Math.cos(angle) * radius);
-      const y = Math.round(Math.sin(angle) * radius);
-      html += `<a href="${section.href}" class="portal__node portal__satellite" style="--tx:${x}px;--ty:${y}px">${section.label}</a>`;
-    });
-
-    portalInner.innerHTML = html;
-  };
-
-  const openPortal = () => {
-    buildPortal();
-    portalOverlay.hidden = false;
-    portalToggle.setAttribute("aria-expanded", "true");
-  };
-
-  const closePortal = () => {
-    portalOverlay.hidden = true;
-    portalToggle.setAttribute("aria-expanded", "false");
-  };
-
-  portalToggle.addEventListener("click", openPortal);
-
-  portalOverlay.addEventListener("click", (event) => {
-    if (event.target.closest("[data-close]")) closePortal();
-  });
-
-  portalInner.addEventListener("click", (event) => {
-    if (event.target.closest(".portal__satellite")) closePortal();
-  });
-
-  document.addEventListener("keydown", (event) => {
-    if (event.key === "Escape" && !portalOverlay.hidden) closePortal();
-  });
 }
