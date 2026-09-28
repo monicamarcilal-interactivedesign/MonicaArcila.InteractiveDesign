@@ -1,21 +1,21 @@
 <!DOCTYPE html>
 <!--
   =============================================================
-  DESIGN PREVIEW — round 3 (not linked from the site)
+  DESIGN PREVIEW — round 4 (not linked from the site)
   =============================================================
   This links the REAL styles.css, so everything here is a true
-  baseline of the actual site (same tokens, same ambient glow,
-  same glass cards) — not a separate look. Only new, test-specific
-  pieces are styled below: the type test, the two navigation
-  sketches, the cut-out test and the lotus hover test.
+  baseline of the actual site — not a separate look. What's still
+  here: the type test (real hero component, three font options) and
+  the cut-out test (still a placeholder image). The navigation
+  sketches and the lotus toggle both graduated to the real
+  index.html — see it there, this file just explains what to look
+  for.
 
-  Test images live in assets/_test/ — placeholders, not final:
-    - globe-cutout.png     : Mónica's globe charm, background removed,
-                              standing in for a real project cut-out.
-    - lotus-closed-placeholder.png / lotus-open-placeholder.jpg :
-                              two DIFFERENT images (different art styles)
-                              used only to test the hover-fade mechanic.
-                              Swap for a matched closed/open pair later.
+  assets/_test/globe-cutout.png : Mónica's globe charm, background
+    removed, standing in for a real project cut-out — still a
+    placeholder, not a real project image.
+  assets/site/lotus-closed.png / lotus-open.png : Mónica's own
+    matched pair, live both here and on the real site.
   =============================================================
 -->
 <html lang="en-NZ" data-theme="dark">
@@ -27,7 +27,7 @@
 <link rel="stylesheet" href="styles.css" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,900&family=Instrument+Serif:ital@1&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@1,500;1,600;1,900&family=Instrument+Serif:ital@1&family=Great+Vibes&family=Pinyon+Script&display=swap" rel="stylesheet" />
 
 <style>
 .preview-bar {
@@ -41,21 +41,18 @@
 }
 .preview-note { font-size: 0.85rem; color: var(--color-muted); max-width: 65ch; margin-top: 1rem; }
 
-/* ---------- 1. Type test ---------- */
-.type-sample { margin-bottom: 2.5rem; }
-.type-sample__label { font-size: 0.8rem; color: var(--color-muted); margin-bottom: 0.4rem; }
-.type-sample__name {
-  font-weight: 600; font-style: italic;
-  font-size: clamp(2.75rem, 8vw, 5.5rem); line-height: 1.05; margin: 0 0 0.5rem;
-  background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--color-accent));
-  -webkit-background-clip: text; background-clip: text; color: transparent;
+/* ---------- 1. Type test — the real hero component, not a sample div ---------- */
+.hero-test { border: 1px dashed var(--color-border); border-radius: var(--radius); margin-bottom: 2rem; }
+.hero-test .hero { padding-block: 2.5rem; }
+.hero-test__tag { display: block; padding: 0.75rem 1rem 0; font-size: 0.78rem; color: var(--color-muted); }
+.hero-test--fraunces .hero__title { font-family: "Fraunces", serif; font-weight: 600; }
+.hero-test--instrument .hero__title { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400; }
+.hero-test--instrument-bold .hero__title {
+  font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400;
+  -webkit-text-stroke: 1.1px var(--color-violet); text-stroke: 1.1px var(--color-violet);
 }
-.type-sample--fraunces .type-sample__name { font-family: "Fraunces", serif; }
-.type-sample--instrument .type-sample__name { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400; }
-.type-sample--instrument-faux .type-sample__name { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 700; }
-.type-sample--instrument-stroke .type-sample__name { font-family: "Instrument Serif", serif; font-style: italic; font-weight: 400; -webkit-text-stroke: 1.1px var(--color-violet); text-stroke: 1.1px var(--color-violet); }
-.type-sample--fraunces-black .type-sample__name { font-family: "Fraunces", serif; font-weight: 900; }
-.type-sample__eyebrow { font-family: var(--font-body); font-size: 0.85rem; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--color-accent); margin-bottom: 0.6rem; }
+.hero-test--great-vibes .hero__title { font-family: "Great Vibes", cursive; font-weight: 400; }
+.hero-test--pinyon .hero__title { font-family: "Pinyon Script", cursive; font-weight: 400; }
 
 /* ---------- 2. Cut-out test card ---------- */
 .cutout-card {
@@ -84,39 +81,9 @@
 .lotus-test.is-open .lotus-test__closed { opacity: 0; }
 .lotus-test.is-open .lotus-test__open { opacity: 1; }
 
-/* ---------- 4. Growth trail nav ---------- */
-.trail-svg { width: 100%; height: auto; }
-.trail-node-label { font-family: var(--font-body); font-size: 13px; fill: var(--color-muted); }
-.trail-legend { display: flex; flex-wrap: wrap; gap: 1.5rem; margin-top: 1rem; font-size: 0.85rem; color: var(--color-muted); align-items: center; }
-.trail-legend span { display: inline-flex; align-items: center; gap: 0.4rem; }
-.trail-swatch { width: 12px; height: 12px; border-radius: 50%; display: inline-block; }
-
-/* ---------- 5. Portal paging nav ---------- */
-.portal { position: relative; height: 460px; max-width: 640px; margin: 0 auto; }
-.portal__node {
-  position: absolute; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;
-  background: var(--color-surface-strong); border: 1px solid var(--color-border);
-  text-align: center; cursor: pointer; transition: transform 0.25s ease, border-color 0.25s ease;
-}
-.portal__node:hover, .portal__node:focus-visible { transform: scale(1.06); border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border)); }
-.portal__current {
-  width: 170px; height: 170px; left: 50%; top: 50%; transform: translate(-50%, -50%);
-  border-color: color-mix(in srgb, var(--color-violet) 60%, var(--color-border));
-  box-shadow: 0 0 60px -10px color-mix(in srgb, var(--color-violet) 55%, transparent);
-}
-.portal__current small { font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
-.portal__current strong { font-size: 1.05rem; margin-top: 0.2rem; }
-.portal__satellite { width: 92px; height: 92px; font-size: 0.85rem; font-weight: 600; }
-.portal__n { left: 50%; top: 20px; transform: translate(-50%, 0); }
-.portal__e { left: 88%; top: 50%; transform: translate(-50%, -50%); }
-.portal__s { left: 50%; bottom: 20px; top: auto; transform: translate(-50%, 0); }
-.portal__w { left: 12%; top: 50%; transform: translate(-50%, -50%); }
-
 @media (max-width: 700px) {
   .cutout-card { grid-template-columns: 1fr; }
   .cutout-card__image { margin: 0 0 1rem; }
-  .portal { height: 460px; }
-  .portal__satellite { width: 76px; height: 76px; font-size: 0.78rem; }
 }
 </style>
 </head>
@@ -139,25 +106,55 @@
   </header>
 
   <section class="preview-section">
-    <p class="preview-section__label">1 · Type test — making Instrument Serif bolder</p>
-    <p class="preview-note" style="margin-top:0 0 1.5rem;">You picked Instrument Serif italic — one honest thing first: it only exists as a single weight, there's no real bold cut to switch to. Here are three ways to get more weight anyway; the last one is a different, genuinely bold typeface, in case none of the fakes feel right.</p>
-    <div class="type-sample type-sample--instrument">
-      <p class="type-sample__label">A — as is (Instrument Serif, regular italic)</p>
-      <h2 class="type-sample__name">Mónica Arcila</h2>
+    <p class="preview-section__label">1 · Type test — the actual hero component, not an isolated sample</p>
+    <p class="preview-note" style="margin-top:0;">Same markup and CSS as the real hero on <code>index.html</code> — only the name's font changes between the three. Instrument Serif only exists as one weight, so "C" below is the bolder version (a thin stroke added, no distortion) rather than a real bold cut.</p>
+
+    <div class="hero-test hero-test--fraunces">
+      <span class="hero-test__tag">Fraunces, italic</span>
+      <section class="hero container">
+        <p class="hero__eyebrow">Interactive Designer</p>
+        <h1 class="hero__title">Mónica Arcila</h1>
+        <p class="hero__subtitle">I design interactive experiences, design systems and AI-driven workflows — moving between UX research, game design and immersive media, from Medellín to Wellington.</p>
+      </section>
     </div>
-    <div class="type-sample type-sample--instrument-faux">
-      <p class="type-sample__label">B — browser "faux bold" (font-weight: 700 on a font with no bold — the browser fattens it algorithmically)</p>
-      <h2 class="type-sample__name">Mónica Arcila</h2>
+
+    <div class="hero-test hero-test--instrument">
+      <span class="hero-test__tag">Instrument Serif, italic — as is</span>
+      <section class="hero container">
+        <p class="hero__eyebrow">Interactive Designer</p>
+        <h1 class="hero__title">Mónica Arcila</h1>
+        <p class="hero__subtitle">I design interactive experiences, design systems and AI-driven workflows — moving between UX research, game design and immersive media, from Medellín to Wellington.</p>
+      </section>
     </div>
-    <div class="type-sample type-sample--instrument-stroke">
-      <p class="type-sample__label">C — outlined stroke added to the regular weight (a cleaner fake than B, no distortion)</p>
-      <h2 class="type-sample__name">Mónica Arcila</h2>
+
+    <div class="hero-test hero-test--instrument-bold">
+      <span class="hero-test__tag">Instrument Serif, italic — bolder (stroke added)</span>
+      <section class="hero container">
+        <p class="hero__eyebrow">Interactive Designer</p>
+        <h1 class="hero__title">Mónica Arcila</h1>
+        <p class="hero__subtitle">I design interactive experiences, design systems and AI-driven workflows — moving between UX research, game design and immersive media, from Medellín to Wellington.</p>
+      </section>
     </div>
-    <div class="type-sample type-sample--fraunces-black">
-      <p class="type-sample__label">D — Fraunces at its heaviest weight, italic (a real bold, different typeface)</p>
-      <h2 class="type-sample__name">Mónica Arcila</h2>
+
+    <div class="hero-test hero-test--great-vibes">
+      <span class="hero-test__tag">Great Vibes (free, OFL — the font you sent)</span>
+      <section class="hero container">
+        <p class="hero__eyebrow">Interactive Designer</p>
+        <h1 class="hero__title">Mónica Arcila</h1>
+        <p class="hero__subtitle">I design interactive experiences, design systems and AI-driven workflows — moving between UX research, game design and immersive media, from Medellín to Wellington.</p>
+      </section>
     </div>
-    <p class="preview-note">Tell me A, B, C or D (or "none of these"), and I'll set it as <code>--font-display</code> in the real <code>styles.css</code>.</p>
+
+    <div class="hero-test hero-test--pinyon">
+      <span class="hero-test__tag">Pinyon Script (free, OFL — the font you sent)</span>
+      <section class="hero container">
+        <p class="hero__eyebrow">Interactive Designer</p>
+        <h1 class="hero__title">Mónica Arcila</h1>
+        <p class="hero__subtitle">I design interactive experiences, design systems and AI-driven workflows — moving between UX research, game design and immersive media, from Medellín to Wellington.</p>
+      </section>
+    </div>
+
+    <p class="preview-note">Both of these are thin, fully-connected calligraphy scripts — closer in spirit to Beau Rivage (the one you said read as "a spirituality website") than to Fraunces or Instrument Serif. Worth seeing at full size regardless, in case the gradient and glow change how they feel here. Tell me which of the five you want as <code>--font-display</code>.</p>
   </section>
 
   <section class="preview-section">
@@ -173,68 +170,17 @@
   </section>
 
   <section class="preview-section">
-    <p class="preview-section__label">3 · Lotus toggle test — hover or click once to open, again to close</p>
+    <p class="preview-section__label">3 · Lotus toggle test — your real closed/open pair, now live</p>
     <div class="lotus-test" tabindex="0" role="button" aria-pressed="false" aria-label="Toggle the lotus open or closed">
-      <img class="lotus-test__closed" src="assets/_test/lotus-closed-placeholder.png" alt="Closed lotus bud (placeholder)." />
-      <img class="lotus-test__open" src="assets/_test/lotus-open-placeholder.jpg" alt="Open lotus in bloom (placeholder)." />
+      <img class="lotus-test__closed" src="assets/site/lotus-closed.png" alt="Closed lotus bud." />
+      <img class="lotus-test__open" src="assets/site/lotus-open.png" alt="Open lotus in bloom." />
     </div>
-    <p class="preview-note">Closed by default. The first hover or click opens it and it <em>stays</em> open — the next hover or click closes it again. Always starts closed on reload (nothing is saved), like you asked. <strong>Note:</strong> the two images here are deliberately mismatched (a watercolour bud cropped from your pond image, and your glowing 3D lotus) just to prove the toggle works — send a matched closed + open pair of the same flower for the real version.</p>
+    <p class="preview-note">This is now your real matched pair (the pastel one — the neon pair you sent were two copies of the same closed bud, no open match, so I used the one that actually has both states). Closed by default; the first hover or click opens it and it <em>stays</em> open; the next hover or click closes it again. This exact component is now also live for real on the home page, fixed to the bottom-left corner (desktop only).</p>
   </section>
 
   <section class="preview-section">
-    <p class="preview-section__label">4 · Navigation sketch A — growth trail</p>
-    <svg class="trail-svg" viewBox="0 0 1000 190" role="img" aria-label="A winding vine with a bud for each section of the site">
-      <defs>
-        <linearGradient id="trailGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-          <stop offset="0%" stop-color="var(--color-violet)" />
-          <stop offset="55%" stop-color="var(--color-pink)" />
-          <stop offset="100%" stop-color="var(--color-accent)" />
-        </linearGradient>
-        <path id="bud" d="M0,-15 C9,-8 9,5 0,15 C-9,5 -9,-8 0,-15 Z" />
-      </defs>
-      <path d="M40,140 C90,140 100,90 193,90 C240,90 250,140 347,140 C390,140 405,90 500,90 C545,90 560,140 653,140 C700,140 710,90 807,90 C855,90 865,140 960,140"
-            fill="none" stroke="url(#trailGrad)" stroke-width="2" opacity="0.6" />
-
-      <use href="#bud" x="40" y="140" fill="var(--color-coral)" />
-      <text class="trail-node-label" x="40" y="172" text-anchor="middle">Hero</text>
-
-      <use href="#bud" x="193" y="90" fill="var(--color-coral)" />
-      <text class="trail-node-label" x="193" y="122" text-anchor="middle">Projects</text>
-
-      <circle cx="347" cy="140" r="22" fill="none" stroke="var(--color-violet)" stroke-width="1.5" opacity="0.6" />
-      <use href="#bud" x="347" y="140" fill="var(--color-violet)" />
-      <text class="trail-node-label" x="347" y="172" text-anchor="middle" font-weight="600">Research</text>
-
-      <use href="#bud" x="500" y="90" fill="none" stroke="var(--color-muted)" stroke-width="1.5" stroke-dasharray="2 3" />
-      <text class="trail-node-label" x="500" y="122" text-anchor="middle">Experience</text>
-
-      <use href="#bud" x="653" y="140" fill="none" stroke="var(--color-muted)" stroke-width="1.5" stroke-dasharray="2 3" />
-      <text class="trail-node-label" x="653" y="172" text-anchor="middle">Skills</text>
-
-      <use href="#bud" x="807" y="90" fill="none" stroke="var(--color-muted)" stroke-width="1.5" stroke-dasharray="2 3" />
-      <text class="trail-node-label" x="807" y="122" text-anchor="middle">About</text>
-
-      <use href="#bud" x="960" y="140" fill="none" stroke="var(--color-muted)" stroke-width="1.5" stroke-dasharray="2 3" />
-      <text class="trail-node-label" x="960" y="172" text-anchor="middle">Contact</text>
-    </svg>
-    <div class="trail-legend">
-      <span><span class="trail-swatch" style="background:var(--color-coral)"></span>Bloomed (visited)</span>
-      <span><span class="trail-swatch" style="background:var(--color-violet)"></span>Current</span>
-      <span><span class="trail-swatch" style="border:1.5px dashed var(--color-muted)"></span>Not grown yet — still clickable</span>
-    </div>
-    <p class="preview-note">The buds double as the lotus reference without naming it outright — the shape is the same closed-bud silhouette as the hover test above.</p>
-  </section>
-
-  <section class="preview-section">
-    <p class="preview-section__label">5 · Navigation sketch B — portal paging</p>
-    <div class="portal">
-      <div class="portal__node portal__current"><small>You are here</small><strong>Research</strong></div>
-      <div class="portal__node portal__satellite portal__n">Hero</div>
-      <div class="portal__node portal__satellite portal__e">Skills</div>
-      <div class="portal__node portal__satellite portal__s">About</div>
-      <div class="portal__node portal__satellite portal__w">Projects</div>
-    </div>
-    <p class="preview-note">Click any circle to step straight into that scene. Plain next/previous arrows would still sit underneath for a fully linear fallback.</p>
+    <p class="preview-section__label">4 · Navigation — growth trail + portal paging, now both live for real</p>
+    <p class="preview-note" style="margin-top:0;">These moved out of the preview and onto the real <code>index.html</code>, since a sketch can't really show a scroll-tracked interaction. Open the real home page to try it: a vine of buds runs down the right edge — bloomed, current and dashed-but-clickable, exactly as sketched before. The small ✦ above it opens the portal view: the section you're on as a big circle, the other six arranged around it, each one a direct jump. Escape, the backdrop, or the × close it again.</p>
   </section>
 
 <script src="script.js"></script>

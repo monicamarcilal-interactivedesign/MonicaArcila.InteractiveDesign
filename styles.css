@@ -378,6 +378,188 @@ button:focus-visible,
   }
 }
 
+/* The ✦ button that opens the portal map. Sits above the first bud. */
+.growth-trail__map-toggle {
+  width: 26px;
+  height: 26px;
+  margin-bottom: 6px;
+  border-radius: 50%;
+  background: var(--color-surface-strong);
+  border: 1px solid var(--color-border);
+  color: var(--color-violet);
+  font-size: 0.85rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.growth-trail__map-toggle:hover {
+  border-color: var(--color-accent);
+  transform: scale(1.1);
+}
+
+/* -------------------------------------------------------------
+   PORTAL OVERLAY — the ✦ button opens this: the current section as
+   a large glowing circle, the other six arranged around it. Each is
+   a real link; clicking one jumps and closes the overlay. Positions
+   are set inline by script.js (job 8) via --tx/--ty, computed fresh
+   each time it opens since "current" changes as you scroll.
+   ------------------------------------------------------------- */
+.portal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portal-overlay[hidden] {
+  display: none;
+}
+
+.portal-overlay__backdrop {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, var(--color-bg) 78%, transparent);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.portal {
+  position: relative;
+  width: min(560px, 90vw);
+  height: min(560px, 90vw);
+}
+
+.portal__close {
+  position: absolute;
+  top: -6px;
+  right: -6px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-surface-strong);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.portal__node {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  text-decoration: none;
+  color: var(--color-text);
+  background: var(--color-surface-strong);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.portal__current {
+  width: 170px;
+  height: 170px;
+  transform: translate(-50%, -50%);
+  border-color: color-mix(in srgb, var(--color-violet) 60%, var(--color-border));
+  box-shadow: 0 0 60px -10px color-mix(in srgb, var(--color-violet) 55%, transparent);
+  cursor: default;
+}
+
+.portal__current small {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+}
+
+.portal__current strong {
+  font-size: 1.05rem;
+  margin-top: 0.2rem;
+}
+
+.portal__satellite {
+  width: 92px;
+  height: 92px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.25s ease, border-color 0.25s ease;
+  transform: translate(-50%, -50%) translate(var(--tx, 0px), var(--ty, 0px));
+}
+
+.portal__satellite:hover,
+.portal__satellite:focus-visible {
+  transform: translate(-50%, -50%) translate(var(--tx, 0px), var(--ty, 0px)) scale(1.08);
+  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal__satellite {
+    transition: none;
+  }
+}
+
+/* -------------------------------------------------------------
+   LOTUS — a quiet decorative touch, fixed to the left edge. Closed
+   by default; the first hover or click opens it and it stays open;
+   the next hover or click closes it again (script.js job 7).
+   ------------------------------------------------------------- */
+.lotus {
+  position: fixed;
+  left: 20px;
+  bottom: 24px;
+  width: 150px;
+  height: 150px;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  z-index: 8;
+  filter: drop-shadow(0 0 24px color-mix(in srgb, var(--color-violet) 35%, transparent));
+}
+
+.lotus__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  transition: opacity 0.8s ease;
+}
+
+.lotus__img--open {
+  opacity: 0;
+}
+
+.lotus.is-open .lotus__img--closed {
+  opacity: 0;
+}
+
+.lotus.is-open .lotus__img--open {
+  opacity: 1;
+}
+
+.lotus:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 6px;
+  border-radius: 50%;
+}
+
+@media (max-width: 900px) {
+  .lotus {
+    display: none;
+  }
+}
+
 /* -------------------------------------------------------------
    HERO (the big intro at the top of the home page)
    ------------------------------------------------------------- */

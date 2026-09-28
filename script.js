@@ -1,7 +1,7 @@
 /* =============================================================
    SCRIPT.JS  —  a tiny bit of JavaScript
    =============================================================
-   This file does just six small jobs. You probably don't need to
+   This file does just eight small jobs. You probably don't need to
    touch it, but here's what it does so nothing feels like magic.
    ============================================================= */
 
@@ -200,4 +200,89 @@ if (trailBuds.length) {
   );
 
   sectionEls.forEach((section) => sectionObserver.observe(section));
+}
+
+/* -------------------------------------------------------------
+   7. LOTUS TOGGLE (home page only)
+   Closed by default. The first hover or click opens it and it stays
+   open; the next hover or click closes it again. Always starts
+   closed again on reload — nothing is saved. A <button> already
+   responds to Enter/Space on its own, so there's no extra keyboard
+   handling to write here.
+   ------------------------------------------------------------- */
+const lotusToggle = document.getElementById("lotusToggle");
+
+if (lotusToggle) {
+  const toggleLotus = () => {
+    const isOpen = lotusToggle.classList.toggle("is-open");
+    lotusToggle.setAttribute("aria-pressed", String(isOpen));
+  };
+  lotusToggle.addEventListener("mouseenter", toggleLotus);
+  lotusToggle.addEventListener("click", toggleLotus);
+}
+
+/* -------------------------------------------------------------
+   8. PORTAL OVERLAY (home page only)
+   The ✦ button above the growth trail opens a map: the current
+   section as a big circle, the other six arranged around it in a
+   ring. Positions are computed fresh each time it opens (job 6 keeps
+   the trail's "is-current" class up to date, so this just reads it).
+   Clicking a satellite follows its link and closes the overlay.
+   ------------------------------------------------------------- */
+const portalToggle = document.getElementById("portalToggle");
+const portalOverlay = document.getElementById("portalOverlay");
+const portalInner = portalOverlay ? portalOverlay.querySelector(".portal") : null;
+
+if (portalToggle && portalOverlay && portalInner && trailBuds.length) {
+  const sectionMeta = Array.from(trailBuds).map((bud) => ({
+    href: bud.getAttribute("href"),
+    label: bud.querySelector("span").textContent,
+  }));
+
+  const buildPortal = () => {
+    let currentIndex = Array.from(trailBuds).findIndex((bud) =>
+      bud.classList.contains("is-current")
+    );
+    if (currentIndex === -1) currentIndex = 0;
+
+    const radius = 190;
+    const others = sectionMeta.filter((_, index) => index !== currentIndex);
+
+    let html = `<button class="portal__close" type="button" data-close aria-label="Close the map">&times;</button>`;
+    html += `<div class="portal__node portal__current"><small>You are here</small><strong>${sectionMeta[currentIndex].label}</strong></div>`;
+
+    others.forEach((section, index) => {
+      const angle = (index / others.length) * 2 * Math.PI - Math.PI / 2;
+      const x = Math.round(Math.cos(angle) * radius);
+      const y = Math.round(Math.sin(angle) * radius);
+      html += `<a href="${section.href}" class="portal__node portal__satellite" style="--tx:${x}px;--ty:${y}px">${section.label}</a>`;
+    });
+
+    portalInner.innerHTML = html;
+  };
+
+  const openPortal = () => {
+    buildPortal();
+    portalOverlay.hidden = false;
+    portalToggle.setAttribute("aria-expanded", "true");
+  };
+
+  const closePortal = () => {
+    portalOverlay.hidden = true;
+    portalToggle.setAttribute("aria-expanded", "false");
+  };
+
+  portalToggle.addEventListener("click", openPortal);
+
+  portalOverlay.addEventListener("click", (event) => {
+    if (event.target.closest("[data-close]")) closePortal();
+  });
+
+  portalInner.addEventListener("click", (event) => {
+    if (event.target.closest(".portal__satellite")) closePortal();
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && !portalOverlay.hidden) closePortal();
+  });
 }

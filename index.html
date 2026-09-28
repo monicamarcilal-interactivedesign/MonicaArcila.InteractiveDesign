@@ -74,6 +74,7 @@
        the max-width: 900px rule in styles.css) — on phones the
        hamburger menu already jumps straight to any section. -->
   <nav class="growth-trail" aria-label="Jump to a section">
+    <button class="growth-trail__map-toggle" id="portalToggle" type="button" aria-haspopup="dialog" aria-expanded="false" aria-label="Open a map of every section">✦</button>
     <a href="#hero" class="growth-trail__bud" data-section="hero"><span>Hero</span></a>
     <a href="#work" class="growth-trail__bud" data-section="work"><span>Projects</span></a>
     <a href="#seedbeds" class="growth-trail__bud" data-section="seedbeds"><span>Research</span></a>
@@ -82,6 +83,28 @@
     <a href="#about" class="growth-trail__bud" data-section="about"><span>About</span></a>
     <a href="#contact" class="growth-trail__bud" data-section="contact"><span>Contact</span></a>
   </nav>
+
+  <!-- ===================== PORTAL OVERLAY ===================== -->
+  <!-- Opened by the ✦ button above the growth trail. Shows the current
+       section as a large circle with the other six arranged around it —
+       click one to step straight there. script.js job 8 builds the
+       satellite positions each time it opens, since "current" changes as
+       you scroll. Escape, the backdrop, or the × all close it. -->
+  <div class="portal-overlay" id="portalOverlay" hidden>
+    <div class="portal-overlay__backdrop" data-close></div>
+    <div class="portal" role="dialog" aria-modal="true" aria-label="Jump to a section"></div>
+  </div>
+
+  <!-- ===================== LOTUS ===================== -->
+  <!-- A quiet decorative touch, fixed to the left edge. Closed by
+       default; the first hover or click opens it and it stays open;
+       the next hover or click closes it again (script.js job 7).
+       Always starts closed again on reload — nothing is saved.
+       Desktop only, like the growth trail. -->
+  <button class="lotus" id="lotusToggle" type="button" aria-pressed="false" aria-label="Toggle the lotus open or closed">
+    <img class="lotus__img lotus__img--closed" src="assets/site/lotus-closed.png" alt="" />
+    <img class="lotus__img lotus__img--open" src="assets/site/lotus-open.png" alt="" />
+  </button>
 
   <main id="main">
 
