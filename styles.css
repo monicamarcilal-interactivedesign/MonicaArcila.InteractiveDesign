@@ -21,10 +21,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Great+Vibes&family=Pinyon+Script&display=swap');
 
 /* =====================================================
-   DESIGN TOKENS — dark is the default theme; the
-   [data-theme="light"] block further down overrides the
-   same names for the toggle in the header. Change a value
-   here and it updates across the ENTIRE site.
+   DESIGN TOKENS — the colours, fonts and spacing used
+   everywhere. Change a value here and it updates across
+   the ENTIRE site.
    ===================================================== */
 :root {
   /* ---- COLOURS (dark, default) ---- */
@@ -37,19 +36,17 @@
   --color-accent:  #4d7dff;   /* links & buttons — Mónica's favourite blue */
   --color-accent-text: #ffffff; /* text on top of the accent colour */
   --color-violet:  #8747f8;   /* second accent, from the reference boards */
-  --color-pink:    #f887fa;   /* third accent — dark mode only, see below */
+  --color-pink:    #f887fa;   /* third accent */
   --color-coral:   #fd7069;   /* the one warm accent, used sparingly */
-  --gradient-end:  var(--color-accent);   /* the cool tip of the hero/about gradient — warmed in light mode below */
-  --frame-bezel:   #14101f;   /* the dark "device" bezel around project images, both themes */
+  --gradient-end:  var(--color-accent);   /* the cool tip of the hero/about gradient */
+  --frame-bezel:   #14101f;   /* the dark "device" bezel around project images */
 
   /* Used by the About section's mouse-reactive background. */
   --about-blob-warm:   var(--color-coral);
   --about-blob-violet: var(--color-violet);
 
   /* The three big blurred colour circles that drift behind the whole
-     site (body::before, further down). Dark and light mode each get
-     their own colours AND their own positions — see the light override
-     below and the [data-theme="light"] body::before rule. */
+     site (body::before, further down). */
   --ambient-1: var(--color-violet);
   --ambient-2: var(--color-accent);
   --ambient-3: var(--color-coral);
@@ -67,44 +64,6 @@
   --radius:       10px;       /* how round corners are */
   --radius-soft:  26px;       /* the larger radius used for card asymmetry */
   --max-width:    1080px;     /* how wide content gets on big screens */
-}
-
-/* The SAME token names, flipped for light mode — nothing else in this
-   file needs to change for the toggle to work.
-
-   2026-09-28: reworked to an "inverse" temperature, not just a paler dark
-   mode. Dark mode's cool violet/blue glow suits a night mood on a near-
-   black page; on a warm cream page the same cool colours read as a clash
-   (Mónica's note). So light mode leads warm instead — the decorative
-   glow, the gradient and the logo all shift toward amber/plum/gold, all
-   in the same warm family as the background so they blend into it rather
-   than sitting on top of it. --color-accent (blue) stays put: it's kept
-   for small functional things only (links, buttons, focus rings) —
-   Mónica's favourite colour, but no longer part of the big decorative
-   gradient/glow, which is what was actually clashing. */
-:root[data-theme="light"] {
-  --color-bg:      #f8f0dd;   /* creamy, not the cool lavender-white this used to be */
-  --color-surface: rgba(40, 25, 10, 0.045);
-  --color-surface-strong: rgba(40, 25, 10, 0.08);
-  --color-text:    #1a1330;
-  --color-muted:   #5b5478;
-  --color-border:  rgba(40, 25, 10, 0.14);
-  --color-accent:  #1c4fd6;   /* kept for links/buttons only now, not the big gradient/glow */
-  --color-violet:  #9c4a6e;   /* warm plum, not cool violet — used in gradients + hover glows */
-  --color-pink:    #9c4a6e;   /* reuse the warm plum — no pink in light mode */
-  --color-coral:   #c9463c;
-  --gradient-end:  #c98a2e;   /* warm gold tip for the hero/about gradient, replacing blue */
-
-  --about-blob-warm:   var(--color-coral);
-  --about-blob-violet: var(--color-violet);
-
-  /* A warm, tonal trio (gold / peach / sand) so the three circles melt
-     into the cream background instead of sitting on top of it. */
-  --ambient-1: #e6a94a;
-  --ambient-2: #dd8f66;
-  --ambient-3: #cf9a7c;
-
-  --glow-strength: 0.28;
 }
 
 /* -------------------------------------------------------------
@@ -132,9 +91,7 @@ body {
 
 /* The three big blurred colour circles that drift behind the whole site —
    decorative, no purpose beyond looking good. One rule draws all three
-   (as layered radial-gradients, same trick as #about::before below);
-   the [data-theme="light"] override swaps both the colours (--ambient-*)
-   and their positions, so light mode isn't just a dimmer dark mode. */
+   (as layered radial-gradients, same trick as #about::before below). */
 body::before {
   content: "";
   position: fixed;
@@ -148,13 +105,6 @@ body::before {
   filter: blur(90px);
   opacity: var(--glow-strength);
   animation: ambient-drift 28s ease-in-out infinite alternate;
-}
-
-:root[data-theme="light"] body::before {
-  background:
-    radial-gradient(38% 38% at 88% 10%, var(--ambient-1) 0%, transparent 70%),
-    radial-gradient(42% 42% at 8% 92%, var(--ambient-2) 0%, transparent 70%),
-    radial-gradient(24% 24% at 48% 45%, var(--ambient-3) 0%, transparent 70%);
 }
 
 @keyframes ambient-drift {
@@ -227,28 +177,6 @@ button:focus-visible,
   transition: background 0.4s ease, border-color 0.4s ease;
 }
 
-/* Dark/light toggle button, next to the logo in every page's header. */
-.theme-toggle {
-  font: inherit;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  background: var(--color-surface);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 0.35rem 0.85rem;
-  cursor: pointer;
-  margin-left: 1rem;
-  transition: border-color 0.2s ease, color 0.2s ease;
-}
-
-.theme-toggle:hover {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-}
-
 .nav {
   display: flex;
   align-items: center;
@@ -300,7 +228,7 @@ button:focus-visible,
    beyond scrolling. One bud per section, fixed to the right edge.
    Dashed = not visited yet (still a real link — click it to jump
    straight there). Solid coral = bloomed (scrolled past already).
-   Glowing violet = the section on screen right now. script.js job 6
+   Glowing violet = the section on screen right now. script.js job 5
    sets is-bloomed / is-current as you scroll; nothing here needs a
    click to work except the buds themselves.
    ------------------------------------------------------------- */
@@ -414,7 +342,7 @@ button:focus-visible,
 /* -------------------------------------------------------------
    ORB LINES — the faint web connecting every orb to every other
    orb, and to the 3 highlighted motto words. A single full-viewport
-   SVG; script.js (job 6) draws real <line> elements into it, because
+   SVG; script.js (job 5) draws real <line> elements into it, because
    the endpoints depend on actual rendered positions (responsive).
    ------------------------------------------------------------- */
 .orb-lines {
@@ -442,14 +370,16 @@ button:focus-visible,
    ------------------------------------------------------------- */
 .orb-cluster {
   /* Sits inside .landing-stage's flex column now, not independently
-     fixed to the viewport — see the note above .landing-stage. Height
-     scales with viewport height (clamp) so the whole stack keeps fitting
-     one screen instead of pushing the lotus off the bottom. */
+     fixed to the viewport — see the note above .landing-stage. Wide and
+     tall (clamped to viewport size) so About/Experience/Contact can sit
+     near the top corners and Skills/Case Studies lower, the same spread
+     scatter Mónica's reference shows — while staying entirely below the
+     hero text in the stack, so it can't climb back into it. */
   position: relative;
   flex: none;
   z-index: 9;
-  width: min(760px, 92vw);
-  height: clamp(220px, 36vh, 380px);
+  width: min(1400px, 96vw);
+  height: clamp(260px, 46vh, 460px);
   pointer-events: none;
 }
 
@@ -491,23 +421,6 @@ button:focus-visible,
   transition: transform 0.25s ease, filter 0.25s ease;
 }
 
-/* Neon pair for dark mode, pastel pair for light mode — same as the lotus. */
-.orb__img--light {
-  display: none;
-}
-
-.orb__img--dark {
-  display: block;
-}
-
-:root[data-theme="light"] .orb__img--light {
-  display: block;
-}
-
-:root[data-theme="light"] .orb__img--dark {
-  display: none;
-}
-
 .orb__label {
   font-size: 0.78rem;
   font-weight: 600;
@@ -539,17 +452,8 @@ button:focus-visible,
 .orb--about     { --orb-glow: #F49625; left: 42%; top: 0%; }
 .orb--skills    { --orb-glow: #F960CA; left: 8%;  top: 46%; }
 .orb--case-studies { --orb-glow: #A471F0; left: 74%; top: 32%; }
-.orb--experience{ --orb-glow: #00FFBD; left: -4%; top: 74%; }
-.orb--contact   { --orb-glow: #3FE4FA; left: 88%; top: 70%; }
-
-/* Light mode gets the pastel orb images, so the glow colour is sampled
-   from those instead — the dark-mode neon hexes above would clash with
-   the warm cream background. */
-:root[data-theme="light"] .orb--about     { --orb-glow: #F4D05F; }
-:root[data-theme="light"] .orb--skills    { --orb-glow: #DE7D64; }
-:root[data-theme="light"] .orb--case-studies { --orb-glow: #AB87BF; }
-:root[data-theme="light"] .orb--experience{ --orb-glow: #83AC69; }
-:root[data-theme="light"] .orb--contact   { --orb-glow: #69B0BD; }
+.orb--experience{ --orb-glow: #00FFBD; left: 2%;  top: 74%; }
+.orb--contact   { --orb-glow: #3FE4FA; left: 84%; top: 70%; }
 
 @keyframes orb-float {
   0%, 100% { margin-top: 0; }
@@ -569,7 +473,7 @@ button:focus-visible,
    bottom-centre instead of the corner. Closed by default; the first
    hover or click wiggles it, then opens it and pops the orbs out;
    the next hover or click wiggles, then pops them back in and closes
-   (script.js job 6).
+   (script.js job 5).
    ------------------------------------------------------------- */
 .lotus {
   /* Sits inside .landing-stage's flex column, last item — see the note
@@ -624,23 +528,6 @@ button:focus-visible,
   opacity: 1;
 }
 
-/* Pastel pair for light mode, neon pair for dark mode. */
-.lotus__img--light {
-  display: none;
-}
-
-.lotus__img--dark {
-  display: block;
-}
-
-:root[data-theme="light"] .lotus__img--light {
-  display: block;
-}
-
-:root[data-theme="light"] .lotus__img--dark {
-  display: none;
-}
-
 .lotus:focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 6px;
@@ -689,9 +576,7 @@ button:focus-visible,
 }
 
 /* Mónica's own personal-brand mark, centred behind the hero text —
-   deliberately NOT mouse-reactive (that's reserved for About). Recoloured
-   per theme (it's drawn in blue, which reads cold against the warm light
-   background) via hue-rotate rather than a second image. */
+   deliberately NOT mouse-reactive (that's reserved for About). */
 .hero__logo-bg {
   position: absolute;
   top: 50%;
@@ -709,11 +594,6 @@ button:focus-visible,
   opacity: 0.5;
   filter: blur(14px) saturate(135%);
   pointer-events: none;
-}
-
-:root[data-theme="light"] .hero__logo-bg {
-  opacity: 0.4;
-  filter: blur(14px) saturate(120%) hue-rotate(150deg);
 }
 
 .hero__eyebrow {
@@ -736,9 +616,6 @@ button:focus-visible,
   line-height: 1.15;
   letter-spacing: -0.01em;
   max-width: 21ch;
-  /* --gradient-end is the cool blue tip in dark mode, but a warm gold in
-     light mode (see the tokens above) — keeps this gradient from mixing
-     a cold colour into the warm light background. */
   background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--gradient-end));
   -webkit-background-clip: text;
   background-clip: text;

@@ -1,7 +1,7 @@
 /* =============================================================
    SCRIPT.JS  —  a tiny bit of JavaScript
    =============================================================
-   This file does just six small jobs. You probably don't need to
+   This file does just five small jobs. You probably don't need to
    touch it, but here's what it does so nothing feels like magic.
    ============================================================= */
 
@@ -121,52 +121,7 @@ if (filterBar && projectRows.length) {
 }
 
 /* -------------------------------------------------------------
-   5. DARK / LIGHT THEME TOGGLE
-   Dark is the default (set in styles.css). Clicking the button in the
-   header flips a "data-theme" attribute on <html>, which is all the
-   CSS needs to swap every colour token at once. The choice is
-   remembered (localStorage) so it stays the same as you move between
-   pages — wrapped in try/catch because some browsers (private windows,
-   blocked site data) refuse to read or write it.
-   ------------------------------------------------------------- */
-(() => {
-  const root = document.documentElement;
-  const themeToggle = document.getElementById("themeToggle");
-
-  let savedTheme = null;
-  try {
-    savedTheme = localStorage.getItem("theme");
-  } catch (error) {
-    savedTheme = null;
-  }
-  if (savedTheme === "light") {
-    root.setAttribute("data-theme", "light");
-  }
-
-  if (themeToggle) {
-    const syncLabel = () => {
-      const isLight = root.getAttribute("data-theme") === "light";
-      themeToggle.textContent = isLight ? "Light" : "Dark";
-      themeToggle.setAttribute("aria-pressed", String(isLight));
-    };
-    syncLabel();
-
-    themeToggle.addEventListener("click", () => {
-      const isLight = root.getAttribute("data-theme") === "light";
-      const nextTheme = isLight ? "dark" : "light";
-      root.setAttribute("data-theme", nextTheme);
-      try {
-        localStorage.setItem("theme", nextTheme);
-      } catch (error) {
-        /* Not essential — the toggle still works for this page view. */
-      }
-      syncLabel();
-    });
-  }
-})();
-
-/* -------------------------------------------------------------
-   6. HOME PAGE NAVIGATION — scenes, the growth trail, and the lotus
+   5. HOME PAGE NAVIGATION — scenes, the growth trail, and the lotus
    Only one of the 5 sections (About, Contact, Skills, Experience,
    Case Studies) is visible at a time, so moving between them is
    never scroll-only. Hero isn't one of the 5 — it's the landing
