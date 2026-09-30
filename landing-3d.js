@@ -126,6 +126,11 @@ function initRenderer() {
   renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
+  // Without tone mapping, bright highlights just clip to flat white
+  // instead of rolling off smoothly — that clipping is most of what was
+  // reading as "harsh/oversaturated/cheap" rather than soft and filmic.
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 0.9;
   resizeRenderer();
   window.addEventListener("resize", resizeRenderer);
 }
@@ -154,12 +159,16 @@ function buildScene() {
 
   // A simple, generic 3-point-ish setup — reasonable for either the
   // "shaded" (already-lit-looking) or "pbr" (more light-dependent)
-  // export, without needing to hand-tune per material.
-  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
-  const key = new THREE.DirectionalLight(0xffffff, 1.4);
+  // export, without needing to hand-tune per material. Softer than the
+  // first pass: the "shaded" texture already carries its own baked-in
+  // highlights, so a strong key light on top of that was double-exposing
+  // them into harsh, blown-out specular pops. More ambient fill relative
+  // to the key light flattens that contrast into something softer.
+  scene.add(new THREE.AmbientLight(0xffffff, 0.85));
+  const key = new THREE.DirectionalLight(0xffffff, 0.7);
   key.position.set(2, 3, 4);
   scene.add(key);
-  const rim = new THREE.DirectionalLight(0x8747f8, 0.9); // --color-violet, ties the lighting to the site's palette
+  const rim = new THREE.DirectionalLight(0x8747f8, 0.45); // --color-violet, ties the lighting to the site's palette
   rim.position.set(-3, 1, -2);
   scene.add(rim);
 }

@@ -593,11 +593,11 @@ button:focus-visible,
    equal spacing around the centre); About/the sun stays exactly where
    the flower itself is (see the --ox/--oy exemption in script.js), so it
    blooms in place rather than travelling outward like the other four. */
-.orb--skills        { --orb-glow: #F960CA; left: 50%; top: 16%; } /* N */
-.orb--case-studies  { --orb-glow: #A471F0; left: 82%; top: 50%; } /* E */
-.orb--experience    { --orb-glow: #00FFBD; left: 50%; top: 84%; } /* S */
-.orb--contact       { --orb-glow: #3FE4FA; left: 18%; top: 50%; } /* W */
-.orb--about         { --orb-glow: #F49625; left: 50%; top: 50%; } /* centre */
+.orb--skills        { --orb-glow: #F960CA; left: 80%; top: 20%; } /* NE */
+.orb--case-studies  { --orb-glow: #A471F0; left: 85%; top: 70%; } /* SE */
+.orb--experience    { --orb-glow: #00FFBD; left: 15%; top: 78%; } /* SW */
+.orb--contact       { --orb-glow: #3FE4FA; left: 15%; top: 28%; } /* NW */
+.orb--about         { --orb-glow: #F49625; left: 50%; top: 38%; } /* on the flower's bright core, not dead centre */
 
 @keyframes orb-float {
   0%, 100% { margin-top: 0; }
@@ -626,6 +626,11 @@ button:focus-visible,
   height: 100%;
   z-index: 5;
   display: block;
+  /* The model's own texture is quite a saturated neon — a small CSS
+     softening pass on top (rather than touching the texture itself)
+     keeps the same colour identity but rolls back the harshness. Easy
+     to tune further by eye. */
+  filter: saturate(0.82) contrast(0.94) brightness(1.03);
 }
 
 /* Shape-hugging glow behind the canvas — the renderer is alpha-
