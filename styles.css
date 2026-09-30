@@ -64,6 +64,22 @@
   --radius:       10px;       /* how round corners are */
   --radius-soft:  26px;       /* the larger radius used for card asymmetry */
   --max-width:    1080px;     /* how wide content gets on big screens */
+
+  /* The page's own outer margin — top/bottom/left the same on every
+     screen; right stays this size on phones (where the side nav is
+     hidden) and grows on desktop (below) to clear the nav rail. */
+  --page-margin: 1cm;
+  --page-margin-right: 1cm;
+}
+
+/* Desktop only — the side nav (.growth-trail) sits fixed at ~28px from
+   the true viewport edge and is about 40px across at its widest (the
+   lotus), so this clears it with room to spare, without reserving so
+   much that it eats into the content on narrower desktop widths. */
+@media (min-width: 901px) {
+  :root {
+    --page-margin-right: 110px;
+  }
 }
 
 /* -------------------------------------------------------------
@@ -87,6 +103,11 @@ body {
   background: transparent; /* the colour lives on <html>, so the glow below can sit between the two */
   line-height: 1.6;
   transition: color 0.4s ease;
+  /* The page's outer margin — see --page-margin / --page-margin-right
+     above. Fixed-position elements (the side nav, the decorative
+     background blobs) ignore this and stay anchored to the true
+     viewport edge, which is what we want for the nav specifically. */
+  padding: var(--page-margin) var(--page-margin-right) var(--page-margin) var(--page-margin);
 }
 
 /* The three big blurred colour circles that drift behind the whole site —
@@ -458,10 +479,13 @@ button:focus-visible,
      near the top corners and Skills/Case Studies lower, the same spread
      scatter Mónica's reference shows — while staying entirely below the
      hero text in the stack, so it can't climb back into it. */
+  /* width: 100% (not a vw value) so it's relative to .landing-stage's
+     own (already margin-aware) width, not the raw viewport — otherwise
+     it can overflow past the page's own left/right margins. */
   position: relative;
   flex: none;
   z-index: 9;
-  width: min(1400px, 96vw);
+  width: min(1400px, 100%);
   height: clamp(260px, 46vh, 460px);
   pointer-events: none;
 }
