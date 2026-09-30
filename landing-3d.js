@@ -224,10 +224,11 @@ function frameCameraToModel() {
    can take over cleanly instead of fighting it.
    ------------------------------------------------------------- */
 function startIdleLoop() {
-  if (prefersReducedMotion) {
-    render();
-    return;
-  }
+  // Paint immediately rather than waiting for the first rAF tick — a
+  // backgrounded/inactive tab can delay or pause rAF entirely, which
+  // would otherwise leave the canvas blank until it regains focus.
+  render();
+  if (prefersReducedMotion) return;
   const step = () => {
     idleAngle += 0.0025; // ~1 full turn every ~42s
     setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR);
