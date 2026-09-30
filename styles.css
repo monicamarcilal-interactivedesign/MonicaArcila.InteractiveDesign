@@ -258,11 +258,6 @@ button:focus-visible,
   .site-header {
     display: none;
   }
-
-  /* No header to subtract the height of any more, on this breakpoint. */
-  .landing-stage {
-    min-height: 100vh;
-  }
 }
 
 .nav__links a,
@@ -877,18 +872,37 @@ html.no-webgl .lotus-start-cta {
    scaling down together to fit shorter viewports too.
    ------------------------------------------------------------- */
 .landing-stage {
-  /* Normal flow (not fixed) so it reserves real space and the footer
-     still lands right after it, like before — min-height just makes
-     that reserved space roughly one screen tall. position: relative
-     makes it the containing block for everything inside it (the 3D
-     canvas, the orb cluster, the motto, the orb-connecting lines) —
-     they're all position:absolute layers now, stacked full-bleed on
-     top of each other rather than flowing in a flex column, since the
-     3D flower is always dead-centre of this box at every point in the
-     sequence (the camera always looks straight at it). */
+  /* Mobile default: normal flow, below the (still-visible) sticky
+     header, height determined by its own content (the static image +
+     button + motto) rather than clipped to one screen — there's no 3D
+     scene to go full-bleed for on phones. Desktop overrides this to
+     position:fixed below. */
   position: relative;
-  min-height: calc(100vh - 64px);
-  overflow: hidden;
+}
+
+/* position: fixed, ignoring the page's own margin entirely (2026-10-01)
+   — Mónica's call: the 3D scene should feel like you're IN it, not
+   looking at it through a framed box, and nothing else is visible while
+   it's showing anyway (the footer/nav are hidden during landing — see
+   showLanding() in script.js), so there's no flow-height to reserve or
+   margin to respect here the way every other section still does. Desktop
+   only (matches where the 3D scene and the top-header-hiding both live) —
+   inset: 0 is the true viewport edge, same as .growth-trail and the
+   ambient body::before blobs already ignore the margin for. */
+@media (min-width: 901px) {
+  .landing-stage {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+  }
+}
+
+/* Its own display:flex above has the same specificity as the browser's
+   default [hidden]{display:none} and comes later, so it silently won —
+   script.js hiding #landingStage while switching sections did nothing
+   visually without this override. */
+.landing-stage[hidden] {
+  display: none;
 }
 
 /* Its own display:flex above has the same specificity as the browser's

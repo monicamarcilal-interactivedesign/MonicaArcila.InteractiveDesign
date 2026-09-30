@@ -38,20 +38,19 @@ const canvas = document.getElementById("lotusCanvas");
 /* -------------------------------------------------------------
    1. MODEL CONFIG — swap the asset without touching anything else.
    Loaded from the repo's own raw GitHub URL, not a local relative
-   path: browsers block a file:// page from fetching a local sibling
-   binary asset. The original plan for this was to fetch it from this
-   repo's raw.githubusercontent.com URL instead (a real https:// request
-   works over file:// the same as anywhere else) — turns out that only
-   works for PUBLIC repos; hers is private, so that URL 404s for anyone
-   not authenticated as her. Flagged to her directly rather than silently
-   using a workaround (embedding any kind of access token in client-side
-   JS would leak it to every visitor, so that's not an option either).
-   Back to a plain relative path for now: works perfectly once the site
-   is actually served over http(s) — my own preview server while
-   building, or wherever she ends up hosting it — just not from a raw
-   file:// double-click, until she decides how she wants to handle that.
+   path: browsers block a file:// page (i.e. double-clicking index.html)
+   from fetching a local sibling binary asset, but a real https:// fetch
+   works the same regardless of where the page itself was opened from.
+   This only works once the repo is public (raw.githubusercontent.com
+   404s on a private repo for anyone not authenticated as the owner —
+   confirmed with curl while this was still private). Mónica's making it
+   public, so this is set to the real URL now; if that hasn't taken
+   effect yet for some reason, the fetch just fails gracefully into the
+   same static-image fallback mobile gets (see the .no-webgl handling
+   below) rather than breaking anything.
    ------------------------------------------------------------- */
-const RAW_BASE = "assets/3d/lotus/";
+const RAW_BASE =
+  "https://raw.githubusercontent.com/monicamarcilal-interactivedesign/MonicaArcila.InteractiveDesign/main/assets/3d/lotus/";
 
 const MODEL_CONFIG = {
   // "shaded" has its look baked into one texture (smaller download,
