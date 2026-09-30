@@ -33,6 +33,21 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
   <link rel="stylesheet" href="styles.css" />
+
+  <!-- The 3D lotus on the landing screen (landing-3d.js) uses Three.js,
+       loaded straight from a CDN as real ES modules — no build step, same
+       "just open index.html" workflow as the rest of the site. Pinned to
+       an exact version since there's no lockfile to catch a breaking
+       update later. -->
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <script type="module" src="landing-3d.js"></script>
 </head>
 <body>
 
@@ -132,36 +147,62 @@
          script.js since their positions depend on the real, responsive
          layout. Desktop only, like the growth trail; phones use the
          hamburger menu instead. -->
-    <!-- landing-stage (2026-09-29): hero text, the orb cluster and the
-         lotus all live inside ONE flex column now, instead of each
-         guessing its own position independently. That's what stops them
-         ever overlapping again — a fixed viewport offset for the
-         orbs/lotus and a responsive (viewport-width-scaled) hero title
-         used to be two unrelated coordinate systems, which drifted apart
-         and collided at wide/short screens (caught from Mónica's own
-         screenshot: the About orb sitting on top of "not just seen.").
-         The orb cluster is wide and tall (clamped to viewport size) so
-         the 5 orbs can scatter widely — About/Experience/Contact higher,
-         Skills/Case Studies lower — matching Mónica's reference layout,
-         while staying entirely below the hero text so it can't climb
-         back into it. -->
+    <!-- landing-stage (2026-10-01): a 3D lotus (landing-3d.js) is now the
+         whole landing screen on desktop. It opens on nothing but the
+         flower, glowing and slowly turning; clicking it plays a scripted
+         camera zoom + flower self-rotation toward a near-top view, then
+         the 5 orbs bloom out of the flower's own centre (About/the sun
+         stays put at the centre; the other four spread to the cardinal
+         points around it — see .orb--* below), the motto fades in low-
+         opacity behind everything in two corners, and the side nav
+         appears only once a section is actually opened (script.js job 5).
+         Because the camera always looks straight at the flower's centre,
+         it's always the same fixed point on screen — so the orb overlay
+         below can stay simple, static CSS instead of real 3D→2D math.
+         Mobile (≤900px) never runs the 3D scene: .lotus-still below is a
+         plain static image instead, same pattern as the rest of the
+         site's desktop-only extras. -->
     <div class="landing-stage" id="landingStage">
+      <canvas class="lotus-canvas" id="lotusCanvas" aria-hidden="true"></canvas>
+      <div class="lotus-spotlight" aria-hidden="true"></div>
+      <div class="lotus-vignette" aria-hidden="true"></div>
+      <p class="lotus-hint" id="lotusHint">Click to begin</p>
+      <!-- The canvas itself is aria-hidden (a picture, not a control) —
+           this is the real, keyboard-focusable way in for anyone not
+           clicking the flower with a mouse. Visually hidden, same
+           technique as .skip-link. -->
+      <button class="lotus-start-cta" id="lotusStartCta" type="button">Enter the site</button>
+
+      <!-- Mobile-only stand-in for the 3D flower — see the max-width:900px
+           rule in styles.css. Reuses the existing neon lotus artwork. -->
+      <img class="lotus-still" src="assets/site/lotus-open-neon.png" alt="" aria-hidden="true" />
+
       <section id="hero" class="hero container">
         <img class="hero__logo-bg" src="assets/site/logo-mark.png" alt="" aria-hidden="true" />
-        <p class="hero__eyebrow">Interactive Designer</p>
-        <h1 class="hero__title"><span class="hero__accent hero__word" id="wordDesigning">Designing</span> to be <span class="hero__accent hero__word" id="wordFelt">felt</span> and <span class="hero__accent hero__word" id="wordValued">valued</span>,<br />not just seen.</h1>
       </section>
 
-      <!-- Lives inside .landing-stage (not a fixed, full-viewport overlay
-           any more) so it scrolls and sizes together with the orbs it's
-           connecting — a separate fixed layer used to visually detach
-           from the orbs if the page ever scrolled. script.js draws real
-           <line> elements into it, positioned relative to this same
-           stage, since the endpoints depend on actual rendered layout. -->
+      <!-- Split in two (2026-10-01) so each half can sit in its own
+           corner, low-opacity, behind the flower/orbs — see
+           .landing-motto in styles.css. Word-span IDs kept as-is. The
+           eyebrow label moved in here too, above the first line, since
+           it always read as one unit with the motto. -->
+      <div class="landing-motto" id="landingMotto">
+        <p class="landing-motto__line landing-motto__line--tl">
+          <span class="hero__eyebrow">Interactive Designer</span>
+          <span class="landing-motto__text"><span class="hero__accent hero__word" id="wordDesigning">Designing</span> to be <span class="hero__accent hero__word" id="wordFelt">felt</span> and <span class="hero__accent hero__word" id="wordValued">valued</span>,</span>
+        </p>
+        <p class="landing-motto__line landing-motto__line--br">not just seen.</p>
+      </div>
+
+      <!-- Lives inside .landing-stage (not a fixed, full-viewport overlay)
+           so it scrolls and sizes together with the orbs it's connecting.
+           script.js draws real <line> elements into it, positioned
+           relative to this same stage, since the endpoints depend on
+           actual rendered layout. -->
       <svg class="orb-lines" id="orbLines" aria-hidden="true"></svg>
 
       <!-- NOT aria-hidden: these are real navigation links, just visually
-           deferred until the lotus opens (pointer-events re-enabled by
+           deferred until the flower opens (pointer-events re-enabled by
            .orb-cluster.is-visible in styles.css). Keyboard/AT users can
            still reach and activate them even before that plays. -->
       <div class="orb-cluster" id="orbCluster">
@@ -186,15 +227,6 @@
           <span class="orb__label">Contact</span>
         </a>
       </div>
-
-      <!-- Closed by default; the first hover or click wiggles, then opens
-           and pops the 5 orbs above out of it; the next hover or click
-           wiggles, then pops them back in and closes (script.js job 5).
-           Always starts closed again on reload — nothing is saved. -->
-      <button class="lotus" id="lotusToggle" type="button" aria-pressed="false" aria-label="Open the site's sections">
-        <img class="lotus__img lotus__img--closed" src="assets/site/lotus-closed-neon.png" alt="" />
-        <img class="lotus__img lotus__img--open" src="assets/site/lotus-open-neon.png" alt="" />
-      </button>
     </div>
 
     <!-- ===================== CASE STUDIES (merged, 2026-09-28) ===================== -->

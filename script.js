@@ -142,10 +142,12 @@ const trailBuds = document.querySelectorAll(".growth-trail__bud");
 const portalToggle = document.getElementById("portalToggle");
 const heroSection = document.getElementById("hero");
 const landingStage = document.getElementById("landingStage");
-const lotusToggle = document.getElementById("lotusToggle");
+const lotusCanvas = document.getElementById("lotusCanvas");
+const lotusStartCta = document.getElementById("lotusStartCta");
 const orbCluster = document.getElementById("orbCluster");
 const orbLines = document.getElementById("orbLines");
 const siteFooter = document.getElementById("siteFooter");
+const growthTrail = document.querySelector(".growth-trail");
 
 if (trailBuds.length && heroSection) {
   const sectionMeta = Array.from(trailBuds).map((bud) => ({
@@ -189,10 +191,9 @@ if (trailBuds.length && heroSection) {
     });
   };
 
-  /* ---- the lotus + its 5 orbs ---- */
-  let lotusState = "closed"; // closed | animating | open
-  const WIGGLE_MS = 480;
-  const POP_MS = 950;
+  /* ---- the 3D lotus + its 5 orbs ---- */
+  let landingState = "idle"; // idle | activating | settled
+  const POP_MS = 950; // orb pop-out duration — also used as the delay before drawing the connecting lines
   const CLOSE_MS = 500;
 
   const clearOrbLines = () => {
@@ -246,6 +247,11 @@ if (trailBuds.length && heroSection) {
       });
     };
 
+    // Orb-to-orb only now (2026-10-01) — the motto words moved to two
+    // low-opacity corners specifically to recede behind the flower/orbs,
+    // so a bright line dragging a corner word back to centre would
+    // undercut that. This "constellation ring" around the flower is
+    // still worth keeping on its own.
     const orbEls = Array.from(orbCluster.querySelectorAll(".orb"));
     const orbCenters = orbEls.map(centerOf);
     for (let i = 0; i < orbCenters.length; i++) {
@@ -253,27 +259,10 @@ if (trailBuds.length && heroSection) {
         addLine(orbCenters[i], orbCenters[j], 0.3);
       }
     }
-
-    const wordEls = ["wordDesigning", "wordFelt", "wordValued"]
-      .map((id) => document.getElementById(id))
-      .filter(Boolean);
-    wordEls.forEach((word) => {
-      const wp = centerOf(word);
-      let nearest = null;
-      let nearestDist = Infinity;
-      orbCenters.forEach((oc) => {
-        const d = Math.hypot(oc.x - wp.x, oc.y - wp.y);
-        if (d < nearestDist) {
-          nearestDist = d;
-          nearest = oc;
-        }
-      });
-      if (nearest) addLine(wp, nearest, 0.55);
-    });
   };
 
   const positionOrbsAtLotus = () => {
-    if (!lotusToggle || !orbCluster) return;
+    if (!orbCluster) return;
     const orbs = Array.from(orbCluster.querySelectorAll(".orb"));
     // Reset first so getBoundingClientRect reads each orb's real resting
     // spot, not wherever it was left transformed to last time.
@@ -281,13 +270,21 @@ if (trailBuds.length && heroSection) {
       orb.style.setProperty("--ox", "0px");
       orb.style.setProperty("--oy", "0px");
     });
-    const lotusRect = lotusToggle.getBoundingClientRect();
-    const lotusCenter = { x: lotusRect.left + lotusRect.width / 2, y: lotusRect.top + lotusRect.height / 2 };
+    // The flower is always dead-centre of .orb-cluster (the camera always
+    // looks straight at it — see landing-3d.js), so that's the point
+    // every orb should visually "pop out of" — no dedicated lotus element
+    // to measure any more.
+    const clusterRect = orbCluster.getBoundingClientRect();
+    const origin = { x: clusterRect.left + clusterRect.width / 2, y: clusterRect.top + clusterRect.height / 2 };
     orbs.forEach((orb) => {
+      // About/the sun already rests exactly at that centre point, so it
+      // blooms in place instead of travelling outward like the other 4 —
+      // leaving its --ox/--oy at the 0px reset above does exactly that.
+      if (orb.classList.contains("orb--about")) return;
       const r = orb.getBoundingClientRect();
       const orbCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-      orb.style.setProperty("--ox", `${lotusCenter.x - orbCenter.x}px`);
-      orb.style.setProperty("--oy", `${lotusCenter.y - orbCenter.y}px`);
+      orb.style.setProperty("--ox", `${origin.x - orbCenter.x}px`);
+      orb.style.setProperty("--oy", `${origin.y - orbCenter.y}px`);
     });
   };
 
@@ -313,33 +310,60 @@ if (trailBuds.length && heroSection) {
   };
 
   const resetLanding = () => {
-    // Always closed again when you arrive at/return to the landing screen.
-    lotusState = "closed";
-    if (lotusToggle) {
-      lotusToggle.classList.remove("is-open", "is-wiggling");
-      lotusToggle.setAttribute("aria-pressed", "false");
+    // Always back to idle when you arrive at/return to the landing screen.
+    landingState = "idle";
+    if (landingStage) {
+      landingStage.classList.remove("is-settled");
+      delete landingStage.dataset.lotusState;
     }
+    document.body.classList.remove("is-transitioning");
+    // .is-vignette is NOT removed here — once the landing sequence has
+    // played once this session, the settled background stays (see
+    // styles.css). Only a reload clears it, same as landingState itself.
     if (orbCluster) orbCluster.classList.remove("is-visible", "is-closing");
     clearOrbLines();
+    // landing-3d.js owns tweening the camera/flower back to its idle side
+    // view — guarded since this file also runs on pages without the 3D
+    // scene, and in case the module hasn't finished loading yet.
+    window.lotusScene?.reset();
   };
 
-  if (lotusToggle && orbCluster) {
-    const triggerLotus = () => {
-      if (lotusState === "animating") return;
-      const opening = lotusState === "closed";
-      lotusState = "animating";
-      lotusToggle.classList.add("is-wiggling");
-      window.setTimeout(() => {
-        lotusToggle.classList.remove("is-wiggling");
-        lotusToggle.classList.toggle("is-open", opening);
-        lotusToggle.setAttribute("aria-pressed", String(opening));
-        if (opening) openOrbs();
-        else closeOrbs();
-        lotusState = opening ? "open" : "closed";
-      }, WIGGLE_MS);
+  if (orbCluster) {
+    // click → zoom/rotate the flower (landing-3d.js) → pop the orbs → fade
+    // in the motto. Guarded against double-firing (a second click mid-
+    // sequence, or the canvas *and* the hidden CTA firing for the same
+    // interaction) by landingState.
+    const triggerLanding = () => {
+      if (landingState !== "idle") return;
+      landingState = "activating";
+      if (landingStage) landingStage.dataset.lotusState = "activating";
+      document.body.classList.add("is-transitioning");
+      const activate = window.lotusScene?.activate;
+      // No 3D scene (module failed to load, WebGL unsupported, or the
+      // model itself failed — window.lotusScene.ready rejects in all of
+      // those cases) — skip straight to the orbs rather than getting
+      // stuck forever on a click that never resolves.
+      const zoomDone = typeof activate === "function" ? activate() : Promise.resolve();
+      Promise.resolve(zoomDone)
+        .catch(() => {})
+        .then(() => {
+          document.body.classList.replace("is-transitioning", "is-vignette");
+          openOrbs();
+          window.setTimeout(() => {
+            if (landingStage) {
+              landingStage.classList.add("is-settled");
+              delete landingStage.dataset.lotusState;
+            }
+            landingState = "settled";
+          }, POP_MS);
+        });
     };
-    lotusToggle.addEventListener("mouseenter", triggerLotus);
-    lotusToggle.addEventListener("click", triggerLotus);
+    if (lotusCanvas) {
+      lotusCanvas.addEventListener("click", triggerLanding);
+    }
+    if (lotusStartCta) {
+      lotusStartCta.addEventListener("click", triggerLanding);
+    }
 
     let resizeTimer = null;
     window.addEventListener("resize", () => {
@@ -358,6 +382,9 @@ if (trailBuds.length && heroSection) {
     // whichever section was shown.
     if (landingStage) landingStage.hidden = true;
     if (siteFooter) siteFooter.hidden = false;
+    // The side nav only appears once a section is actually open — not on
+    // the lotus landing screen itself.
+    if (growthTrail) growthTrail.hidden = false;
     resetLanding();
     homeSections.forEach((section) => {
       section.hidden = section.id !== id;
@@ -374,6 +401,7 @@ if (trailBuds.length && heroSection) {
     });
     if (landingStage) landingStage.hidden = false;
     if (siteFooter) siteFooter.hidden = true;
+    if (growthTrail) growthTrail.hidden = true;
     resetLanding();
     activeId = null;
     updateTrail();

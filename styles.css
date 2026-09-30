@@ -133,6 +133,39 @@ body::before {
   to   { transform: translate(3%, 4%) scale(1.08); }
 }
 
+/* One-off transition (2026-10-01), timed to the 3D lotus sequence by
+   script.js job 5: the blobs swirl/pulse harder while the camera zooms
+   into the flower, then settle permanently into a vignette hugging the
+   page's edges once it's done — see .lotus-canvas etc. above. */
+body.is-transitioning::before {
+  animation: ambient-transition 1.8s cubic-bezier(0.45, 0, 0.55, 1) 1 both;
+}
+
+@keyframes ambient-transition {
+  0%   { transform: translate(0, 0) scale(1);       opacity: var(--glow-strength); }
+  35%  { transform: translate(-4%, 3%) scale(1.15); opacity: calc(var(--glow-strength) * 1.6); }
+  70%  { transform: translate(5%, -3%) scale(0.95); opacity: calc(var(--glow-strength) * 1.3); }
+  100% { transform: translate(0, 0) scale(1.05);    opacity: var(--glow-strength); }
+}
+
+/* Permanent once the landing sequence has played once this session —
+   never removed by showLanding()'s reset (script.js), same way
+   lotusState always resets to closed on reload but this doesn't. */
+body.is-vignette::before {
+  animation: none;
+  inset: -20%;
+  background:
+    radial-gradient(60% 60% at 8% 12%, var(--ambient-1) 0%, transparent 72%),
+    radial-gradient(60% 60% at 92% 88%, var(--ambient-2) 0%, transparent 72%),
+    radial-gradient(48% 48% at 50% 50%, transparent 55%, var(--ambient-3) 100%);
+  opacity: calc(var(--glow-strength) * 0.85);
+  transition: opacity 0.9s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.is-transitioning::before { animation: none; }
+}
+
 img {
   display: block;
   max-width: 100%; /* stops images overflowing on small screens */
@@ -285,6 +318,15 @@ button:focus-visible,
   align-items: center;
   gap: 22px;
   z-index: 20;
+}
+
+/* Its own display:flex above has the same specificity as the browser's
+   default [hidden]{display:none} and comes later, so it silently wins —
+   same footgun as .landing-stage[hidden] elsewhere in this file. Without
+   this, script.js hiding the nav on the landing screen did nothing
+   visually. */
+.growth-trail[hidden] {
+  display: none;
 }
 
 .growth-trail::before {
@@ -473,20 +515,14 @@ button:focus-visible,
    .orb-cluster gets .is-visible. Desktop only, like the lotus.
    ------------------------------------------------------------- */
 .orb-cluster {
-  /* Sits inside .landing-stage's flex column now, not independently
-     fixed to the viewport — see the note above .landing-stage. Wide and
-     tall (clamped to viewport size) so About/Experience/Contact can sit
-     near the top corners and Skills/Case Studies lower, the same spread
-     scatter Mónica's reference shows — while staying entirely below the
-     hero text in the stack, so it can't climb back into it. */
-  /* width: 100% (not a vw value) so it's relative to .landing-stage's
-     own (already margin-aware) width, not the raw viewport — otherwise
-     it can overflow past the page's own left/right margins. */
-  position: relative;
-  flex: none;
+  /* Full-bleed over .landing-stage, same box as .lotus-canvas — the
+     camera always looks straight at the flower's centre, so the flower
+     is always dead-centre of this box too, at every point in the
+     sequence. That's what lets the per-orb positions below stay simple,
+     static percentages instead of real 3D-to-screen projection math. */
+  position: absolute;
+  inset: 0;
   z-index: 9;
-  width: min(1400px, 100%);
-  height: clamp(260px, 46vh, 460px);
   pointer-events: none;
 }
 
@@ -556,15 +592,17 @@ button:focus-visible,
   border-radius: 50%;
 }
 
-/* Each orb's own colour (sampled from its image) and its position on an
-   arc, evenly spaced by angle (37.5° apart, fanning out ±75° from
-   straight up) around the lotus below — equal spacing between every
-   orb, instead of the old hand-placed scatter. */
-.orb--experience{ --orb-glow: #00FFBD; left: 17.2%; top: 76.2%; }
-.orb--skills    { --orb-glow: #F960CA; left: 29.3%; top: 27%; }
-.orb--about     { --orb-glow: #F49625; left: 50%;   top: 8%; }
-.orb--case-studies { --orb-glow: #A471F0; left: 70.7%; top: 27%; }
-.orb--contact   { --orb-glow: #3FE4FA; left: 82.8%; top: 76.2%; }
+/* Each orb's own colour (sampled from its image) and its position
+   around the flower, now that it's always dead-centre of the stage
+   (2026-10-01): the 4 non-About orbs sit at the cardinal points (N/E/S/W,
+   equal spacing around the centre); About/the sun stays exactly where
+   the flower itself is (see the --ox/--oy exemption in script.js), so it
+   blooms in place rather than travelling outward like the other four. */
+.orb--skills        { --orb-glow: #F960CA; left: 50%; top: 16%; } /* N */
+.orb--case-studies  { --orb-glow: #A471F0; left: 82%; top: 50%; } /* E */
+.orb--experience    { --orb-glow: #00FFBD; left: 50%; top: 84%; } /* S */
+.orb--contact       { --orb-glow: #3FE4FA; left: 18%; top: 50%; } /* W */
+.orb--about         { --orb-glow: #F49625; left: 50%; top: 50%; } /* centre */
 
 @keyframes orb-float {
   0%, 100% { margin-top: 0; }
@@ -580,78 +618,252 @@ button:focus-visible,
 }
 
 /* -------------------------------------------------------------
-   LOTUS — the source the 5 orbs "pop out of," so it now sits
-   bottom-centre instead of the corner. Closed by default; the first
-   hover or click wiggles it, then opens it and pops the orbs out;
-   the next hover or click wiggles, then pops them back in and closes
-   (script.js job 5).
+   3D LOTUS (2026-10-01) — the landing screen's whole opening act on
+   desktop. landing-3d.js renders the flower into #lotusCanvas, full-
+   bleed over .landing-stage; everything here is the 2D dressing around
+   it (glow, vignette, hint text, the real click target). See the
+   z-index table in PROJECT.md for how these layers stack.
    ------------------------------------------------------------- */
-.lotus {
-  /* Sits inside .landing-stage's flex column, last item — see the note
-     above .landing-stage. Sized with clamp() so it shrinks on shorter
-     screens along with .orb-cluster, instead of getting pushed off.
-     Exactly double .orb__img's clamp() (same vh coefficient, doubled),
-     so the lotus always reads as bigger than any orb, at any screen
-     size, since it's what they "come from". */
-  position: relative;
-  flex: none;
-  width: clamp(120px, 16vh, 180px);
-  height: clamp(120px, 16vh, 180px);
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  z-index: 10;
-  filter: drop-shadow(0 0 24px color-mix(in srgb, var(--color-violet) 35%, transparent));
-}
-
-.lotus.is-wiggling {
-  animation: lotus-wiggle 0.48s ease-in-out;
-}
-
-@keyframes lotus-wiggle {
-  0%, 100% { transform: rotate(0deg); }
-  20% { transform: rotate(-6deg); }
-  40% { transform: rotate(5deg); }
-  60% { transform: rotate(-4deg); }
-  80% { transform: rotate(3deg); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .lotus.is-wiggling { animation: none; }
-}
-
-.lotus__img {
+.lotus-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  transition: opacity 0.8s ease;
+  z-index: 5;
+  display: block;
 }
 
-.lotus__img--open {
+/* Shape-hugging glow behind the canvas — the renderer is alpha-
+   transparent outside the flower's own silhouette, so this shows
+   through as a halo around its actual shape, no masking needed. */
+.lotus-spotlight {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  background: radial-gradient(38% 38% at 50% 50%, var(--color-violet) 0%, transparent 70%);
+  filter: blur(60px);
+  mix-blend-mode: screen;
+  animation: lotus-pulse 3.2s ease-in-out infinite;
+}
+
+@keyframes lotus-pulse {
+  0%, 100% { opacity: 0.35; transform: scale(1); }
+  50%      { opacity: 0.6;  transform: scale(1.08); }
+}
+
+/* Darkens the edges so the eye is pulled to the lit centre — the other
+   half of the "how do you know it's clickable" answer, alongside the
+   spotlight and the hint text below. */
+.lotus-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: radial-gradient(ellipse at center, transparent 32%, rgba(5, 3, 24, 0.6) 82%);
+}
+
+.lotus-hint {
+  position: absolute;
+  left: 50%;
+  bottom: 12%;
+  transform: translateX(-50%);
+  z-index: 6;
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  opacity: 0.8;
+  animation: lotus-pulse 3.2s ease-in-out infinite;
+  transition: opacity 0.3s ease;
+}
+
+.landing-stage.is-settled .lotus-hint,
+.landing-stage[data-lotus-state="activating"] .lotus-hint {
+  /* animation: none first — the pulse keyframe drives opacity every
+     frame while it's running, which otherwise overrides the opacity: 0
+     below for as long as the animation keeps ticking. */
+  animation: none;
   opacity: 0;
+  pointer-events: none;
 }
 
-.lotus.is-open .lotus__img--closed {
-  opacity: 0;
+/* The real, keyboard-focusable way to start the sequence — the canvas
+   itself is aria-hidden (a picture, not a control), so this is what a
+   screen-reader or keyboard-only visitor actually reaches. Same
+   visually-hidden-but-focusable technique as .skip-link. */
+.lotus-start-cta {
+  position: absolute;
+  z-index: 6;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: none;
 }
 
-.lotus.is-open .lotus__img--open {
+.lotus-start-cta:focus-visible {
+  width: auto;
+  height: auto;
+  margin: 0;
+  clip: auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0.6rem 1.2rem;
+  background: var(--color-accent);
+  color: var(--color-accent-text);
+  border-radius: var(--radius);
+  outline: 3px solid var(--color-text);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lotus-spotlight, .lotus-hint { animation: none; }
+}
+
+/* Mobile never runs the 3D scene (see the max-width:900px rule below) —
+   this static image stands in for it instead. */
+.lotus-still {
+  display: none;
+}
+
+/* Same fallback as mobile, but for WebGL failing/being unavailable on
+   ANY screen size (landing-3d.js adds this class if the renderer can't
+   be created or the model fails to load) — reuses the identical static-
+   image treatment rather than a second parallel "no-3D" layout. Note:
+   .lotus-start-cta is deliberately NOT in this hide-list — see the
+   visible-button override a few rules down, it's the real click target
+   here since the static image has no interaction of its own. */
+html.no-webgl .lotus-canvas,
+html.no-webgl .lotus-spotlight,
+html.no-webgl .lotus-vignette,
+html.no-webgl .lotus-hint {
+  display: none;
+}
+
+html.no-webgl .lotus-still {
+  display: block;
+  position: relative;
+  z-index: 5;
+  width: clamp(140px, 45vw, 220px);
+  margin: 3rem auto 1rem;
+  animation: lotus-pulse-2d 3.4s ease-in-out infinite;
+}
+
+html.no-webgl .landing-motto {
+  position: static;
   opacity: 1;
+  pointer-events: auto;
+  padding-inline: 1.25rem;
 }
 
-.lotus:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 6px;
-  border-radius: 50%;
+html.no-webgl .landing-motto__line {
+  position: static;
+  max-width: none;
+  font-size: clamp(1.6rem, 6vw, 2.2rem);
+  opacity: 1;
+  text-align: left !important;
+}
+
+/* The real click target when the WebGL scene is unavailable: the static
+   image is decorative only (aria-hidden), so without this the only way
+   in would be tabbing blind to a visually-hidden button. Un-hides
+   .lotus-start-cta (normally visible-on-focus-only, like .skip-link) and
+   gives it ordinary visible-button styling, sitting right under the
+   image. The same override is repeated for the mobile breakpoint below,
+   since mobile always shows the static image too. */
+html.no-webgl .lotus-start-cta {
+  position: relative;
+  z-index: 5;
+  display: block;
+  width: auto;
+  height: auto;
+  margin: 0 auto 2rem;
+  padding: 0.6rem 1.4rem;
+  clip: auto;
+  overflow: visible;
+  white-space: normal;
+  background: var(--color-surface-strong);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.no-webgl .lotus-still { animation: none; }
 }
 
 @media (max-width: 900px) {
-  .lotus {
+  .lotus-canvas,
+  .lotus-spotlight,
+  .lotus-vignette,
+  .lotus-hint {
     display: none;
   }
+
+  .lotus-still {
+    display: block;
+    position: relative;
+    z-index: 5;
+    width: clamp(140px, 45vw, 220px);
+    margin: 3rem auto 1rem;
+    animation: lotus-pulse-2d 3.4s ease-in-out infinite;
+  }
+
+  /* Same visible-button override as html.no-webgl above — the static
+     image has no click behaviour of its own, this is the real target. */
+  .lotus-start-cta {
+    position: relative;
+    z-index: 5;
+    display: block;
+    width: auto;
+    height: auto;
+    margin: 0 auto 2rem;
+    padding: 0.6rem 1.4rem;
+    clip: auto;
+    overflow: visible;
+    white-space: normal;
+    background: var(--color-surface-strong);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  @keyframes lotus-pulse-2d {
+    0%, 100% { transform: scale(1); opacity: 0.92; }
+    50%      { transform: scale(1.04); opacity: 1; }
+  }
+
+  /* The motto isn't hidden-until-activated on phones — there's no click-
+     to-reveal sequence here, so it should just read normally, in flow. */
+  .landing-motto {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    padding-inline: 1.25rem;
+  }
+
+  .landing-motto__line {
+    position: static;
+    max-width: none;
+    font-size: clamp(1.6rem, 6vw, 2.2rem);
+    opacity: 1;
+    text-align: left !important;
+  }
+}
+
+@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
+  .lotus-still { animation: none; }
 }
 
 /* -------------------------------------------------------------
@@ -667,17 +879,15 @@ button:focus-visible,
 .landing-stage {
   /* Normal flow (not fixed) so it reserves real space and the footer
      still lands right after it, like before — min-height just makes
-     that reserved space roughly one screen tall, so hero/orbs/lotus have
-     room to spread out and centre themselves via flexbox. position:
-     relative makes it the containing block for .orb-lines (absolute),
-     so the lines scroll and size together with the orbs. */
+     that reserved space roughly one screen tall. position: relative
+     makes it the containing block for everything inside it (the 3D
+     canvas, the orb cluster, the motto, the orb-connecting lines) —
+     they're all position:absolute layers now, stacked full-bleed on
+     top of each other rather than flowing in a flex column, since the
+     3D flower is always dead-centre of this box at every point in the
+     sequence (the camera always looks straight at it). */
   position: relative;
   min-height: calc(100vh - 64px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(0.25rem, 1.5vh, 1rem);
   overflow: hidden;
 }
 
@@ -690,23 +900,25 @@ button:focus-visible,
 }
 
 /* -------------------------------------------------------------
-   HERO (the big intro at the top of the home page)
+   HERO — now just a positioning box for the background logo mark.
+   The eyebrow/title that used to live here moved into .landing-motto
+   below (2026-10-01).
    ------------------------------------------------------------- */
 .hero {
-  position: relative;
+  position: absolute;
+  inset: 0;
   isolation: isolate;
   overflow: hidden;
-  flex: none;
-  padding-block: 1rem;
+  pointer-events: none;
+  z-index: 0; /* ambient texture, behind the 3D canvas (z-index 5) */
 }
 
-/* Mónica's own personal-brand mark, centred behind the hero text —
-   deliberately NOT mouse-reactive (that's reserved for About). */
+/* Mónica's own personal-brand mark, centred behind the whole landing
+   scene — deliberately NOT mouse-reactive (that's reserved for About). */
 .hero__logo-bg {
   position: absolute;
   top: 50%;
   left: 50%;
-  z-index: -1;
   /* max-width + max-height (with width/height left to auto) is what makes
      an image "fit inside a box" without cropping, keeping its own aspect
      ratio — a fixed width alone was taller than .hero and getting cut off
@@ -722,6 +934,7 @@ button:focus-visible,
 }
 
 .hero__eyebrow {
+  display: block;
   color: var(--color-accent);
   text-transform: uppercase;
   letter-spacing: 0.16em;
@@ -730,17 +943,56 @@ button:focus-visible,
   margin-bottom: 0.6rem;
 }
 
-.hero__title {
+/* -------------------------------------------------------------
+   LANDING MOTTO (2026-10-01) — the old single centred .hero__title
+   split into two low-opacity corner pieces that fade in *behind* the
+   3D flower/orbs once the landing sequence settles (see .is-settled,
+   set by script.js job 5). Deliberately not part of the "nothing else
+   on screen" idle state — it only appears after the flower has opened.
+   ------------------------------------------------------------- */
+.landing-motto {
+  position: absolute;
+  inset: 0;
+  z-index: 1; /* behind the spotlight/canvas/vignette/orbs, in front of .hero's ambient logo */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 1.1s ease;
+}
+
+.landing-stage.is-settled .landing-motto {
+  opacity: 1;
+}
+
+.landing-motto__line {
+  position: absolute;
   font-family: var(--font-display);
-  /* Her reference boards (Thanks Sweetie, Bloom Brightly) pair a
-     comfortable MEDIUM sans with a script that's bold in its own right —
-     not a thin sans propping up the script. 300 read as weak; 600 is the
-     medium/semibold middle ground. */
   font-weight: 600;
-  font-size: clamp(2.1rem, 4.8vw, 3.6rem); /* grows with screen size */
-  line-height: 1.15;
-  letter-spacing: -0.01em;
-  max-width: 21ch;
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  line-height: 1.2;
+  max-width: 24ch;
+  opacity: 0.55; /* stays low even once faded in — it's meant to recede */
+}
+
+.landing-motto__line--tl {
+  top: 6%;
+  left: 5%;
+}
+
+.landing-motto__line--br {
+  bottom: 6%;
+  right: 5%;
+  text-align: right;
+}
+
+.landing-motto__text {
+  display: block;
+  background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--gradient-end));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.landing-motto__line--br {
   background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--gradient-end));
   -webkit-background-clip: text;
   background-clip: text;
@@ -751,7 +1003,7 @@ button:focus-visible,
    Pinyon Script, per Mónica's request. Neither Pinyon nor Great Vibes has
    a bold cut (a stroke was tried earlier to fake one; she didn't like it —
    wrong colour against the gradient, still didn't read as bolder), so the
-   weight balance comes from .hero__title's own weight (600) instead,
+   weight balance comes from the motto's own weight (600) instead,
    matching her reference boards where the straight font sits at a
    comfortable medium, not razor-thin. */
 .hero__accent {
