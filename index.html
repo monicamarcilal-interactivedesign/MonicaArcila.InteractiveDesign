@@ -35,19 +35,24 @@
   <link rel="stylesheet" href="styles.css" />
 
   <!-- The 3D lotus on the landing screen (landing-3d.js) uses Three.js,
-       loaded straight from a CDN as real ES modules — no build step, same
-       "just open index.html" workflow as the rest of the site. Pinned to
-       an exact version since there's no lockfile to catch a breaking
-       update later. -->
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-    }
-  }
-  </script>
-  <script type="module" src="landing-3d.js"></script>
+       loaded straight from a CDN — no build step, same "just open
+       index.html" workflow as the rest of the site. Deliberately the
+       OLDER classic (non-module) build, not the newer ES-module one:
+       Edge/Chrome flatly refuse to fetch a `type="module"` script at all
+       when the page itself was opened via double-click (file://) —
+       confirmed directly in the browser console, "Cross origin requests
+       are only supported for protocol schemes: ... http, https ...".
+       Plain `<script src>` tags like these aren't subject to that rule,
+       so this is what makes the 3D scene actually work on double-click,
+       not just when served from something like GitHub Pages. `defer` on
+       all four keeps them running in this order, after the page's HTML
+       (so landing-3d.js can find #lotusCanvas), matching how the ES-module
+       version used to behave automatically. Pinned to an exact version
+       since there's no lockfile to catch a breaking update later. -->
+  <script src="https://unpkg.com/three@0.140.0/build/three.min.js" defer></script>
+  <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/GLTFLoader.js" defer></script>
+  <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/OBJLoader.js" defer></script>
+  <script src="landing-3d.js" defer></script>
 </head>
 <body>
 

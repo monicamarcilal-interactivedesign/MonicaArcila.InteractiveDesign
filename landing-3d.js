@@ -22,16 +22,24 @@
    script.js job 5 calls these three and nothing else — it doesn't
    know or care whether the model is a .glb or a raw .obj+textures.
 
-   PROGRESSIVE ENHANCEMENT: if this script never runs (module loading
-   blocked, WebGL unsupported, the CDN unreachable), #lotusCanvas just
-   sits there empty. Nothing else on the page depends on it loading —
-   the orb/section navigation in script.js guards every call to
-   window.lotusScene with `?.` and a same-tick fallback, and on phones
-   (≤900px) this file's canvas is hidden by CSS and a static image
-   takes its place instead (see .lotus-still in styles.css).
+   PROGRESSIVE ENHANCEMENT: if this script never runs (WebGL unsupported,
+   the CDN unreachable), #lotusCanvas just sits there empty. Nothing else
+   on the page depends on it loading — the orb/section navigation in
+   script.js guards every call to window.lotusScene with `?.` and a
+   same-tick fallback, and on phones (≤900px) this file's canvas is
+   hidden by CSS and a static image takes its place instead (see
+   .lotus-still in styles.css).
+
+   NOT an ES module (deliberately): see the comment above this file's
+   <script> tag in index.html for why. `THREE` below is a plain global,
+   already defined by the classic Three.js build loaded just before this
+   file. Everything else in this file is wrapped in one IIFE so none of
+   its own names leak into — or collide with — script.js's globals (it
+   already tried to declare its own top-level `prefersReducedMotion`,
+   same as script.js does, before this was added).
    ============================================================= */
 
-import * as THREE from "three";
+(function () {
 
 const canvas = document.getElementById("lotusCanvas");
 
@@ -162,13 +170,11 @@ function buildScene() {
    ------------------------------------------------------------- */
 async function loadLotusModel() {
   if (MODEL_CONFIG.type === "glb") {
-    const { GLTFLoader } = await import("three/addons/loaders/GLTFLoader.js");
-    const gltf = await new GLTFLoader().loadAsync(MODEL_CONFIG.glb.url);
+    const gltf = await new THREE.GLTFLoader().loadAsync(MODEL_CONFIG.glb.url);
     return gltf.scene;
   }
 
-  const { OBJLoader } = await import("three/addons/loaders/OBJLoader.js");
-  const obj = await new OBJLoader().loadAsync(MODEL_CONFIG.obj.url);
+  const obj = await new THREE.OBJLoader().loadAsync(MODEL_CONFIG.obj.url);
   const loader = new THREE.TextureLoader();
   const tex = (url) => {
     const t = loader.load(url);
@@ -378,3 +384,5 @@ window.lotusScene = { ready, activate, reset };
 // callers await window.lotusScene.ready directly; re-assign so it's
 // always the live promise rather than whatever it was at this exact line.
 Object.defineProperty(window.lotusScene, "ready", { get: () => ready });
+
+})();
