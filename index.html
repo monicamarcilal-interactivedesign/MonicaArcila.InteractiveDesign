@@ -169,6 +169,10 @@
          site's desktop-only extras. -->
     <div class="landing-stage" id="landingStage">
       <canvas class="lotus-canvas" id="lotusCanvas" aria-hidden="true"></canvas>
+      <!-- Fades in only once settled (.is-settled) — softens/blurs the
+           flower underneath so the motto and orbs stop competing with its
+           saturation. See .lotus-scrim in styles.css. -->
+      <div class="lotus-scrim" aria-hidden="true"></div>
       <div class="lotus-spotlight" aria-hidden="true"></div>
       <div class="lotus-vignette" aria-hidden="true"></div>
       <p class="lotus-hint" id="lotusHint">Click to begin</p>
@@ -189,11 +193,11 @@
       <!-- Split in two (2026-10-01) so each half can sit in its own
            corner, low-opacity, behind the flower/orbs — see
            .landing-motto in styles.css. Word-span IDs kept as-is. The
-           eyebrow label moved in here too, above the first line, since
-           it always read as one unit with the motto. -->
+           "Interactive Designer" eyebrow that used to sit above this was
+           removed (2026-10-01, Mónica's call) — it's still said plainly in
+           the About section and the page <title>. -->
       <div class="landing-motto" id="landingMotto">
         <p class="landing-motto__line landing-motto__line--tl">
-          <span class="hero__eyebrow">Interactive Designer</span>
           <span class="landing-motto__text"><span class="hero__accent hero__word" id="wordDesigning">Designing</span> to be <span class="hero__accent hero__word" id="wordFelt">felt</span> and <span class="hero__accent hero__word" id="wordValued">valued</span>,</span>
         </p>
         <p class="landing-motto__line landing-motto__line--br">not just seen.</p>

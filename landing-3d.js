@@ -130,7 +130,7 @@ function initRenderer() {
   // instead of rolling off smoothly — that clipping is most of what was
   // reading as "harsh/oversaturated/cheap" rather than soft and filmic.
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 0.9;
+  renderer.toneMappingExposure = 0.8;
   resizeRenderer();
   window.addEventListener("resize", resizeRenderer);
 }
@@ -150,6 +150,7 @@ function resizeRenderer() {
   // rendering any more, so a resize at that point would otherwise leave
   // the canvas blank until the next click.
   render();
+  updateOrbAnchor(); // the flower's on-screen size just changed too
 }
 
 function buildScene() {
@@ -180,6 +181,16 @@ function buildScene() {
 async function loadLotusModel() {
   if (MODEL_CONFIG.type === "glb") {
     const gltf = await new THREE.GLTFLoader().loadAsync(MODEL_CONFIG.glb.url);
+    // The baked texture itself is a fairly hard, glossy neon — nudging
+    // roughness up and metalness down softens the sharp specular
+    // "sparkle" that was reading as rough/cheap, without touching the
+    // texture (colour/identity) itself (2026-10-01, Mónica's call).
+    gltf.scene.traverse((child) => {
+      if (!child.isMesh || !child.material) return;
+      const mat = child.material;
+      if (typeof mat.roughness === "number") mat.roughness = Math.min(1, mat.roughness + 0.3);
+      if (typeof mat.metalness === "number") mat.metalness = Math.max(0, mat.metalness - 0.25);
+    });
     return gltf.scene;
   }
 
@@ -214,13 +225,65 @@ async function loadLotusModel() {
 const IDLE_POLAR = Math.PI / 2;
 const END_POLAR = THREE.MathUtils.degToRad(28);
 const END_AZIMUTH_SWEEP = THREE.MathUtils.degToRad(15);
-const IDLE_DIST_FACTOR = 2.4;
-const END_DIST_FACTOR = 1.5;
+// Idle starts farther back (smaller flower, more room for the zoom to
+// travel) and settles farther out too (2026-10-01, Mónica's call) — she
+// wanted to almost see the whole flower once it's settled, not just a
+// close crop of the centre.
+const IDLE_DIST_FACTOR = 3.4;
+const END_DIST_FACTOR = 2.0;
 
 function setCamera(polar, azimuth, distFactor) {
   const dist = modelRadius * distFactor;
   camera.position.setFromSphericalCoords(dist, polar, azimuth).add(modelCenter);
   camera.lookAt(modelCenter);
+}
+
+// Projects the flower's own bounding box onto the screen and exposes how
+// far its silhouette roughly extends from the centre, in px, as a CSS
+// variable — so the orb ring in styles.css can anchor itself to the
+// flower's *actual* rendered size at any screen size/aspect ratio,
+// instead of fixed percentages that drift relative to it on very wide or
+// very narrow screens. Set on <html> (not the canvas) since the orbs
+// live outside the canvas in the DOM and need to inherit it.
+//
+// Uses the box's 6 FACE CENTRES, not its 8 corners or its bounding-
+// SPHERE radius (modelRadius) — both of those tried-and-rejected options
+// overshoot badly for a wide, flat, non-cubic shape like this flower: a
+// box corner needs all three axes at their extreme simultaneously (no
+// point on the actual mesh does that at once), and the sphere radius is
+// sized by the box's full diagonal. Both pushed the orbs well outside
+// the flower's real silhouette, off-screen entirely on the first two
+// passes of this. A face centre only has ONE axis at its extreme, which
+// tracks the visible edge much more closely.
+function updateOrbAnchor() {
+  if (!model || !camera || !canvas || !canvas.clientHeight) return;
+  const box = new THREE.Box3().setFromObject(model);
+  if (box.isEmpty()) return;
+  const toPx = (v) => {
+    const p = v.clone().project(camera);
+    return {
+      x: (p.x * 0.5 + 0.5) * canvas.clientWidth,
+      y: (1 - (p.y * 0.5 + 0.5)) * canvas.clientHeight,
+    };
+  };
+  const centerPx = toPx(modelCenter);
+  const faceCenters = [
+    new THREE.Vector3(box.max.x, modelCenter.y, modelCenter.z),
+    new THREE.Vector3(box.min.x, modelCenter.y, modelCenter.z),
+    new THREE.Vector3(modelCenter.x, box.max.y, modelCenter.z),
+    new THREE.Vector3(modelCenter.x, box.min.y, modelCenter.z),
+    new THREE.Vector3(modelCenter.x, modelCenter.y, box.max.z),
+    new THREE.Vector3(modelCenter.x, modelCenter.y, box.min.z),
+  ];
+  let maxDist = 0;
+  faceCenters.forEach((point) => {
+    const p = toPx(point);
+    const d = Math.hypot(p.x - centerPx.x, p.y - centerPx.y);
+    if (d > maxDist) maxDist = d;
+  });
+  if (Number.isFinite(maxDist) && maxDist > 0) {
+    document.documentElement.style.setProperty("--flower-radius", `${maxDist}px`);
+  }
 }
 
 function frameCameraToModel() {
@@ -231,6 +294,7 @@ function frameCameraToModel() {
   const sphere = box.getBoundingSphere(new THREE.Sphere());
   modelRadius = Math.max(sphere.radius, 0.01);
   setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR);
+  updateOrbAnchor();
 }
 
 /* -------------------------------------------------------------
@@ -277,6 +341,7 @@ async function activate() {
     model.rotation.y = THREE.MathUtils.degToRad(50);
     setCamera(END_POLAR, idleAngle + END_AZIMUTH_SWEEP, END_DIST_FACTOR);
     render();
+    updateOrbAnchor();
     await tween(150, () => render());
     return;
   }
@@ -292,15 +357,19 @@ async function activate() {
   // Phase B — zoom + rotate: camera orbits in toward a near-top view
   // while the flower spins on its own Y axis — the two together are
   // what reads as "the flower turns on its own axis as the camera
-  // closes in", not just a push-in.
+  // closes in", not just a push-in. Longer than the first pass
+  // (2026-10-01, Mónica's call) — starting farther back gives it more
+  // distance to cover, so stretching the duration too keeps the motion
+  // itself feeling unhurried rather than just rushing to cover more ground.
   const startAzimuth = idleAngle;
-  await tween(1800, (t) => {
+  await tween(2600, (t) => {
     const polar = THREE.MathUtils.lerp(IDLE_POLAR, END_POLAR, t);
     const azimuth = THREE.MathUtils.lerp(startAzimuth, startAzimuth + END_AZIMUTH_SWEEP, t);
     setCamera(polar, azimuth, THREE.MathUtils.lerp(IDLE_DIST_FACTOR, END_DIST_FACTOR, t));
     model.rotation.y = THREE.MathUtils.lerp(0, THREE.MathUtils.degToRad(50), t);
     render();
   });
+  updateOrbAnchor(); // flower's on-screen size just changed — the orbs pop out right after this
 }
 
 async function reset() {

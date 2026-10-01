@@ -195,6 +195,13 @@ if (trailBuds.length && heroSection) {
   let landingState = "idle"; // idle | activating | settled
   const POP_MS = 950; // orb pop-out duration — also used as the delay before drawing the connecting lines
   const CLOSE_MS = 500;
+  // Pure black until the flower settles into its final pose (2026-10-01,
+  // see body.landing-veil in styles.css) — removed the moment
+  // triggerLanding() applies .is-vignette below, so the background reveal
+  // is timed to that exact beat. Only ever added once, here, on load —
+  // a returning visit to the landing screen (resetLanding()) doesn't
+  // bring it back, same as .is-vignette never being removed.
+  document.body.classList.add("landing-veil");
 
   const clearOrbLines = () => {
     if (!orbLines) return;
@@ -348,6 +355,7 @@ if (trailBuds.length && heroSection) {
         .catch(() => {})
         .then(() => {
           document.body.classList.replace("is-transitioning", "is-vignette");
+          document.body.classList.remove("landing-veil");
           openOrbs();
           window.setTimeout(() => {
             if (landingStage) {
