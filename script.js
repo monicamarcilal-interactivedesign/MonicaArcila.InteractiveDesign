@@ -148,6 +148,7 @@ const orbCluster = document.getElementById("orbCluster");
 const orbLines = document.getElementById("orbLines");
 const siteFooter = document.getElementById("siteFooter");
 const growthTrail = document.querySelector(".growth-trail");
+const lotusStill = document.querySelector(".lotus-still");
 
 if (trailBuds.length && heroSection) {
   const sectionMeta = Array.from(trailBuds).map((bud) => ({
@@ -260,7 +261,8 @@ if (trailBuds.length && heroSection) {
     // undercut that. This "constellation ring" around the flower is
     // still worth keeping on its own.
     const orbEls = Array.from(orbCluster.querySelectorAll(".orb"));
-    const orbCenters = orbEls.map(centerOf);
+    // Icon centres, not the whole orb box (which includes the label hanging below).
+    const orbCenters = orbEls.map((orb) => centerOf(orb.querySelector(".orb__img") || orb));
     for (let i = 0; i < orbCenters.length; i++) {
       for (let j = i + 1; j < orbCenters.length; j++) {
         addLine(orbCenters[i], orbCenters[j], 0.3);
@@ -288,7 +290,8 @@ if (trailBuds.length && heroSection) {
       // blooms in place instead of travelling outward like the other 4 —
       // leaving its --ox/--oy at the 0px reset above does exactly that.
       if (orb.classList.contains("orb--about")) return;
-      const r = orb.getBoundingClientRect();
+      // The icon's centre — the orb's own box also includes its label.
+      const r = (orb.querySelector(".orb__img") || orb).getBoundingClientRect();
       const orbCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
       orb.style.setProperty("--ox", `${origin.x - orbCenter.x}px`);
       orb.style.setProperty("--oy", `${origin.y - orbCenter.y}px`);
@@ -372,6 +375,11 @@ if (trailBuds.length && heroSection) {
     if (lotusStartCta) {
       lotusStartCta.addEventListener("click", triggerLanding);
     }
+    // Fallback only (html.no-webgl): the static image stands in for the
+    // flower, so tapping it should start the sequence just like the canvas.
+    if (lotusStill) {
+      lotusStill.addEventListener("click", triggerLanding);
+    }
 
     let resizeTimer = null;
     window.addEventListener("resize", () => {
@@ -393,6 +401,12 @@ if (trailBuds.length && heroSection) {
     // The side nav only appears once a section is actually open — not on
     // the lotus landing screen itself.
     if (growthTrail) growthTrail.hidden = false;
+    // Phones use the top header instead of the side rail: it only shows once
+    // a section is open, same as the side rail (see body.is-landing in styles.css).
+    document.body.classList.remove("is-landing");
+    // Skipped the landing sequence (a direct link, or just tapped an orb):
+    // nothing left to reveal, so don't leave the background black.
+    document.body.classList.remove("landing-veil");
     resetLanding();
     homeSections.forEach((section) => {
       section.hidden = section.id !== id;
@@ -410,11 +424,26 @@ if (trailBuds.length && heroSection) {
     if (landingStage) landingStage.hidden = false;
     if (siteFooter) siteFooter.hidden = true;
     if (growthTrail) growthTrail.hidden = true;
+    document.body.classList.add("is-landing");
+    // Back on the landing screen before its reveal has ever played: black again.
+    if (!document.body.classList.contains("is-vignette")) document.body.classList.add("landing-veil");
     resetLanding();
     activeId = null;
     updateTrail();
     window.scrollTo(0, 0);
   };
+
+  // On phones the header's name/logo is the way back to the lotus (the
+  // side rail's lotus icon doesn't exist there). Same scene switch as the
+  // desktop icon, instead of a page reload that would replay the whole
+  // black intro.
+  const navLogo = document.querySelector(".nav__logo");
+  if (navLogo) {
+    navLogo.addEventListener("click", (event) => {
+      event.preventDefault();
+      showLanding();
+    });
+  }
 
   if (portalToggle) {
     // It's a real <a href="index.html"> now (so the same markup works

@@ -140,15 +140,11 @@ body::before {
    thing visible until it settles. script.js removes this class at the
    exact moment it applies .is-vignette below (the flower's final pose),
    so the reveal is timed to the landing sequence, not the page load.
-   Desktop-with-webgl only — there's no zoom sequence to time a reveal
-   against on mobile or without WebGL, so those just show the normal
-   background from the start. */
+   Same on phones as on desktop (2026-10-04). Skipped only without WebGL,
+   where there's no zoom to time a reveal against, so the normal
+   background just shows from the start. */
 body.landing-veil::before {
   opacity: 0;
-}
-
-@media (max-width: 900px) {
-  body.landing-veil::before { opacity: var(--glow-strength); }
 }
 
 html.no-webgl body.landing-veil::before {
@@ -544,6 +540,15 @@ button:focus-visible,
 }
 
 .orb {
+  /* Zero-width on purpose (2026-10-04): `left` then marks the icon's
+     horizontal CENTRE instead of its left edge, because the icon and
+     label (centred by align-items) overflow equally on both sides. With a
+     normal width, every orb sat half its own width to the right of where
+     its position said — so the ring was lopsided (right-hand orbs ran
+     off the edge of a phone) and "About" was never truly centred. The
+     vertical equivalent is the - var(--orb-size) / 2 in each `top`. */
+  --orb-size: clamp(56px, 8vh, 80px);
+  width: 0;
   position: absolute;
   display: flex;
   flex-direction: column;
@@ -582,7 +587,9 @@ button:focus-visible,
    clamp() so the lotus always reads as the bigger shape the orbs came
    from — at any screen size, not just the ones we happened to test. */
 .orb__img {
-  width: clamp(56px, 8vh, 80px);
+  width: var(--orb-size);
+  max-width: none; /* the global img { max-width: 100% } would resolve to 0 inside the zero-width orb */
+  flex-shrink: 0;
   height: auto;
   /* More saturated/noticeable (2026-10-01) — a second, wider glow layer
      underneath the tight one, plus a straight saturation boost, so each
@@ -612,7 +619,12 @@ button:focus-visible,
   filter: drop-shadow(0 16px 26px rgba(0, 0, 0, 0.55)) drop-shadow(0 0 30px var(--orb-glow, transparent));
 }
 
+/* The orb itself is zero-width now, so the focus ring goes on its icon. */
 .orb:focus-visible {
+  outline: none;
+}
+
+.orb:focus-visible .orb__img {
   outline: 2px solid var(--color-accent);
   outline-offset: 4px;
   border-radius: 50%;
@@ -633,16 +645,29 @@ button:focus-visible,
 .orb--case-studies  { --orb-glow: #A471F0; --orb-angle: 45deg; }   /* SE */
 .orb--experience    { --orb-glow: #00FFBD; --orb-angle: 135deg; }  /* SW */
 .orb--contact       { --orb-glow: #3FE4FA; --orb-angle: -135deg; } /* NW */
-.orb--about         { --orb-glow: #F49625; left: 50%; top: 50%; }  /* always dead-centre */
+.orb--about         { --orb-glow: #F49625; left: 50%; top: calc(50% - var(--orb-size) / 2); }  /* icon always dead-centre */
 
 .orb--skills, .orb--case-studies, .orb--experience, .orb--contact {
   /* Capped against the viewport itself, not just the flower — on a
      short/wide window the flower's own projected radius can still be
      bigger than half the screen's height, which would otherwise push
      the top/bottom orbs off-screen entirely. */
-  --orb-spread: min(calc(var(--flower-radius, 160px) * 1.15), 36vh, 40vw);
-  left: calc(50% + (cos(var(--orb-angle)) * var(--orb-spread)));
-  top: calc(50% + (sin(var(--orb-angle)) * var(--orb-spread)));
+  --orb-spread-x: min(calc(var(--flower-radius, 160px) * 1.15), 40vw);
+  --orb-spread-y: min(calc(var(--flower-radius, 160px) * 1.15), 36vh);
+  left: calc(50% + (cos(var(--orb-angle)) * var(--orb-spread-x)));
+  top: calc(50% + (sin(var(--orb-angle)) * var(--orb-spread-y)) - var(--orb-size) / 2);
+}
+
+/* Portrait screens (phones held upright, tablets): the flower fills the
+   screen's width, so there's no room beside it — the orbs stretch into a
+   taller ring that uses the empty space above and below it instead.
+   Horizontal spread stays capped to the width, so nothing leaves the
+   screen sideways. */
+@media (max-aspect-ratio: 1/1) {
+  .orb--skills, .orb--case-studies, .orb--experience, .orb--contact {
+    --orb-spread-x: min(calc(var(--flower-radius, 160px) * 0.8), 36vw);
+    --orb-spread-y: min(calc(var(--flower-radius, 160px) * 1.5), 30vh);
+  }
 }
 
 @keyframes orb-float {
@@ -654,10 +679,6 @@ button:focus-visible,
 
 @media (prefers-reduced-motion: reduce) {
   .orb, .orb__img { transition: none; animation: none; }
-}
-
-@media (max-width: 900px) {
-  .orb-lines, .orb-cluster { display: none; }
 }
 
 /* -------------------------------------------------------------
@@ -680,6 +701,31 @@ button:focus-visible,
      edge off its rough/grainy specular detail (2026-10-01, pushed
      further after the first pass still read as rough). */
   filter: saturate(0.62) contrast(0.88) brightness(1.05) blur(0.4px);
+  /* It's the "tap/click to begin" target: no 300ms tap delay or grey tap
+     flash on phones, and a pointer cursor while there's still something
+     to click (see the :not(...) rule below). */
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.landing-stage:not([data-lotus-state]):not(.is-settled):not(.is-loading) .lotus-canvas {
+  cursor: pointer;
+}
+
+/* Until the model has downloaded there's nothing to begin — a tap would
+   just start a sequence that waits on a blank canvas. The hint shows the
+   download progress meanwhile (landing-3d.js). */
+.landing-stage.is-loading .lotus-canvas {
+  pointer-events: none;
+}
+
+/* A full-screen canvas redrawn every frame under a CSS blur() filter is
+   a lot for a phone's GPU — drop just the blur there, keep the colour
+   softening. */
+@media (max-width: 900px) {
+  .lotus-canvas {
+    filter: saturate(0.62) contrast(0.88) brightness(1.05);
+  }
 }
 
 /* Fades in only once settled (.is-settled) — blurs/dims the flower
@@ -736,9 +782,13 @@ button:focus-visible,
 
 .lotus-hint {
   position: absolute;
-  left: 50%;
+  /* Centred with left/right + text-align rather than translateX(-50%):
+     the pulse animation below owns `transform`, so a translate here was
+     silently dropped and the text sat off-centre. */
+  left: 0;
+  right: 0;
+  text-align: center;
   bottom: 12%;
-  transform: translateX(-50%);
   z-index: 6;
   margin: 0;
   color: var(--color-muted);
@@ -796,19 +846,32 @@ button:focus-visible,
   .lotus-spotlight, .lotus-hint { animation: none; }
 }
 
-/* Mobile never runs the 3D scene (see the max-width:900px rule below) —
-   this static image stands in for it instead. */
+/* Fallback stand-in for the 3D flower. Only shown when WebGL or the model
+   can't load (landing-3d.js adds html.no-webgl) — on any screen size now
+   that phones run the real scene too (2026-10-04). */
 .lotus-still {
   display: none;
 }
 
-/* Same fallback as mobile, but for WebGL failing/being unavailable on
-   ANY screen size (landing-3d.js adds this class if the renderer can't
-   be created or the model fails to load) — reuses the identical static-
-   image treatment rather than a second parallel "no-3D" layout. Note:
-   .lotus-start-cta is deliberately NOT in this hide-list — see the
-   visible-button override a few rules down, it's the real click target
-   here since the static image has no interaction of its own. */
+@keyframes lotus-pulse-2d {
+  0%, 100% { transform: scale(1); opacity: 0.92; }
+  50%      { transform: scale(1.04); opacity: 1; }
+}
+
+/* The fallback keeps the same layout as the real scene instead of a
+   second parallel one: the static image sits dead-centre where the flower
+   would be, the orbs ring around it (--flower-radius is set from the
+   image's width here, standing in for the projected radius that
+   landing-3d.js normally sets), and the motto/orbs behave identically —
+   there's simply no zoom. Tapping the image or the button starts it. */
+html.no-webgl {
+  --still-size: clamp(150px, min(52vw, 40vh), 320px);
+  /* A full image-width rather than half: the real flower's projected
+     radius is big (it nearly fills the screen), so a ring sized to just
+     the small image would crowd the orbs on top of it. */
+  --flower-radius: var(--still-size);
+}
+
 html.no-webgl .lotus-canvas,
 html.no-webgl .lotus-scrim,
 html.no-webgl .lotus-spotlight,
@@ -819,46 +882,39 @@ html.no-webgl .lotus-hint {
 
 html.no-webgl .lotus-still {
   display: block;
-  position: relative;
+  position: absolute;
+  inset: 0;
+  margin: auto; /* centres it without a transform, which the pulse animation owns */
   z-index: 5;
-  width: clamp(140px, 45vw, 220px);
-  margin: 3rem auto 1rem;
+  width: var(--still-size);
+  height: auto;
+  cursor: pointer;
   animation: lotus-pulse-2d 3.4s ease-in-out infinite;
 }
 
-html.no-webgl .landing-motto {
-  position: static;
-  opacity: 1;
-  pointer-events: auto;
-  padding-inline: 1.25rem;
+html.no-webgl .landing-stage.is-settled .lotus-still {
+  animation: none; /* the pulse keyframe drives opacity, which would override this */
+  opacity: 0.4;
 }
 
-html.no-webgl .landing-motto__line {
-  position: static;
-  max-width: none;
-  font-size: clamp(1.6rem, 6vw, 2.2rem);
-  opacity: 1;
-  text-align: left !important;
-}
-
-/* The real click target when the WebGL scene is unavailable: the static
-   image is decorative only (aria-hidden), so without this the only way
-   in would be tabbing blind to a visually-hidden button. Un-hides
-   .lotus-start-cta (normally visible-on-focus-only, like .skip-link) and
-   gives it ordinary visible-button styling, sitting right under the
-   image. The same override is repeated for the mobile breakpoint below,
-   since mobile always shows the static image too. */
+/* The static image has no keyboard or screen-reader presence (aria-hidden),
+   so .lotus-start-cta — normally visible only on keyboard focus, like
+   .skip-link — becomes an ordinary visible button under it. */
 html.no-webgl .lotus-start-cta {
-  position: relative;
-  z-index: 5;
+  position: absolute;
+  z-index: 6;
+  top: auto;
+  bottom: 12%;
+  left: 50%;
+  transform: translateX(-50%);
   display: block;
   width: auto;
   height: auto;
-  margin: 0 auto 2rem;
+  margin: 0;
   padding: 0.6rem 1.4rem;
   clip: auto;
   overflow: visible;
-  white-space: normal;
+  white-space: nowrap;
   background: var(--color-surface-strong);
   color: var(--color-text);
   border: 1px solid var(--color-border);
@@ -868,126 +924,56 @@ html.no-webgl .lotus-start-cta {
   cursor: pointer;
 }
 
+html.no-webgl .landing-stage[data-lotus-state] .lotus-start-cta,
+html.no-webgl .landing-stage.is-settled .lotus-start-cta {
+  visibility: hidden;
+  pointer-events: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   html.no-webgl .lotus-still { animation: none; }
 }
 
-@media (max-width: 900px) {
-  .lotus-canvas,
-  .lotus-scrim,
-  .lotus-spotlight,
-  .lotus-vignette,
-  .lotus-hint {
-    display: none;
-  }
-
-  .lotus-still {
-    display: block;
-    position: relative;
-    z-index: 5;
-    width: clamp(140px, 45vw, 220px);
-    margin: 3rem auto 1rem;
-    animation: lotus-pulse-2d 3.4s ease-in-out infinite;
-  }
-
-  /* Same visible-button override as html.no-webgl above — the static
-     image has no click behaviour of its own, this is the real target. */
-  .lotus-start-cta {
-    position: relative;
-    z-index: 5;
-    display: block;
-    width: auto;
-    height: auto;
-    margin: 0 auto 2rem;
-    padding: 0.6rem 1.4rem;
-    clip: auto;
-    overflow: visible;
-    white-space: normal;
-    background: var(--color-surface-strong);
-    color: var(--color-text);
-    border: 1px solid var(--color-border);
-    border-radius: 999px;
-    font: inherit;
-    font-weight: 600;
-    cursor: pointer;
-  }
-
-  @keyframes lotus-pulse-2d {
-    0%, 100% { transform: scale(1); opacity: 0.92; }
-    50%      { transform: scale(1.04); opacity: 1; }
-  }
-
-  /* The motto isn't hidden-until-activated on phones — there's no click-
-     to-reveal sequence here, so it should just read normally, in flow. */
-  .landing-motto {
-    position: static;
-    opacity: 1;
-    pointer-events: auto;
-    padding-inline: 1.25rem;
-  }
-
-  .landing-motto__line {
-    position: static;
-    max-width: none;
-    font-size: clamp(1.6rem, 6vw, 2.2rem);
-    opacity: 1;
-    text-align: left !important;
-  }
-}
-
-@media (max-width: 900px) and (prefers-reduced-motion: reduce) {
-  .lotus-still { animation: none; }
-}
-
 /* -------------------------------------------------------------
-   LANDING STAGE (2026-09-29) — hero text, the orb cluster and the
-   lotus as ONE fixed, full-height flex column, so they always stack
-   top-to-bottom in order and can never overlap, at any screen size.
-   Previously the hero text was normal-flow (its height changes with
-   the responsive title's font-size) while the orbs/lotus were fixed
-   to the viewport independently — the two drifted apart and collided
-   on wide/short screens. gap/clamp()s below keep the whole stack
-   scaling down together to fit shorter viewports too.
+   LANDING STAGE — the 3D flower, the glow/scrim/vignette dressing, the
+   motto and the orb cluster all live in this one box, stacked by
+   z-index (see the 3D LOTUS section above).
+
+   position: fixed, ignoring the page's own margin entirely (2026-10-01,
+   Mónica's call): the scene should feel like you're IN it, not looking
+   at it through a framed box. Nothing else is visible while it's
+   showing (footer, side nav and — on phones — the top header are all
+   hidden on the landing screen), so there's no flow height to reserve or
+   margin to respect the way every other section still does. It's the
+   same on every screen size now (2026-10-04) — phones run the real scene
+   too.
+
+   Gated on html.js (set by a tiny inline script in <head>) so a visitor
+   without JavaScript — where nothing can ever dismiss a full-screen
+   layer — still gets the plain scrollable page, with every section
+   visible below this, exactly like before.
    ------------------------------------------------------------- */
 .landing-stage {
-  /* Mobile default: normal flow, below the (still-visible) sticky
-     header, height determined by its own content (the static image +
-     button + motto) rather than clipped to one screen — there's no 3D
-     scene to go full-bleed for on phones. Desktop overrides this to
-     position:fixed below. */
   position: relative;
 }
 
-/* position: fixed, ignoring the page's own margin entirely (2026-10-01)
-   — Mónica's call: the 3D scene should feel like you're IN it, not
-   looking at it through a framed box, and nothing else is visible while
-   it's showing anyway (the footer/nav are hidden during landing — see
-   showLanding() in script.js), so there's no flow-height to reserve or
-   margin to respect here the way every other section still does. Desktop
-   only (matches where the 3D scene and the top-header-hiding both live) —
-   inset: 0 is the true viewport edge, same as .growth-trail and the
-   ambient body::before blobs already ignore the margin for. */
-@media (min-width: 901px) {
-  .landing-stage {
-    position: fixed;
-    inset: 0;
-    overflow: hidden;
-  }
+html.js .landing-stage {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
 }
 
-/* Its own display:flex above has the same specificity as the browser's
-   default [hidden]{display:none} and comes later, so it silently won —
-   script.js hiding #landingStage while switching sections did nothing
-   visually without this override. */
+/* script.js hides the whole stage when a section opens; make sure a
+   display value set anywhere above can never outrank the hidden attribute. */
 .landing-stage[hidden] {
   display: none;
 }
 
-/* Its own display:flex above has the same specificity as the browser's
-   default [hidden]{display:none} and comes later, so it silently won —
-   script.js hiding #landingStage while switching sections did nothing
-   visually without this override. */
-.landing-stage[hidden] {
+/* Phones use the hamburger header for nav (the side rail only exists
+   above 900px) — but the landing screen is nothing-but-the-flower on
+   every screen size, so the header only appears once a section is open,
+   same as the side rail does on desktop. Set by script.js. */
+body.is-landing .site-header {
   display: none;
 }
 
@@ -1054,7 +1040,7 @@ html.no-webgl .lotus-start-cta {
   position: absolute;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  font-size: clamp(1.15rem, 2.6vw, 2.2rem); /* floor low enough that the full line fits a phone's width */
   line-height: 1.2;
   max-width: 24ch;
   opacity: 0.55; /* stays low even once faded in — it's meant to recede */

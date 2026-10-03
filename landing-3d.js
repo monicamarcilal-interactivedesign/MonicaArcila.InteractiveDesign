@@ -26,9 +26,9 @@
    the CDN unreachable), #lotusCanvas just sits there empty. Nothing else
    on the page depends on it loading — the orb/section navigation in
    script.js guards every call to window.lotusScene with `?.` and a
-   same-tick fallback, and on phones (≤900px) this file's canvas is
-   hidden by CSS and a static image takes its place instead (see
-   .lotus-still in styles.css).
+   same-tick fallback. The same scene runs on phones and tablets as on
+   desktop (2026-10-04); if WebGL or the model can't load, html.no-webgl
+   swaps in a static image instead (see .lotus-still in styles.css).
 
    NOT an ES module (deliberately): see the comment above this file's
    <script> tag in index.html for why. `THREE` below is a plain global,
@@ -41,7 +41,20 @@
 
 (function () {
 
+// If the Three.js CDN scripts didn't arrive (offline, blocked), THREE is
+// undefined and nothing below could run — use the same static fallback
+// as a WebGL failure instead of throwing and leaving an empty canvas.
+if (typeof THREE === "undefined" || typeof THREE.GLTFLoader === "undefined") {
+  document.documentElement.classList.add("no-webgl");
+  return;
+}
+
 const canvas = document.getElementById("lotusCanvas");
+const landingStageEl = document.getElementById("landingStage");
+const hintEl = document.getElementById("lotusHint");
+// Phones and tablets: a touch screen taps rather than clicks, and gets a
+// lower pixel-ratio cap (below) to keep the full-screen render affordable.
+const isTouch = window.matchMedia("(pointer: coarse)").matches;
 
 /* -------------------------------------------------------------
    1. MODEL CONFIG — swap the asset without touching anything else.
@@ -121,10 +134,15 @@ let modelCenter = new THREE.Vector3();
 let modelRadius = 1;
 let idleRafId = null;
 let idleAngle = 0; // current azimuth while idling, so activate() continues smoothly rather than snapping
+let lastCanvasW = 0;
+let lastCanvasH = 0;
+let modelHalfWidth = 1; // widest horizontal reach from the centre, for fitting narrow screens
 
 function initRenderer() {
   renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  // 3x phone screens would render ~2.25x the pixels of the 2x cap for no
+  // visible gain on a flower that's softened and blurred anyway.
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2));
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   // Without tone mapping, bright highlights just clip to flat white
   // instead of rolling off smoothly — that clipping is most of what was
@@ -139,11 +157,19 @@ function resizeRenderer() {
   if (!renderer || !canvas) return;
   const { clientWidth, clientHeight } = canvas;
   if (!clientWidth || !clientHeight) return;
-  renderer.setSize(clientWidth, clientHeight, false);
+  // The camera is created after the renderer, so this has to run even
+  // when the size below turns out unchanged.
   if (camera) {
     camera.aspect = clientWidth / clientHeight;
     camera.updateProjectionMatrix();
   }
+  // Mobile browsers fire resize constantly as the address bar slides in
+  // and out — reallocating (and clearing) the drawing buffer each time
+  // for an unchanged size would just flicker.
+  if (clientWidth === lastCanvasW && clientHeight === lastCanvasH) return;
+  lastCanvasW = clientWidth;
+  lastCanvasH = clientHeight;
+  renderer.setSize(clientWidth, clientHeight, false);
   // setSize() resizes (and clears) the drawing buffer immediately, but
   // doesn't redraw it — fine while the idle loop or a tween is already
   // calling render() every frame, but once "settled" nothing else is
@@ -180,7 +206,15 @@ function buildScene() {
    ------------------------------------------------------------- */
 async function loadLotusModel() {
   if (MODEL_CONFIG.type === "glb") {
-    const gltf = await new THREE.GLTFLoader().loadAsync(MODEL_CONFIG.glb.url);
+    // load() instead of loadAsync() so the download progress can drive the
+    // hint text — the model is ~10MB, a real wait on a phone's data.
+    const gltf = await new Promise((resolve, reject) => {
+      new THREE.GLTFLoader().load(MODEL_CONFIG.glb.url, resolve, (event) => {
+        if (hintEl && event.lengthComputable && event.total) {
+          hintEl.textContent = `Loading ${Math.round((event.loaded / event.total) * 100)}%`;
+        }
+      }, reject);
+    });
     // The baked texture itself is a fairly hard, glossy neon — nudging
     // roughness up and metalness down softens the sharp specular
     // "sparkle" that was reading as rough/cheap, without touching the
@@ -231,9 +265,23 @@ const END_AZIMUTH_SWEEP = THREE.MathUtils.degToRad(15);
 // close crop of the centre.
 const IDLE_DIST_FACTOR = 3.4;
 const END_DIST_FACTOR = 2.0;
+// On narrow (portrait) screens the distance factors above would crop the
+// flower sideways — the camera's field of view is fixed vertically, so a
+// tall thin screen sees very little width. These say how much of the
+// screen's width the flower should span instead (idle: small, settled:
+// nearly full width), and whichever needs the camera farther back wins.
+// On landscape screens the distance factors already give a bigger
+// distance than this, so desktop is unchanged.
+const IDLE_FILL = 0.55;
+const END_FILL = 0.86;
 
-function setCamera(polar, azimuth, distFactor) {
-  const dist = modelRadius * distFactor;
+function fitDistance(fill) {
+  const tanHalfFov = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  return modelHalfWidth / (fill * tanHalfFov * camera.aspect);
+}
+
+function setCamera(polar, azimuth, distFactor, fill) {
+  const dist = Math.max(modelRadius * distFactor, fitDistance(fill));
   camera.position.setFromSphericalCoords(dist, polar, azimuth).add(modelCenter);
   camera.lookAt(modelCenter);
 }
@@ -293,7 +341,11 @@ function frameCameraToModel() {
   modelCenter.set(0, 0, 0);
   const sphere = box.getBoundingSphere(new THREE.Sphere());
   modelRadius = Math.max(sphere.radius, 0.01);
-  setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR);
+  // The flower is roughly round seen from above, so its widest horizontal
+  // reach is the bigger of its x/z half-extents (a little padding for the
+  // spin it does while zooming).
+  modelHalfWidth = Math.max(box.max.x - box.min.x, box.max.z - box.min.z, 0.01) * 0.5 * 1.05;
+  setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR, IDLE_FILL);
   updateOrbAnchor();
 }
 
@@ -310,7 +362,7 @@ function startIdleLoop() {
   if (prefersReducedMotion) return;
   const step = () => {
     idleAngle += 0.0025; // ~1 full turn every ~42s
-    setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR);
+    setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR, IDLE_FILL);
     render();
     idleRafId = requestAnimationFrame(step);
   };
@@ -339,7 +391,7 @@ async function activate() {
     // Skip the ride, not the destination — jump straight to the end
     // framing with a brief cross-fade instead of the full camera tween.
     model.rotation.y = THREE.MathUtils.degToRad(50);
-    setCamera(END_POLAR, idleAngle + END_AZIMUTH_SWEEP, END_DIST_FACTOR);
+    setCamera(END_POLAR, idleAngle + END_AZIMUTH_SWEEP, END_DIST_FACTOR, END_FILL);
     render();
     updateOrbAnchor();
     await tween(150, () => render());
@@ -365,7 +417,12 @@ async function activate() {
   await tween(2600, (t) => {
     const polar = THREE.MathUtils.lerp(IDLE_POLAR, END_POLAR, t);
     const azimuth = THREE.MathUtils.lerp(startAzimuth, startAzimuth + END_AZIMUTH_SWEEP, t);
-    setCamera(polar, azimuth, THREE.MathUtils.lerp(IDLE_DIST_FACTOR, END_DIST_FACTOR, t));
+    setCamera(
+      polar,
+      azimuth,
+      THREE.MathUtils.lerp(IDLE_DIST_FACTOR, END_DIST_FACTOR, t),
+      THREE.MathUtils.lerp(IDLE_FILL, END_FILL, t)
+    );
     model.rotation.y = THREE.MathUtils.lerp(0, THREE.MathUtils.degToRad(50), t);
     render();
   });
@@ -383,7 +440,7 @@ async function reset() {
   }
   if (prefersReducedMotion) {
     model.rotation.y = 0;
-    setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR);
+    setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR, IDLE_FILL);
     render();
     startIdleLoop();
     return;
@@ -395,7 +452,8 @@ async function reset() {
     setCamera(
       THREE.MathUtils.lerp(fromPolar, IDLE_POLAR, t),
       THREE.MathUtils.lerp(fromAzimuth, idleAngle, t),
-      THREE.MathUtils.lerp(END_DIST_FACTOR, IDLE_DIST_FACTOR, t)
+      THREE.MathUtils.lerp(END_DIST_FACTOR, IDLE_DIST_FACTOR, t),
+      THREE.MathUtils.lerp(END_FILL, IDLE_FILL, t)
     );
     model.rotation.y = THREE.MathUtils.lerp(fromRotationY, 0, t);
     render();
@@ -412,18 +470,11 @@ async function reset() {
 let ready;
 
 function init() {
-  // Mobile never shows the 3D scene (see the max-width:900px rule in
-  // styles.css) — skip downloading a multi-megabyte model there
-  // entirely rather than fetching it just to hide it. Checked once at
-  // load, same as how the rest of the site's desktop/mobile split
-  // already works (not re-checked on resize).
-  const isMobile = window.matchMedia("(max-width: 900px)").matches;
-
-  if (!canvas || isMobile) {
+  if (!canvas) {
     // Still expose a no-op-ish API so script.js's optional calls don't
     // throw — script.js's own triggerLanding() has a same-tick fallback
     // for exactly this (no 3D scene) case.
-    ready = Promise.reject(new Error(isMobile ? "mobile — 3D scene skipped" : "no #lotusCanvas on this page"));
+    ready = Promise.reject(new Error("no #lotusCanvas on this page"));
     ready.catch(() => {});
     return;
   }
@@ -431,8 +482,7 @@ function init() {
   try {
     initRenderer();
   } catch (error) {
-    // WebGL unavailable — fall back the same way the mobile layout
-    // does, regardless of screen size.
+    // WebGL unavailable — fall back to the static image + orbs layout.
     document.documentElement.classList.add("no-webgl");
     ready = Promise.reject(error);
     ready.catch(() => {});
@@ -441,16 +491,24 @@ function init() {
 
   buildScene();
 
+  // Nothing to begin until the model is in — the hint shows download
+  // progress meanwhile (see loadLotusModel) and the canvas ignores taps.
+  if (landingStageEl) landingStageEl.classList.add("is-loading");
+  if (hintEl) hintEl.textContent = "Loading…";
+
   ready = loadLotusModel()
     .then((loaded) => {
       model = loaded;
       scene.add(model);
       frameCameraToModel();
       startIdleLoop();
+      if (hintEl) hintEl.textContent = isTouch ? "Tap to begin" : "Click to begin";
+      if (landingStageEl) landingStageEl.classList.remove("is-loading");
     })
     .catch((error) => {
       console.error("Lotus model failed to load:", error);
       document.documentElement.classList.add("no-webgl"); // reuse the same fallback styling
+      if (landingStageEl) landingStageEl.classList.remove("is-loading");
       throw error;
     });
 }

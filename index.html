@@ -25,6 +25,12 @@
   <!-- This meta tag is what makes the site work on phones. Leave it in. -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <!-- Marks the page as "scripts can run". The landing screen only takes
+       over the whole viewport when this is set (see html.js in
+       styles.css), so a visitor without JavaScript still gets a normal,
+       scrollable page instead of a full-screen layer with nothing to click. -->
+  <script>document.documentElement.classList.add("js");</script>
+
   <title>Mónica Arcila — Interactive Designer</title>
 
   <meta name="description" content="Portfolio of Mónica Arcila, an Interactive Designer specialising in UI implementation, design systems and AI-driven design workflows, studying between EAFIT (Colombia) and Te Herenga Waka — Victoria University of Wellington." />
@@ -164,9 +170,12 @@
          Because the camera always looks straight at the flower's centre,
          it's always the same fixed point on screen — so the orb overlay
          below can stay simple, static CSS instead of real 3D→2D math.
-         Mobile (≤900px) never runs the 3D scene: .lotus-still below is a
-         plain static image instead, same pattern as the rest of the
-         site's desktop-only extras. -->
+         The same scene runs on phones and tablets too (2026-10-04): the
+         camera pulls back on narrow screens so the flower fits the width,
+         and the orbs spread vertically on portrait screens.
+         .lotus-still below is only the fallback shown when WebGL or the
+         model can't load (html.no-webgl) — a plain static image standing
+         in for the flower. -->
     <div class="landing-stage" id="landingStage">
       <canvas class="lotus-canvas" id="lotusCanvas" aria-hidden="true"></canvas>
       <!-- Fades in only once settled (.is-settled) — softens/blurs the
