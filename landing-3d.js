@@ -158,6 +158,11 @@ function initRenderer() {
   renderer.toneMappingExposure = 0.8;
   resizeRenderer();
   window.addEventListener("resize", resizeRenderer);
+  // Also follow the canvas itself: if its on-screen size changes without a
+  // window resize (a layout change, the window being restored from a small
+  // size...), the drawing buffer must change with it, or the flower is a small
+  // picture stretched up — soft and blocky.
+  if (window.ResizeObserver) new ResizeObserver(resizeRenderer).observe(canvas);
 }
 
 function resizeRenderer() {
@@ -174,7 +179,12 @@ function resizeRenderer() {
   // Mobile browsers fire resize constantly as the address bar slides in
   // and out — reallocating (and clearing) the drawing buffer each time
   // for an unchanged size would just flicker.
-  if (clientWidth === lastCanvasW && clientHeight === lastCanvasH) return;
+  // The pixel ratio can change on its own too (browser zoom, moving the
+  // window to another screen): re-read it, and rebuild the buffer if so.
+  const ratio = Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2);
+  const ratioChanged = ratio !== renderer.getPixelRatio();
+  if (ratioChanged) renderer.setPixelRatio(ratio);
+  if (!ratioChanged && clientWidth === lastCanvasW && clientHeight === lastCanvasH) return;
   lastCanvasW = clientWidth;
   lastCanvasH = clientHeight;
   renderer.setSize(clientWidth, clientHeight, false);
