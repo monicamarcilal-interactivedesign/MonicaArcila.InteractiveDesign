@@ -16,11 +16,14 @@
        ready,     // Promise — resolves once the model has loaded
        activate,  // () => Promise — plays the click→zoom→rotate
                   //   sequence, resolves once the camera move ends
+       settle,    // () => Promise — the flower then sinks a little
        reset,     // () => void — tweens back to the idle side view
+       coreOffsetY, // () => px the open flower's centre sinks below
+                  //   the screen's middle (where the orbs flow out of)
      };
 
-   script.js job 5 calls these three and nothing else — it doesn't
-   know or care whether the model is a .glb or a raw .obj+textures.
+   script.js job 5 calls these and nothing else — it doesn't know or
+   care whether the model is a .glb or a raw .obj+textures.
 
    PROGRESSIVE ENHANCEMENT: if this script never runs (WebGL unsupported,
    the CDN unreachable), #lotusCanvas just sits there empty. Nothing else
@@ -98,8 +101,10 @@ const MODEL_CONFIG = {
    mesh-rotation value, not enough to justify a whole library on a
    no-build site.
    ------------------------------------------------------------- */
-function easeInOutCubic(t) {
-  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+// A sine ease: gentler than a cubic at both ends, so every move starts and
+// lands softly — Mónica asked for everything to flow, nothing bouncy.
+function easeInOutSine(t) {
+  return -(Math.cos(Math.PI * t) - 1) / 2;
 }
 
 let tweenToken = 0;
@@ -110,7 +115,7 @@ function tween(durationMs, onUpdate) {
     const step = (now) => {
       if (token !== tweenToken) return; // superseded by a newer tween — stop silently
       const t = Math.min((now - start) / durationMs, 1);
-      onUpdate(easeInOutCubic(t));
+      onUpdate(easeInOutSine(t));
       if (t < 1) {
         requestAnimationFrame(step);
       } else {
@@ -162,6 +167,7 @@ function resizeRenderer() {
   if (camera) {
     camera.aspect = clientWidth / clientHeight;
     camera.updateProjectionMatrix();
+    applyCoreShift();
   }
   // Mobile browsers fire resize constantly as the address bar slides in
   // and out — reallocating (and clearing) the drawing buffer each time
@@ -176,7 +182,6 @@ function resizeRenderer() {
   // rendering any more, so a resize at that point would otherwise leave
   // the canvas blank until the next click.
   render();
-  updateOrbAnchor(); // the flower's on-screen size just changed too
 }
 
 function buildScene() {
@@ -286,52 +291,32 @@ function setCamera(polar, azimuth, distFactor, fill) {
   camera.lookAt(modelCenter);
 }
 
-// Projects the flower's own bounding box onto the screen and exposes how
-// far its silhouette roughly extends from the centre, in px, as a CSS
-// variable — so the orb ring in styles.css can anchor itself to the
-// flower's *actual* rendered size at any screen size/aspect ratio,
-// instead of fixed percentages that drift relative to it on very wide or
-// very narrow screens. Set on <html> (not the canvas) since the orbs
-// live outside the canvas in the DOM and need to inherit it.
-//
-// Uses the box's 6 FACE CENTRES, not its 8 corners or its bounding-
-// SPHERE radius (modelRadius) — both of those tried-and-rejected options
-// overshoot badly for a wide, flat, non-cubic shape like this flower: a
-// box corner needs all three axes at their extreme simultaneously (no
-// point on the actual mesh does that at once), and the sphere radius is
-// sized by the box's full diagonal. Both pushed the orbs well outside
-// the flower's real silhouette, off-screen entirely on the first two
-// passes of this. A face centre only has ONE axis at its extreme, which
-// tracks the visible edge much more closely.
-function updateOrbAnchor() {
-  if (!model || !camera || !canvas || !canvas.clientHeight) return;
-  const box = new THREE.Box3().setFromObject(model);
-  if (box.isEmpty()) return;
-  const toPx = (v) => {
-    const p = v.clone().project(camera);
-    return {
-      x: (p.x * 0.5 + 0.5) * canvas.clientWidth,
-      y: (1 - (p.y * 0.5 + 0.5)) * canvas.clientHeight,
-    };
-  };
-  const centerPx = toPx(modelCenter);
-  const faceCenters = [
-    new THREE.Vector3(box.max.x, modelCenter.y, modelCenter.z),
-    new THREE.Vector3(box.min.x, modelCenter.y, modelCenter.z),
-    new THREE.Vector3(modelCenter.x, box.max.y, modelCenter.z),
-    new THREE.Vector3(modelCenter.x, box.min.y, modelCenter.z),
-    new THREE.Vector3(modelCenter.x, modelCenter.y, box.max.z),
-    new THREE.Vector3(modelCenter.x, modelCenter.y, box.min.z),
-  ];
-  let maxDist = 0;
-  faceCenters.forEach((point) => {
-    const p = toPx(point);
-    const d = Math.hypot(p.x - centerPx.x, p.y - centerPx.y);
-    if (d > maxDist) maxDist = d;
-  });
-  if (Number.isFinite(maxDist) && maxDist > 0) {
-    document.documentElement.style.setProperty("--flower-radius", `${maxDist}px`);
+// How far the flower sinks on screen in the last beat (as a fraction of the
+// screen's height), so there's open space above it for the orbs to flow
+// out into. Shifts the whole projection (setViewOffset) rather than the
+// model, so the camera, framing and spin are all untouched. A little
+// less on portrait screens, which have less height to spare.
+const CORE_SHIFT = window.matchMedia("(max-aspect-ratio: 1/1)").matches ? 0.1 : 0.12;
+let coreShiftFrac = 0; // 0 = centred, CORE_SHIFT = sunk
+
+function applyCoreShift() {
+  if (!camera || !canvas || !canvas.clientHeight) return;
+  const w = canvas.clientWidth;
+  const h = canvas.clientHeight;
+  const shiftPx = coreShiftFrac * h;
+  if (shiftPx) {
+    camera.setViewOffset(w, h, 0, -shiftPx, w, h);
+  } else {
+    camera.clearViewOffset();
   }
+  // The glow behind the flower follows it down (styles.css --core-shift).
+  document.documentElement.style.setProperty("--core-shift", `${CORE_SHIFT * h}px`);
+}
+
+// Where the open flower's centre ends up, as px below the screen's
+// middle — the point script.js flows the orbs out of.
+function coreOffsetY() {
+  return canvas ? CORE_SHIFT * canvas.clientHeight : 0;
 }
 
 function frameCameraToModel() {
@@ -346,7 +331,6 @@ function frameCameraToModel() {
   // spin it does while zooming).
   modelHalfWidth = Math.max(box.max.x - box.min.x, box.max.z - box.min.z, 0.01) * 0.5 * 1.05;
   setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR, IDLE_FILL);
-  updateOrbAnchor();
 }
 
 /* -------------------------------------------------------------
@@ -381,8 +365,16 @@ function render() {
 }
 
 /* -------------------------------------------------------------
-   7. ACTIVATE / RESET — the two authored camera paths.
+   7. THE AUTHORED MOVES — all eased with a sine curve, so every one
+   starts and lands softly (Mónica asked for flow, not bounce).
+     activate()  idle -> the big, near-top flower (the zoom)
+     settle()    that flower sinks a little (the orbs flow out)
+     reset()     all the way back to idle
    ------------------------------------------------------------- */
+const ZOOM_MS = 3500;
+const SETTLE_MS = 2600;
+const END_ROTATION_Y = THREE.MathUtils.degToRad(50);
+
 async function activate() {
   await ready;
   stopIdleLoop();
@@ -390,43 +382,47 @@ async function activate() {
   if (prefersReducedMotion) {
     // Skip the ride, not the destination — jump straight to the end
     // framing with a brief cross-fade instead of the full camera tween.
-    model.rotation.y = THREE.MathUtils.degToRad(50);
+    model.rotation.y = END_ROTATION_Y;
     setCamera(END_POLAR, idleAngle + END_AZIMUTH_SWEEP, END_DIST_FACTOR, END_FILL);
     render();
-    updateOrbAnchor();
     await tween(150, () => render());
     return;
   }
 
-  // Phase A — anticipation: a small scale pulse, a tactile "acknowledged".
-  await tween(250, (t) => {
-    const s = 1 + Math.sin(t * Math.PI) * 0.04;
-    model.scale.setScalar(s);
-    render();
-  });
-  model.scale.setScalar(1);
-
-  // Phase B — zoom + rotate: camera orbits in toward a near-top view
-  // while the flower spins on its own Y axis — the two together are
-  // what reads as "the flower turns on its own axis as the camera
-  // closes in", not just a push-in. Longer than the first pass
-  // (2026-10-01, Mónica's call) — starting farther back gives it more
-  // distance to cover, so stretching the duration too keeps the motion
-  // itself feeling unhurried rather than just rushing to cover more ground.
+  // The camera glides in toward a near-top view while the flower turns
+  // on its own Y axis — together they read as "the flower turns as we
+  // close in", not just a push-in.
   const startAzimuth = idleAngle;
-  await tween(2600, (t) => {
-    const polar = THREE.MathUtils.lerp(IDLE_POLAR, END_POLAR, t);
-    const azimuth = THREE.MathUtils.lerp(startAzimuth, startAzimuth + END_AZIMUTH_SWEEP, t);
+  await tween(ZOOM_MS, (t) => {
     setCamera(
-      polar,
-      azimuth,
+      THREE.MathUtils.lerp(IDLE_POLAR, END_POLAR, t),
+      THREE.MathUtils.lerp(startAzimuth, startAzimuth + END_AZIMUTH_SWEEP, t),
       THREE.MathUtils.lerp(IDLE_DIST_FACTOR, END_DIST_FACTOR, t),
       THREE.MathUtils.lerp(IDLE_FILL, END_FILL, t)
     );
-    model.rotation.y = THREE.MathUtils.lerp(0, THREE.MathUtils.degToRad(50), t);
+    model.rotation.y = THREE.MathUtils.lerp(0, END_ROTATION_Y, t);
     render();
   });
-  updateOrbAnchor(); // flower's on-screen size just changed — the orbs pop out right after this
+}
+
+async function settle() {
+  try {
+    await ready;
+  } catch {
+    return;
+  }
+  const from = coreShiftFrac;
+  if (prefersReducedMotion) {
+    coreShiftFrac = CORE_SHIFT;
+    applyCoreShift();
+    render();
+    return;
+  }
+  await tween(SETTLE_MS, (t) => {
+    coreShiftFrac = THREE.MathUtils.lerp(from, CORE_SHIFT, t);
+    applyCoreShift();
+    render();
+  });
 }
 
 async function reset() {
@@ -440,6 +436,8 @@ async function reset() {
   }
   if (prefersReducedMotion) {
     model.rotation.y = 0;
+    coreShiftFrac = 0;
+    applyCoreShift();
     setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR, IDLE_FILL);
     render();
     startIdleLoop();
@@ -448,7 +446,8 @@ async function reset() {
   const fromPolar = END_POLAR;
   const fromAzimuth = idleAngle + END_AZIMUTH_SWEEP;
   const fromRotationY = model.rotation.y;
-  await tween(700, (t) => {
+  const fromShift = coreShiftFrac;
+  await tween(900, (t) => {
     setCamera(
       THREE.MathUtils.lerp(fromPolar, IDLE_POLAR, t),
       THREE.MathUtils.lerp(fromAzimuth, idleAngle, t),
@@ -456,9 +455,13 @@ async function reset() {
       THREE.MathUtils.lerp(END_FILL, IDLE_FILL, t)
     );
     model.rotation.y = THREE.MathUtils.lerp(fromRotationY, 0, t);
+    coreShiftFrac = THREE.MathUtils.lerp(fromShift, 0, t);
+    applyCoreShift();
     render();
   });
   model.rotation.y = 0;
+  coreShiftFrac = 0;
+  applyCoreShift();
   startIdleLoop();
 }
 
@@ -515,7 +518,7 @@ function init() {
 
 init();
 
-window.lotusScene = { ready, activate, reset };
+window.lotusScene = { ready, activate, settle, reset, coreOffsetY };
 // `ready` above is captured before the async chain settles is fine —
 // callers await window.lotusScene.ready directly; re-assign so it's
 // always the live promise rather than whatever it was at this exact line.

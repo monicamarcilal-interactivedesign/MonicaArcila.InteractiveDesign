@@ -59,6 +59,9 @@
   <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/GLTFLoader.js" defer></script>
   <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/OBJLoader.js" defer></script>
   <script src="landing-3d.js" defer></script>
+  <!-- Dust/stars, drifting colour droplets and the glowing connections
+       between the orbs and motto words — plain 2D canvas, no libraries. -->
+  <script src="landing-fx.js" defer></script>
 </head>
 <body>
 
@@ -136,54 +139,39 @@
 
   <main id="main">
 
-    <!-- ===================== 1. HERO / LANDING ===================== -->
-    <!-- Mónica's motto (2026-09-28). "felt" and "valued" render in Pinyon
-         Script (see .hero__accent in styles.css); the weight balance
-         against it comes from .hero__title's own font-weight (600), not
-         a stroke on the script. The logo-bg image is Mónica's own
-         personal-brand mark, blurred and static (not mouse-reactive)
-         behind the text.
-
-         Hero is no longer a destination you navigate to — it's the
-         landing screen itself (see script.js job 5). Its old subtitle
-         paragraph moved to the Case Studies section below.
-
-         The lotus + 5 orbs (2026-09-28): closed by default. The first
-         hover or click makes the lotus wiggle, then opens and the 5 orbs
-         pop out of it — one per remaining section (Case Studies isn't a
-         separate orb; About/Contact/Skills/Experience/Case Studies are
-         the five). The next hover or click wiggles, then the orbs pop
-         back in and the lotus closes. Faint lines connect every orb to
-         every other orb, and to the 3 highlighted motto words — drawn by
-         script.js since their positions depend on the real, responsive
-         layout. Desktop only, like the growth trail; phones use the
-         hamburger menu instead. -->
-    <!-- landing-stage (2026-10-01): a 3D lotus (landing-3d.js) is now the
-         whole landing screen on desktop. It opens on nothing but the
-         flower, glowing and slowly turning; clicking it plays a scripted
-         camera zoom + flower self-rotation toward a near-top view, then
-         the 5 orbs bloom out of the flower's own centre (About/the sun
-         stays put at the centre; the other four spread to the cardinal
-         points around it — see .orb--* below), the motto fades in low-
-         opacity behind everything in two corners, and the side nav
-         appears only once a section is actually opened (script.js job 5).
-         Because the camera always looks straight at the flower's centre,
-         it's always the same fixed point on screen — so the orb overlay
-         below can stay simple, static CSS instead of real 3D→2D math.
-         The same scene runs on phones and tablets too (2026-10-04): the
-         camera pulls back on narrow screens so the flower fits the width,
-         and the orbs spread vertically on portrait screens.
-         .lotus-still below is only the fallback shown when WebGL or the
-         model can't load (html.no-webgl) — a plain static image standing
-         in for the flower. -->
+    <!-- ===================== 1. LANDING SCREEN ===================== -->
+    <!-- Rebuilt 2026-10-04 from Mónica's three-screen mockups. One full-
+         screen stage, three beats (all the choreography is in
+         script.js job 5, landing-3d.js and landing-fx.js; the look is the
+         LANDING SCREEN section of styles.css):
+           1. idle     a small side-on 3D lotus, a cyan glow behind it,
+                       faint dust, near-black. Click/tap the flower.
+           2. awake    the camera glides in to a big near-top flower, the
+                       background lifts to deep navy, colour droplets
+                       drift behind it, the motto fades in.
+           3. settling the flower sinks and dims, the five orbs flow out
+                       of its open centre, glowing stems grow between
+                       them and the motto words and keep pulsing.
+         It's the same on phones and tablets, recomposed for portrait.
+         .lotus-still is only the fallback (html.no-webgl) — a plain image
+         standing in for the flower if WebGL or the model can't load. -->
     <div class="landing-stage" id="landingStage">
-      <canvas class="lotus-canvas" id="lotusCanvas" aria-hidden="true"></canvas>
-      <!-- Fades in only once settled (.is-settled) — softens/blurs the
-           flower underneath so the motto and orbs stop competing with its
-           saturation. See .lotus-scrim in styles.css. -->
-      <div class="lotus-scrim" aria-hidden="true"></div>
+      <div class="landing-bg" aria-hidden="true"></div>
+      <canvas class="landing-fx" id="fxDroplets" aria-hidden="true"></canvas>
+      <canvas class="landing-fx" id="fxDust" aria-hidden="true"></canvas>
+
+      <!-- The motto, in Mónica's final type: Sora ExtraBold for the big
+           words, Over the Rainbow for the handwritten middle. Word ids are
+           the endpoints the glowing stems grow to (landing-fx.js). It's one
+           h1 so it reads as a single sentence to a screen reader. -->
+      <h1 class="landing-motto" id="landingMotto">
+        <span class="landing-motto__part landing-motto__title"><span id="wordDesigning">Designing</span></span>
+        <span class="landing-motto__part landing-motto__sub">to be <span id="wordFelt">felt</span><br />and <span id="wordValued">valued,</span></span>
+        <span class="landing-motto__part landing-motto__end">not just seen.</span>
+      </h1>
+
       <div class="lotus-spotlight" aria-hidden="true"></div>
-      <div class="lotus-vignette" aria-hidden="true"></div>
+      <canvas class="lotus-canvas" id="lotusCanvas" aria-hidden="true"></canvas>
       <p class="lotus-hint" id="lotusHint">Click to begin</p>
       <!-- The canvas itself is aria-hidden (a picture, not a control) —
            this is the real, keyboard-focusable way in for anyone not
@@ -191,33 +179,13 @@
            technique as .skip-link. -->
       <button class="lotus-start-cta" id="lotusStartCta" type="button">Enter the site</button>
 
-      <!-- Mobile-only stand-in for the 3D flower — see the max-width:900px
-           rule in styles.css. Reuses the existing neon lotus artwork. -->
       <img class="lotus-still" src="assets/site/lotus-open-neon.png" alt="" aria-hidden="true" />
 
-      <section id="hero" class="hero container">
-        <img class="hero__logo-bg" src="assets/site/logo-mark.png" alt="" aria-hidden="true" />
-      </section>
+      <canvas class="landing-fx" id="fxLines" aria-hidden="true"></canvas>
 
-      <!-- Split in two (2026-10-01) so each half can sit in its own
-           corner, low-opacity, behind the flower/orbs — see
-           .landing-motto in styles.css. Word-span IDs kept as-is. The
-           "Interactive Designer" eyebrow that used to sit above this was
-           removed (2026-10-01, Mónica's call) — it's still said plainly in
-           the About section and the page <title>. -->
-      <div class="landing-motto" id="landingMotto">
-        <p class="landing-motto__line landing-motto__line--tl">
-          <span class="landing-motto__text"><span class="hero__accent hero__word" id="wordDesigning">Designing</span> to be <span class="hero__accent hero__word" id="wordFelt">felt</span> and <span class="hero__accent hero__word" id="wordValued">valued</span>,</span>
-        </p>
-        <p class="landing-motto__line landing-motto__line--br">not just seen.</p>
-      </div>
-
-      <!-- Lives inside .landing-stage (not a fixed, full-viewport overlay)
-           so it scrolls and sizes together with the orbs it's connecting.
-           script.js draws real <line> elements into it, positioned
-           relative to this same stage, since the endpoints depend on
-           actual rendered layout. -->
-      <svg class="orb-lines" id="orbLines" aria-hidden="true"></svg>
+      <!-- Kept (empty) because script.js uses it as its "this is the home
+           page" marker. -->
+      <section id="hero" class="hero" aria-hidden="true"></section>
 
       <!-- NOT aria-hidden: these are real navigation links, just visually
            deferred until the flower opens (pointer-events re-enabled by

@@ -145,7 +145,6 @@ const landingStage = document.getElementById("landingStage");
 const lotusCanvas = document.getElementById("lotusCanvas");
 const lotusStartCta = document.getElementById("lotusStartCta");
 const orbCluster = document.getElementById("orbCluster");
-const orbLines = document.getElementById("orbLines");
 const siteFooter = document.getElementById("siteFooter");
 const growthTrail = document.querySelector(".growth-trail");
 const lotusStill = document.querySelector(".lotus-still");
@@ -192,82 +191,27 @@ if (trailBuds.length && heroSection) {
     });
   };
 
-  /* ---- the 3D lotus + its 5 orbs ---- */
+  /* ---- the landing screen ----
+     Click/tap the flower, and then (all slow, all eased, nothing bouncy):
+       1. is-awake     the background lifts from black, colour droplets
+                       drift in, the motto fades in, and the camera glides
+                       in to a big near-top flower (landing-3d.js)
+       2. is-settling  the flower sinks and dims, the five orbs flow out
+                       of its open centre to their places, then
+                       landing-fx.js grows glowing stems between them and
+                       the motto words, which keep pulsing for good.
+     The look of each state is the LANDING SCREEN section of styles.css. */
   let landingState = "idle"; // idle | activating | settled
-  const POP_MS = 950; // orb pop-out duration — also used as the delay before drawing the connecting lines
-  const CLOSE_MS = 500;
-  // Pure black until the flower settles into its final pose (2026-10-01,
-  // see body.landing-veil in styles.css) — removed the moment
-  // triggerLanding() applies .is-vignette below, so the background reveal
-  // is timed to that exact beat. Only ever added once, here, on load —
-  // a returning visit to the landing screen (resetLanding()) doesn't
-  // bring it back, same as .is-vignette never being removed.
-  document.body.classList.add("landing-veil");
+  const ORB_FLOW_MS = 3300; // about how long the orbs' slow flow out takes
+  const LINES_AFTER_MS = 1700; // the stems start growing this long after the orbs start moving
+  const NO_SCENE_WAIT_MS = 2800; // without the 3D zoom, give the motto/background this long first
 
-  const clearOrbLines = () => {
-    if (!orbLines) return;
-    orbLines.classList.remove("is-visible");
-    orbLines.innerHTML = "";
-  };
-
-  const drawOrbLines = () => {
-    if (!orbLines || !orbCluster || !landingStage) return;
-    // Coordinates are relative to .landing-stage (its own containing
-    // block, position: relative in CSS) instead of the viewport, so the
-    // lines scroll and resize as one piece with the orbs — see the note
-    // on .orb-lines in styles.css.
-    const stageRect = landingStage.getBoundingClientRect();
-    orbLines.setAttribute("viewBox", `0 0 ${stageRect.width} ${stageRect.height}`);
-    orbLines.innerHTML =
-      '<defs><linearGradient id="orbLineGradient" x1="0" y1="0" x2="1" y2="1">' +
-      '<stop offset="0%" stop-color="var(--color-violet)" /><stop offset="100%" stop-color="var(--color-accent)" />' +
-      "</linearGradient></defs>";
-
-    const centerOf = (el) => {
-      const r = el.getBoundingClientRect();
-      return { x: r.left + r.width / 2 - stageRect.left, y: r.top + r.height / 2 - stageRect.top };
-    };
-    // Each line grows from nothing like a stem, instead of just fading
-    // in — a dash covering the line's own length, pulled back to 0 via a
-    // CSS transition. The double rAF gives the browser one frame to
-    // register the starting (undrawn) state before the transition starts,
-    // otherwise it can just jump straight to fully drawn.
-    let stemIndex = 0;
-    const addLine = (p1, p2, opacity) => {
-      const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
-      const length = Math.hypot(p2.x - p1.x, p2.y - p1.y);
-      line.setAttribute("x1", p1.x);
-      line.setAttribute("y1", p1.y);
-      line.setAttribute("x2", p2.x);
-      line.setAttribute("y2", p2.y);
-      line.setAttribute("stroke", "url(#orbLineGradient)");
-      line.setAttribute("stroke-width", "1");
-      line.setAttribute("opacity", opacity);
-      line.style.strokeDasharray = String(length);
-      line.style.strokeDashoffset = String(length);
-      line.style.transition = `stroke-dashoffset 0.7s ease ${Math.min(stemIndex * 45, 400)}ms`;
-      stemIndex += 1;
-      orbLines.appendChild(line);
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          line.style.strokeDashoffset = "0";
-        });
-      });
-    };
-
-    // Orb-to-orb only now (2026-10-01) — the motto words moved to two
-    // low-opacity corners specifically to recede behind the flower/orbs,
-    // so a bright line dragging a corner word back to centre would
-    // undercut that. This "constellation ring" around the flower is
-    // still worth keeping on its own.
-    const orbEls = Array.from(orbCluster.querySelectorAll(".orb"));
-    // Icon centres, not the whole orb box (which includes the label hanging below).
-    const orbCenters = orbEls.map((orb) => centerOf(orb.querySelector(".orb__img") || orb));
-    for (let i = 0; i < orbCenters.length; i++) {
-      for (let j = i + 1; j < orbCenters.length; j++) {
-        addLine(orbCenters[i], orbCenters[j], 0.3);
-      }
-    }
+  // Anything scheduled below is cancelled (and a half-finished run is
+  // ignored) if the visitor leaves the landing screen mid-sequence.
+  let runId = 0;
+  let timers = [];
+  const later = (fn, ms) => {
+    timers.push(window.setTimeout(fn, ms));
   };
 
   const positionOrbsAtLotus = () => {
@@ -279,22 +223,16 @@ if (trailBuds.length && heroSection) {
       orb.style.setProperty("--ox", "0px");
       orb.style.setProperty("--oy", "0px");
     });
-    // The flower is always dead-centre of .orb-cluster (the camera always
-    // looks straight at it — see landing-3d.js), so that's the point
-    // every orb should visually "pop out of" — no dedicated lotus element
-    // to measure any more.
+    // The orbs flow out of the OPEN flower's centre — by now sunk a little
+    // below the screen's middle (landing-3d.js reports how far).
     const clusterRect = orbCluster.getBoundingClientRect();
-    const origin = { x: clusterRect.left + clusterRect.width / 2, y: clusterRect.top + clusterRect.height / 2 };
+    const sink = window.lotusScene?.coreOffsetY?.() ?? 0;
+    const origin = { x: clusterRect.left + clusterRect.width / 2, y: clusterRect.top + clusterRect.height / 2 + sink };
     orbs.forEach((orb) => {
-      // About/the sun already rests exactly at that centre point, so it
-      // blooms in place instead of travelling outward like the other 4 —
-      // leaving its --ox/--oy at the 0px reset above does exactly that.
-      if (orb.classList.contains("orb--about")) return;
       // The icon's centre — the orb's own box also includes its label.
       const r = (orb.querySelector(".orb__img") || orb).getBoundingClientRect();
-      const orbCenter = { x: r.left + r.width / 2, y: r.top + r.height / 2 };
-      orb.style.setProperty("--ox", `${origin.x - orbCenter.x}px`);
-      orb.style.setProperty("--oy", `${origin.y - orbCenter.y}px`);
+      orb.style.setProperty("--ox", `${origin.x - (r.left + r.width / 2)}px`);
+      orb.style.setProperty("--oy", `${origin.y - (r.top + r.height / 2)}px`);
     });
   };
 
@@ -304,34 +242,20 @@ if (trailBuds.length && heroSection) {
     void orbCluster.offsetWidth; // force layout so the start position is registered before animating
     orbCluster.classList.remove("is-closing");
     orbCluster.classList.add("is-visible");
-    window.setTimeout(() => {
-      drawOrbLines();
-      if (orbLines) orbLines.classList.add("is-visible");
-    }, POP_MS);
-  };
-
-  const closeOrbs = () => {
-    if (!orbCluster) return;
-    clearOrbLines();
-    orbCluster.classList.add("is-closing");
-    window.setTimeout(() => {
-      orbCluster.classList.remove("is-visible", "is-closing");
-    }, CLOSE_MS);
   };
 
   const resetLanding = () => {
     // Always back to idle when you arrive at/return to the landing screen.
+    runId += 1;
+    timers.forEach((id) => window.clearTimeout(id));
+    timers = [];
     landingState = "idle";
     if (landingStage) {
-      landingStage.classList.remove("is-settled");
+      landingStage.classList.remove("is-awake", "is-settling");
       delete landingStage.dataset.lotusState;
     }
-    document.body.classList.remove("is-transitioning");
-    // .is-vignette is NOT removed here — once the landing sequence has
-    // played once this session, the settled background stays (see
-    // styles.css). Only a reload clears it, same as landingState itself.
     if (orbCluster) orbCluster.classList.remove("is-visible", "is-closing");
-    clearOrbLines();
+    window.landingFx?.clearLines();
     // landing-3d.js owns tweening the camera/flower back to its idle side
     // view — guarded since this file also runs on pages without the 3D
     // scene, and in case the module hasn't finished loading yet.
@@ -339,34 +263,45 @@ if (trailBuds.length && heroSection) {
   };
 
   if (orbCluster) {
-    // click → zoom/rotate the flower (landing-3d.js) → pop the orbs → fade
-    // in the motto. Guarded against double-firing (a second click mid-
-    // sequence, or the canvas *and* the hidden CTA firing for the same
-    // interaction) by landingState.
+    // Guarded against double-firing (a second click mid-sequence, or the
+    // canvas *and* the hidden CTA firing for the same interaction) by
+    // landingState.
     const triggerLanding = () => {
       if (landingState !== "idle") return;
       landingState = "activating";
-      if (landingStage) landingStage.dataset.lotusState = "activating";
-      document.body.classList.add("is-transitioning");
+      const myRun = ++runId;
+      if (landingStage) {
+        landingStage.dataset.lotusState = "activating";
+        landingStage.classList.add("is-awake");
+      }
+
+      // No 3D scene (the Three.js scripts or the model failed, or WebGL
+      // is unsupported — window.lotusScene.ready rejects in all of those
+      // cases): there's no zoom to wait for, so just give the background
+      // and motto a moment before the orbs, rather than getting stuck.
+      let hadScene = true;
       const activate = window.lotusScene?.activate;
-      // No 3D scene (module failed to load, WebGL unsupported, or the
-      // model itself failed — window.lotusScene.ready rejects in all of
-      // those cases) — skip straight to the orbs rather than getting
-      // stuck forever on a click that never resolves.
-      const zoomDone = typeof activate === "function" ? activate() : Promise.resolve();
-      Promise.resolve(zoomDone)
-        .catch(() => {})
+      const zoomDone =
+        typeof activate === "function"
+          ? Promise.resolve(activate()).catch(() => {
+              hadScene = false;
+            })
+          : Promise.resolve().then(() => {
+              hadScene = false;
+            });
+
+      zoomDone
+        .then(() => (hadScene ? null : new Promise((resolve) => later(resolve, NO_SCENE_WAIT_MS))))
         .then(() => {
-          document.body.classList.replace("is-transitioning", "is-vignette");
-          document.body.classList.remove("landing-veil");
+          if (myRun !== runId) return; // left the landing screen meanwhile
+          if (landingStage) landingStage.classList.add("is-settling");
+          window.lotusScene?.settle?.();
           openOrbs();
-          window.setTimeout(() => {
-            if (landingStage) {
-              landingStage.classList.add("is-settled");
-              delete landingStage.dataset.lotusState;
-            }
+          later(() => window.landingFx?.growLines(), LINES_AFTER_MS);
+          later(() => {
+            if (landingStage) landingStage.dataset.lotusState = "settled";
             landingState = "settled";
-          }, POP_MS);
+          }, ORB_FLOW_MS);
         });
     };
     if (lotusCanvas) {
@@ -380,13 +315,6 @@ if (trailBuds.length && heroSection) {
     if (lotusStill) {
       lotusStill.addEventListener("click", triggerLanding);
     }
-
-    let resizeTimer = null;
-    window.addEventListener("resize", () => {
-      if (!orbCluster.classList.contains("is-visible")) return;
-      window.clearTimeout(resizeTimer);
-      resizeTimer = window.setTimeout(drawOrbLines, 150);
-    });
   }
 
   /* ---- scene switching ---- */
@@ -404,9 +332,9 @@ if (trailBuds.length && heroSection) {
     // Phones use the top header instead of the side rail: it only shows once
     // a section is open, same as the side rail (see body.is-landing in styles.css).
     document.body.classList.remove("is-landing");
-    // Skipped the landing sequence (a direct link, or just tapped an orb):
-    // nothing left to reveal, so don't leave the background black.
-    document.body.classList.remove("landing-veil");
+    // The landing's dust/droplet/connection animation has nothing to do
+    // while a section is showing.
+    window.landingFx?.setActive(false);
     resetLanding();
     homeSections.forEach((section) => {
       section.hidden = section.id !== id;
@@ -425,8 +353,7 @@ if (trailBuds.length && heroSection) {
     if (siteFooter) siteFooter.hidden = true;
     if (growthTrail) growthTrail.hidden = true;
     document.body.classList.add("is-landing");
-    // Back on the landing screen before its reveal has ever played: black again.
-    if (!document.body.classList.contains("is-vignette")) document.body.classList.add("landing-veil");
+    window.landingFx?.setActive(true);
     resetLanding();
     activeId = null;
     updateTrail();
