@@ -789,6 +789,8 @@ if (trailBuds.length && heroSection) {
           later(() => {
             if (landingStage) landingStage.dataset.lotusState = "settled";
             landingState = "settled";
+            // A safety net: a finished landing always has its connections.
+            window.landingFx?.ensureLines?.();
           }, ORB_FLOW_MS);
         });
     };
@@ -853,6 +855,7 @@ if (trailBuds.length && heroSection) {
       // Back to the finished landing as it was left — just redraw the
       // flower (a hidden canvas has no size, so it may have missed a resize).
       window.lotusScene?.refresh?.();
+      window.landingFx?.ensureLines?.();
     } else {
       resetLanding();
     }

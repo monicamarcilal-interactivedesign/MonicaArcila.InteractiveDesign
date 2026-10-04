@@ -190,6 +190,7 @@ const STRAND_DELAY = 0.09;
 let conns = [];
 let linesStart = 0;
 let linesOn = false;
+let linesPending = false;
 let nodes = {}; // resolved each frame
 
 function resolveNodes() {
@@ -269,6 +270,12 @@ function drawLines(t, dt) {
   lineCtx.clearRect(0, 0, W, H);
   if (!linesOn) return;
   resolveNodes();
+  // The growth is timed on the animation frames' own clock (set on the first
+  // frame after growLines), so it cannot be thrown off by two different clocks.
+  if (linesPending) {
+    linesStart = t;
+    linesPending = false;
+  }
   const elapsed = reduced ? 1e6 : t - linesStart;
   lineCtx.globalCompositeOperation = "lighter";
   lineCtx.lineCap = "round";
@@ -397,12 +404,25 @@ function frame(now) {
   lastT = t;
 
   if (stage.classList.contains("is-awake")) lastAwake = t;
-  // Keep drawing droplets while they fade out after a reset, then stop.
-  if (t - lastAwake < 3.8) drawDroplets(t);
-  else dropCtx.clearRect(0, 0, W, H);
-
-  drawDust(t, dt);
-  drawLines(t, dt);
+  // Each layer is drawn on its own, so a problem in one can never stop the
+  // others, and the loop always carries on to the next frame.
+  try {
+    // Keep drawing droplets while they fade out after a reset, then stop.
+    if (t - lastAwake < 3.8) drawDroplets(t);
+    else dropCtx.clearRect(0, 0, W, H);
+  } catch (error) {
+    console.warn("landing-fx: droplets", error);
+  }
+  try {
+    drawDust(t, dt);
+  } catch (error) {
+    console.warn("landing-fx: dust", error);
+  }
+  try {
+    drawLines(t, dt);
+  } catch (error) {
+    console.warn("landing-fx: connections", error);
+  }
   rafId = requestAnimationFrame(frame);
 }
 
@@ -420,18 +440,25 @@ function setActive(on) {
 
 function growLines() {
   buildConnections();
-  linesStart = performance.now() / 1000;
+  linesPending = true;
   linesOn = true;
+}
+
+// Start the connections if they are not already there (a safety net: the
+// finished landing always has them).
+function ensureLines() {
+  if (!linesOn) growLines();
 }
 
 function clearLines() {
   linesOn = false;
+  linesPending = false;
   conns = [];
   if (W) lineCtx.clearRect(0, 0, W, H);
 }
 
 window.addEventListener("resize", size);
-window.landingFx = { setActive, growLines, clearLines };
+window.landingFx = { setActive, growLines, clearLines, ensureLines };
 
 // script.js runs before this deferred file loads, so its own setActive
 // calls from the first scene switch found nothing — start here instead,
