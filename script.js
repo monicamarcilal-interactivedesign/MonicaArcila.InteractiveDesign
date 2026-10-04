@@ -58,7 +58,19 @@ const prefersReducedMotion = window.matchMedia(
 ).matches;
 
 if (aboutPhoto) {
-  aboutPhoto.addEventListener("click", () => aboutPhoto.classList.toggle("is-swapped"));
+  // A tap swaps the picture on touch screens; a mouse just hovers.
+  aboutPhoto.addEventListener("pointerup", (event) => {
+    if (event.pointerType === "mouse") return;
+    aboutPhoto.classList.toggle("is-swapped");
+    if (aboutCard) aboutCard.classList.toggle("is-glint", aboutPhoto.classList.contains("is-swapped"));
+  });
+  // While the mouse is over the photo, the sun in the corner glistens.
+  aboutPhoto.addEventListener("pointerenter", (event) => {
+    if (event.pointerType === "mouse" && aboutCard) aboutCard.classList.add("is-glint");
+  });
+  aboutPhoto.addEventListener("pointerleave", (event) => {
+    if (event.pointerType === "mouse" && aboutCard) aboutCard.classList.remove("is-glint");
+  });
 }
 
 if (aboutCard && !prefersReducedMotion) {

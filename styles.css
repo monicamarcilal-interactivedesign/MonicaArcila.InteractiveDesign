@@ -212,7 +212,7 @@ button:focus-visible,
    The leaf you are on is filled and glows, and a small light slides along
    the stem to it (script.js sets --cur: which leaf, 0 to 4). Leaves you
    have already visited are brighter outlines. The leaf shapes are
-   assets/nav/leaf-outline.png and leaf-fill.png, tinted with CSS masks. */
+   assets/nav/leaf-outline-idle.png, leaf-outline-bright.png and leaf-fill-glow.png. */
 .site-header {
   display: contents; /* desktop: the nav inside floats on its own */
 }
@@ -353,20 +353,30 @@ button:focus-visible,
   transform-origin: 100% 70%;
 }
 
+/* Three stacked pictures of the leaf (plain background images — CSS masks
+   would not load when the site is opened straight from a file):
+     1  pale outline   the normal state
+     2  bright outline  hover, focus and visited leaves
+     3  filled, glowing  the leaf you are on */
 .lotus-nav__glyph i {
   position: absolute;
   inset: 0;
-  background-color: currentColor;
-  -webkit-mask: url("assets/nav/leaf-outline.png") center / contain no-repeat;
-  mask: url("assets/nav/leaf-outline.png") center / contain no-repeat;
+  background: center / contain no-repeat;
   transition: opacity 0.4s ease, filter 0.4s ease;
 }
 
-/* The filled version is only seen on the leaf you are on. */
-.lotus-nav__glyph i:last-child {
-  background: linear-gradient(120deg, #6ee7f0, #8f5cff);
-  -webkit-mask-image: url("assets/nav/leaf-fill.png");
-  mask-image: url("assets/nav/leaf-fill.png");
+.lotus-nav__glyph i:nth-child(1) {
+  background-image: url("assets/nav/leaf-outline-idle.png");
+  opacity: 0.78;
+}
+
+.lotus-nav__glyph i:nth-child(2) {
+  background-image: url("assets/nav/leaf-outline-bright.png");
+  opacity: 0;
+}
+
+.lotus-nav__glyph i:nth-child(3) {
+  background-image: url("assets/nav/leaf-fill-glow.png");
   opacity: 0;
 }
 
@@ -380,20 +390,32 @@ button:focus-visible,
   scale: 1.22;
 }
 
-.lotus-nav__leaf:hover .lotus-nav__glyph i:first-child,
-.lotus-nav__leaf:focus-visible .lotus-nav__glyph i:first-child {
-  filter: drop-shadow(0 0 6px rgba(110, 231, 240, 0.8));
+.lotus-nav__leaf:hover .lotus-nav__glyph i:nth-child(1),
+.lotus-nav__leaf:focus-visible .lotus-nav__glyph i:nth-child(1),
+.lotus-nav__leaf.is-bloomed .lotus-nav__glyph i:nth-child(1) {
+  opacity: 0;
+}
+
+.lotus-nav__leaf:hover .lotus-nav__glyph i:nth-child(2),
+.lotus-nav__leaf:focus-visible .lotus-nav__glyph i:nth-child(2) {
+  opacity: 1;
+  filter: drop-shadow(0 0 6px rgba(110, 231, 240, 0.85));
+}
+
+.lotus-nav__leaf.is-bloomed .lotus-nav__glyph i:nth-child(2) {
+  opacity: 0.9;
 }
 
 .lotus-nav__leaf.is-bloomed {
   color: rgba(190, 220, 255, 0.85);
 }
 
-.lotus-nav__leaf.is-current .lotus-nav__glyph i:first-child {
+.lotus-nav__leaf.is-current .lotus-nav__glyph i:nth-child(1),
+.lotus-nav__leaf.is-current .lotus-nav__glyph i:nth-child(2) {
   opacity: 0;
 }
 
-.lotus-nav__leaf.is-current .lotus-nav__glyph i:last-child {
+.lotus-nav__leaf.is-current .lotus-nav__glyph i:nth-child(3) {
   opacity: 1;
   filter: drop-shadow(0 0 7px rgba(110, 231, 240, 0.85));
 }
@@ -1193,6 +1215,7 @@ h1, h2, h3, h4,
 /* ---- the About card ---- */
 #about {
   position: relative;
+  max-width: 1360px; /* wider than the other sections: the card gets room to breathe */
 }
 
 .about-card {
@@ -1228,23 +1251,35 @@ h1, h2, h3, h4,
   opacity: 1;
 }
 
-/* The About orb, very faint and turning slowly, tucked behind the photo's
-   corner of the card. */
+/* The About orb (the sun): turning slowly in the card's lower-left corner,
+   under the photo, half tucked behind the card's edge. When the mouse is
+   over the photo it glistens (script.js adds .is-glint). */
 .about-card__sun {
   position: absolute;
   z-index: -1;
-  left: -9%;
-  bottom: -24%;
-  width: min(58%, 520px);
+  left: clamp(0.5rem, 2.2vw, 2rem);
+  bottom: -17%;
+  width: clamp(240px, 27%, 400px);
   max-width: none;
-  opacity: 0.2;
+  opacity: 0.55;
   mix-blend-mode: screen;
   pointer-events: none;
-  animation: sun-turn 90s linear infinite;
+  animation: sun-turn 80s linear infinite;
+  transition: opacity 0.6s ease;
+}
+
+.about-card.is-glint .about-card__sun {
+  opacity: 1;
+  animation: sun-turn 80s linear infinite, sun-glisten 1.5s ease-in-out infinite;
 }
 
 @keyframes sun-turn {
   to { transform: rotate(360deg); }
+}
+
+@keyframes sun-glisten {
+  0%, 100% { filter: brightness(1.05) drop-shadow(0 0 14px rgba(255, 190, 70, 0.5)); }
+  50%      { filter: brightness(1.75) saturate(1.2) drop-shadow(0 0 44px rgba(255, 220, 120, 0.95)); }
 }
 
 .about__eyebrow {
@@ -1267,7 +1302,7 @@ h1, h2, h3, h4,
 
 .about {
   display: grid;
-  grid-template-columns: minmax(200px, 300px) 1fr; /* photo | text */
+  grid-template-columns: minmax(220px, 340px) 1fr; /* photo | text */
   gap: clamp(1.4rem, 3.5vw, 2.6rem);
   align-items: start;
 }
