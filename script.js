@@ -932,7 +932,42 @@ if (trailBuds.length && heroSection) {
     }
   };
   if (isReload && location.hash) clearHash();
-  routeFromHash();
+
+  // A link made for one kind of role (index.html?role=ux, ?role=xr, ?role=game,
+  // ?role=ai, ?role=motion, ?role=featured) opens the Projects section with
+  // that filter already chosen. Like the #section above, it works once and is
+  // then removed from the address, so a reload comes back to the lotus.
+  const ROLE_FILTERS = {
+    ux: "ux", research: "ux", product: "ux",
+    xr: "immersive", vr: "immersive", immersive: "immersive",
+    game: "game", games: "game", narrative: "game",
+    ai: "ai",
+    motion: "motion", "3d": "motion", visual: "motion",
+    featured: "featured",
+  };
+  const params = new URLSearchParams(location.search);
+  const roleFilter = ROLE_FILTERS[(params.get("role") || "").toLowerCase()];
+  if (params.has("role")) {
+    params.delete("role");
+    const rest = params.toString();
+    try {
+      history.replaceState(null, "", location.pathname + (rest ? "?" + rest : "") + location.hash);
+    } catch (error) {
+      // fine: the page still works
+    }
+  }
+
+  if (roleFilter && !isReload) {
+    showSection("case-studies");
+    // the filter chips are wired up by projects-board.js, which loads after
+    // this file, so choose the chip once everything has loaded
+    window.addEventListener("load", () => {
+      const chip = document.querySelector('.filter__button[data-filter="' + roleFilter + '"]');
+      if (chip) chip.click();
+    });
+  } else {
+    routeFromHash();
+  }
   if (location.hash) clearHash();
 
   // Covers arriving at a hash the page was already sitting on (e.g. typing
