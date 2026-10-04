@@ -250,6 +250,297 @@ if (stickerScroll) {
 }
 
 /* -------------------------------------------------------------
+   7. CONTACT — GLOWING RIPPLES, A WRIGGLING HEADLINE, COPY BUTTON
+   (a) The pond: a small height-field "water" simulation drawn on a canvas
+       behind the words. Moving the mouse (or a finger) over the section
+       disturbs it, a click drops a bigger stone, and a gentle drop falls now
+       and then on its own. It is drawn as light, not as water: violet,
+       cyan and pink glows whose strength is capped so the text on top keeps
+       its contrast. It only runs while the section is on screen.
+   (b) The headline: each letter rides a travelling wave while the pointer is
+       over it, strongest near the pointer, with a wave of colour through the
+       site's palette; it eases back to still, white letters afterwards.
+   (c) A button that copies the email address (with a quiet confirmation).
+   Both effects stay still for visitors who ask for reduced motion.
+   ------------------------------------------------------------- */
+const contactSection = document.getElementById("contact");
+const contactReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---- (a) the pond ---- */
+const waterCanvas = document.getElementById("contactWater");
+if (contactSection && waterCanvas && !contactReduced) {
+  const ctx = waterCanvas.getContext("2d");
+  const CELL = window.matchMedia("(pointer: coarse)").matches ? 12 : 8; // pixels per water cell
+  let W = 0;
+  let H = 0;
+  let cur = new Float32Array(0);
+  let prev = new Float32Array(0);
+  let image = null;
+  let running = false;
+  let frameId = 0;
+  let lastDrop = 0;
+  let last = { x: -1, y: -1, t: 0 };
+
+  const build = () => {
+    const rect = contactSection.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    W = Math.max(12, Math.ceil(rect.width / CELL));
+    H = Math.max(8, Math.ceil(rect.height / CELL));
+    waterCanvas.width = W;
+    waterCanvas.height = H;
+    cur = new Float32Array(W * H);
+    prev = new Float32Array(W * H);
+    image = ctx.createImageData(W, H);
+  };
+
+  // Push the water at a cell (a soft 3x3 splash).
+  const splash = (cx, cy, strength) => {
+    if (!W) return;
+    for (let dy = -1; dy <= 1; dy++) {
+      for (let dx = -1; dx <= 1; dx++) {
+        const x = cx + dx;
+        const y = cy + dy;
+        if (x < 1 || y < 1 || x >= W - 1 || y >= H - 1) continue;
+        cur[y * W + x] += strength * (dx === 0 && dy === 0 ? 1 : 0.55);
+      }
+    }
+  };
+
+  const toCell = (event) => {
+    const rect = contactSection.getBoundingClientRect();
+    return {
+      x: Math.floor(((event.clientX - rect.left) / rect.width) * W),
+      y: Math.floor(((event.clientY - rect.top) / rect.height) * H),
+    };
+  };
+
+  contactSection.addEventListener("pointermove", (event) => {
+    const now = performance.now();
+    const cell = toCell(event);
+    if (last.x >= 0) {
+      const speed = Math.hypot(cell.x - last.x, cell.y - last.y) / Math.max(1, now - last.t);
+      splash(cell.x, cell.y, Math.min(9, 1.2 + speed * 60));
+    }
+    last = { x: cell.x, y: cell.y, t: now };
+  });
+  contactSection.addEventListener("pointerleave", () => (last.x = -1));
+  contactSection.addEventListener("pointerdown", (event) => {
+    const cell = toCell(event);
+    splash(cell.x, cell.y, 40);
+  });
+
+  const step = (now) => {
+    // an occasional drop of its own, so the pond is alive before anyone touches it
+    if (now - lastDrop > 3200) {
+      lastDrop = now;
+      splash(2 + Math.floor(Math.random() * (W - 4)), 2 + Math.floor(Math.random() * (H - 4)), 12);
+    }
+    const out = image.data;
+    for (let y = 1; y < H - 1; y++) {
+      for (let x = 1; x < W - 1; x++) {
+        const i = y * W + x;
+        // the ripple rule: the average of the neighbours, minus what was here before, a little damped
+        let n = (cur[i - 1] + cur[i + 1] + cur[i - W] + cur[i + W]) * 0.5 - prev[i];
+        n *= 0.982;
+        prev[i] = n;
+      }
+    }
+    const swap = prev;
+    prev = cur;
+    cur = swap;
+    // draw it as light: the slope of the surface catches the light, the height tints it
+    for (let y = 1; y < H - 1; y++) {
+      for (let x = 1; x < W - 1; x++) {
+        const i = y * W + x;
+        const h = cur[i];
+        const slope = cur[i + 1] - cur[i - 1] + (cur[i + W] - cur[i - W]);
+        const k = (i << 2);
+        const glint = Math.max(0, Math.min(1, Math.abs(slope) * 0.3));
+        const body = Math.max(0, Math.min(1, Math.abs(h) * 0.05));
+        const a = Math.min(0.55, glint * 0.55 + body * 0.35); // never much brighter than half strength
+        let r;
+        let g;
+        let b;
+        if (slope > 0) {
+          r = 80; g = 215; b = 245; // cyan light
+        } else if (h > 0) {
+          r = 143; g = 92; b = 255; // violet
+        } else {
+          r = 248; g = 135; b = 250; // pink
+        }
+        out[k] = r;
+        out[k + 1] = g;
+        out[k + 2] = b;
+        out[k + 3] = a * 255;
+      }
+    }
+    ctx.putImageData(image, 0, 0);
+  };
+
+  const loop = (now) => {
+    if (!running) return;
+    step(now);
+    frameId = requestAnimationFrame(loop);
+  };
+
+  build();
+  if ("ResizeObserver" in window) new ResizeObserver(build).observe(contactSection);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver(
+      (entries) => {
+        const visible = entries.some((en) => en.isIntersecting);
+        if (visible && !running) {
+          running = true;
+          frameId = requestAnimationFrame(loop);
+        } else if (!visible && running) {
+          running = false;
+          cancelAnimationFrame(frameId);
+        }
+      },
+      { threshold: 0.05 }
+    ).observe(contactSection);
+  } else {
+    running = true;
+    frameId = requestAnimationFrame(loop);
+  }
+}
+
+/* ---- (b) the headline that wriggles ---- */
+const snake = document.getElementById("contactSnake");
+if (snake && !contactReduced) {
+  const text = snake.textContent;
+  snake.textContent = "";
+  snake.setAttribute("aria-hidden", "true");
+  // Letters are grouped in words that never break in the middle; the spaces
+  // between words stay ordinary, breakable spaces.
+  const letters = [];
+  text.split(" ").forEach((word, w, all) => {
+    const wordEl = document.createElement("span");
+    wordEl.className = "snake__word";
+    Array.from(word).forEach((ch) => {
+      const span = document.createElement("span");
+      span.className = "snake__ch";
+      span.textContent = ch;
+      wordEl.appendChild(span);
+      letters.push(span);
+    });
+    snake.appendChild(wordEl);
+    if (w < all.length - 1) snake.appendChild(document.createTextNode(" "));
+  });
+  // keep the sentence available to screen readers on the heading itself
+  snake.parentElement.setAttribute("aria-label", text);
+
+  const PALETTE = [
+    [143, 92, 255], // violet
+    [248, 135, 250], // pink
+    [253, 112, 105], // coral
+    [255, 209, 102], // warm gold
+    [34, 211, 238], // cyan
+    [77, 125, 255], // blue
+  ];
+  const WHITE = [244, 241, 255];
+  const paletteAt = (u) => {
+    const n = PALETTE.length;
+    const p = ((u % n) + n) % n;
+    const i = Math.floor(p);
+    const f = p - i;
+    const a = PALETTE[i];
+    const b = PALETTE[(i + 1) % n];
+    return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
+  };
+
+  let pointerX = -9999;
+  let hovering = false;
+  let strength = 0; // 0 = still, 1 = fully wriggling; eases both ways
+  let frame = 0;
+  let centres = [];
+
+  const measure = () => {
+    centres = letters.map((el) => {
+      const r = el.getBoundingClientRect();
+      return r.left + r.width / 2;
+    });
+  };
+
+  const tick = (now) => {
+    strength += ((hovering ? 1 : 0) - strength) * 0.08;
+    if (!hovering && strength < 0.01) {
+      letters.forEach((el) => {
+        el.style.transform = "";
+        el.style.color = "";
+      });
+      frame = 0;
+      return;
+    }
+    const t = now * 0.001;
+    letters.forEach((el, i) => {
+      const d = Math.abs(pointerX - centres[i]);
+      const near = Math.exp(-Math.pow(d / 220, 2)); // 1 beside the pointer, fading away from it
+      const phase = t * 7 - i * 0.55;
+      const amount = strength * (0.3 + 0.7 * near);
+      const y = Math.sin(phase) * 0.17 * amount; // in em: never more than a fifth of a letter
+      const pop = 1 + Math.max(0, Math.sin(phase + 1.2)) * 0.12 * amount;
+      const tilt = Math.cos(phase) * 7 * amount;
+      el.style.transform = `translateY(${y.toFixed(3)}em) rotate(${tilt.toFixed(2)}deg) scale(${pop.toFixed(3)})`;
+      const c = paletteAt(t * 1.1 + i * 0.28);
+      const mix = Math.min(1, strength * (0.35 + 0.65 * near) * 1.15);
+      el.style.color = `rgb(${Math.round(WHITE[0] + (c[0] - WHITE[0]) * mix)}, ${Math.round(WHITE[1] + (c[1] - WHITE[1]) * mix)}, ${Math.round(WHITE[2] + (c[2] - WHITE[2]) * mix)})`;
+    });
+    frame = requestAnimationFrame(tick);
+  };
+
+  const start = () => {
+    if (!frame) frame = requestAnimationFrame(tick);
+  };
+  const title = snake.parentElement;
+  title.addEventListener("pointerenter", () => {
+    measure();
+    hovering = true;
+    start();
+  });
+  title.addEventListener("pointermove", (event) => {
+    pointerX = event.clientX;
+  });
+  title.addEventListener("pointerleave", () => {
+    hovering = false;
+    start();
+  });
+  window.addEventListener("resize", measure);
+}
+
+/* ---- (c) copy the address ---- */
+const copyButton = document.getElementById("contactCopy");
+const copiedNote = document.getElementById("contactCopied");
+if (copyButton) {
+  copyButton.addEventListener("click", async () => {
+    const address = copyButton.dataset.address;
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(address);
+      ok = true;
+    } catch (error) {
+      // file:// pages and older browsers: the old way, through a hidden field
+      const field = document.createElement("textarea");
+      field.value = address;
+      field.setAttribute("readonly", "");
+      field.style.cssText = "position:fixed;left:-9999px;top:0";
+      document.body.appendChild(field);
+      field.select();
+      try {
+        ok = document.execCommand("copy");
+      } catch (e) {
+        ok = false;
+      }
+      field.remove();
+    }
+    if (copiedNote) {
+      copiedNote.textContent = ok ? "Copied ✓" : `Copy it from here: ${address}`;
+      window.setTimeout(() => (copiedNote.textContent = ""), 2600);
+    }
+  });
+}
+
+/* -------------------------------------------------------------
    4. PROJECT FILTER, THE CARD BOARD AND THE PROJECTS HERO
    Moved to projects-board.js (2026-10-04) when the Projects section
    became a draggable board of cards — it is a bigger job than this

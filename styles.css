@@ -2907,80 +2907,288 @@ html:not(.js) .route__skills li { opacity: 1; }
 }
 
 /* -------------------------------------------------------------
-   CONTACT (big call to action + four columns of details)
-   ------------------------------------------------------------- */
+   CONTACT (redesigned 2026-10-04)
+   -------------------------------------------------------------
+   One wide glass "pond". Behind the words, glowing ripples follow the
+   mouse (a canvas, script.js job 7, kept dim). The headline is in the
+   primary font (Sora); the eyebrow, the call to action and the small
+   notes are in the script font. The call to action is the email itself.
+   Three glass cards carry the details. */
+#contact {
+  position: relative;
+  isolation: isolate;
+  max-width: 1360px;
+  overflow: hidden;
+  border: 1px solid var(--glass-edge, rgba(255, 255, 255, 0.17));
+  border-radius: 30px;
+  background:
+    radial-gradient(60% 70% at 8% 0%, rgba(135, 71, 248, 0.26), transparent 70%),
+    radial-gradient(55% 70% at 100% 100%, rgba(34, 211, 238, 0.14), transparent 70%),
+    linear-gradient(160deg, rgba(10, 8, 44, 0.9), rgba(5, 3, 24, 0.95));
+  box-shadow: 0 40px 100px -50px rgba(143, 92, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+}
+
+#contact[hidden] {
+  display: none;
+}
+
+.contact__water {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  opacity: 0.95;
+  filter: blur(5px) saturate(1.25); /* softens the grid of water cells into light */
+}
+
+.contact__inner {
+  position: relative;
+  z-index: 1;
+  padding: clamp(2rem, 6vw, 4.6rem) clamp(1.3rem, 5vw, 4.4rem);
+  min-height: min(78vh, 760px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
 .contact__eyebrow {
-  color: var(--color-muted);
+  margin: 0 0 0.5rem;
+  color: #cfc4ff;
+  font-size: clamp(1.25rem, 2vw, 1.6rem);
 }
 
-.contact__cta {
-  font-size: clamp(1.9rem, 4.4vw, 3.1rem);
-  font-weight: var(--weight-title);
-  line-height: 1.1;
-  margin-block: 2rem 3.5rem;
+/* ---- the headline ---- */
+.contact__title {
+  margin: 0;
+  font-size: clamp(2rem, 6.2vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: #f4f1ff;
+  text-shadow: 0 2px 28px rgba(6, 4, 34, 0.7);
 }
 
-.contact__question {
-  display: block;
-}
-
-.contact__link {
+.snake__word {
   display: inline-block;
-  color: inherit;
+  white-space: nowrap;
+}
+
+.snake__ch {
+  display: inline-block;
+  white-space: pre;
+  will-change: transform;
+}
+
+/* ---- the call to action: the email ---- */
+.contact__cta {
+  position: relative;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-top: clamp(1rem, 2.6vw, 1.8rem);
+  padding-bottom: 0.4rem;
+  color: #ffffff;
   text-decoration: none;
-  border-bottom: 1px solid var(--color-muted);
-  padding-bottom: 0.3rem;
-  transition: color 0.15s ease, border-color 0.15s ease;
+  font-family: var(--font-script);
+  font-size: clamp(2rem, 4.6vw, 3.3rem);
+  line-height: 1;
 }
 
-.contact__link:hover {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+.contact__cta::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, #8f5cff, #22d3ee, #f887fa);
+  transform-origin: left;
+  transform: scaleX(0.35);
+  opacity: 0.7;
+  transition: transform 0.5s cubic-bezier(0.3, 0.9, 0.3, 1), opacity 0.3s ease;
 }
 
+.contact__envelope {
+  flex: none;
+  width: 0.78em;
+  height: auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  opacity: 0.85;
+  transition: transform 0.4s cubic-bezier(0.3, 0.9, 0.3, 1), stroke 0.3s ease;
+}
+
+.contact__flap {
+  transform-origin: 16px 5.5px;
+  transition: transform 0.4s ease;
+}
+
+.contact__arrow {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: 0.8em;
+  transition: transform 0.35s cubic-bezier(0.3, 0.9, 0.3, 1), color 0.3s ease;
+}
+
+.contact__cta:hover::after,
+.contact__cta:focus-visible::after {
+  transform: scaleX(1);
+  opacity: 1;
+}
+
+.contact__cta:hover .contact__envelope,
+.contact__cta:focus-visible .contact__envelope {
+  transform: translateY(-3px) rotate(-6deg);
+  stroke: #8ff1ff;
+}
+
+.contact__cta:hover .contact__flap,
+.contact__cta:focus-visible .contact__flap {
+  transform: scaleY(-0.7);
+}
+
+.contact__cta:hover .contact__arrow,
+.contact__cta:focus-visible .contact__arrow {
+  animation: arrow-launch 0.9s cubic-bezier(0.3, 0.9, 0.3, 1);
+  color: #8ff1ff;
+}
+
+@keyframes arrow-launch {
+  0%   { transform: translate(0, 0); opacity: 1; }
+  45%  { transform: translate(0.55em, -0.55em); opacity: 0; }
+  46%  { transform: translate(-0.55em, 0.55em); opacity: 0; }
+  100% { transform: translate(0.12em, -0.12em); opacity: 1; }
+}
+
+.contact__cta:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 8px;
+  border-radius: 6px;
+}
+
+/* ---- the small, optional way to copy the address ---- */
+.contact__or {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin: 0.9rem 0 clamp(1.8rem, 5vw, 3.2rem);
+  font-size: 0.82rem;
+}
+
+.contact__copy {
+  padding: 0.35rem 0.8rem;
+  font: inherit;
+  font-weight: 600;
+  color: rgba(232, 230, 248, 0.82);
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.contact__copy:hover,
+.contact__copy:focus-visible {
+  color: #ffffff;
+  background: rgba(143, 92, 255, 0.28);
+  border-color: rgba(143, 92, 255, 0.7);
+}
+
+.contact__copied {
+  color: #8ff1ff;
+  font-weight: 600;
+}
+
+/* ---- the three glass cards ---- */
 .contact__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 2rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(0.8rem, 2vw, 1.4rem);
 }
 
-/* Grid items default to min-width: auto, so an unbreakable string (the
-   email address) could overflow its own column into the next one instead
-   of wrapping. min-width: 0 lets the column shrink; overflow-wrap breaks
-   the address itself when it still doesn't fit on one line. */
+/* Grid items default to min-width: auto, so an unbreakable string could
+   overflow its own column instead of wrapping; min-width: 0 lets the
+   column shrink. */
 .contact__grid > div {
   min-width: 0;
-  padding: 1.2rem 1.4rem;
+  padding: 1.25rem 1.4rem 1.35rem;
+  transition: transform 0.4s cubic-bezier(0.3, 0.9, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.contact__grid a {
-  overflow-wrap: break-word;
+.contact__grid > div:hover {
+  transform: translateY(-4px);
+  border-color: rgba(143, 92, 255, 0.55);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2), 0 24px 50px -28px rgba(143, 92, 255, 0.7);
+}
+
+.contact__grid p {
+  margin: 0;
+  line-height: 1.45;
 }
 
 .contact__label {
-  font-size: 0.8rem;
-  font-weight: 400;
+  margin: 0 0 0.55rem;
+  font-size: 0.74rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-muted);
-  margin-bottom: 0.5rem;
+  letter-spacing: 0.1em;
+  color: #b7a9ff;
+}
+
+.contact__note {
+  margin-top: 0.15rem;
+  font-family: var(--font-script);
+  font-size: 1.15rem;
+  color: #cfc4ff;
 }
 
 .contact__list {
   list-style: none;
+  margin: 0;
   padding: 0;
 }
 
 .contact__list li + li {
-  margin-top: 0.4rem;
+  margin-top: 0.45rem;
 }
 
 .contact__grid a {
+  display: inline-block;
   color: var(--color-text);
+  text-decoration: none;
+  background: linear-gradient(90deg, #8f5cff, #22d3ee) left bottom / 0% 1.5px no-repeat;
+  padding-bottom: 0.1rem;
+  transition: background-size 0.4s ease, color 0.25s ease;
 }
 
-.contact__grid a:hover {
-  color: var(--color-accent);
+.contact__grid a:hover,
+.contact__grid a:focus-visible {
+  color: #ffffff;
+  background-size: 100% 1.5px;
+}
+
+@media (max-width: 800px) {
+  .contact__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .contact__inner {
+    min-height: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact__cta:hover .contact__arrow,
+  .contact__cta:focus-visible .contact__arrow {
+    animation: none;
+  }
 }
 
 /* -------------------------------------------------------------
@@ -3648,6 +3856,11 @@ html:not(.js) .route__skills li { opacity: 1; }
   padding: 1.1rem 1.1rem 0.9rem 1.6rem;
 }
 
+.viewer__heading {
+  flex: 1;
+  min-width: 0;
+}
+
 .viewer__kicker {
   margin: 0 0 0.1rem;
   font-family: var(--font-script);
@@ -3658,7 +3871,7 @@ html:not(.js) .route__skills li { opacity: 1; }
 
 .viewer__title {
   margin: 0;
-  max-width: 34rem;
+  max-width: none; /* use the whole bar, up to the close button, instead of wrapping early */
   font-size: clamp(1rem, 2.4vw, 1.25rem);
   font-weight: 800;
   line-height: 1.2;
