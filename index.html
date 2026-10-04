@@ -233,26 +233,20 @@
          (the link) is where the reading happens. The section's id stays
          "case-studies" so existing links keep working. -->
     <div id="case-studies">
-      <section class="projects-hero" aria-labelledby="projectsTitle">
+      <!-- The hero: the Projects orb's star, enlarged and cut in half by the
+           section's top edge (as in Mónica's reference), with the opening
+           statement bent over its lower half in concentric arcs around the
+           star's centre. The title comes after the star. -->
+      <section class="projects-hero" aria-label="Projects introduction">
         <div class="projects-hero__art" aria-hidden="true">
-          <svg class="projects-hero__outline" viewBox="0 0 200 200" focusable="false">
-            <defs>
-              <linearGradient id="starOutline" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0%" stop-color="#8747f8" />
-                <stop offset="50%" stop-color="#f887fa" />
-                <stop offset="100%" stop-color="#22d3ee" />
-              </linearGradient>
-            </defs>
-            <polygon points="100,12 176,144 24,144" />
-            <polygon points="100,188 24,56 176,56" />
-          </svg>
           <img class="projects-hero__shape" src="assets/site/orb-case-studies.png" alt="" />
         </div>
-        <div class="projects-hero__text">
-          <h2 class="section__title projects-hero__title" id="projectsTitle">Academic &amp; Personal Projects</h2>
-          <p class="projects-hero__statement" id="projectsStatement">I design <em class="pem pem--1">interactive experiences,</em> design systems and AI-driven workflows — <em class="pem pem--2">moving between</em> UX research, game design and immersive media, <em class="pem pem--3">from Medellín to Wellington.</em></p>
-        </div>
+        <p class="projects-hero__statement" id="projectsStatement">I design <em class="pem pem--1">interactive experiences,</em> design systems and AI-driven workflows — <em class="pem pem--2">moving between</em> UX research, game design and immersive media, <em class="pem pem--3">from Medellín to Wellington.</em></p>
       </section>
+
+      <header class="projects-head">
+        <h2 class="section__title projects-title" id="projectsTitle">Academic &amp; Personal Projects</h2>
+      </header>
 
       <section class="projects-intro">
         <p>
@@ -279,19 +273,31 @@
           ★ EASIEST WAY TO ADD ANOTHER PROJECT: tell Claude "add another
           project" — it adds a card here and a project page, linked.
         -->
-        <div class="container">
-          <!-- Hidden until projects-board.js runs, so the full list still
-               shows if JavaScript is off. -->
-          <div class="filter" role="group" aria-label="Filter projects by category" hidden>
-            <button class="filter__button" type="button" data-filter="all" aria-pressed="true">All projects</button>
-            <button class="filter__button" type="button" data-filter="featured" aria-pressed="false">Featured</button>
-            <button class="filter__button" type="button" data-filter="ux" aria-pressed="false">UX, Research &amp; Product Design</button>
-            <button class="filter__button" type="button" data-filter="immersive" aria-pressed="false">Immersive &amp; VR Experiences</button>
-            <button class="filter__button" type="button" data-filter="game" aria-pressed="false">Game Design &amp; Narrative Worlds</button>
-            <button class="filter__button" type="button" data-filter="ai" aria-pressed="false">AI-Driven Interactive Design</button>
-            <button class="filter__button" type="button" data-filter="motion" aria-pressed="false">3D, Motion &amp; Visual Design</button>
+        <div class="container projects-bar">
+          <div class="projects-bar__filters">
+            <!-- Hidden until projects-board.js runs, so the full list still
+                 shows if JavaScript is off. Each chip's dot is the colour
+                 that category wears on the cards (hover a chip to see which
+                 cards belong to it). -->
+            <div class="filter" role="group" aria-label="Filter projects by category" hidden>
+              <button class="filter__button" type="button" data-filter="all" aria-pressed="true">All projects</button>
+              <button class="filter__button" type="button" data-filter="featured" aria-pressed="false">Featured</button>
+              <button class="filter__button" type="button" data-filter="ux" aria-pressed="false">UX, Research &amp; Product Design</button>
+              <button class="filter__button" type="button" data-filter="immersive" aria-pressed="false">Immersive &amp; VR Experiences</button>
+              <button class="filter__button" type="button" data-filter="game" aria-pressed="false">Game Design &amp; Narrative Worlds</button>
+              <button class="filter__button" type="button" data-filter="ai" aria-pressed="false">AI-Driven Interactive Design</button>
+              <button class="filter__button" type="button" data-filter="motion" aria-pressed="false">3D, Motion &amp; Visual Design</button>
+            </div>
+            <p class="filter__status" aria-live="polite"></p>
           </div>
-          <p class="filter__status" aria-live="polite"></p>
+          <!-- The glowing navigator: drag the glow like a joystick to glide
+               the board up, down, left and right (sideways only on phones).
+               Hidden when every card already fits. Purely a helper — the
+               cards themselves drag too, and the arrow keys work. -->
+          <div class="board-nav" aria-hidden="true" hidden>
+            <div class="board-nav__pad"><span class="board-nav__orb"></span></div>
+            <span class="board-nav__text">glide the board</span>
+          </div>
         </div>
 
         <div class="board" id="projectsBoard" tabindex="0" role="region" aria-label="Project cards. Drag, swipe or use the arrow keys to move around the board.">
@@ -304,7 +310,7 @@
 
             <li class="pcard" data-category="ux ai featured" data-cat="ux" data-cat2="ai" data-featured>
               <a class="pcard__link" href="project-siata.html">
-                <div class="pcard__media"><img src="assets/cards/siata.jpg" alt="Prototype map screen with an active-layers panel to switch rain, air quality and river level on and off." loading="lazy" decoding="async" draggable="false" style="object-position: 50% 62%" /><span class="pcard__pill">Featured</span><span class="pcard__dot" aria-hidden="true"></span></div>
+                <div class="pcard__media"><img src="assets/cards/siata.jpg" alt="Prototype map screen with an active-layers panel to switch rain, air quality and river level on and off." loading="lazy" decoding="async" draggable="false" style="object-position: 50% 62%" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">SIATA Geoportal Ciudadanos</h3>
                   <p class="pcard__hook">Most people don't even know this citizen weather portal exists.</p>
@@ -318,7 +324,7 @@
 
             <li class="pcard" data-category="immersive game featured" data-cat="immersive" data-cat2="game" data-featured>
               <a class="pcard__link" href="project-night-at-the-museum.html">
-                <div class="pcard__media"><img src="assets/cards/night-museum.jpg" alt="The start menu in Meta Quest 3 with the title Noche en el Museo and Iniciar and Tutorial buttons." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span><span class="pcard__dot" aria-hidden="true"></span></div>
+                <div class="pcard__media"><img src="assets/cards/night-museum.jpg" alt="The start menu in Meta Quest 3 with the title Noche en el Museo and Iniciar and Tutorial buttons." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">A Night at the Museum</h3>
                   <p class="pcard__hook">A VR night at the museum, built to run on Meta Quest 3.</p>
@@ -332,7 +338,7 @@
 
             <li class="pcard" data-category="immersive game featured" data-cat="immersive" data-cat2="game" data-featured>
               <a class="pcard__link" href="project-nuris-greenhouse.html">
-                <div class="pcard__media"><img src="assets/cards/nuris-greenhouse.jpg" alt="The final constellation dome: glowing golden threads forming a star map around a pale orb." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span><span class="pcard__dot" aria-hidden="true"></span></div>
+                <div class="pcard__media"><img src="assets/cards/nuris-greenhouse.jpg" alt="The final constellation dome: glowing golden threads forming a star map around a pale orb." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Nuri's Greenhouse</h3>
                   <p class="pcard__hook">A whole VR world, built alone, in an engine I had just met.</p>
@@ -346,7 +352,7 @@
 
             <li class="pcard" data-category="game featured" data-cat="game" data-featured>
               <a class="pcard__link" href="project-meldiria.html">
-                <div class="pcard__media"><img src="assets/cards/meldiria.jpg" alt="Personality quiz slide &quot;¿Qué personaje eres?&quot; showing five characters from the Meldiria universe." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span><span class="pcard__dot" aria-hidden="true"></span></div>
+                <div class="pcard__media"><img src="assets/cards/meldiria.jpg" alt="Personality quiz slide &quot;¿Qué personaje eres?&quot; showing five characters from the Meldiria universe." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Meldiria</h3>
                   <p class="pcard__hook">One universe became a game, an animation, a quiz and a world bible.</p>
@@ -360,7 +366,7 @@
 
             <li class="pcard" data-category="ai ux featured" data-cat="ai" data-cat2="ux" data-featured>
               <a class="pcard__link" href="project-designing-choices.html">
-                <div class="pcard__media"><img src="assets/cards/designing-choices.jpg" alt="A screen from the quiz, “The wedding china”, with a story prompt and three coloured choice buttons." loading="lazy" decoding="async" draggable="false" style="object-position: 50% 30%" /><span class="pcard__pill">Featured</span><span class="pcard__dot" aria-hidden="true"></span></div>
+                <div class="pcard__media"><img src="assets/cards/designing-choices.jpg" alt="A screen from the quiz, “The wedding china”, with a story prompt and three coloured choice buttons." loading="lazy" decoding="async" draggable="false" style="object-position: 50% 30%" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">What Kind of Animal Would You Be During a Life Crisis?</h3>
                   <p class="pcard__hook">Five choices, three possible endings, one animal.</p>
@@ -374,7 +380,7 @@
 
             <li class="pcard" data-category="ux motion" data-cat="ux" data-cat2="motion">
               <a class="pcard__link" href="project-el-feeling.html">
-                <div class="pcard__media"><img src="assets/cards/el-feeling.jpg" alt="Prototype home screen &quot;Deslízate hacia la aventura&quot; with roller skates on a colourful retro background." loading="lazy" decoding="async" draggable="false" /><span class="pcard__dot" aria-hidden="true"></span></div>
+                <div class="pcard__media"><img src="assets/cards/el-feeling.jpg" alt="Prototype home screen &quot;Deslízate hacia la aventura&quot; with roller skates on a colourful retro background." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">El Feeling</h3>
                   <p class="pcard__hook">All her roller-skate classes lived on Instagram. We gave them a home.</p>
@@ -402,7 +408,7 @@
 
             <li class="pcard" data-category="ux game" data-cat="ux" data-cat2="game">
               <a class="pcard__link" href="project-botcito-parque-explora.html">
-                <div class="pcard__media"><img src="assets/cards/botcito.jpg" alt="Two phone screens of the Botcito game: a level map across a purple planet and a platformer level, with explanatory text." loading="lazy" decoding="async" draggable="false" /><span class="pcard__dot" aria-hidden="true"></span></div>
+                <div class="pcard__media"><img src="assets/cards/botcito.jpg" alt="Two phone screens of the Botcito game: a level map across a purple planet and a platformer level, with explanatory text." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Botcito for Parque Explora</h3>
                   <p class="pcard__hook">Scan a QR code and a little robot takes you exploring.</p>
@@ -430,7 +436,7 @@
 
             <li class="pcard" data-category="ai motion" data-cat="ai" data-cat2="motion">
               <a class="pcard__link" href="project-surviving-amongst-nature.html">
-                <div class="pcard__media"><img src="assets/cards/surviving-nature.jpg" alt="A hooded figure aiming a dragonfly-bodied rocket launcher in an overgrown glasshouse." loading="lazy" decoding="async" draggable="false" /><span class="pcard__dot" aria-hidden="true"></span></div>
+                <div class="pcard__media"><img src="assets/cards/surviving-nature.jpg" alt="A hooded figure aiming a dragonfly-bodied rocket launcher in an overgrown glasshouse." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Surviving Amongst Nature</h3>
                   <p class="pcard__hook">One prompt recipe that holds a whole image grid together.</p>
@@ -444,7 +450,7 @@
 
             <li class="pcard" data-category="ai motion" data-cat="ai" data-cat2="motion">
               <a class="pcard__link" href="project-natures-embodiment-of-wine.html">
-                <div class="pcard__media"><img src="assets/cards/nature-wine.jpg" alt="An ostrich on a velvet-curtained cabaret stage, dressed as a bottle of wine and holding a glass." loading="lazy" decoding="async" draggable="false" /><span class="pcard__dot" aria-hidden="true"></span></div>
+                <div class="pcard__media"><img src="assets/cards/nature-wine.jpg" alt="An ostrich on a velvet-curtained cabaret stage, dressed as a bottle of wine and holding a glass." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Nature's Embodiment of Wine</h3>
                   <p class="pcard__hook">Animals in a cabaret, each one dressed as a bottle of wine.</p>
@@ -486,37 +492,61 @@
 
           </ul>
 
-          <div class="board__hint" aria-hidden="true"><span class="board__hint-orb"></span><span class="board__hint-text">drag to explore</span></div>
         </div>
         <p class="visually-hidden" id="boardLive" aria-live="polite"></p>
       </section>
 
     <!-- ===================== RESEARCH SEEDBEDS ===================== -->
     <!-- EAFIT research work done alongside the degree, NOT part of any
-         course in the syllabus, so it sits apart from Personal Projects. -->
-    <section id="seedbeds" class="section container">
-      <h2 class="section__title">Research Seedbeds</h2>
-      <p class="section__intro">
-        Research projects I took part in at EAFIT alongside my degree
-        (semilleros de investigación). They were not part of any course.
-      </p>
-      <div class="grid grid--compact">
-        <a class="card card--compact" href="project-ciudades-posibles.html">
-          <img class="card__image" src="assets/ciudades-posibles/cover.jpg" alt="3D render of the exhibition setup: a round table with the hexagon city map, two poster stands and a green pedestal on an orange mat." loading="lazy" />
-          <div class="card__body">
-            <h3 class="card__title">Ciudades Posibles</h3>
-            <p class="card__meta">Team of ten · speculative urban research · Semillero Cosmogénesis · RedColsi</p>
-          </div>
-        </a>
-
-        <a class="card card--compact" href="project-vr-emotion-research.html">
-          <img class="card__image" src="assets/vr-emotion-research/cover.jpg" alt="Tutorial scene in Unity: VR controllers pointing at a glowing marker beside a table, with the prompt &quot;Avance al punto iluminado&quot;." loading="lazy" />
-          <div class="card__body">
-            <h3 class="card__title">VR &amp; Emotion Research</h3>
-            <p class="card__meta">One of three developers · haptics, onboarding &amp; emotion survey · Unity</p>
-          </div>
-        </a>
+         course in the syllabus, so it sits apart from the projects above.
+         Same card DNA as the board (kicker, pitch line, brief, skills
+         banner) but wide, full-width and in its own colour — emerald, which
+         none of the five project categories use — with little "seeds"
+         floating up when you hover. -->
+    <section id="seedbeds" class="seedbeds">
+      <div class="seedbeds__head">
+        <h2 class="section__title">Research Seedbeds</h2>
+        <p class="seedbeds__intro">
+          Research projects I took part in at EAFIT alongside my degree
+          (<i lang="es">semilleros de investigación</i>). They were not part
+          of any course, so they live apart from the projects above.
+        </p>
       </div>
+      <ul class="seedbeds__grid">
+
+        <li class="pcard rcard" data-research>
+          <a class="pcard__link rcard__link" href="project-ciudades-posibles.html">
+            <div class="pcard__media"><img src="assets/cards/ciudades-posibles.jpg" alt="3D render of the exhibition setup: a round table with the hexagon city map, two poster stands and a green pedestal on an orange mat." loading="lazy" decoding="async" draggable="false" /></div>
+            <div class="pcard__body">
+              <p class="pcard__kicker"><span>Research seedbed · Semillero Cosmogénesis</span></p>
+              <h3 class="pcard__title">Ciudades Posibles</h3>
+              <p class="pcard__hook">How do you make public space feel like it belongs to everyone?</p>
+              <p class="pcard__brief">A ten-person speculative-design project on Medellín's Distrito SUR. I co-designed the hexagon pieces, ran interviews and made the floor guide.</p>
+              <div class="pcard__skills" aria-label="Main skills">
+                <ul class="pgroup"><li>Speculative design</li><li>Qualitative surveys</li><li>Participatory prototyping</li><li>Interviews</li><li>Poster design</li></ul>
+              </div>
+            </div>
+            <span class="rcard__seeds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </a>
+        </li>
+
+        <li class="pcard rcard" data-research>
+          <a class="pcard__link rcard__link" href="project-vr-emotion-research.html">
+            <div class="pcard__media"><img src="assets/cards/vr-emotion.jpg" alt="Tutorial scene in Unity: VR controllers pointing at a glowing marker beside a table, with the prompt &quot;Avance al punto iluminado&quot;." loading="lazy" decoding="async" draggable="false" /></div>
+            <div class="pcard__body">
+              <p class="pcard__kicker"><span>Research seedbed · Universidad EAFIT · ongoing</span></p>
+              <h3 class="pcard__title">VR &amp; Emotion Research</h3>
+              <p class="pcard__hook">Can the emotions you feel in VR change how well you think?</p>
+              <p class="pcard__brief">One of three developers on a live study. I built the haptics, the onboarding tutorial and the emotion check-in.</p>
+              <div class="pcard__skills" aria-label="Main skills">
+                <ul class="pgroup"><li>Unity</li><li>Haptics</li><li>VR onboarding</li><li>Emotion questionnaire</li><li>GitHub</li></ul>
+              </div>
+            </div>
+            <span class="rcard__seeds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </a>
+        </li>
+
+      </ul>
     </section>
     </div><!-- /#case-studies -->
 

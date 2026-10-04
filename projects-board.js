@@ -68,9 +68,11 @@ function splitWords() {
   words = Array.from(statement.querySelectorAll(".pword"));
 }
 
-// Each word rides an arc: highest in the middle of the paragraph's width,
-// dipping toward the edges and tilted to follow the curve — the paragraph
-// looks wrapped over a dome. Gentle on purpose (readability comes first),
+// The star behind the statement is centred on the section's top edge, so
+// the text is bent as rings around that centre: each line curves like an
+// arc of a circle (ends lifted, middle lowest), the lines nearest the
+// centre curving more and the ones further out flatter — concentric, like
+// the spiral behind them. Gentle on purpose (readability comes first),
 // applied per word so line breaking is untouched, and deliberately not
 // scaled: a scaled word grows over the space beside it and the words run
 // together.
@@ -81,12 +83,27 @@ function bend() {
   words.forEach((w) => (w.style.transform = ""));
   const half = box.width / 2;
   const cx = box.left + half;
-  const amp = clamp(box.width * 0.04, 6, 34);
   const rects = words.map((w) => w.getBoundingClientRect());
-  words.forEach((w, i) => {
-    const u = clamp((rects[i].left + rects[i].width / 2 - cx) / half, -1, 1);
-    const y = -amp * (1 - u * u);
-    const tilt = (Math.atan((2 * amp * u) / half) * 180) / Math.PI;
+
+  // Group the words into the lines the browser made (same top, give or take).
+  const lineTops = [];
+  const lineOf = rects.map((r) => {
+    let i = lineTops.findIndex((t) => Math.abs(t - r.top) < r.height * 0.5);
+    if (i < 0) {
+      lineTops.push(r.top);
+      i = lineTops.length - 1;
+    }
+    return i;
+  });
+  const lines = lineTops.length;
+  const base = clamp(box.width * 0.055, 8, 42);
+
+  words.forEach((w, n) => {
+    const depth = lines > 1 ? lineOf[n] / (lines - 1) : 0; // 0 = nearest the star's centre
+    const amp = base * (1.35 - 0.85 * depth);
+    const u = clamp((rects[n].left + rects[n].width / 2 - cx) / half, -1, 1);
+    const y = -amp * u * u;
+    const tilt = (Math.atan((-2 * amp * u) / half) * 180) / Math.PI;
     w.style.transform = `translateY(${y.toFixed(1)}px) rotate(${tilt.toFixed(2)}deg)`;
   });
 }
@@ -127,7 +144,7 @@ function initHero() {
 const filterBar = section.querySelector(".filter");
 const statusEl = section.querySelector(".filter__status");
 const liveEl = document.getElementById("boardLive");
-const hintText = board.querySelector(".board__hint-text");
+const nav = section.querySelector(".board-nav");
 const cards = Array.from(canvas.querySelectorAll(".pcard"));
 
 // Featured projects first (they're the strongest), otherwise the order
@@ -206,13 +223,11 @@ function layout(animate) {
     minY: fitsY ? (bh - ch) / 2 : bh - ch,
     maxY: fitsY ? (bh - ch) / 2 : 0,
   };
-  const previousMode = mode;
   mode = fitsX && fitsY ? "arrange" : "pan";
-  // The glowing hint comes back whenever what you can do changes.
-  if (animate && mode !== previousMode) board.classList.remove("is-touched");
   board.classList.toggle("is-arrange", mode === "arrange");
   board.classList.toggle("is-xonly", phone);
-  if (hintText) hintText.textContent = mode === "arrange" ? "drag cards to rearrange" : phone ? "swipe to explore" : "drag to explore";
+  // The navigator is only useful when there's somewhere to go.
+  if (nav) nav.hidden = mode === "arrange";
 
   stopInertia();
   setPos(animate ? 0 : pos.x, animate ? 0 : pos.y);
@@ -244,7 +259,7 @@ function layout(animate) {
 
 function updateStatus() {
   const shown = visibleCards().length;
-  if (statusEl) statusEl.textContent = `Showing ${shown} of ${cards.length} projects` + (mode === "arrange" ? " — drag the cards to rearrange them." : "");
+  if (statusEl) statusEl.textContent = `Showing ${shown} of ${cards.length} projects` + " · a card's colour is its main category" + (mode === "arrange" ? " — drag the cards to rearrange them." : ".");
 }
 
 // A short, reusable FLIP: run `change` (which reorders the DOM) and glide
@@ -311,10 +326,6 @@ const rubber = (v, lo, hi) => (v > hi ? hi + (v - hi) * 0.35 : v < lo ? lo + (v 
 
 let drag = null;
 
-function touched() {
-  board.classList.add("is-touched");
-}
-
 board.addEventListener("pointerdown", (e) => {
   if (e.pointerType === "mouse" && e.button !== 0) return;
   const card = e.target.closest(".pcard");
@@ -347,7 +358,6 @@ board.addEventListener("pointermove", (e) => {
       /* fine */
     }
     board.classList.add("is-dragging");
-    touched();
     if (drag.card) startCardDrag(e);
   }
   e.preventDefault();
@@ -414,8 +424,17 @@ board.addEventListener(
   },
   true
 );
-// No native image/link dragging fighting ours.
-canvas.addEventListener("dragstart", (e) => e.preventDefault());
+// No native image/link dragging fighting ours. A link is draggable by
+// default, and a real mouse that grabs a card (a link) started the
+// browser's own drag-and-drop and ended our pan — which is why the board
+// could only be grabbed by the empty space between the cards. The links
+// are made undraggable, and any drag the browser still tries is cancelled.
+canvas.querySelectorAll("a, img").forEach((el) => el.setAttribute("draggable", "false"));
+board.addEventListener("dragstart", (e) => e.preventDefault());
+// A mouse press on the board shouldn't select text or start a native drag.
+board.addEventListener("mousedown", (e) => {
+  if (e.button === 0 && e.target.closest(".pcard")) e.preventDefault();
+});
 
 // Sideways wheel / trackpad swipe (or Shift + wheel) pans; plain vertical
 // wheel is left alone so the page keeps scrolling.
@@ -431,7 +450,6 @@ board.addEventListener(
     if (nx === pos.x) return;
     e.preventDefault();
     stopInertia();
-    touched();
     setPos(nx, pos.y);
   },
   { passive: false }
@@ -450,7 +468,6 @@ board.addEventListener("keydown", (e) => {
   const move = { ArrowLeft: [step, 0], ArrowRight: [-step, 0], ArrowUp: [0, step], ArrowDown: [0, -step] }[e.key];
   if (!move) return;
   e.preventDefault();
-  touched();
   easePos(pos.x + move[0], pos.y + move[1]);
 });
 
@@ -561,18 +578,137 @@ function moveCardByKey(card, key) {
   if (liveEl) liveEl.textContent = `${card.querySelector(".pcard__title").textContent} moved to position ${j + 1} of ${list.length}.`;
 }
 
+/* ---- the glowing navigator: a joystick for the board ----
+   Push the glow in a direction and the board glides that way, faster the
+   further you push; let go and the glow springs back. */
+const pad = nav && nav.querySelector(".board-nav__pad");
+const padOrb = nav && nav.querySelector(".board-nav__orb");
+if (pad && padOrb) {
+  let pointer = null;
+  let push = { x: 0, y: 0 };
+  let navId = 0;
+  const reach = () => pad.clientWidth / 2 - 12;
+
+  const readPush = (e) => {
+    const r = pad.getBoundingClientRect();
+    let dx = e.clientX - (r.left + r.width / 2);
+    let dy = e.clientY - (r.top + r.height / 2);
+    const max = reach();
+    const d = Math.hypot(dx, dy);
+    if (d > max) {
+      dx = (dx / d) * max;
+      dy = (dy / d) * max;
+    }
+    if (phoneQuery.matches) dy = 0; // sideways only on phones
+    push = { x: dx / max, y: dy / max };
+    padOrb.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+  };
+
+  const glide = (now) => {
+    navId = 0;
+    if (pointer === null) return;
+    const dt = Math.min(34, now - (glide.last || now));
+    glide.last = now;
+    // The board moves the opposite way to the push (pushing right brings
+    // the cards on the right into view). An ease curve keeps small pushes
+    // gentle and full pushes brisk.
+    const speed = 1.15;
+    const ease = (v) => Math.sign(v) * Math.pow(Math.abs(v), 1.6);
+    setPos(pos.x - ease(push.x) * speed * dt, pos.y - ease(push.y) * speed * dt);
+    navId = requestAnimationFrame(glide);
+  };
+
+  pad.addEventListener("pointerdown", (e) => {
+    if (e.pointerType === "mouse" && e.button !== 0) return;
+    pointer = e.pointerId;
+    try {
+      pad.setPointerCapture(e.pointerId);
+    } catch (err) {
+      /* fine */
+    }
+    nav.classList.add("is-active");
+    stopInertia();
+    glide.last = 0;
+    readPush(e);
+    if (!navId) navId = requestAnimationFrame(glide);
+  });
+  pad.addEventListener("pointermove", (e) => {
+    if (e.pointerId === pointer) readPush(e);
+  });
+  const release = (e) => {
+    if (e.pointerId !== pointer) return;
+    pointer = null;
+    push = { x: 0, y: 0 };
+    padOrb.style.transform = "";
+    nav.classList.remove("is-active");
+  };
+  pad.addEventListener("pointerup", release);
+  pad.addEventListener("pointercancel", release);
+}
+
+/* ---- colour means something: the category on every card ----
+   The card's border/glow is its main category; this small label says
+   which one in words (and names a second category if it has one). */
+const CATEGORY_NAMES = {
+  ux: "UX & Research",
+  immersive: "Immersive & VR",
+  game: "Game & Narrative",
+  ai: "AI-Driven Design",
+  motion: "3D & Motion",
+};
+const CATEGORY_COLOURS = { ux: "#4d7dff", immersive: "#8f5cff", game: "#f887fa", ai: "#22d3ee", motion: "#fd7069" };
+cards.forEach((card) => {
+  const body = card.querySelector(".pcard__body");
+  if (!body || body.querySelector(".pcard__kicker")) return;
+  const kicker = document.createElement("p");
+  kicker.className = "pcard__kicker";
+  [card.dataset.cat, card.dataset.cat2].forEach((key) => {
+    if (!key || !CATEGORY_NAMES[key]) return;
+    const span = document.createElement("span");
+    span.style.setProperty("--k", CATEGORY_COLOURS[key]);
+    span.textContent = CATEGORY_NAMES[key];
+    kicker.appendChild(span);
+  });
+  body.prepend(kicker);
+});
+
+/* ---- hovering a category chip lights up the cards that belong to it ---- */
+function preview(category) {
+  if (!category || category === "all") {
+    board.classList.remove("is-previewing");
+    return;
+  }
+  cards.forEach((c) => c.classList.toggle("is-match", c.dataset.category.split(" ").includes(category)));
+  board.classList.add("is-previewing");
+}
+if (filterBar) {
+  filterBar.querySelectorAll(".filter__button").forEach((b) => {
+    b.addEventListener("pointerenter", () => preview(b.dataset.filter));
+    b.addEventListener("focus", () => preview(b.dataset.filter));
+    b.addEventListener("pointerleave", () => preview());
+    b.addEventListener("blur", () => preview());
+  });
+}
+
 /* ---- the skills banner only runs while its card is on screen ---- */
+const researchCards = Array.from(section.querySelectorAll(".rcard"));
 if ("IntersectionObserver" in window) {
   const io = new IntersectionObserver(
     (entries) => entries.forEach((en) => en.target.classList.toggle("is-live", en.isIntersecting)),
     { root: board, threshold: 0.05 }
   );
   cards.forEach((c) => io.observe(c));
+  // The research cards sit on the page, not in the board.
+  const io2 = new IntersectionObserver(
+    (entries) => entries.forEach((en) => en.target.classList.toggle("is-live", en.isIntersecting)),
+    { threshold: 0.05 }
+  );
+  researchCards.forEach((c) => io2.observe(c));
 } else {
-  cards.forEach((c) => c.classList.add("is-live"));
+  cards.concat(researchCards).forEach((c) => c.classList.add("is-live"));
 }
 // Duplicate each skills list once so the banner can loop seamlessly.
-cards.forEach((card) => {
+cards.concat(researchCards).forEach((card) => {
   const wrap = card.querySelector(".pcard__skills");
   const group = wrap && wrap.querySelector(".pgroup");
   if (!group) return;
