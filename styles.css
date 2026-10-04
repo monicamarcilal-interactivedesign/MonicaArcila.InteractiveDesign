@@ -3753,6 +3753,32 @@ html:not(.js) .route__skills li { opacity: 1; }
   transition: transform 0.35s cubic-bezier(0.3, 0.9, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Each picture can say where it sits in the story: Beginning, Middle or End
+   (data-stage on the link), so the gallery is read as a story, not as a pile
+   of "process" and "final" images. */
+.project__gallery a {
+  position: relative;
+}
+
+.project__gallery a[data-stage]::before {
+  content: attr(data-stage);
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  z-index: 1;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #ffffff;
+  background: rgba(10, 8, 40, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
 .project__gallery a:hover,
 .project__gallery a:focus-visible {
   transform: translateY(-4px);

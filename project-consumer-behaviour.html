@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<!--
+  =============================================================
+  PROJECT PAGE — "Consumer Behaviour: a profile and a brand strategy"
+  =============================================================
+  Sources (folder "Exchange Victoria University of Wellington/Consumer Behaviour"): the assignment instructions, Mónica's
+  35-page Consumer Profile report and the tutorial exercise sheets.
+  The report's cover (student ID, lecturer and tutor) is NOT used;
+  the consumer is described without a name. The brand ads and the
+  consumer's own screenshots in the tutorial sheets are not shown.
+  Replaced the Botcito project on the site (2026-10-05).
+  =============================================================
+-->
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consumer Behaviour: Ryegraz — Mónica Arcila</title>
+  <meta name="description" content="A consumer profile built from seven structured questionnaires, and the marketing strategy for a new footwear brand that follows from it: product, price, place and promotion, each justified with evidence and theory." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css?v=20261005a" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ===================== NAVIGATION: the lotus and its leaves ===================== -->
+  <!-- One navigation for every screen size (rebuilt 2026-10-04). The lotus
+       (one of Mónica's illustrations) is the way back to the main page; each
+       section is a leaf on its stem. Desktop: a vertical stem down the right
+       edge, names appear on hover. Phones: the same thing laid flat along the
+       top of the screen with the names always showing, replacing the old
+       hamburger menu. On the home page, script.js marks the leaf you are on
+       (a filled, glowing leaf, with a light that slides along the stem to it)
+       and the leaves you have already visited. Project pages just use the
+       plain links. Leaf pictures: assets/nav/leaf-*.png. -->
+  <header class="site-header">
+    <nav class="lotus-nav" aria-label="Jump to a section" style="--cur: -1">
+      <a href="index.html" class="lotus-nav__home" aria-label="Back to the home page">
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <span class="lotus-nav__label">Back to the home page</span>
+      </a>
+      <div class="lotus-nav__leaves">
+        <span class="lotus-nav__pulse" aria-hidden="true"></span>
+        <a href="index.html#about" class="lotus-nav__leaf" data-section="about" style="--i:0"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">About</span></a>
+        <a href="index.html#case-studies" class="lotus-nav__leaf" data-section="case-studies" style="--i:1"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Projects</span></a>
+        <a href="index.html#experience" class="lotus-nav__leaf" data-section="experience" style="--i:2"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Experience</span></a>
+        <a href="index.html#skills" class="lotus-nav__leaf" data-section="skills" style="--i:3"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Skills</span></a>
+        <a href="index.html#contact" class="lotus-nav__leaf" data-section="contact" style="--i:4"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Contact</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.html#work">← Back to projects</a>
+
+      <h1 class="project__title">Consumer Behaviour: a profile and a brand strategy</h1>
+      <p class="project__meta">Consumer research &amp; marketing strategy · MARK 202 Consumer Behaviour, Victoria University of Wellington · 2026</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>My role</dt>
+          <dd>Individual project: research, analysis, strategy and written report</dd>
+        </div>
+        <div>
+          <dt>Methods</dt>
+          <dd>Seven structured written questionnaires, secondary research, course theory</dd>
+        </div>
+        <div>
+          <dt>Output</dt>
+          <dd>A 35-page report and a five-minute oral discussion</dd>
+        </div>
+        <div>
+          <dt>Timeframe</dt>
+          <dd>Trimester 2, 2026</dd>
+        </div>
+      </dl>
+
+      <!-- ===== THE 30-SECOND VERSION ===== -->
+      <ul class="pitch" aria-label="Summary of the project">
+        <li><span class="pitch__label">Context</span><p>MARK 202 Consumer Behaviour at Victoria University of Wellington, on exchange. An individual project: profile one real consumer, then market a new footwear brand to her.</p></li>
+        <li><span class="pitch__label">Challenge</span><p>Understand one buyer well enough to justify every marketing decision (product, price, place and promotion) with her own words and with theory.</p></li>
+        <li><span class="pitch__label">Solution</span><p>Seven written questionnaires across her decision journey, perception, learning, personality and social world, then a profile and 12 specific recommendations for "Ryegraz", a retro-runner brand.</p></li>
+        <li><span class="pitch__label">Result</span><p>A 35-page report that traces each recommendation back to a finding. One surprising finding: she is loyal to a brand that does not reflect who she is.</p></li>
+        <li><span class="pitch__label">Learning</span><p>A recommendation is only as strong as the evidence behind it. Every one needs the consumer's own words.</p></li>
+      </ul>
+
+      <!-- ===== PROBLEM ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The problem</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Know the person before you design for her.</strong>
+            The brief: choose a consumer who recently made a major footwear
+            purchase after a slow, rational decision, and build a profile
+            useful to a marketing manager. Then use it to market a new shoe
+            brand and justify each choice, in writing and in a five-minute
+            oral discussion.
+          </p>
+          <p>
+            Every recommendation had to be
+            <mark>specific to her</mark>, not to "shoe buyers" in general.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== MY ROLE ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">My role</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Researcher, analyst and strategist: the whole project was individual.</strong>
+          </p>
+          <ul>
+            <li>Chose the consumer: a 20-year-old international exchange student studying design, who had just bought FILA sneakers.</li>
+            <li>Ran seven structured written questionnaires with her, plus secondary research.</li>
+            <li>Analysed the answers with the course's concepts and wrote the profile and the recommendations.</li>
+            <li>Prepared the oral justification of every recommendation.</li>
+            <li>Used AI to help organise the written data, edit my first sketches and format the report. The consumer data, answers and analytical judgements are my own, and the report says so.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== PROCESS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Six lenses on one buyer</h2>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">Who she is</span>
+            <p>Segmented by usage and situation more than by age or income. The tension that drives her: durability for Wellington's hills and weather against an uncompromising personal style. Her Google ad settings added a little secondary data.</p>
+          </li>
+          <li>
+            <span class="step__date">How she decides</span>
+            <p>A long, comparative search. Asked to split 100 points, she gave 40 to visual design, 40 to functionality and 20 to comfort, and said she buys only when all three score 100. That is a non-compensatory rule: a strength in one cannot make up for a weakness in another.</p>
+          </li>
+          <li>
+            <span class="step__date">How she perceives</span>
+            <p>She reads brands through visual and structural cues, not written claims. A visible cutaway of a midsole was both a style statement and a promise of performance.</p>
+          </li>
+          <li>
+            <span class="step__date">How she learns</span>
+            <p>Familiarity came from simply seeing the brand often. Her wish to repurchase comes from proven quality, and one bad experience taught her to avoid a whole category of brands.</p>
+          </li>
+          <li>
+            <span class="step__date">Who she is, and who she is not</span>
+            <p>Big Five scores, plus a brand-personality comparison. She disagreed that the brand reflects who she is, and prefers brands that are not mainstream.</p>
+          </li>
+          <li>
+            <span class="step__date">Who influences her</span>
+            <p>Three reference groups. Family has little say, friends give information she weighs, and an aspirational retro-fashion community shapes her taste the most.</p>
+          </li>
+        </ol>
+      </section>
+
+      <!-- ===== KEY FINDINGS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">What stood out</h2>
+        <ul class="callouts">
+          <li class="callout callout--learning">
+            <span class="callout__label">Finding</span>
+            <h3>Loyal without identity</h3>
+            <p>She plans to buy the same FILA shoes again, yet disagrees that the brand is "consistent with how I see myself". Her loyalty comes from proven performance, not from self-image.</p>
+          </li>
+          <li class="callout callout--learning">
+            <span class="callout__label">Finding</span>
+            <h3>Proof beats claims</h3>
+            <p>A visible sign of how the shoe is built, such as a cutaway, is read as evidence. It is harder to dismiss than a slogan.</p>
+          </li>
+          <li class="callout callout--learning">
+            <span class="callout__label">Finding</span>
+            <h3>Careful in person, quick online</h3>
+            <p>She researches a lot when shopping in a shop, but often buys online with little research. That matters for where the brand should sell.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ===== SOLUTION ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The recommendations</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Twelve recommendations for Ryegraz, each tied to a finding.</strong>
+          </p>
+        </div>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Product</span>
+            <h3>Pass both tests at once</h3>
+            <p>Do not trade design against performance. Use natural materials (suede, recycled canvas) with a visibly shown construction, an understated tonal logo, and spare laces and a cleaning cloth in the box.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Price</span>
+            <h3>NZ$259, with no luxury cues</h3>
+            <p>Below her stated ceiling of NZ$400 to limit the sense of risk, and without packaging or language that reads as a "high brand", which she rejects.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Place</span>
+            <h3>Shops first, calm ones</h3>
+            <p>Physical retail as the main channel, with natural light, few customers at a time and self-service browsing, so she can take her time without being approached.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Promotion</span>
+            <h3>Be found, then be tried</h3>
+            <p>Invest in search channels rather than interrupting her, run a two-month sampling-led launch, and avoid mass-market or influencer messaging that would make the brand feel mainstream.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ===== RESULT ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Result &amp; reflection</h2>
+        <ul class="stats">
+          <li><strong>35</strong><span>pages with appendices</span></li>
+          <li><strong>~2,900</strong><span>words in the main report</span></li>
+          <li><strong>7</strong><span>structured questionnaires</span></li>
+          <li><strong>12</strong><span>recommendations, each with its evidence</span></li>
+        </ul>
+        <div class="project__description">
+          <p>
+            <strong class="lede">A profile that explains the "why" behind each decision.</strong>
+            The report closes with a short persona summary and recommendations that
+            each name the finding that justifies them.
+          </p>
+          <p>
+            <mark>The limits:</mark> all the data was collected in writing, at
+            the consumer's request, not through spoken interviews, and one
+            consumer is treated as representative of a wider segment.
+          </p>
+          <p>
+            Why it belongs in a design portfolio: it is the research half of
+            design. It is a full understanding of a person and a brand, and
+            of how each decision follows from evidence.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== METHODS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Methods &amp; concepts</h2>
+        <ul class="tag-list">
+          <li class="tag">Consumer segmentation</li>
+          <li class="tag">Decision-making process</li>
+          <li class="tag">Perception and semiotics</li>
+          <li class="tag">Learning</li>
+          <li class="tag">Personality and self-congruity</li>
+          <li class="tag">Reference groups</li>
+          <li class="tag">Marketing mix (4 Ps)</li>
+          <li class="tag">Persona</li>
+        </ul>
+      </section>
+
+      <!-- ===== PROJECT GALLERY =====
+        Web-sized exports live in assets/consumer-behaviour/. Each image links to its full-size
+        file; the alt text says what it shows. -->
+      <div class="project__gallery">
+        <a data-stage="Beginning" href="assets/consumer-behaviour/01-report-introduction.jpg" target="_blank" rel="noopener"><img src="assets/consumer-behaviour/01-report-introduction.jpg" alt="Introduction page of the report: Ryegraz as a new retro-runner brand, the six dimensions of consumer behaviour that are profiled, and the key limitation that all data was collected in writing." width="1102" height="1426" loading="lazy" /></a>
+        <a data-stage="Middle" href="assets/consumer-behaviour/02-report-perception.jpg" target="_blank" rel="noopener"><img src="assets/consumer-behaviour/02-report-perception.jpg" alt="Report page on perception: visual-first processing through the decision journey, and a table rating four brands on visual design and functional performance." width="1102" height="1426" loading="lazy" /></a>
+        <a data-stage="Middle" href="assets/consumer-behaviour/03-report-brand-personality.jpg" target="_blank" rel="noopener"><img src="assets/consumer-behaviour/03-report-brand-personality.jpg" alt="Report page on brand personality: a table comparing the brand with the consumer's self-image on five dimensions, and the finding that her loyalty does not come from self-congruence." width="1102" height="1426" loading="lazy" /></a>
+        <a data-stage="End" href="assets/consumer-behaviour/04-report-recommendations.jpg" target="_blank" rel="noopener"><img src="assets/consumer-behaviour/04-report-recommendations.jpg" alt="Report page of recommendations for product, price and place, each tied to the finding that justifies it." width="1102" height="1426" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__row">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+      <a class="footer__contact" href="index.html#contact">Contact me <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+
+  <script src="script.js?v=20261005a"></script>
+  <script src="case-study.js?v=20261005a"></script>
+</body>
+</html>

@@ -83,66 +83,120 @@
         </div>
       </dl>
 
+      <!-- ===== THE 30-SECOND VERSION ===== -->
+      <ul class="pitch" aria-label="Summary of the project">
+        <li><span class="pitch__label">Context</span><p>A research seedbed at Universidad EAFIT, alongside my degree: a study of how emotions triggered in VR affect how people carry out cognitive tasks.</p></li>
+        <li><span class="pitch__label">Challenge</span><p>Build the parts of the VR experience that make the emotions and the data work: touch, onboarding and an emotion check-in.</p></li>
+        <li><span class="pitch__label">Solution</span><p>Haptic feedback based on research, a tutorial inside the experience, and a short face-scale questionnaire before and after.</p></li>
+        <li><span class="pitch__label">Result</span><p>User testing is done and the team is analysing the results.</p></li>
+        <li><span class="pitch__label">Learning</span><p>Teach people inside the experience, and give researchers a baseline to compare against.</p></li>
+      </ul>
+
+      <!-- ===== HOW I GOT HERE ===== -->
       <section class="project__section">
         <h2 class="project__section-title">How I got here</h2>
         <div class="project__description">
           <p>
-            After I presented <a href="project-hansel-gretel.html">Hansel
-            &amp; Gretel</a>, my lecturer invited me to join his research
-            seedbed, a group of students working on real research with
-            staff. I joined as a developer on an ongoing study into how
-            emotions triggered in VR affect how well people carry out
-            cognitive tasks.
+            <strong class="lede">It started with a game.</strong>
+            After I presented
+            <a href="project-hansel-gretel.html">Hansel &amp; Gretel</a>, my
+            lecturer invited me into his research seedbed: a group of
+            students doing real research with staff. I joined as a developer
+            on an ongoing study of how emotions triggered in VR affect how
+            well people carry out cognitive tasks.
           </p>
         </div>
       </section>
 
+      <!-- ===== MY ROLE ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">My role</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">One of three main developers</strong>
+            on a shared GitHub project, in Unity. I was in charge of haptics,
+            the onboarding tutorial and the emotion questionnaire.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== WHAT I BUILT ===== -->
       <section class="project__section">
         <h2 class="project__section-title">What I built</h2>
-        <div class="project__description">
-          <p>
-            <strong>Haptics.</strong> I added haptic feedback to the VR
-            simulation, so participants feel as well as see what happens.
-          </p>
-          <p>
-            <strong>Onboarding.</strong> I designed the tutorial that
-            introduces participants to the experience. My first version
-            was a separate tutorial. We later changed it so participants
-            learn inside the experience itself, which kept them immersed.
-          </p>
-          <p>
-            <strong>Emotion check-in.</strong> I built a short in-app
-            questionnaire with a face scale, from happy to sad. It records
-            how participants feel before they enter the simulation and
-            after they leave, which gives the researchers a baseline to
-            compare against.
-          </p>
-          <p>
-            I worked on a shared GitHub project as the third main
-            developer. The study has been through user testing, and the
-            team is now analysing the results.
-          </p>
-        </div>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">Haptics</span>
+            <p>Haptic feedback in the VR simulation, so participants feel as well as see what happens. Before building it I reviewed research on how vibration relates to emotion, in a matrix of studies.</p>
+          </li>
+          <li>
+            <span class="step__date">Onboarding</span>
+            <p>The tutorial that introduces participants to the experience. My first version was a separate tutorial. We later moved it inside the experience, so participants learn while staying immersed.</p>
+          </li>
+          <li>
+            <span class="step__date">Emotion check-in</span>
+            <p>A short in-app questionnaire with a face scale, from happy to sad. It records how participants feel before they enter the simulation and after they leave, giving the researchers a baseline to compare against.</p>
+          </li>
+        </ol>
+        <details class="more">
+          <summary>The research behind the haptics</summary>
+          <div class="more__body">
+            <p>
+              My notes start from one idea: different vibrations can
+              produce different feelings. I explored the vibro-tactile side
+              of the controllers and headset, and summarised what studies
+              say. One 2025 study I reviewed links each feeling to a pattern
+              of intensity, frequency and duty cycle: happiness is strong,
+              fast and continuous; fear is strong, slow and continuous;
+              relaxation is gentle, fast and intermittent. It also advises
+              calming a negative feeling with a gradual relaxing pattern
+              rather than a happy one.
+            </p>
+          </div>
+        </details>
       </section>
 
+      <!-- ===== DECISIONS ===== -->
       <section class="project__section">
-        <h2 class="project__section-title">What's next</h2>
+        <h2 class="project__section-title">Decisions</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Move the tutorial inside the experience</h3>
+            <p>A separate tutorial broke immersion. Teaching inside the experience keeps participants in it.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Measure feelings twice</h3>
+            <p>Asking before and after gives the researchers a baseline, so they can see what the experience changed.</p>
+          </li>
+        </ul>
+      </section>
+
+      <!-- ===== RESULT ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Status &amp; what's next</h2>
         <div class="project__description">
+          <p>
+            <strong class="lede">The study has been through user testing,</strong>
+            and my teammates are gathering the final results. I have no
+            results to show yet.
+          </p>
           <p>
             The seedbed has started a new project on digital avatars in
             Unreal Engine, where I'm in charge of researching and
-            developing. It has only just begun, so there's nothing to show
-            yet.
+            developing. It has only just begun.
           </p>
         </div>
       </section>
 
+      <!-- ===== TOOLS ===== -->
       <section class="project__section">
         <h2 class="project__section-title">Tools &amp; software</h2>
         <ul class="tag-list">
           <li class="tag">Unity</li>
           <li class="tag">Haptics</li>
           <li class="tag">GitHub</li>
+          <li class="tag">VR headset</li>
           <li class="tag">Unreal Engine (new project)</li>
         </ul>
       </section>
@@ -155,9 +209,10 @@
           <source src="assets/vr-emotion-research/vr-onboarding-tutorial.mp4" type="video/mp4" />
           Your browser can't play this video.
         </video>
-        <a href="assets/vr-emotion-research/01-tutorial-marker.jpg" target="_blank" rel="noopener"><img src="assets/vr-emotion-research/01-tutorial-marker.jpg" alt="Tutorial scene in Unity: VR controllers pointing at a glowing marker beside a table, with the prompt &quot;Avance al punto iluminado&quot;." width="982" height="640" loading="lazy" /></a>
-        <a href="assets/vr-emotion-research/02-tutorial-tray.jpg" target="_blank" rel="noopener"><img src="assets/vr-emotion-research/02-tutorial-tray.jpg" alt="Tutorial step &quot;Coloque la bandeja&quot;: placing a tray on a blue table." width="982" height="640" loading="lazy" /></a>
-        <a href="assets/vr-emotion-research/03-tutorial-take-tray.jpg" target="_blank" rel="noopener"><img src="assets/vr-emotion-research/03-tutorial-take-tray.jpg" alt="Tutorial step &quot;Tome la bandeja&quot;: picking up the tray with the VR controllers." width="982" height="640" loading="lazy" /></a>
+        <a data-stage="Beginning" href="assets/vr-emotion-research/04-haptic-pattern-table.jpg" target="_blank" rel="noopener"><img src="assets/vr-emotion-research/04-haptic-pattern-table.jpg" alt="My slide summarising a 2025 study: how happiness, fear and relaxation map to vibration patterns of intensity, frequency and duty cycle, with a note on calming a negative emotion gradually." width="1600" height="900" loading="lazy" /></a>
+        <a data-stage="Middle" href="assets/vr-emotion-research/01-tutorial-marker.jpg" target="_blank" rel="noopener"><img src="assets/vr-emotion-research/01-tutorial-marker.jpg" alt="Tutorial scene in Unity: VR controllers pointing at a glowing marker beside a table, with the prompt &quot;Avance al punto iluminado&quot;." width="982" height="640" loading="lazy" /></a>
+        <a data-stage="Middle" href="assets/vr-emotion-research/02-tutorial-tray.jpg" target="_blank" rel="noopener"><img src="assets/vr-emotion-research/02-tutorial-tray.jpg" alt="Tutorial step &quot;Coloque la bandeja&quot;: placing a tray on a blue table." width="982" height="640" loading="lazy" /></a>
+        <a data-stage="Middle" href="assets/vr-emotion-research/03-tutorial-take-tray.jpg" target="_blank" rel="noopener"><img src="assets/vr-emotion-research/03-tutorial-take-tray.jpg" alt="Tutorial step &quot;Tome la bandeja&quot;: picking up the tray with the VR controllers." width="982" height="640" loading="lazy" /></a>
       </div>
 
     </article>

@@ -127,10 +127,11 @@
     var link = links[current];
     var thumb = link.querySelector("img");
     var alt = thumb ? thumb.getAttribute("alt") || "" : "";
+    var stage = link.getAttribute("data-stage");
     img.src = link.getAttribute("href");
     img.alt = alt;
     caption.textContent = "";
-    var text = document.createTextNode(alt);
+    var text = document.createTextNode(stage ? stage + ": " + alt : alt);
     var counter = document.createElement("span");
     counter.className = "lightbox__count";
     counter.textContent = current + 1 + " of " + links.length;
