@@ -28,7 +28,7 @@
   <meta name="description" content="A 3D horror survival game in Unity where a skeptic gets lost in the same forest as a local legend. Mónica led development on a team project and made the final build." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261004k" />
+  <link rel="stylesheet" href="styles.css?v=20261005a" />
 </head>
 <body>
 
@@ -85,19 +85,29 @@
         </div>
       </dl>
 
+      <!-- ===== THE 30-SECOND VERSION ===== -->
+      <ul class="pitch" aria-label="Summary of the project">
+        <li><span class="pitch__label">Context</span><p>Intro to Computer Graphics at Universidad EAFIT. A team of about six turned a written story into a 3D horror game in Unity.</p></li>
+        <li><span class="pitch__label">Challenge</span><p>Break the player's scepticism one clue at a time, without ever telling them outright what is happening.</p></li>
+        <li><span class="pitch__label">Solution</span><p>A four-level house built around a six-beat horror structure. The fear escalates through the environment, not through explanations.</p></li>
+        <li><span class="pitch__label">Result</span><p>A finished, playable game. Presenting it led my lecturer to invite me into his research seedbed as a developer.</p></li>
+        <li><span class="pitch__label">Learning</span><p>When a teammate falls behind, find what you can advance while you wait, and how to help.</p></li>
+      </ul>
+
       <!-- ===== PROBLEM ===== -->
       <section class="project__section">
         <h2 class="project__section-title">The problem</h2>
         <div class="project__description">
           <p>
-            Local legend says two siblings, Hansel and Gretel, vanished
-            without a trace in the forest near their village. The
-            protagonist mocks the story — until a prank by his friends
-            leaves him genuinely lost and disoriented in that same forest.
-            The design challenge was to build a horror game where the
-            player's skepticism collapses in real time, one clue at a
-            time, without ever telling them outright what's actually
-            happening.
+            <strong class="lede">Make a sceptic believe, without telling him.</strong>
+            Local legend says two siblings, Hansel and Gretel, vanished in
+            the forest near their village. The protagonist mocks the story,
+            until a prank by his friends leaves him genuinely lost in that
+            same forest.
+          </p>
+          <p>
+            The design challenge was a horror game where <mark>the player's
+            scepticism collapses in real time</mark>, one clue at a time.
           </p>
         </div>
       </section>
@@ -107,109 +117,129 @@
         <h2 class="project__section-title">My role</h2>
         <div class="project__description">
           <p>
-            During the course we practised the basics of Unity: NavMesh,
-            NPCs that follow the player, particles, trigger-based
-            interactions, Mixamo animations and basic coding. For the
-            final project we wrote a narrative, planned it on a single
-            page and then built a 3D game from it.
-          </p>
-          <p>
-            I took the lead on development, alongside one other developer.
-            Anything to do with making it work was my job. I wrote
-            the scripts, worked with multiple scenes and shaders, and
-            checked every mechanic and interaction against the one-page
-            plan. I asked teammates for the assets, animations and
-            interfaces we needed, and pushed to update the plan when
-            something had to change. When a script, a piece of logic or a
-            transition broke, I debugged it with my lecturer, online
-            research or AI. I used AI only for code and mechanics. When a
-            teammate fell behind, I worked out how to help them and how to
-            keep the project moving towards the deadline. A friend
-            sometimes programmed with me so we could take turns and
+            <strong class="lede">I led development.</strong> In the course we
+            practised Unity basics: NavMesh, NPCs that follow the player,
+            particles, trigger-based interactions, Mixamo animations and
+            basic coding. For the final project we wrote a narrative,
+            planned it on a single page and built a 3D game from it. A
+            friend sometimes programmed with me so we could take turns and
             breaks.
           </p>
+          <ul>
+            <li>Wrote the scripts and worked with several scenes and shaders.</li>
+            <li>Checked every mechanic and interaction against the one-page plan, and pushed to update the plan when something had to change.</li>
+            <li>Asked teammates for the assets, animations and interfaces we needed.</li>
+            <li>Debugged with my lecturer, online research or AI. I used AI only for code and mechanics.</li>
+            <li>Made the final build.</li>
+          </ul>
         </div>
       </section>
 
       <!-- ===== PROCESS ===== -->
       <section class="project__section">
-        <h2 class="project__section-title">Process</h2>
+        <h2 class="project__section-title">The plan: six beats</h2>
         <div class="project__description">
           <p>
             The written brief didn't survive, but a dense one-page design
-            summary did, and it's detailed enough to stand in for it. The
-            objective is simple to state and hard to survive: find a way
-            home, or at least survive the night, evading "the witch." Five
-            mechanics carry that objective — exploration, escape,
-            collection, reading, and mini-puzzles — colour-coded on the
-            design page alongside a sixth, jumpscares, that punctuates key
-            story beats.
-          </p>
-          <p>
-            The house is mapped across four levels — ground floor, second
-            floor, basement and attic — and the story is structured as six
-            escalating moments. It opens in the forest, where scattered
-            objects left by the protagonist's friends nudge him deeper in
-            as the atmosphere shifts from calm to watched. Inside the
-            house, a note confirms Hansel and Gretel are being held
-            somewhere below, triggering the first scare. In the basement,
-            candlelight reveals a room of bones the moment the flame goes
-            out — and a now-monstrous Hansel and Gretel begin the chase.
-            Escaping locks the door behind him, but the house keeps
-            escalating: objects move on their own, distorted voices stalk
-            him from nearby rooms. The second floor's ruined children's
-            bedrooms and library hide a note pointing him to a key in the
-            attic — the game's final, darkest space, where the actual
-            truth surfaces: Hansel and Gretel are trapped in a repeating
-            horror cycle and need someone to take their place to be freed.
-            The protagonist is left with one way out — a window — and one
-            question the design leaves genuinely open: will he jump, or be
-            caught?
-          </p>
-          <p>
-            Storytelling is deliberately split between explicit and
-            implicit layers: voiceover and written notes carry the
-            explicit narrative, while abandoned toys, blood on the walls
-            and shadows projected without explanation carry the rest — the
-            same "show, don't tell" logic that runs through the sound
-            design too (creaking wood, distorted voices, sudden silence
-            when a candle goes out).
+            did, detailed enough to stand in for it. The goal: find a way
+            home, or at least survive the night, evading "the witch". Five
+            mechanics carry it (exploration, escape, collection, reading and
+            mini-puzzles), plus jumpscares at key story beats. The house
+            has four levels: ground floor, second floor, basement and attic.
           </p>
         </div>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">The forest</span>
+            <p>Objects left by the protagonist's friends nudge him deeper while the mood shifts from calm to watched.</p>
+          </li>
+          <li>
+            <span class="step__date">The note</span>
+            <p>Inside the house, a note says Hansel and Gretel are held somewhere below. It triggers the first scare.</p>
+          </li>
+          <li>
+            <span class="step__date">The basement</span>
+            <p>Candlelight shows a room of bones the moment the flame goes out, and a now-monstrous Hansel and Gretel start the chase.</p>
+          </li>
+          <li>
+            <span class="step__date">The house turns</span>
+            <p>Escaping locks the door behind him. Objects move on their own and distorted voices follow him from nearby rooms.</p>
+          </li>
+          <li>
+            <span class="step__date">The second floor</span>
+            <p>Ruined children's bedrooms and a library hide a note pointing to a key in the attic.</p>
+          </li>
+          <li>
+            <span class="step__date">The attic</span>
+            <p>The truth: the siblings are trapped in a repeating cycle and need someone to take their place. One way out, a window, and one open question: will he jump, or be caught?</p>
+          </li>
+        </ol>
+        <details class="more">
+          <summary>How the story is told</summary>
+          <div class="more__body">
+            <p>
+              Voiceover and written notes carry the explicit story.
+              Abandoned toys, blood on the walls and unexplained shadows
+              carry the rest. The sound follows the same "show, don't tell"
+              logic: creaking wood, distorted voices, and sudden silence
+              when a candle goes out.
+            </p>
+          </div>
+        </details>
       </section>
 
-      <!-- ===== SOLUTION ===== -->
+      <!-- ===== DECISIONS AND OBSTACLES ===== -->
       <section class="project__section">
-        <h2 class="project__section-title">Solution</h2>
-        <div class="project__description">
-          <p>
-            A four-level house built specifically to support a six-beat
-            horror structure, with escalation handled through
-            environment rather than exposition — degrading lighting,
-            objects that move between visits, a locking door that removes
-            the option to backtrack, and a jumpscare reserved for the exact
-            moment the player's skepticism should break (reading Hansel and
-            Gretel's note in the kitchen).
-          </p>
-        </div>
+        <h2 class="project__section-title">Decisions and obstacles</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Escalate through the environment</h3>
+            <p>Degrading light, objects that move between visits and a door that locks behind you replace exposition. You can no longer backtrack.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Save the jumpscare for the moment of doubt</h3>
+            <p>The one that matters comes when the player reads Hansel and Gretel's note in the kitchen, exactly when their scepticism should break.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstacle</span>
+            <h3>Things that wouldn't work</h3>
+            <p>When a script, a piece of logic or a transition broke, I asked: what are the basic steps to make it work, and what do I do if it still doesn't? That became my debugging routine.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstacle</span>
+            <h3>A teammate falling behind</h3>
+            <p>I worked out what was going on, how I could help, and how to keep advancing while I waited, so the deadline didn't slip.</p>
+          </li>
+        </ul>
       </section>
 
       <!-- ===== RESULT ===== -->
       <section class="project__section">
         <h2 class="project__section-title">Result &amp; reflection</h2>
+        <ul class="stats">
+          <li><strong>~6</strong><span>people on the team</span></li>
+          <li><strong>4</strong><span>levels in the house</span></li>
+          <li><strong>6</strong><span>story beats</span></li>
+          <li><strong>1</strong><span>invitation into a research seedbed</span></li>
+        </ul>
         <div class="project__description">
           <p>
-            A finished, playable Unity game. I made the final build, and
-            the gameplay video we submitted survives. The one-page design
-            summary behind it is a complete game plan on its own:
-            narrative, floor plans, a six-beat structure, mechanics, sound
-            design and a hand-drawn storyboard.
+            <strong class="lede">A finished, playable Unity game.</strong> I
+            made the final build, and the gameplay video we submitted
+            survives. The one-page design behind it is a complete plan on
+            its own: narrative, floor plans, the six-beat structure,
+            mechanics, sound design and a hand-drawn storyboard.
           </p>
           <p>
             It also led to something bigger. After I presented the game,
-            my lecturer invited me into his research seedbed as a
-            developer (see <a href="project-vr-emotion-research.html">VR
-            &amp; Emotion Research</a>).
+            my lecturer invited me into his research seedbed as a developer
+            (see <a href="project-vr-emotion-research.html">VR &amp; Emotion Research</a>).
+          </p>
+          <p>
+            It was one of my first big projects in Unity. I also learnt to
+            work in a way that was less stressful and more present.
           </p>
         </div>
       </section>
@@ -219,6 +249,9 @@
         <h2 class="project__section-title">Tools &amp; software</h2>
         <ul class="tag-list">
           <li class="tag">Unity</li>
+          <li class="tag">Mixamo</li>
+          <li class="tag">NavMesh</li>
+          <li class="tag">AI-assisted scripting</li>
         </ul>
       </section>
 
@@ -247,7 +280,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261004k"></script>
-  <script src="case-study.js?v=20261004k"></script>
+  <script src="script.js?v=20261005a"></script>
+  <script src="case-study.js?v=20261005a"></script>
 </body>
 </html>

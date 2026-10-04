@@ -916,7 +916,24 @@ if (trailBuds.length && heroSection) {
     }
   };
 
+  // A link from a project page ("back to projects") arrives here with a
+  // #section in the address. That should open the section once, but a RELOAD
+  // (or restarting the page) must always come back to the lotus, so:
+  //   - on a reload, the #section is ignored, and
+  //   - after it has been used, it is removed from the address bar, so
+  //     reloading later cannot bring it back.
+  const navEntry = performance.getEntriesByType?.("navigation")?.[0];
+  const isReload = navEntry ? navEntry.type === "reload" : false;
+  const clearHash = () => {
+    try {
+      history.replaceState(null, "", location.pathname + location.search);
+    } catch (error) {
+      // some browsers refuse this for files opened from disk: the page still works
+    }
+  };
+  if (isReload && location.hash) clearHash();
   routeFromHash();
+  if (location.hash) clearHash();
 
   // Covers arriving at a hash the page was already sitting on (e.g. typing
   // a new #section into the address bar without a full reload) — the
