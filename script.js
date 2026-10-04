@@ -7,7 +7,8 @@
 
 /* -------------------------------------------------------------
    1. MOBILE MENU
-   On small screens, tapping the hamburger button shows/hides the
+   (Retired 2026-10-04: the hamburger menu was replaced by the lotus nav.)
+   Kept only so an old page that still has a hamburger button keeps working: it shows/hides the
    navigation links.
    ------------------------------------------------------------- */
 const toggle = document.querySelector(".nav__toggle");
@@ -42,44 +43,56 @@ if (yearSpan) {
 }
 
 /* -------------------------------------------------------------
-   3. ABOUT SECTION — MOUSE-REACTIVE BACKGROUND
-   The soft colour blobs behind the About section (see #about::before
-   in styles.css) drift toward the mouse. We ease the movement each
-   frame instead of snapping straight to the cursor, so it glides.
-   Skipped entirely if the visitor has asked for reduced motion.
+   3. ABOUT CARD — A COLOUR GLOW THAT FOLLOWS THE MOUSE
+   Over the About card, a soft glow follows the mouse and shifts hue as it
+   goes (blue → violet → pink → warm red, never yellow or green, so the
+   text on top stays readable). We ease the movement each frame instead of
+   snapping to the cursor, so it glides. A tap on the photo swaps it to the
+   second picture on touch screens (a mouse just hovers). Skipped for the
+   glow when the visitor has asked for reduced motion.
    ------------------------------------------------------------- */
-const aboutSection = document.getElementById("about");
+const aboutCard = document.getElementById("aboutCard");
+const aboutPhoto = document.getElementById("aboutPhoto");
 const prefersReducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)"
 ).matches;
 
-if (aboutSection && !prefersReducedMotion) {
+if (aboutPhoto) {
+  aboutPhoto.addEventListener("click", () => aboutPhoto.classList.toggle("is-swapped"));
+}
+
+if (aboutCard && !prefersReducedMotion) {
   let targetX = 50;
   let targetY = 40;
   let currentX = targetX;
   let currentY = targetY;
   let animationFrame = null;
 
+  const hueFor = (x, y) => 230 + x * 1.3 + y * 0.35; // 230 (blue) … ~360 (red)
+
   const glide = () => {
     // Move a fraction of the remaining distance each frame (easing).
     currentX += (targetX - currentX) * 0.08;
     currentY += (targetY - currentY) * 0.08;
-    aboutSection.style.setProperty("--mx", `${currentX}%`);
-    aboutSection.style.setProperty("--my", `${currentY}%`);
+    aboutCard.style.setProperty("--mx", `${currentX.toFixed(1)}%`);
+    aboutCard.style.setProperty("--my", `${currentY.toFixed(1)}%`);
+    aboutCard.style.setProperty("--hue", hueFor(currentX, currentY).toFixed(1));
 
     const closeEnough =
       Math.abs(targetX - currentX) < 0.1 && Math.abs(targetY - currentY) < 0.1;
     animationFrame = closeEnough ? null : requestAnimationFrame(glide);
   };
 
-  aboutSection.addEventListener("mousemove", (event) => {
-    const rect = aboutSection.getBoundingClientRect();
+  const follow = (event) => {
+    const rect = aboutCard.getBoundingClientRect();
     targetX = ((event.clientX - rect.left) / rect.width) * 100;
     targetY = ((event.clientY - rect.top) / rect.height) * 100;
     if (!animationFrame) {
       animationFrame = requestAnimationFrame(glide);
     }
-  });
+  };
+  aboutCard.addEventListener("pointermove", follow);
+  aboutCard.addEventListener("pointerdown", follow);
 }
 
 /* -------------------------------------------------------------
@@ -107,7 +120,7 @@ if (aboutSection && !prefersReducedMotion) {
    hidden — every section is right there in the HTML, and the page is
    simply one long scrolling document, exactly like before.
    ------------------------------------------------------------- */
-const trailBuds = document.querySelectorAll(".growth-trail__bud");
+const trailBuds = document.querySelectorAll(".lotus-nav__leaf");
 const portalToggle = document.getElementById("portalToggle");
 const heroSection = document.getElementById("hero");
 const landingStage = document.getElementById("landingStage");
@@ -115,13 +128,13 @@ const lotusCanvas = document.getElementById("lotusCanvas");
 const lotusStartCta = document.getElementById("lotusStartCta");
 const orbCluster = document.getElementById("orbCluster");
 const siteFooter = document.getElementById("siteFooter");
-const growthTrail = document.querySelector(".growth-trail");
+const growthTrail = document.querySelector(".lotus-nav");
 const lotusStill = document.querySelector(".lotus-still");
 
 if (trailBuds.length && heroSection) {
   const sectionMeta = Array.from(trailBuds).map((bud) => ({
     id: bud.dataset.section,
-    label: bud.querySelector("span").textContent,
+    label: bud.querySelector(".lotus-nav__label").textContent,
   }));
   const homeSections = sectionMeta
     .map((section) => document.getElementById(section.id))
@@ -158,6 +171,12 @@ if (trailBuds.length && heroSection) {
       bud.classList.toggle("is-current", id === activeId);
       bud.classList.toggle("is-bloomed", id !== activeId && visited.has(id));
     });
+    // Tells the nav's stem where to slide its light (the current leaf's position, -1 = none).
+    if (growthTrail) {
+      const current = Array.from(trailBuds).findIndex((b) => b.dataset.section === activeId);
+      growthTrail.style.setProperty("--cur", current);
+      growthTrail.classList.toggle("is-tracking", current >= 0);
+    }
   };
 
   /* ---- the landing screen ----
@@ -294,7 +313,11 @@ if (trailBuds.length && heroSection) {
     // hiding only #hero left that height behind as an empty gap above
     // whichever section was shown.
     if (landingStage) landingStage.hidden = true;
-    if (siteFooter) siteFooter.hidden = false;
+    if (siteFooter) {
+      siteFooter.hidden = false;
+      // The footer's Contact button is pointless on the Contact section itself.
+      siteFooter.classList.toggle("is-contact", id === "contact");
+    }
     // The side nav only appears once a section is actually open — not on
     // the lotus landing screen itself.
     if (growthTrail) growthTrail.hidden = false;

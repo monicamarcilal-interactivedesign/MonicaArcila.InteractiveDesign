@@ -72,73 +72,33 @@
        instead of tabbing through the menu. It's hidden until focused. -->
   <a class="skip-link" href="#main">Skip to content</a>
 
-  <!-- ===================== NAVIGATION BAR ===================== -->
+  <!-- ===================== NAVIGATION: the lotus and its leaves ===================== -->
+  <!-- One navigation for every screen size (rebuilt 2026-10-04). The lotus
+       (one of Mónica's illustrations) is the way back to the main page; each
+       section is a leaf on its stem. Desktop: a vertical stem down the right
+       edge, names appear on hover. Phones: the same thing laid flat along the
+       top of the screen with the names always showing, replacing the old
+       hamburger menu. On the home page, script.js marks the leaf you are on
+       (a filled, glowing leaf, with a light that slides along the stem to it)
+       and the leaves you have already visited. Project pages just use the
+       plain links. Leaf shapes: assets/nav/leaf-outline.png and leaf-fill.png. -->
   <header class="site-header">
-    <div class="container nav">
-      <!-- REPLACE: your name / logo text -->
-      <a href="index.html" class="nav__logo">Mónica Arcila</a>
-
-      <!-- The button below only shows on small screens (phones). -->
-      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-
-      <nav class="nav__links">
-        <a href="#case-studies">Projects</a>
-        <a href="#experience">Experience</a>
-        <a href="#skills">Skills</a>
-        <a href="#about">About</a>
-        <a href="#contact">Contact</a>
-      </nav>
-    </div>
+    <nav class="lotus-nav" aria-label="Jump to a section" style="--cur: -1">
+      <a href="index.html" class="lotus-nav__home" id="portalToggle" aria-label="Back to the lotus">
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <span class="lotus-nav__label">Back to the lotus</span>
+      </a>
+      <div class="lotus-nav__leaves">
+        <span class="lotus-nav__pulse" aria-hidden="true"></span>
+        <a href="#about" class="lotus-nav__leaf" data-section="about" style="--i:0"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">About</span></a>
+        <a href="#case-studies" class="lotus-nav__leaf" data-section="case-studies" style="--i:1"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">Projects</span></a>
+        <a href="#experience" class="lotus-nav__leaf" data-section="experience" style="--i:2"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">Experience</span></a>
+        <a href="#skills" class="lotus-nav__leaf" data-section="skills" style="--i:3"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">Skills</span></a>
+        <a href="#contact" class="lotus-nav__leaf" data-section="contact" style="--i:4"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">Contact</span></a>
+      </div>
+    </nav>
   </header>
-
-  <!-- ===================== GROWTH TRAIL / SITE NAV ===================== -->
-  <!-- The site's main navigation on desktop (2026-09-29) — the top header
-       hides above 900px (see styles.css) and this side rail takes over.
-       Each link is a lotus petal (SVG, shared shape, coloured by state);
-       the lotus itself returns to the landing screen. Sections you've
-       visited this browsing session "bloom" solid, in any order; the
-       section on screen right now glows; the rest stay dashed outlines
-       but are still real links, so you can jump straight to Contact
-       without visiting anything in between. script.js job 5 tracks
-       visited sections (sessionStorage) and updates the is-bloomed /
-       is-current classes whenever you switch scenes. On phones (≤900px)
-       the hamburger menu switches scenes the same way, just without
-       this visual — see the max-width: 900px rule in styles.css. -->
-  <nav class="growth-trail" aria-label="Jump to a section">
-    <a href="index.html" class="growth-trail__map-toggle" id="portalToggle" aria-label="Back to the lotus">
-      <svg class="lotus-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" />
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(72 12 12)" />
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(144 12 12)" />
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(216 12 12)" />
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(288 12 12)" />
-        <circle cx="12" cy="12" r="1.3" />
-      </svg>
-      <span>Mónica Arcila</span>
-    </a>
-    <a href="#case-studies" class="growth-trail__bud" data-section="case-studies">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>Projects</span>
-    </a>
-    <a href="#experience" class="growth-trail__bud" data-section="experience">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>Experience</span>
-    </a>
-    <a href="#skills" class="growth-trail__bud" data-section="skills">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>Skills</span>
-    </a>
-    <a href="#about" class="growth-trail__bud" data-section="about">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>About</span>
-    </a>
-    <a href="#contact" class="growth-trail__bud" data-section="contact">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>Contact</span>
-    </a>
-  </nav>
 
   <main id="main">
 
@@ -749,64 +709,76 @@
 
     <!-- ===================== 3. ABOUT ME (required) ===================== -->
     <section id="about" class="section container">
-      <p class="about__eyebrow">About me</p>
-      <h2 class="about__name">Mónica Arcila</h2>
-      <div class="about">
-        <!-- A monogram stands in until there's a photo. To use a photo:
-             put it in assets/, point src at it, and give it real alt text
-             (e.g. "Mónica smiling in front of ..."). -->
-        <img
-          class="about__photo"
-          src="assets/monogram.svg"
-          alt=""
-        />
-        <div class="about__text">
-          <p>
-            I'm an Interactive Designer currently based in Wellington, New
-            Zealand, specialising in UI implementation, design systems and
-            AI-driven design workflows. My path has taken me through six
-            semesters at EAFIT (Medellín, Colombia) and, this year, an
-            exchange in Interactive Media Design at Te Herenga Waka —
-            Victoria University of Wellington.
-          </p>
-          <p>
-            Design, to me, is a partnership — I like to show the thinking
-            behind the pixels: the research, the wireframes, the awkward
-            first drafts, not just the polished final screen. My work spans
-            UX research, interactive prototypes, game design, virtual
-            reality and generative/AI-assisted design, and I'm currently
-            looking for an interactive design internship in Wellington or
-            Auckland.
-          </p>
+      <!-- One glass card. Behind everything: a faint, slowly turning copy of
+           the About orb (the sun) and a soft colour glow that follows the
+           mouse and shifts hue (script.js job 3). The photo swaps to a
+           second picture on hover. -->
+      <div class="about-card" id="aboutCard">
+        <div class="about-card__glow" aria-hidden="true"></div>
+        <img class="about-card__sun" src="assets/site/orb-about.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
 
-          <h3 class="about__tools-title">Tools &amp; software</h3>
-          <ul class="tag-list">
-            <li class="tag">Figma</li>
-            <li class="tag">Figma Make</li>
-            <li class="tag">Adobe Illustrator</li>
-            <li class="tag">Adobe Photoshop</li>
-            <li class="tag">Adobe After Effects</li>
-            <li class="tag">Adobe Animate</li>
-            <li class="tag">Adobe Audition</li>
-            <li class="tag">Affinity</li>
-            <li class="tag">Canva</li>
-            <li class="tag">Maya</li>
-            <li class="tag">Substance 3D Painter</li>
-            <li class="tag">Unity</li>
-            <li class="tag">Unreal Engine</li>
-            <li class="tag">TouchDesigner</li>
-            <li class="tag">Meta Quest 3 / Oculus</li>
-            <li class="tag">HTML &amp; CSS</li>
-            <li class="tag">C++</li>
-            <li class="tag">Python</li>
-            <li class="tag">Visual Studio Code</li>
-            <li class="tag">Arduino &amp; Wokwi</li>
-            <li class="tag">Google Sites</li>
-            <li class="tag">Claude</li>
-            <li class="tag">ChatGPT</li>
-            <li class="tag">Gemini</li>
-            <li class="tag">Midjourney</li>
-          </ul>
+        <p class="about__eyebrow">About me</p>
+        <h2 class="about__name">Mónica Arcila Larrea</h2>
+
+        <div class="about">
+          <figure class="about__photo" id="aboutPhoto">
+            <span class="about__ring" aria-hidden="true"></span>
+            <img class="about__img about__img--a" src="assets/about/portrait-mountains.jpg" width="900" height="1153" alt="Mónica smiling over her shoulder, with long curly hair and a teal hoodie, standing on a path with snow-capped mountains and a lake behind her." decoding="async" />
+            <img class="about__img about__img--b" src="assets/about/portrait-lake.jpg" width="1100" height="825" alt="A close, sunny selfie of Mónica smiling, with curly red hair and a white sweatshirt, by a turquoise lake." loading="lazy" decoding="async" />
+          </figure>
+
+          <div class="about__text">
+            <p>
+              I'm an Interactive Designer currently based in Wellington, New
+              Zealand, specialising in UI implementation, design systems and
+              AI-driven design workflows. My path has taken me through six
+              semesters at EAFIT (Medellín, Colombia) and, this year, an
+              exchange in Interactive Media Design at Te Herenga Waka —
+              Victoria University of Wellington.
+            </p>
+            <p>
+              Design, to me, is a partnership — I like to show the thinking
+              behind the pixels: the research, the wireframes, the awkward
+              first drafts, not just the polished final screen. My work spans
+              UX research, interactive prototypes, game design, virtual
+              reality and generative/AI-assisted design, and I'm currently
+              looking for an interactive design internship in Wellington or
+              Auckland.
+            </p>
+
+            <h3 class="about__tools-title">Tools &amp; software</h3>
+            <!-- Icon only; the name shows on hover or keyboard focus (and
+                 stays out of sight on phones, which have no hover). Tools
+                 without an icon of their own stay as small text tags. -->
+            <ul class="tools">
+              <li class="tool" tabindex="0"><img src="assets/tools/figma.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Figma</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/figma-make.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Figma Make</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/ps.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe Photoshop</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/ai.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe Illustrator</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/ae.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe After Effects</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/an.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe Animate</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/au.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe Audition</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/affinity.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Affinity</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/canva.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Canva</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/maya.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Maya</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/substance-painter.svg" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Substance 3D Painter</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/unity.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Unity</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/unreal.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Unreal Engine</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/touchdesigner.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">TouchDesigner</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/vscode.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Visual Studio Code</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/google-sites.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Google Sites</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/lovable.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Lovable</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/claude.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Claude</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/chatgpt.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">ChatGPT</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/gemini.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Gemini</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/midjourney.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Midjourney</span></li>
+              <li class="tool tool--text">Meta Quest 3 / Oculus</li>
+              <li class="tool tool--text">HTML &amp; CSS</li>
+              <li class="tool tool--text">C++</li>
+              <li class="tool tool--text">Python</li>
+              <li class="tool tool--text">Arduino &amp; Wokwi</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -848,9 +820,10 @@
   <!-- Hidden on the lotus landing screen itself (script.js job 5) — kept
        for every other section, and always shown on every other page. -->
   <footer class="site-footer" id="siteFooter">
-    <div class="container">
+    <div class="container site-footer__row">
       <!-- The year fills in automatically (see script.js). -->
       <p>© <span id="year"></span> Mónica Arcila</p>
+      <a class="footer__contact" href="#contact">Contact me <span aria-hidden="true">↗</span></a>
     </div>
   </footer>
 

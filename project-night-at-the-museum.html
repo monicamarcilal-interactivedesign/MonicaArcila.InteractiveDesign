@@ -35,63 +35,33 @@
 
   <a class="skip-link" href="#main">Skip to content</a>
 
+  <!-- ===================== NAVIGATION: the lotus and its leaves ===================== -->
+  <!-- One navigation for every screen size (rebuilt 2026-10-04). The lotus
+       (one of Mónica's illustrations) is the way back to the main page; each
+       section is a leaf on its stem. Desktop: a vertical stem down the right
+       edge, names appear on hover. Phones: the same thing laid flat along the
+       top of the screen with the names always showing, replacing the old
+       hamburger menu. On the home page, script.js marks the leaf you are on
+       (a filled, glowing leaf, with a light that slides along the stem to it)
+       and the leaves you have already visited. Project pages just use the
+       plain links. Leaf shapes: assets/nav/leaf-outline.png and leaf-fill.png. -->
   <header class="site-header">
-    <div class="container nav">
-      <a href="index.html" class="nav__logo">Mónica Arcila</a>
-      <button class="nav__toggle" aria-label="Open menu" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="nav__links">
-        <a href="index.html#work">Projects</a>
-        <a href="index.html#seedbeds">Research</a>
-        <a href="index.html#experience">Experience</a>
-        <a href="index.html#skills">Skills</a>
-        <a href="index.html#about">About</a>
-        <a href="index.html#contact">Contact</a>
-      </nav>
-    </div>
+    <nav class="lotus-nav" aria-label="Jump to a section" style="--cur: -1">
+      <a href="index.html" class="lotus-nav__home" aria-label="Back to the home page">
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <span class="lotus-nav__label">Back to the home page</span>
+      </a>
+      <div class="lotus-nav__leaves">
+        <span class="lotus-nav__pulse" aria-hidden="true"></span>
+        <a href="index.html#about" class="lotus-nav__leaf" data-section="about" style="--i:0"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">About</span></a>
+        <a href="index.html#case-studies" class="lotus-nav__leaf" data-section="case-studies" style="--i:1"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">Projects</span></a>
+        <a href="index.html#experience" class="lotus-nav__leaf" data-section="experience" style="--i:2"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">Experience</span></a>
+        <a href="index.html#skills" class="lotus-nav__leaf" data-section="skills" style="--i:3"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">Skills</span></a>
+        <a href="index.html#contact" class="lotus-nav__leaf" data-section="contact" style="--i:4"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i></span><span class="lotus-nav__label">Contact</span></a>
+      </div>
+    </nav>
   </header>
-
-  <!-- ===================== GROWTH TRAIL / SITE NAV ===================== -->
-  <!-- The site's main navigation on desktop (2026-09-29) — the top header
-       above hides above 900px (see styles.css) and this side rail takes
-       over, matching the home page's. Each link is a lotus petal; the
-       lotus itself links back to the home page. No visited/current
-       tracking here (that's a home-page-only thing, see script.js job 5)
-       — these are just plain links to index.html#section. -->
-  <nav class="growth-trail" aria-label="Jump to a section">
-    <a href="index.html" class="growth-trail__map-toggle" aria-label="Back to the home page">
-      <svg class="lotus-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" />
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(72 12 12)" />
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(144 12 12)" />
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(216 12 12)" />
-        <path d="M12 12C13.5 9 13.5 5 12 2C10.5 5 10.5 9 12 12Z" transform="rotate(288 12 12)" />
-        <circle cx="12" cy="12" r="1.3" />
-      </svg>
-      <span>Mónica Arcila</span>
-    </a>
-    <a href="index.html#case-studies" class="growth-trail__bud">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>Projects</span>
-    </a>
-    <a href="index.html#experience" class="growth-trail__bud">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>Experience</span>
-    </a>
-    <a href="index.html#skills" class="growth-trail__bud">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>Skills</span>
-    </a>
-    <a href="index.html#about" class="growth-trail__bud">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>About</span>
-    </a>
-    <a href="index.html#contact" class="growth-trail__bud">
-      <svg class="petal-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2C15 6 16 11 16 14C16 18.4 14.2 22 12 22C9.8 22 8 18.4 8 14C8 11 9 6 12 2Z" /></svg>
-      <span>Contact</span>
-    </a>
-  </nav>
 
   <main id="main">
     <article class="section container project">
@@ -288,8 +258,9 @@
   </main>
 
   <footer class="site-footer">
-    <div class="container">
+    <div class="container site-footer__row">
       <p>© <span id="year"></span> Mónica Arcila</p>
+      <a class="footer__contact" href="index.html#contact">Contact me <span aria-hidden="true">↗</span></a>
     </div>
   </footer>
 

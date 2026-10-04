@@ -86,8 +86,8 @@
   --page-margin-right: 1cm;
 }
 
-/* Desktop only — the side nav (.growth-trail) sits fixed at ~28px from
-   the true viewport edge and is about 40px across at its widest (the
+/* Desktop only — the side nav (.lotus-nav) sits fixed at ~14px from
+   the true viewport edge and is about 62px across at its widest (the
    lotus), so this clears it with room to spare, without reserving so
    much that it eats into the content on narrower desktop widths. */
 @media (min-width: 901px) {
@@ -201,261 +201,358 @@ button:focus-visible,
 }
 
 /* -------------------------------------------------------------
-   HEADER / NAVIGATION
-   ------------------------------------------------------------- */
+   NAVIGATION — the lotus and its leaves (rebuilt 2026-10-04)
+   -------------------------------------------------------------
+   One nav for every screen. The lotus (Mónica's illustration) goes back to
+   the main page; each section is a leaf on a glowing stem.
+     Desktop  a vertical stem down the right edge; a leaf's name shows on
+              hover or keyboard focus.
+     Phones   the same stem laid flat along the top of the screen, names
+              always showing (it replaces the old hamburger menu).
+   The leaf you are on is filled and glows, and a small light slides along
+   the stem to it (script.js sets --cur: which leaf, 0 to 4). Leaves you
+   have already visited are brighter outlines. The leaf shapes are
+   assets/nav/leaf-outline.png and leaf-fill.png, tinted with CSS masks. */
 .site-header {
-  position: sticky;   /* the nav stays at the top as you scroll */
-  top: 0;
-  background: color-mix(in srgb, var(--color-bg) 80%, transparent);
-  backdrop-filter: blur(16px) saturate(140%);
-  -webkit-backdrop-filter: blur(16px) saturate(140%);
-  border-bottom: 1px solid var(--color-border);
-  z-index: 10;
-  transition: background 0.4s ease, border-color 0.4s ease;
+  display: contents; /* desktop: the nav inside floats on its own */
 }
 
-.nav {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-block: 0.75rem;
-}
-
-.nav__logo {
-  font-weight: 700;
-  font-size: 1.1rem;
-  text-decoration: none;
-  color: var(--color-text);
-}
-
-.nav__links {
-  display: flex;
-  gap: 1.5rem;
-}
-
-/* Desktop navigation moved to the side (2026-09-29) — see GROWTH TRAIL /
-   SITE NAV below. Above 900px the whole top header hides and the side
-   rail takes over; at/under 900px nothing here changes (the header with
-   its hamburger menu is still the only nav, exactly as before). */
-@media (min-width: 901px) {
-  .site-header {
-    display: none;
-  }
-}
-
-.nav__links a,
-.nav__links a:visited {
-  text-decoration: none;
-  color: var(--color-text);
-}
-
-.nav__links a:hover {
-  color: var(--color-accent);
-}
-
-/* The hamburger button is hidden on big screens... */
-.nav__toggle {
-  display: none;
-  flex-direction: column;
-  gap: 5px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 6px;
-}
-
-.nav__toggle span {
-  width: 24px;
-  height: 2px;
-  background: var(--color-text);
-}
-
-/* -------------------------------------------------------------
-   GROWTH TRAIL / SITE NAV (2026-09-29) — the site's main navigation
-   on desktop now, not just a home-page extra: the top header hides
-   above 900px (see the rule above .nav__links) and this side rail
-   takes over everywhere, home page and every project page alike.
-   Each link is a lotus petal; the link back to the lotus landing
-   screen (or, from a project page, back to the home page) is the
-   full lotus itself.
-
-   On the home page only, script.js job 5 tracks which sections
-   you've visited this browsing session (any order, not scroll
-   position) and sets is-bloomed / is-current: dashed outline = not
-   visited yet (still a real link), solid coral = bloomed, glowing
-   violet = on screen right now. Project pages don't track this —
-   the petals just sit in their plain outline state, still real links.
-   ------------------------------------------------------------- */
-.growth-trail {
+.lotus-nav {
+  --step: 60px; /* distance between leaves along the stem */
+  --leaf: rgba(214, 200, 255, 0.72);
+  --leaf-bright: rgba(176, 238, 255, 0.95);
   position: fixed;
-  right: 28px;
+  right: 14px;
   top: 50%;
   transform: translateY(-50%);
+  z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 22px;
-  z-index: 20;
+  transition: opacity 0.45s ease, visibility 0.45s ease;
 }
 
-/* Its own display:flex above has the same specificity as the browser's
-   default [hidden]{display:none} and comes later, so it silently wins —
-   same footgun as .landing-stage[hidden] elsewhere in this file. Without
-   this, script.js hiding the nav on the landing screen did nothing
-   visually. */
-.growth-trail[hidden] {
+/* The flex above would otherwise beat the browser's [hidden] rule. */
+.lotus-nav[hidden] {
   display: none;
 }
 
-.growth-trail::before {
+/* ----- the lotus ----- */
+.lotus-nav__home {
+  position: relative;
+  display: block;
+  width: 62px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  filter: drop-shadow(0 0 14px rgba(110, 231, 240, 0.5));
+  transition: transform 0.4s cubic-bezier(0.3, 0.9, 0.3, 1), filter 0.4s ease;
+}
+
+.lotus-nav__lotus {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: opacity 0.6s ease;
+}
+
+.lotus-nav__lotus--purple {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+.lotus-nav__home:hover,
+.lotus-nav__home:focus-visible {
+  transform: translateY(-2px) scale(1.07);
+  filter: drop-shadow(0 0 18px rgba(190, 150, 255, 0.65));
+}
+
+.lotus-nav__home:hover .lotus-nav__lotus--purple,
+.lotus-nav__home:focus-visible .lotus-nav__lotus--purple {
+  opacity: 1;
+}
+
+.lotus-nav__home:hover .lotus-nav__lotus--blue,
+.lotus-nav__home:focus-visible .lotus-nav__lotus--blue {
+  opacity: 0;
+}
+
+/* ----- the stem and its travelling light ----- */
+.lotus-nav__leaves {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lotus-nav__leaves::before {
   content: "";
   position: absolute;
   left: 50%;
-  top: 0;
-  bottom: 0;
+  top: -8px;
+  bottom: calc(var(--step) * 0.35);
   width: 2px;
   transform: translateX(-50%);
-  background: linear-gradient(var(--color-violet), var(--color-pink), var(--color-accent));
-  opacity: 0.3;
-  z-index: -1;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #6ee7f0, #8f5cff 62%, rgba(143, 92, 255, 0.1));
+  box-shadow: 0 0 10px rgba(110, 231, 240, 0.4);
 }
 
-.growth-trail__bud {
+.lotus-nav__pulse {
+  position: absolute;
+  left: 50%;
+  top: calc((var(--cur, -1) + 0.5) * var(--step));
+  z-index: 1;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 10px 2px #6ee7f0, 0 0 24px 6px rgba(143, 92, 255, 0.65);
+  opacity: 0;
+  transition: top 0.75s cubic-bezier(0.45, 0, 0.25, 1), left 0.75s cubic-bezier(0.45, 0, 0.25, 1), opacity 0.4s ease;
+}
+
+.lotus-nav.is-tracking .lotus-nav__pulse {
+  opacity: 1;
+}
+
+/* ----- the leaves ----- */
+.lotus-nav__leaf {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 64px;
+  height: var(--step);
+  text-decoration: none;
+  color: var(--leaf);
+  outline-offset: -6px;
+  transition: color 0.35s ease;
 }
 
-.growth-trail__bud .petal-icon {
-  width: 20px;
-  height: 20px;
-  fill: none;
-  stroke: var(--color-muted);
-  stroke-width: 1.4;
-  stroke-dasharray: 3 2.5;
-  transition: fill 0.3s ease, stroke 0.3s ease, transform 0.3s ease, filter 0.3s ease;
-}
-
-.growth-trail__bud span {
+.lotus-nav__glyph {
   position: absolute;
-  right: 34px;
   top: 50%;
-  transform: translateY(-50%);
-  white-space: nowrap;
-  font-size: 0.75rem;
-  color: var(--color-text);
-  background: var(--color-surface-strong);
-  padding: 0.25rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-border);
+  width: 36px;
+  height: 18px;
+  margin-top: -9px;
+  transition: scale 0.35s cubic-bezier(0.3, 0.9, 0.3, 1), rotate 0.35s ease;
+}
+
+/* Alternate sides of the stem: odd leaves on the right, even on the left. */
+.lotus-nav__leaf:nth-of-type(odd) .lotus-nav__glyph {
+  left: 50%;
+  transform: rotate(-30deg);
+  transform-origin: 0 70%;
+}
+
+.lotus-nav__leaf:nth-of-type(even) .lotus-nav__glyph {
+  right: 50%;
+  transform: scaleX(-1) rotate(-30deg);
+  transform-origin: 100% 70%;
+}
+
+.lotus-nav__glyph i {
+  position: absolute;
+  inset: 0;
+  background-color: currentColor;
+  -webkit-mask: url("assets/nav/leaf-outline.png") center / contain no-repeat;
+  mask: url("assets/nav/leaf-outline.png") center / contain no-repeat;
+  transition: opacity 0.4s ease, filter 0.4s ease;
+}
+
+/* The filled version is only seen on the leaf you are on. */
+.lotus-nav__glyph i:last-child {
+  background: linear-gradient(120deg, #6ee7f0, #8f5cff);
+  -webkit-mask-image: url("assets/nav/leaf-fill.png");
+  mask-image: url("assets/nav/leaf-fill.png");
   opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
 }
 
-.growth-trail__bud:hover span,
-.growth-trail__bud:focus-visible span {
+.lotus-nav__leaf:hover,
+.lotus-nav__leaf:focus-visible {
+  color: var(--leaf-bright);
+}
+
+.lotus-nav__leaf:hover .lotus-nav__glyph,
+.lotus-nav__leaf:focus-visible .lotus-nav__glyph {
+  scale: 1.22;
+}
+
+.lotus-nav__leaf:hover .lotus-nav__glyph i:first-child,
+.lotus-nav__leaf:focus-visible .lotus-nav__glyph i:first-child {
+  filter: drop-shadow(0 0 6px rgba(110, 231, 240, 0.8));
+}
+
+.lotus-nav__leaf.is-bloomed {
+  color: rgba(190, 220, 255, 0.85);
+}
+
+.lotus-nav__leaf.is-current .lotus-nav__glyph i:first-child {
+  opacity: 0;
+}
+
+.lotus-nav__leaf.is-current .lotus-nav__glyph i:last-child {
   opacity: 1;
+  filter: drop-shadow(0 0 7px rgba(110, 231, 240, 0.85));
 }
 
-.growth-trail__bud:focus-visible {
+/* ----- names (desktop: on hover or focus, in a small glass pill) ----- */
+.lotus-nav__label {
+  position: absolute;
+  right: calc(100% - 4px);
+  top: 50%;
+  padding: 0.28rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: #ffffff;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.05)), rgba(10, 8, 40, 0.7);
+  border: 1px solid var(--glass-edge, rgba(255, 255, 255, 0.17));
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  opacity: 0;
+  transform: translate(8px, -50%);
+  pointer-events: none;
+  transition: opacity 0.25s ease, transform 0.3s cubic-bezier(0.3, 0.9, 0.3, 1);
+}
+
+.lotus-nav__home .lotus-nav__label {
+  right: calc(100% + 2px);
+  top: 46%;
+}
+
+.lotus-nav__leaf:hover .lotus-nav__label,
+.lotus-nav__leaf:focus-visible .lotus-nav__label,
+.lotus-nav__home:hover .lotus-nav__label,
+.lotus-nav__home:focus-visible .lotus-nav__label {
+  opacity: 1;
+  transform: translate(0, -50%);
+}
+
+.lotus-nav__home:focus-visible,
+.lotus-nav__leaf:focus-visible {
   outline: 2px solid var(--color-accent);
-  outline-offset: 4px;
-  border-radius: 50%;
+  border-radius: 14px;
 }
 
-.growth-trail__bud:hover .petal-icon {
-  stroke: var(--color-text);
-  transform: scale(1.15);
-}
-
-.growth-trail__bud.is-bloomed .petal-icon {
-  fill: var(--color-coral);
-  stroke: var(--color-coral);
-  stroke-dasharray: none;
-}
-
-.growth-trail__bud.is-current .petal-icon {
-  fill: var(--color-violet);
-  stroke: var(--color-violet);
-  stroke-dasharray: none;
-  transform: scale(1.3);
-  filter: drop-shadow(0 0 8px color-mix(in srgb, var(--color-violet) 65%, transparent));
-}
-
-/* Keep it to desktop for now — on phones the hamburger menu already
-   jumps straight to any section, and there isn't spare width for a
-   side rail without crowding the content. */
+/* ----- phones: the same nav laid flat along the top ----- */
 @media (max-width: 900px) {
-  .growth-trail {
+  .site-header {
+    display: block;
+    /* full width, breaking out of the page's outer margin */
+    margin: calc(var(--page-margin) * -1) calc(var(--page-margin-right) * -1) 0 calc(var(--page-margin) * -1);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    background: linear-gradient(180deg, rgba(10, 8, 40, 0.86), rgba(10, 8, 40, 0.62));
+    backdrop-filter: blur(18px) saturate(150%);
+    -webkit-backdrop-filter: blur(18px) saturate(150%);
+    border-bottom: 1px solid var(--glass-edge, rgba(255, 255, 255, 0.17));
+    box-shadow: 0 10px 30px -18px rgba(0, 0, 0, 0.8);
+    transition: opacity 0.45s ease, visibility 0.45s ease;
+  }
+
+  .lotus-nav {
+    position: relative;
+    right: auto;
+    top: auto;
+    transform: none;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    padding: 4px 10px 4px 8px;
+    z-index: auto;
+  }
+
+  .lotus-nav__home {
+    flex: none;
+    width: 44px;
+    margin: 0 8px 0 0;
+  }
+
+  .lotus-nav__home .lotus-nav__label {
     display: none;
+  }
+
+  .lotus-nav__leaves {
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    height: 54px;
+    align-items: stretch;
+  }
+
+  .lotus-nav__leaves::before {
+    left: 0;
+    right: 4px;
+    top: 25px;
+    bottom: auto;
+    width: auto;
+    height: 2px;
+    transform: none;
+    background: linear-gradient(90deg, #6ee7f0, #8f5cff 62%, rgba(143, 92, 255, 0.15));
+  }
+
+  .lotus-nav__pulse {
+    top: 26px;
+    left: calc((var(--cur, -1) + 0.5) * 20%);
+  }
+
+  .lotus-nav__leaf {
+    width: auto;
+    height: 100%;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding-bottom: 3px;
+  }
+
+  .lotus-nav__glyph,
+  .lotus-nav__leaf:nth-of-type(odd) .lotus-nav__glyph,
+  .lotus-nav__leaf:nth-of-type(even) .lotus-nav__glyph {
+    left: 50%;
+    right: auto;
+    top: 3px;
+    width: 28px;
+    height: 14px;
+    margin: 0 0 0 -3px;
+    transform: rotate(-24deg);
+    transform-origin: 0 70%;
+  }
+
+  /* Names always show on phones, small, under each leaf. */
+  .lotus-nav__label,
+  .lotus-nav__leaf:hover .lotus-nav__label {
+    position: static;
+    padding: 0;
+    font-size: 0.56rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    color: inherit;
+    background: none;
+    border: 0;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .lotus-nav__leaf.is-current .lotus-nav__label {
+    color: #ffffff;
   }
 }
 
-/* The lotus that opens the portal map (home page) or links back to the
-   home page (project pages). Sits above the first petal, bigger than
-   any of them since it's what they all "come from". */
-.growth-trail__map-toggle {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  margin-bottom: 8px;
-  border-radius: 50%;
-  background: var(--color-surface-strong);
-  border: 1px solid var(--color-border);
-  cursor: pointer;
-  text-decoration: none;
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
+/* No JavaScript to track the current leaf (project pages): nothing slides. */
 
-.growth-trail__map-toggle .lotus-icon {
-  width: 24px;
-  height: 24px;
-  fill: var(--color-violet);
-  transition: fill 0.2s ease;
-}
-
-.growth-trail__map-toggle:hover {
-  border-color: var(--color-accent);
-  transform: scale(1.1);
-}
-
-.growth-trail__map-toggle:hover .lotus-icon {
-  fill: var(--color-accent);
-}
-
-.growth-trail__map-toggle:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 4px;
-}
-
-.growth-trail__map-toggle span {
-  position: absolute;
-  right: 48px;
-  top: 50%;
-  transform: translateY(-50%);
-  white-space: nowrap;
-  font-size: 0.75rem;
-  font-weight: 600;
-  color: var(--color-text);
-  background: var(--color-surface-strong);
-  padding: 0.25rem 0.7rem;
-  border-radius: 999px;
-  border: 1px solid var(--color-border);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.2s ease;
-}
-
-.growth-trail__map-toggle:hover span,
-.growth-trail__map-toggle:focus-visible span {
-  opacity: 1;
+@media (prefers-reduced-motion: reduce) {
+  .lotus-nav__pulse,
+  .lotus-nav__home,
+  .lotus-nav__glyph {
+    transition: none;
+  }
 }
 
 /* =============================================================
@@ -1069,48 +1166,100 @@ h1, h2, h3, h4,
    ABOUT
    ------------------------------------------------------------- */
 
-/* The mouse-reactive background lives on the section itself, behind
-   the photo + text. --mx/--my (0-100%) are set by script.js as the
-   mouse moves over this section; the defaults below are just where
-   the blobs sit before anyone has moved the mouse. isolation: isolate
-   keeps the background's z-index: -1 scoped to this section only. */
+/* ---- GLASS: one look for every card on the site ----
+   A dark translucent pane with a soft light edge, a blur of whatever is
+   behind it, a faint inner highlight along the top and a deep soft shadow
+   (inspired by Mónica's green-plant glass reference). Cards that need it
+   list themselves in the rule below; the About card, project cards,
+   experience, skills and contact panels all share it. */
+:root {
+  --glass-fill: linear-gradient(150deg, rgba(255, 255, 255, 0.11), rgba(255, 255, 255, 0.035) 62%);
+  --glass-edge: rgba(255, 255, 255, 0.17);
+  --glass-radius: 26px;
+}
+
+.about-card,
+.experience__item,
+.skills__group,
+.contact__grid > div {
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--glass-radius);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 28px 60px -34px rgba(0, 0, 0, 0.7);
+}
+
+/* ---- the About card ---- */
 #about {
+  position: relative;
+}
+
+.about-card {
+  --mx: 50%;
+  --my: 40%;
+  --hue: 270;
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  border-radius: var(--radius);
-  --mx: 50%;
-  --my: 40%;
+  padding: clamp(1.4rem, 4vw, 3rem);
 }
 
-#about::before {
-  content: "";
+/* The colour glow that follows the mouse and shifts hue as it goes
+   (script.js sets --mx, --my and --hue). Kept soft and low so the text on
+   top stays readable at any hue. It fades in only while the mouse is over
+   the card. */
+.about-card__glow {
   position: absolute;
-  inset: -10%; /* a bit larger than the box so the blur has no hard edge */
-  z-index: -1;
+  inset: -10%;
+  z-index: -2;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
   background:
-    radial-gradient(38% 50% at var(--mx) var(--my), var(--about-blob-warm) 0%, transparent 70%),
-    radial-gradient(45% 60% at calc(var(--mx) + 22%) calc(var(--my) - 16%), var(--about-blob-violet) 0%, transparent 70%),
-    radial-gradient(50% 65% at calc(var(--mx) - 20%) calc(var(--my) + 18%), var(--gradient-end) 0%, transparent 70%),
-    var(--color-bg);
-  filter: blur(70px) saturate(140%);
-  opacity: 0.55;
+    radial-gradient(42% 58% at var(--mx) var(--my), hsl(var(--hue) 92% 56% / 0.5), transparent 70%),
+    radial-gradient(38% 52% at calc(var(--mx) + 24%) calc(var(--my) - 18%), hsl(calc(var(--hue) + 55) 92% 58% / 0.38), transparent 70%),
+    radial-gradient(46% 60% at calc(var(--mx) - 22%) calc(var(--my) + 20%), hsl(calc(var(--hue) - 45) 92% 54% / 0.34), transparent 72%);
+  filter: blur(28px);
 }
 
-/* Her name moved here from the hero (2026-09-28) — the hero now carries a
-   motto instead. Same gradient treatment as the old hero title. */
+.about-card:hover .about-card__glow,
+.about-card:focus-within .about-card__glow {
+  opacity: 1;
+}
+
+/* The About orb, very faint and turning slowly, tucked behind the photo's
+   corner of the card. */
+.about-card__sun {
+  position: absolute;
+  z-index: -1;
+  left: -9%;
+  bottom: -24%;
+  width: min(58%, 520px);
+  max-width: none;
+  opacity: 0.2;
+  mix-blend-mode: screen;
+  pointer-events: none;
+  animation: sun-turn 90s linear infinite;
+}
+
+@keyframes sun-turn {
+  to { transform: rotate(360deg); }
+}
+
 .about__eyebrow {
   color: var(--color-muted);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
 
 .about__name {
   font-family: var(--font-display);
   font-weight: 800;
   font-size: clamp(1.8rem, 3.6vw, 2.6rem);
-  line-height: 1.05;
-  margin-bottom: 1.5rem;
-  background: linear-gradient(100deg, var(--color-violet), var(--color-pink) 55%, var(--gradient-end));
+  line-height: 1.08;
+  margin-bottom: clamp(1.2rem, 3vw, 2rem);
+  /* White, with the faintest cool-to-warm shift so it still belongs to the palette. */
+  background: linear-gradient(100deg, #ffffff 30%, #e4dcff 65%, #ffd9ee 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1118,14 +1267,69 @@ h1, h2, h3, h4,
 
 .about {
   display: grid;
-  grid-template-columns: 220px 1fr; /* photo | text */
-  gap: 2rem;
+  grid-template-columns: minmax(200px, 300px) 1fr; /* photo | text */
+  gap: clamp(1.4rem, 3.5vw, 2.6rem);
   align-items: start;
 }
 
+/* The photo: the mountain portrait, which fades to the lake selfie on hover
+   (or on a tap). A thin ring around it takes the colour of the card's glow
+   in place of the old purple ray. */
 .about__photo {
-  border-radius: var(--radius);
-  background: var(--color-surface);
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4 / 5;
+  border-radius: 22px;
+  cursor: pointer;
+}
+
+.about__img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 22px;
+  transition: opacity 0.7s ease, transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.about__img--a { object-position: 50% 45%; }
+.about__img--b { object-position: 50% 38%; opacity: 0; transform: scale(1.06); }
+
+.about__photo:hover .about__img--a,
+.about__photo.is-swapped .about__img--a { opacity: 0; transform: scale(1.04); }
+.about__photo:hover .about__img--b,
+.about__photo.is-swapped .about__img--b { opacity: 1; transform: scale(1); }
+
+@property --ring-turn {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+.about__ring {
+  position: absolute;
+  inset: -5px;
+  z-index: 2;
+  padding: 2px;
+  border-radius: 26px;
+  pointer-events: none;
+  background: conic-gradient(from var(--ring-turn), hsl(var(--hue, 270) 90% 62%), hsl(calc(var(--hue, 270) + 70) 90% 66%), transparent 40%, transparent 60%, hsl(calc(var(--hue, 270) - 50) 90% 60%), hsl(var(--hue, 270) 90% 62%));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  opacity: 0.75;
+  animation: ring-turn 14s linear infinite;
+  box-shadow: 0 0 24px -4px hsl(var(--hue, 270) 90% 60% / 0.7);
+}
+
+@keyframes ring-turn {
+  to { --ring-turn: 360deg; }
+}
+
+.about__text p {
+  text-shadow: 0 1px 14px rgba(6, 4, 30, 0.55);
 }
 
 .about__text p + p {
@@ -1133,11 +1337,129 @@ h1, h2, h3, h4,
 }
 
 .about__tools-title {
-  margin-top: 1.5rem;
-  font-size: 1rem;
+  margin-top: 1.6rem;
+  font-size: 0.9rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
   color: var(--color-muted);
+}
+
+/* ---- the tools: icons, with the name on hover ---- */
+.tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.tool {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  outline-offset: 3px;
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+
+.tool img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.8);
+}
+
+.tool:hover,
+.tool:focus-visible {
+  transform: translateY(-4px) scale(1.08);
+  z-index: 3;
+}
+
+.tool__name {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 8px);
+  padding: 0.28rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: #ffffff;
+  background: rgba(10, 8, 40, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  transform: translate(-50%, 4px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.tool:hover .tool__name,
+.tool:focus-visible .tool__name {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+/* Tools without an icon of their own: small text tags in the same glass. */
+.tool--text {
+  width: auto;
+  height: 44px;
+  padding: 0 0.85rem;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--glass-edge);
+}
+
+.tool--text:hover {
+  transform: none;
+}
+
+@media (max-width: 700px) {
+  .about {
+    grid-template-columns: 1fr;
+  }
+
+  .about__photo {
+    max-width: 280px;
+  }
+
+  /* No hover on phones, and names would crowd the icons: names stay
+     hidden (still read aloud by screen readers). */
+  .tool__name {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+  }
+
+  .tool {
+    width: 40px;
+    height: 40px;
+  }
+
+  .tool--text {
+    height: 40px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-card__sun,
+  .about__ring {
+    animation: none;
+  }
 }
 
 /* A simple tag/chip list, reused for tools & software and for a
@@ -1313,17 +1635,12 @@ h1, h2, h3, h4,
 /* While the banner is on screen the nav steps aside; it fades in once the
    line has been passed (projects-board.js toggles .is-banner). */
 body.is-banner .site-header,
-body.is-banner .growth-trail {
+body.is-banner .lotus-nav {
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
 }
 
-.site-header,
-.growth-trail {
-  transition-property: opacity, visibility, background, border-color;
-  transition-duration: 0.45s;
-}
 
 .projects-hero__statement {
   max-width: 62rem;
@@ -1867,9 +2184,14 @@ html:not(.js) .route__skills li { opacity: 1; }
   border-radius: 24px;
   color: inherit;
   text-decoration: none;
-  background: linear-gradient(165deg, color-mix(in srgb, var(--cat) 14%, #0d0c2b) 0%, #0a0a22 58%);
+  /* Glass: a light, see-through pane tinted with the card's category colour. */
+  background:
+    linear-gradient(155deg, color-mix(in srgb, var(--cat) 20%, rgba(255, 255, 255, 0.1)), rgba(255, 255, 255, 0.03) 62%),
+    rgba(10, 9, 40, 0.5);
+  backdrop-filter: blur(16px) saturate(145%);
+  -webkit-backdrop-filter: blur(16px) saturate(145%);
   border: 1px solid color-mix(in srgb, var(--cat) 38%, rgba(255, 255, 255, 0.1));
-  box-shadow: 0 0 34px -8px color-mix(in srgb, var(--cat) 62%, transparent), 0 18px 40px -26px color-mix(in srgb, var(--cat) 75%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  box-shadow: 0 0 34px -8px color-mix(in srgb, var(--cat) 62%, transparent), 0 18px 40px -26px color-mix(in srgb, var(--cat) 75%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.18);
   transition: transform 0.45s cubic-bezier(0.45, 0, 0.25, 1), box-shadow 0.45s ease, border-color 0.45s ease;
 }
 
@@ -2478,9 +2800,9 @@ html:not(.js) .route__skills li { opacity: 1; }
    EXPERIENCE (work history)
    ------------------------------------------------------------- */
 .experience__item {
-  max-width: 65ch;
-  padding-block: 1.25rem;
-  border-top: 1px solid var(--color-border);
+  max-width: 72ch;
+  padding: 1.5rem 1.6rem;
+  margin-top: 1rem;
 }
 
 .experience__role {
@@ -2516,8 +2838,7 @@ html:not(.js) .route__skills li { opacity: 1; }
 }
 
 .skills__group {
-  border-top: 1px solid var(--color-border);
-  padding-top: 1.25rem;
+  padding: 1.5rem 1.6rem;
 }
 
 .skills__number {
@@ -2587,6 +2908,7 @@ html:not(.js) .route__skills li { opacity: 1; }
    the address itself when it still doesn't fit on one line. */
 .contact__grid > div {
   min-width: 0;
+  padding: 1.2rem 1.4rem;
 }
 
 .contact__grid a {
@@ -2770,6 +3092,46 @@ html:not(.js) .route__skills li { opacity: 1; }
   color: var(--color-muted);
 }
 
+.site-footer__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* The Contact button, in every footer except the Contact section's own. */
+.footer__contact {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.65rem 1.25rem;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  color: #ffffff;
+  background:
+    linear-gradient(150deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05)),
+    rgba(10, 8, 40, 0.6);
+  border: 1px solid rgba(143, 92, 255, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 0 22px -6px rgba(143, 92, 255, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.footer__contact:hover,
+.footer__contact:focus-visible {
+  transform: translateY(-2px);
+  border-color: #6ee7f0;
+  box-shadow: 0 0 28px -4px rgba(110, 231, 240, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+.site-footer.is-contact .footer__contact {
+  display: none;
+}
+
 /* =============================================================
    RESPONSIVE / MOBILE STYLES
    =============================================================
@@ -2779,46 +3141,9 @@ html:not(.js) .route__skills li { opacity: 1; }
    part of the brief.
 
    Try it: make your browser window very narrow and watch the
-   menu turn into a hamburger button.
+   top navigation sit flat across the top of the screen.
    ============================================================= */
 @media (max-width: 700px) {
-
-  /* Show the hamburger button... */
-  .nav__toggle {
-    display: flex;
-  }
-
-  /* ...and hide the links until the button is tapped.
-     script.js adds the class "nav__links--open" to show them. */
-  .nav__links {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    gap: 0;
-    background: var(--color-bg);
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .nav__links--open {
-    display: flex;
-  }
-
-  .nav__links a {
-    padding: 1rem var(--space);
-    border-top: 1px solid var(--color-border);
-  }
-
-  /* Stack the about photo above the text instead of beside it. */
-  .about {
-    grid-template-columns: 1fr;
-  }
-
-  .about__photo {
-    width: 160px;
-  }
 
   /* Gallery: one image per row on phones. */
   .project__gallery {
