@@ -350,7 +350,7 @@ button:focus-visible,
 .lotus-nav__leaf:nth-of-type(even) .lotus-nav__glyph {
   right: 50%;
   transform: scaleX(-1) rotate(-30deg);
-  transform-origin: 100% 70%;
+  transform-origin: 50% 70%; /* mirror in place, so the leaf stays on the left of the stem */
 }
 
 /* Three stacked pictures of the leaf (plain background images — CSS masks
@@ -1251,29 +1251,35 @@ h1, h2, h3, h4,
   opacity: 1;
 }
 
-/* The About orb (the sun): turning slowly in the card's lower-left corner,
-   under the photo, half tucked behind the card's edge. When the mouse is
-   over the photo it glistens (script.js adds .is-glint). */
+/* The About orb (the sun): its centre sits exactly on the photo's lower-left
+   corner (it is a child of the photo; the individual `translate` property
+   centres it on that point without touching the spin). It turns slowly and
+   always shimmers a little; it glistens strongly while the mouse is over the
+   photo or over the sun itself (script.js adds .is-glint for the photo). */
 .about-card__sun {
-  /* Sits on the photo's lower-left corner (it is a child of the photo). */
   position: absolute;
   z-index: 3;
-  left: -17%;
-  bottom: -5%;
+  left: 0;
+  bottom: 0;
   width: 38%;
   max-width: none;
-  pointer-events: none;
+  translate: -50% 50%;
   filter: drop-shadow(0 0 10px rgba(255, 190, 70, 0.35));
-  animation: sun-turn 80s linear infinite;
+  animation: sun-turn 80s linear infinite, sun-shimmer 4.5s ease-in-out infinite;
 }
 
-.about-card.is-glint .about-card__sun {
-  opacity: 1;
+.about-card.is-glint .about-card__sun,
+.about-card__sun:hover {
   animation: sun-turn 80s linear infinite, sun-glisten 1.5s ease-in-out infinite;
 }
 
 @keyframes sun-turn {
   to { transform: rotate(360deg); }
+}
+
+@keyframes sun-shimmer {
+  0%, 100% { filter: brightness(1) drop-shadow(0 0 8px rgba(255, 190, 70, 0.3)); }
+  50%      { filter: brightness(1.28) drop-shadow(0 0 22px rgba(255, 205, 100, 0.6)); }
 }
 
 @keyframes sun-glisten {
@@ -1327,8 +1333,8 @@ h1, h2, h3, h4,
   transition: opacity 0.7s ease, transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.about__img--a { object-position: 50% 45%; }
-.about__img--b { object-position: 50% 38%; opacity: 0; transform: scale(1.06); }
+.about__img--a { object-position: 50% 40%; }
+.about__img--b { object-position: 50% 45%; opacity: 0; transform: scale(1.06); }
 
 .about__photo:hover .about__img--a,
 .about__photo.is-swapped .about__img--a { opacity: 0; transform: scale(1.04); }
