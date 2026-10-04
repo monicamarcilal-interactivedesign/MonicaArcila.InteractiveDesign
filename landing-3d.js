@@ -18,6 +18,8 @@
                   //   sequence, resolves once the camera move ends
        settle,    // () => Promise — the flower then sinks a little
        reset,     // () => void — tweens back to the idle side view
+       refresh,   // () => void — redraws at the current size (after the
+                  //   landing screen was hidden)
        coreOffsetY, // () => px the open flower's centre sinks below
                   //   the screen's middle (where the orbs flow out of)
      };
@@ -343,7 +345,10 @@ function startIdleLoop() {
   // backgrounded/inactive tab can delay or pause rAF entirely, which
   // would otherwise leave the canvas blank until it regains focus.
   render();
-  if (prefersReducedMotion) return;
+  // Never more than one loop: an unguarded second call used to leave the
+  // first one running forever, and it kept pulling the camera back to the
+  // idle side view while the zoom tried to hold the big flower.
+  if (prefersReducedMotion || idleRafId !== null) return;
   const step = () => {
     idleAngle += 0.0025; // ~1 full turn every ~42s
     setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR, IDLE_FILL);
@@ -370,20 +375,36 @@ function render() {
      activate()  idle -> the big, near-top flower (the zoom)
      settle()    that flower sinks a little (the orbs flow out)
      reset()     all the way back to idle
+   The camera's progress between idle (0) and the big flower (1) is kept
+   in poseT, so reset() always starts from where the flower really is
+   instead of assuming it's at the end.
    ------------------------------------------------------------- */
 const ZOOM_MS = 3500;
 const SETTLE_MS = 2600;
 const END_ROTATION_Y = THREE.MathUtils.degToRad(50);
+let poseT = 0; // 0 = idle side view ... 1 = the big near-top flower
+let poseStartAz = 0; // the azimuth the zoom started from
+
+function applyPose(p) {
+  setCamera(
+    THREE.MathUtils.lerp(IDLE_POLAR, END_POLAR, p),
+    THREE.MathUtils.lerp(poseStartAz, poseStartAz + END_AZIMUTH_SWEEP, p),
+    THREE.MathUtils.lerp(IDLE_DIST_FACTOR, END_DIST_FACTOR, p),
+    THREE.MathUtils.lerp(IDLE_FILL, END_FILL, p)
+  );
+  model.rotation.y = THREE.MathUtils.lerp(0, END_ROTATION_Y, p);
+}
 
 async function activate() {
   await ready;
   stopIdleLoop();
+  poseStartAz = idleAngle;
 
   if (prefersReducedMotion) {
     // Skip the ride, not the destination — jump straight to the end
     // framing with a brief cross-fade instead of the full camera tween.
-    model.rotation.y = END_ROTATION_Y;
-    setCamera(END_POLAR, idleAngle + END_AZIMUTH_SWEEP, END_DIST_FACTOR, END_FILL);
+    poseT = 1;
+    applyPose(1);
     render();
     await tween(150, () => render());
     return;
@@ -392,15 +413,9 @@ async function activate() {
   // The camera glides in toward a near-top view while the flower turns
   // on its own Y axis — together they read as "the flower turns as we
   // close in", not just a push-in.
-  const startAzimuth = idleAngle;
   await tween(ZOOM_MS, (t) => {
-    setCamera(
-      THREE.MathUtils.lerp(IDLE_POLAR, END_POLAR, t),
-      THREE.MathUtils.lerp(startAzimuth, startAzimuth + END_AZIMUTH_SWEEP, t),
-      THREE.MathUtils.lerp(IDLE_DIST_FACTOR, END_DIST_FACTOR, t),
-      THREE.MathUtils.lerp(IDLE_FILL, END_FILL, t)
-    );
-    model.rotation.y = THREE.MathUtils.lerp(0, END_ROTATION_Y, t);
+    poseT = t;
+    applyPose(t);
     render();
   });
 }
@@ -434,35 +449,45 @@ async function reset() {
   } catch {
     return;
   }
+  // Already idle (the common case when a section is opened before the
+  // sequence ever played): nothing to undo — just make sure the idle
+  // spin is running, once.
+  if (poseT === 0 && coreShiftFrac === 0) {
+    startIdleLoop();
+    return;
+  }
+  stopIdleLoop();
   if (prefersReducedMotion) {
-    model.rotation.y = 0;
+    poseT = 0;
     coreShiftFrac = 0;
+    applyPose(0);
     applyCoreShift();
-    setCamera(IDLE_POLAR, idleAngle, IDLE_DIST_FACTOR, IDLE_FILL);
     render();
     startIdleLoop();
     return;
   }
-  const fromPolar = END_POLAR;
-  const fromAzimuth = idleAngle + END_AZIMUTH_SWEEP;
-  const fromRotationY = model.rotation.y;
+  const fromPose = poseT;
   const fromShift = coreShiftFrac;
   await tween(900, (t) => {
-    setCamera(
-      THREE.MathUtils.lerp(fromPolar, IDLE_POLAR, t),
-      THREE.MathUtils.lerp(fromAzimuth, idleAngle, t),
-      THREE.MathUtils.lerp(END_DIST_FACTOR, IDLE_DIST_FACTOR, t),
-      THREE.MathUtils.lerp(END_FILL, IDLE_FILL, t)
-    );
-    model.rotation.y = THREE.MathUtils.lerp(fromRotationY, 0, t);
+    poseT = THREE.MathUtils.lerp(fromPose, 0, t);
+    applyPose(poseT);
     coreShiftFrac = THREE.MathUtils.lerp(fromShift, 0, t);
     applyCoreShift();
     render();
   });
-  model.rotation.y = 0;
+  poseT = 0;
   coreShiftFrac = 0;
+  applyPose(0);
   applyCoreShift();
   startIdleLoop();
+}
+
+// Redraw at the right size — for when the landing screen is shown again
+// after being hidden (a hidden canvas has no size, and a resize while it
+// was hidden would otherwise be missed).
+function refresh() {
+  resizeRenderer();
+  render();
 }
 
 /* -------------------------------------------------------------
@@ -518,7 +543,7 @@ function init() {
 
 init();
 
-window.lotusScene = { ready, activate, settle, reset, coreOffsetY };
+window.lotusScene = { ready, activate, settle, reset, refresh, coreOffsetY };
 // `ready` above is captured before the async chain settles is fine —
 // callers await window.lotusScene.ready directly; re-assign so it's
 // always the live promise rather than whatever it was at this exact line.

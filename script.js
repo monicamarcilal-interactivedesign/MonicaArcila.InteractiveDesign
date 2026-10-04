@@ -335,7 +335,10 @@ if (trailBuds.length && heroSection) {
     // The landing's dust/droplet/connection animation has nothing to do
     // while a section is showing.
     window.landingFx?.setActive(false);
-    resetLanding();
+    // A finished landing (flower sunk, orbs out, connections grown) is left
+    // exactly as it is, so coming back finds it where you left it instead
+    // of replaying the intro. Anything half-played is reset cleanly.
+    if (landingState !== "settled") resetLanding();
     homeSections.forEach((section) => {
       section.hidden = section.id !== id;
     });
@@ -354,7 +357,13 @@ if (trailBuds.length && heroSection) {
     if (growthTrail) growthTrail.hidden = true;
     document.body.classList.add("is-landing");
     window.landingFx?.setActive(true);
-    resetLanding();
+    if (landingState === "settled") {
+      // Back to the finished landing as it was left — just redraw the
+      // flower (a hidden canvas has no size, so it may have missed a resize).
+      window.lotusScene?.refresh?.();
+    } else {
+      resetLanding();
+    }
     activeId = null;
     updateTrail();
     window.scrollTo(0, 0);
