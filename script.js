@@ -163,6 +163,39 @@ if (stickerScroll) {
     );
   }
 
+
+  // ---- the reader for stickers that are files, not web pages ----
+  const viewer = document.getElementById("viewer");
+  const viewerPages = document.getElementById("viewerPages");
+  const viewerTitle = document.getElementById("viewerTitle");
+  let viewerOpener = null;
+  const openViewer = (link) => {
+    if (!viewer || !viewer.showModal) return false; // old browser: the link opens the first page
+    viewerOpener = link;
+    viewerTitle.textContent = link.dataset.title || "";
+    viewerPages.textContent = "";
+    link.dataset.pages.split(",").forEach((name, i, all) => {
+      const img = document.createElement("img");
+      img.src = `assets/stickers/${name}.jpg`;
+      img.alt = `${link.dataset.alt || "Page"}${all.length > 1 ? `, page ${i + 1} of ${all.length}` : ""}`;
+      img.loading = i < 2 ? "eager" : "lazy";
+      img.decoding = "async";
+      viewerPages.appendChild(img);
+    });
+    viewerPages.scrollTop = 0;
+    viewer.showModal();
+    return true;
+  };
+  if (viewer) {
+    document.getElementById("viewerClose").addEventListener("click", () => viewer.close());
+    // a click on the dimmed area outside the panel closes it
+    viewer.addEventListener("click", (event) => {
+      if (event.target === viewer) viewer.close();
+    });
+    viewer.addEventListener("close", () => {
+      if (viewerOpener) viewerOpener.focus();
+    });
+  }
   // The browser would start dragging a link as a file; we want none of that.
   stickerScroll.addEventListener("dragstart", (event) => event.preventDefault());
 
@@ -175,7 +208,11 @@ if (stickerScroll) {
         event.preventDefault();
         stickerScroll.querySelectorAll(".sticker.is-open").forEach((s) => s.classList.remove("is-open"));
         sticker.classList.add("is-open");
+        return;
       }
+      // Stickers that are files (newsletter, backing) open the reader here.
+      const link = event.target.closest("a[data-pages]");
+      if (link && openViewer(link)) event.preventDefault();
     },
     true
   );

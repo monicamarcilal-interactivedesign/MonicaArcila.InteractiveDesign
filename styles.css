@@ -3575,3 +3575,87 @@ html:not(.js) .route__skills li { opacity: 1; }
       drop-shadow(0 0 9px color-mix(in srgb, var(--kc) 32%, transparent));
   }
 }
+
+/* ---- stickers for things that only exist as files (newsletter, backing) ---- */
+.sticker--file { --kc: #f887fa; }
+.sticker__glyph--doc    { background-image: url("assets/stickers/doc.svg"); }
+.sticker__glyph--design { background-image: url("assets/stickers/design.svg"); }
+
+/* ---- the reader that opens for them ---- */
+.viewer {
+  width: min(780px, 94vw);
+  height: min(92vh, 1100px);
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  overflow: hidden;
+  color: #ffffff;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.03)), rgba(10, 8, 40, 0.94);
+  border: 1px solid var(--glass-edge, rgba(255, 255, 255, 0.17));
+  border-radius: 26px;
+  box-shadow: 0 40px 100px -30px rgba(0, 0, 0, 0.9), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+}
+
+.viewer[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+.viewer::backdrop {
+  background: rgba(5, 3, 24, 0.75);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.viewer__bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.9rem 1rem 0.9rem 1.4rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.viewer__title {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.25;
+}
+
+.viewer__close {
+  flex: none;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.viewer__close:hover,
+.viewer__close:focus-visible {
+  background: rgba(143, 92, 255, 0.5);
+  transform: scale(1.08);
+}
+
+.viewer__pages {
+  flex: 1;
+  display: grid;
+  gap: 1rem;
+  align-content: start;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+.viewer__pages img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  background: #ffffff;
+}
