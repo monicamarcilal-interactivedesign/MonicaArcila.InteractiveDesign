@@ -2935,6 +2935,7 @@ html:not(.js) .route__skills li { opacity: 1; }
   width: 100vw;
   height: 100vh;
   pointer-events: none;
+  filter: blur(6px); /* melts the canvas's coarse pixels into smooth, matte light */
 }
 
 @media (prefers-reduced-motion: reduce) {

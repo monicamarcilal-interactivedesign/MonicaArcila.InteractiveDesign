@@ -253,7 +253,7 @@ if (stickerScroll) {
    7. CONTACT — A GLOWING ORB THAT FOLLOWS THE POINTER, A HEADLINE THAT BOUNCES
    (a) The background of the whole section reacts: a chain of glowing orbs,
        drawn like the colour droplets on the first screen, follows the
-       pointer like thick liquid and throws soft rings when dragged fast.
+       pointer like thick liquid and leaves soft, swaying shapes behind it.
    (b) The letters of the headline bounce away from the lead orb as it
        passes, glowing in the site's palette, and settle back.
    (c) A button that copies the email address (with a quiet confirmation).
@@ -269,7 +269,8 @@ const contactReduced = window.matchMedia("(prefers-reduced-motion: reduce)").mat
    soft discs, strongest at the head, with a tail of shrinking, fading discs
    behind. A chain of three of them follows the pointer like a thick liquid
    (each one trails the one before, with its own lag and colour), and fast
-   movement sends out soft rings, so a drag paints waves. The letters of the
+   movement leaves soft shapes that sway, stretch and change colour, so a drag
+   paints waves. The letters of the
    headline bounce away from the head as it passes (springs, with a travelling
    wave and a glow in the site's palette) and settle back. When the pointer is
    still or away, the orbs drift on their own, far from the words. */
@@ -330,9 +331,29 @@ if (contactSection && pondCanvas && !contactReduced) {
     ctx.fillRect(x - r, y - r, r * 2, r * 2);
   };
 
-  // ---- rings: the waves a fast drag leaves behind ----
-  const rings = [];
-  let lastRing = 0;
+  // A soft disc that can be stretched into an oval and turned (to follow the
+  // direction of travel). Same soft, matte falloff as every other orb.
+  const blobE = (x, y, r, sx, sy, angle, rgb, a) => {
+    ctx.save();
+    ctx.translate(x, y);
+    ctx.rotate(angle);
+    ctx.scale(sx, sy);
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, r);
+    g.addColorStop(0, `rgba(${Math.round(rgb[0])},${Math.round(rgb[1])},${Math.round(rgb[2])},${a})`);
+    g.addColorStop(0.5, `rgba(${Math.round(rgb[0])},${Math.round(rgb[1])},${Math.round(rgb[2])},${a * 0.4})`);
+    g.addColorStop(1, `rgba(${Math.round(rgb[0])},${Math.round(rgb[1])},${Math.round(rgb[2])},0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(-r, -r, r * 2, r * 2);
+    ctx.restore();
+  };
+
+  // ---- waves: soft shapes a moving pointer leaves in the background ----
+  // Each one is born where the lead orb is, carries on in the direction it
+  // was going (slowing, swaying side to side like a wave), swells and
+  // stretches, drifts through the palette as it ages, and fades. Nothing has
+  // an edge: they are the same matte orbs as the rest.
+  const waves = [];
+  let lastWave = 0;
 
   // ---- the headline's letters ----
   const letters = [];
@@ -411,11 +432,22 @@ if (contactSection && pondCanvas && !contactReduced) {
       prevY = o.y;
     });
 
-    // a fast drag throws a ring
+    // a moving pointer leaves a wave behind
     const speed = Math.hypot(lead.vx, lead.vy);
-    if (active && speed > 5 && now - lastRing > 130) {
-      lastRing = now;
-      rings.push({ x: lead.x, y: lead.y, born: now, rgb: paletteAt(t * 0.5), size: Math.min(1.4, 0.7 + speed / 40) });
+    if (active && speed > 1.6 && now - lastWave > 85 && waves.length < 42) {
+      lastWave = now;
+      waves.push({
+        x: lead.x,
+        y: lead.y,
+        vx: lead.vx * 0.55,
+        vy: lead.vy * 0.55,
+        angle: Math.atan2(lead.vy, lead.vx),
+        born: now,
+        life: 1900 + Math.random() * 900,
+        size: 0.55 + Math.min(0.7, speed / 25) + Math.random() * 0.25,
+        hue: t * 0.6 + Math.random() * 2.4,
+        seed: Math.random() * 6.28,
+      });
     }
 
     // ---- draw ----
@@ -441,22 +473,38 @@ if (contactSection && pondCanvas && !contactReduced) {
         const pos = o.hist[n - 1 - j];
         blob(pos.x, pos.y, headR * o.size * (0.3 + 0.7 * Math.pow(1 - s, 1.2)), o.rgb, 0.06 * strength * Math.pow(1 - s, 1.05));
       }
-      blob(o.x, o.y, headR * o.size * 0.85, o.rgb, 0.21 * strength); // kept dim: three of them overlap at the head
+      // the head is stretched a little along the direction of travel; kept dim: three overlap there
+      const st = 1 + Math.min(0.7, speed / 16);
+      blobE(o.x, o.y, headR * o.size * 0.85, st, 1 / Math.sqrt(st), Math.atan2(lead.vy, lead.vx), o.rgb, 0.15 * strength);
     });
-    // soft rings
-    for (let i = rings.length - 1; i >= 0; i--) {
-      const age = (now - rings[i].born) / 1400;
+    // the waves: swaying, stretching, changing colour, glistening
+    for (let i = waves.length - 1; i >= 0; i--) {
+      const w = waves[i];
+      const age = (now - w.born) / w.life;
       if (age >= 1) {
-        rings.splice(i, 1);
+        waves.splice(i, 1);
         continue;
       }
-      const r = rings[i];
-      const radius = headR * (0.35 + 1.9 * age) * r.size;
-      ctx.strokeStyle = `rgba(${Math.round(r.rgb[0])},${Math.round(r.rgb[1])},${Math.round(r.rgb[2])},${0.3 * (1 - age) * (1 - age)})`;
-      ctx.lineWidth = 3 + 7 * (1 - age);
-      ctx.beginPath();
-      ctx.arc(r.x, r.y, radius, 0, 6.2832);
-      ctx.stroke();
+      // carry on, slowing, swaying across the direction of travel
+      const sway = Math.sin(age * 9 + w.seed) * 0.9;
+      w.x += w.vx - Math.sin(w.angle) * sway * (1 - age);
+      w.y += w.vy + Math.cos(w.angle) * sway * (1 - age);
+      w.vx *= 0.965;
+      w.vy *= 0.965;
+      const swell = 0.55 + 0.95 * (1 - Math.pow(1 - age, 2)); // grows, quickly at first
+      const stretch = 1 + 0.9 * (1 - age) * Math.min(1, Math.hypot(w.vx, w.vy) / 3 + 0.4);
+      const squash = 1 / Math.sqrt(stretch);
+      const glisten = 0.78 + 0.22 * Math.sin(t * 8 + w.seed * 3);
+      const fade = Math.pow(1 - age, 1.35) * Math.min(1, age * 7); // eases in, then away
+      const rgb = paletteAt(w.hue + age * 1.8); // the colour keeps moving through the palette
+      const r = headR * w.size * swell;
+      blobE(w.x, w.y, r, stretch, squash, w.angle, rgb, 0.17 * fade * glisten * strength);
+      // a small, soft, lighter glint inside it (matte: no hard highlight)
+      blobE(w.x + Math.cos(w.angle) * r * 0.18, w.y + Math.sin(w.angle) * r * 0.18, r * 0.42, stretch * 0.9, squash, w.angle, [
+        (rgb[0] + 255) / 2,
+        (rgb[1] + 255) / 2,
+        (rgb[2] + 255) / 2,
+      ], 0.1 * fade * glisten * strength);
     }
     ctx.globalCompositeOperation = "source-over";
 
