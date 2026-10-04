@@ -3587,6 +3587,7 @@ html:not(.js) .route__skills li { opacity: 1; }
   height: min(92vh, 1100px);
   max-width: none;
   max-height: none;
+  margin: auto; /* the site-wide reset removes the dialog's own centring, so it is put back here */
   padding: 0;
   overflow: hidden;
   color: #ffffff;
