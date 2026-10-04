@@ -243,6 +243,7 @@
            (projects-board.js). The route draws itself when the banner
            scrolls into view. -->
       <section class="projects-hero" id="projectsBanner" aria-label="Projects introduction">
+        <div class="projects-hero__inner">
         <p class="projects-hero__statement" id="projectsStatement">I design <em class="pem pem--1">interactive experiences,</em> design systems and AI-driven workflows — <em class="pem pem--2">moving between</em> UX research, game design and immersive media,</p>
         <p class="projects-hero__from"><span class="pem pem--3">from <span class="from__a">Medellín</span> to <span class="from__b">Wellington.</span></span></p>
 
@@ -258,13 +259,6 @@
               <path pathLength="1" d="M30 100 C250 -10 750 -10 970 100" stroke-width="1.2" opacity="0.7"/>
               <path pathLength="1" d="M30 100 C250 -38 750 -38 970 100" stroke-width="1" opacity="0.55"/>
             </g>
-            <g class="route__links" stroke-width="1" stroke-dasharray="2 4" stroke-linecap="round">
-              <line x1="191" y1="40.5" x2="191" y2="82" stroke="#f887fa"/>
-              <line x1="340" y1="15.4" x2="340" y2="82" stroke="#c58bff"/>
-              <line x1="500" y1="7" x2="500" y2="82" stroke="#8f5cff"/>
-              <line x1="660" y1="15.4" x2="660" y2="82" stroke="#4d7dff"/>
-              <line x1="809" y1="40.5" x2="809" y2="82" stroke="#22d3ee"/>
-            </g>
             <g class="route__stops">
               <circle cx="191" cy="40.5" r="5.5" fill="#f887fa"/>
               <circle cx="340" cy="15.4" r="5.5" fill="#c58bff"/>
@@ -278,11 +272,11 @@
           </svg>
 
           <ul class="route__skills" aria-label="What I move between">
-            <li style="--x:19.1%;--c:#f887fa">Design systems</li>
-            <li style="--x:34%;--c:#c58bff">AI-driven workflows</li>
-            <li style="--x:50%;--c:#8f5cff">UX research</li>
-            <li style="--x:66%;--c:#4d7dff">Game design</li>
-            <li style="--x:80.9%;--c:#22d3ee">Immersive media</li>
+            <li style="--x:19.1%;--y:40.5;--c:#f887fa">Design systems</li>
+            <li style="--x:34%;--y:15.4;--c:#c58bff">AI-driven workflows</li>
+            <li style="--x:50%;--y:7;--c:#8f5cff">UX research</li>
+            <li style="--x:66%;--y:15.4;--c:#4d7dff">Game design</li>
+            <li style="--x:80.9%;--y:40.5;--c:#22d3ee">Immersive media</li>
           </ul>
 
           <div class="route__ends">
@@ -290,6 +284,8 @@
             <p class="route__place route__place--b"><span class="route__city">Wellington</span><span class="route__where">Aotearoa New Zealand · Te Herenga Waka</span></p>
           </div>
         </div>
+        </div>
+        <p class="projects-hero__cue" aria-hidden="true"><span>scroll to see the projects</span><i></i></p>
       </section>
 
       <header class="projects-head">

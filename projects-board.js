@@ -85,8 +85,8 @@ function initHero() {
   });
 
   const TRAVEL = 7500;
-  const HOLD = 2600;
-  const GAP = 900;
+  const HOLD = 0; // everything fades the moment the orb reaches Wellington
+  const GAP = 1500;
   let start = 0;
   let rafId = 0;
   let lit = 0;
@@ -116,6 +116,7 @@ function initHero() {
     } else if (t < TRAVEL + HOLD) {
       orb.classList.remove("is-on");
     } else if (t < TRAVEL + HOLD + GAP) {
+      orb.classList.remove("is-on");
       if (lit) {
         lightAll(false);
         lit = 0;
@@ -153,6 +154,34 @@ function initHero() {
     { threshold: 0.25 }
   );
   io.observe(hero);
+}
+
+// The banner is a full screen of its own, so the nav (top bar and side
+// trail) stays out of its way: while the banner covers the top of the
+// window the page gets .is-banner (which hides them), and as soon as the
+// banner's line has scrolled past they fade in. Also tells the CSS how tall
+// the top bar is, so the banner can reach right up behind it.
+function initBannerNav() {
+  if (!hero) return;
+  const header = document.querySelector(".site-header");
+  let queued = false;
+  const update = () => {
+    queued = false;
+    const h = header ? header.offsetHeight : 0;
+    if (h) document.documentElement.style.setProperty("--header-h", `${h}px`);
+    const r = hero.getBoundingClientRect();
+    const showing = hero.offsetParent !== null && r.height > 0;
+    document.body.classList.toggle("is-banner", showing && r.bottom > h);
+  };
+  const queue = () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(update);
+  };
+  window.addEventListener("scroll", queue, { passive: true });
+  window.addEventListener("resize", queue);
+  if (window.ResizeObserver) new ResizeObserver(queue).observe(hero);
+  update();
 }
 
 
@@ -782,6 +811,7 @@ if (filterBar) {
 /* ---- start ---- */
 board.classList.add("board--js");
 initHero();
+initBannerNav();
 let layoutQueued = false;
 function queueLayout() {
   if (layoutQueued) return;

@@ -1243,11 +1243,86 @@ h1, h2, h3, h4,
    lights up as the orb reaches it (projects-board.js adds .is-lit, and
    .is-in when the banner scrolls into view). */
 .projects-hero {
+  /* A full-screen, full-width intro: a dark band that breaks out of the
+     page margins (and up behind the nav, which is hidden while it is on
+     screen), ending in a thin glowing line. Below the line: the usual
+     background. --header-h is set by projects-board.js. */
+  --top: calc(var(--page-margin) + var(--header-h, 3.9rem));
   position: relative;
-  max-width: 1180px;
-  margin: clamp(1rem, 3vw, 2rem) auto 0;
-  padding: clamp(1.4rem, 3.5vw, 2.6rem) var(--space) clamp(1rem, 3vw, 2rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100vh;
+  min-height: 100svh;
+  margin: calc(var(--top) * -1) calc(var(--page-margin-right) * -1) 0 calc(var(--page-margin) * -1);
+  padding: calc(var(--top) + 1rem) 0 clamp(3.5rem, 8vh, 5rem);
   text-align: center;
+  background:
+    radial-gradient(60% 50% at 50% 100%, rgba(40, 60, 160, 0.28), transparent 70%),
+    linear-gradient(180deg, #02010b 0%, #04031a 55%, #070826 100%);
+}
+
+.projects-hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #8f5cff 25%, #22d3ee 75%, transparent);
+  box-shadow: 0 0 18px 1px rgba(135, 71, 248, 0.55);
+}
+
+.projects-hero__inner {
+  width: 100%;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding-inline: var(--space);
+}
+
+/* A quiet cue, because the nav is hidden until the banner is passed. */
+.projects-hero__cue {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(1rem, 3.5vh, 1.8rem);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  transform: translateX(-50%);
+  font-family: var(--font-script);
+  font-size: 1.15rem;
+  color: rgba(220, 248, 255, 0.75);
+}
+
+.projects-hero__cue i {
+  width: 9px;
+  height: 9px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  animation: cue-bob 2s ease-in-out infinite;
+}
+
+@keyframes cue-bob {
+  0%, 100% { transform: translateY(0) rotate(45deg); opacity: 0.5; }
+  50%      { transform: translateY(5px) rotate(45deg); opacity: 1; }
+}
+
+/* While the banner is on screen the nav steps aside; it fades in once the
+   line has been passed (projects-board.js toggles .is-banner). */
+body.is-banner .site-header,
+body.is-banner .growth-trail {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.site-header,
+.growth-trail {
+  transition-property: opacity, visibility, background, border-color;
+  transition-duration: 0.45s;
 }
 
 .projects-hero__statement {
@@ -1354,20 +1429,23 @@ h1, h2, h3, h4,
 .route__skills li {
   position: absolute;
   left: var(--x);
-  top: calc(100 / 150 * 100%);
-  transform: translate(-50%, -50%);
+  top: calc(var(--y) * 100% / 150);
+  transform: translate(-50%, 18px);
   padding: 0.36rem 0.72rem;
   border-radius: 999px;
   font-size: clamp(0.62rem, 1.1vw, 0.84rem);
   font-weight: 600;
   white-space: nowrap;
-  color: rgba(239, 234, 255, 0.78);
-  background: rgba(20, 18, 60, 0.82);
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  transition: color 0.4s ease, background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+  /* Hanging under its point, and very faint until the orb gets there. */
+  opacity: 0.3;
+  color: rgba(239, 234, 255, 0.85);
+  background: rgba(20, 18, 60, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: opacity 0.4s ease, color 0.4s ease, background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .route__skills li.is-lit {
+  opacity: 1;
   color: #ffffff;
   background: color-mix(in srgb, var(--c) 38%, #0c0b28);
   border-color: var(--c);
@@ -1444,6 +1522,7 @@ html:not(.js) .route__links line,
 .projects-hero.is-static .route__links line { opacity: 0.9; transition: none; }
 .projects-hero.is-static .route__orb { opacity: 0; }
 html:not(.js) .route__orb { opacity: 0; }
+html:not(.js) .route__skills li { opacity: 1; }
 
 /* The emphasised words: Over the Rainbow, bigger (it's small and thin),
    each in its own soft gradient. */
