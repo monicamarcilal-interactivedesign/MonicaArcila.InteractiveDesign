@@ -3250,6 +3250,12 @@ html:not(.js) .route__skills li { opacity: 1; }
   align-items: start;
 }
 
+/* display:grid above would otherwise beat the browser's [hidden] rule, so the
+   section stayed on screen over the lotus landing (same trap as elsewhere). */
+#experience.exp[hidden] {
+  display: none;
+}
+
 .exp__layout {
   display: contents;
 }
