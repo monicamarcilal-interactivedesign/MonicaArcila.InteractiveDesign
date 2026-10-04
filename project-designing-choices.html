@@ -18,7 +18,7 @@
   <meta name="description" content="A two-path branching interactive quiz built in Figma and Figma Make, exploring how choices, tone and AI-assisted content can shape a decision-driven web experience." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261004i" />
+  <link rel="stylesheet" href="styles.css?v=20261004j" />
 </head>
 <body>
 
@@ -76,25 +76,32 @@
         </div>
       </dl>
 
+      <!-- ===== THE 30-SECOND VERSION ===== -->
+      <ul class="pitch" aria-label="Summary of the project">
+        <li><span class="pitch__label">Context</span><p>A solo project for DSDN142 at Victoria University of Wellington: a decision-driven interactive web experience, built in three weeks.</p></li>
+        <li><span class="pitch__label">Challenge</span><p>Every choice had to really change the outcome, and the whole thing had to be easy for a first-time visitor to click through.</p></li>
+        <li><span class="pitch__label">Solution</span><p>A two-path quiz, "What kind of animal would you be during a life crisis?", with five choices per path that tally toward one of three endings.</p></li>
+        <li><span class="pitch__label">Result</span><p>A fully working experience in Figma Make that meets every point of the brief.</p></li>
+        <li><span class="pitch__label">Learning</span><p>AI works best as a translation layer for ideas you already have, not as a content generator.</p></li>
+      </ul>
+
       <!-- ===== PROBLEM ===== -->
       <section class="project__section">
         <h2 class="project__section-title">The problem</h2>
         <div class="project__description">
           <p>
-            The brief asked for a decision-driven interactive web experience
-            with a landing page, at least five choices the user must
-            interact with, and at least three distinct endings — built in
-            Figma and made functional with Figma Make. Because it's an
-            interaction design brief and not just a visual one, looking good
-            wasn't enough: every choice had to genuinely change the tone and
-            outcome, and the whole thing had to stay intuitive enough for
-            someone who had never seen it before to click through
-            confidently.
+            <strong class="lede">Looking good wasn't enough.</strong>
+            The brief asked for a decision-driven web experience built in
+            Figma and made functional with Figma Make: a landing page, at
+            least five choices to interact with and at least three
+            different endings.
           </p>
           <p>
-            The hardest part was holding two things at once: real
-            interaction design (choices that meaningfully branch, not just
-            look different) and a style simple enough to build with my own
+            Because it is an interaction design brief, <mark>every choice
+            had to genuinely change the tone and the outcome</mark>, and a
+            person who had never seen it before had to move through it
+            confidently. The hard part was holding two things together: real
+            branching, and a style simple enough to build with my own
             skills in the time available.
           </p>
         </div>
@@ -105,14 +112,46 @@
         <h2 class="project__section-title">My role</h2>
         <div class="project__description">
           <p>
-            This was a solo project. I wrote the branching narrative for
-            both paths, designed the interaction model (affordances,
-            feedback, navigation), built the visual system (colour,
-            type, a small reactive character), and used Claude and Gemini
-            throughout — not to generate the design for me, but to test
-            branching logic, draft and revise choice text, and translate
-            what I wanted structurally into the exact language Figma Make
-            needs (variables and conditional actions).
+            <strong class="lede">Solo: concept, writing, interaction design, visual system and build.</strong>
+          </p>
+          <ul>
+            <li>Wrote the branching narrative for both paths.</li>
+            <li>Designed the interaction model: affordances, feedback and navigation.</li>
+            <li>Built the visual system: colour, type and a small reactive character.</li>
+            <li>Used Claude and Gemini throughout, not to design for me, but to test branching logic, draft and revise choice text, develop the character, and turn what I wanted into the variables and conditional actions Figma Make needs.</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- ===== CONCEPT ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The idea</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">The same emotional mechanism, run twice.</strong>
+            At the start you pick which crisis to live through. Both paths
+            have five escalating choices and three endings, but each has
+            its own scenario, tone and animals, so the format itself
+            comments on generational difference.
+          </p>
+        </div>
+        <ul class="callouts">
+          <li class="callout">
+            <span class="callout__label">Path 1 · Millennial</span>
+            <h3>The slow realisation that divorce is an option at 40</h3>
+            <p>Five choices, from "The Receipt" to "The Last Morning". Endings: <strong>Turtle</strong>, <strong>Wolf</strong> and <strong>Butterfly</strong>.</p>
+          </li>
+          <li class="callout">
+            <span class="callout__label">Path 2 · Gen Z</span>
+            <h3>An entry-level job, a new manager you once ghosted</h3>
+            <p>Five choices, from an unpaid "opportunity" at onboarding to a competing job offer. Endings: <strong>Cat</strong>, <strong>Possum</strong> and <strong>Capybara</strong>.</p>
+          </li>
+        </ul>
+        <div class="project__description">
+          <p>
+            Every option quietly tags one of the path's three animals, and
+            the animal with the most tags decides your ending. The choices
+            escalate on a five-level "unhinged" scale, one level per choice.
           </p>
         </div>
       </section>
@@ -120,129 +159,151 @@
       <!-- ===== PROCESS ===== -->
       <section class="project__section">
         <h2 class="project__section-title">Process</h2>
-        <div class="project__description">
-          <p>
-            My concept is a two-path personality quiz: at the start, the
-            user picks which "crisis" to live through — a Millennial path
-            (the slow realisation that divorce is an option at 40) or a Gen
-            Z path (a workplace-and-dating crisis). Both paths share the
-            same underlying mechanism — five escalating choices, three
-            pattern-based endings — but each has its own scenario, tone and
-            set of animal archetypes, so the format itself comments on
-            generational difference rather than just swapping the setting.
-          </p>
-        </div>
         <ol class="process-steps">
           <li>
-            <span class="step__date">13 August — Pure confusion</span>
+            <span class="step__date">13 August · Pure confusion</span>
             <p>
-              Started from a Figma flowchart brief-check with Claude. My
-              first low-fidelity wireframe only had "start → decision" nodes
-              with no visible connections, and duplicate screens instead of
-              one clean path. I chose to build the Millennial path properly
-              before touching Gen Z, and ideated the starter situations and
-              options with Claude until the concept felt right.
+              I started from a Figma flowchart check with Claude. My first
+              wireframe had "start → decision" nodes with no visible
+              connections and duplicate screens instead of one clean path.
+              I chose to build the Millennial path properly before
+              touching Gen Z, and ideated the starter situations with
+              Claude until the concept felt right.
             </p>
           </li>
           <li>
-            <span class="step__date">28 August — Style and desktop design</span>
+            <span class="step__date">28 August · Style and desktop design</span>
             <p>
-              With all five Millennial choices written as a breakup
-              narrative, I moved to how the quiz looked. I built a very
-              basic reactive character with Gemini to carry facial
-              expressions for each choice, and chose a five-colour palette —
-              a near-black background with fully saturated neon accents
-              (pink, cyan, lime) — deliberately pushed past "clean and
-              modern" toward something closer to a warning label, so the
-              visual tone would escalate the same way the choice text does.
+              With all five Millennial choices written, I turned to the
+              look. I designed a basic reactive character with Gemini's
+              help to carry a facial expression for each choice, and chose
+              the palette.
             </p>
           </li>
           <li>
-            <span class="step__date">29 August — Structural problems</span>
+            <span class="step__date">29 August · Structural problems</span>
             <p>
-              A rubric re-check caught that choices 1–4 weren't actually
-              affecting which ending a user got — only choice 5 was. I fixed
-              this by tagging every option across all five choices to one of
-              three archetypes and switching to a tally-based system, which
-              also meant dropping a fourth possible ending to keep the
-              pattern legible.
+              A re-check against the rubric showed that choices 1 to 4
+              weren't affecting the ending, only choice 5 was. I tagged
+              every option to one of three animals and switched to a
+              tally. That meant dropping a fourth possible ending to keep
+              the pattern legible.
             </p>
           </li>
           <li>
-            <span class="step__date">1 September — Building the second path</span>
+            <span class="step__date">1 September · The second path</span>
             <p>
-              Once the Millennial path's tagging system worked, I mirrored
-              the structure into the Gen Z path with an entirely different
-              scenario, grounding the situations in real generational
-              research (a BBC article on how today's 20-somethings have it
-              worse, plus current internet culture) and landing on a
-              distinct set of archetypes: Cat, Possum and Capybara.
+              I mirrored the structure into the Gen Z path with a new
+              scenario, grounded in a quick search on what today's
+              twenty-somethings face (including a BBC article) and my own
+              experience of the generation. I asked Claude to check that
+              each animal had a real, current cultural reference behind it,
+              which is how the Capybara of Indifference meme replaced a
+              Raccoon.
             </p>
           </li>
           <li>
-            <span class="step__date">3 September — Feedback mechanism</span>
+            <span class="step__date">3 September · Feedback</span>
             <p>
-              Finished the Gen Z endings and built the feedback layer in
+              I finished the Gen Z endings and built the feedback layer in
               Figma Make: a reactive "echo" line that responds to the
-              specific option just picked, so the interface always
-              acknowledges the user's last action even without a visible
-              running score.
+              exact option you just picked, so the interface always
+              acknowledges your last action even with no visible score.
             </p>
           </li>
         </ol>
       </section>
 
-      <!-- ===== SOLUTION ===== -->
+      <!-- ===== DECISIONS AND OBSTACLES ===== -->
       <section class="project__section">
-        <h2 class="project__section-title">Solution</h2>
-        <div class="project__description">
-          <p>
-            The final experience is a two-path branching quiz, each path
-            built from five escalating choices that tally toward one of
-            three animal archetypes. A few interaction decisions carry most
-            of the design intent:
-          </p>
-          <p>
-            <strong>Locked choices.</strong> Once an option is picked, there's
-            no going back — simpler to build reliably in Figma Make, and it
-            reinforces the emotional weight of each choice, the way you
-            don't get to undo the decision in the situation being lived,
-            either.
-          </p>
-          <p>
-            <strong>Visible affordances.</strong> Buttons have a clear rest
-            state (a thin border) and hover state (a solid fill, the box
-            widens slightly), following Norman's principle of visible
-            signifiers — interactivity reads before the click.
-          </p>
-          <p>
-            <strong>A reactive character.</strong> On each choice, everything
-            blurs except an avatar and a reaction bubble matching the option
-            picked; that same line follows the user onto the next screen as
-            a plain italic reminder, so a choice's emotional consequence
-            stays visible for one extra screen instead of disappearing the
-            moment you move on.
-          </p>
-        </div>
+        <h2 class="project__section-title">Decisions and obstacles</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Locked choices</h3>
+            <p>Once you pick an option there is no going back. It is simpler to build reliably in Figma Make, and it reinforces the weight of each choice, as you can't undo a decision in real life either.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Visible affordances</h3>
+            <p>Buttons have a clear rest state (a thin border) and hover state (a solid fill, and the box widens a little), following Norman's idea of visible signifiers. Interactivity reads before the click.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>A character that reacts</h3>
+            <p>When you pick an option, everything blurs except an avatar and a reaction bubble. The same line follows you onto the next screen as a plain italic reminder, so a choice's emotional consequence stays visible one screen longer.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>A colour palette that feels a little alarming</h3>
+            <p>A near-black background with saturated neon pink, cyan and lime, closer to a warning label than "clean and modern", so the look escalates the way the choices do.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Two voices</h3>
+            <p>A sarcastic, TikTok-style voice for the reaction lines between choices, like a funny, honest friend who judges your life, and a calmer, documentary voice for the final reveal, so the humour and the result don't blur together.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstacle</span>
+            <h3>Choices that didn't matter</h3>
+            <p>Only the last choice affected the ending, until the rubric re-check on 29 August. The tally system fixed it.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstacle</span>
+            <h3>Hours spent on work Figma Make could do</h3>
+            <p>I built the desktop layout by hand and learnt later that Figma Make could have done it in minutes. Next time I would try the tool first.</p>
+          </li>
+        </ul>
       </section>
 
       <!-- ===== RESULT ===== -->
       <section class="project__section">
         <h2 class="project__section-title">Result &amp; reflection</h2>
+        <ul class="stats">
+          <li><strong>2</strong><span>paths, one per generation</span></li>
+          <li><strong>5</strong><span>escalating choices per path</span></li>
+          <li><strong>3</strong><span>endings per path</span></li>
+          <li><strong>3 wks</strong><span>13 August – 3 September</span></li>
+        </ul>
         <div class="project__description">
           <p>
-            A fully functional, two-path branching experience in Figma Make
-            that meets every requirement of the brief: a landing page, five
-            choices per path, and three distinct endings that are actually
-            earned by the path taken rather than decided by the last click.
+            <strong class="lede">A fully functional two-path experience in Figma Make</strong>
+            that meets every point of the brief: a landing page, five
+            choices per path and three endings, earned by the path taken
+            rather than decided by the last click.
           </p>
           <p>
-            The biggest thing I learned was to use AI as a translation
-            layer, not a content generator: Claude and Gemini were most
-            useful for turning a structural idea already in my head into the
-            exact variable-and-conditional-logic language Figma Make needed,
-            and for pressure-testing whether a branching pattern actually
+            The Millennial path tallies 6 Turtle, 5 Wolf and 4 Butterfly. I
+            kept it slightly uneven on purpose, because a perfect split
+            would have felt mechanical. The Gen Z path came out at 5, 5 and
+            5, because each animal stays consistent to its own logic.
+          </p>
+          <p>
+            My biggest lesson was to use AI as a translation layer, not a
+            content generator. Claude and Gemini were most useful for
+            turning a structure already in my head into the exact language
+            Figma Make needed, and for testing whether a branching pattern
             held together before I built it.
+          </p>
+        </div>
+        <details class="more">
+          <summary>How I prompted Figma Make, with an example</summary>
+          <div class="more__body">
+            <p>
+              For the reactions after each choice, I told Figma Make that
+              every situation has three options, and gave it, for each
+              option, the exact text for the character's bubble and for
+              the line on the next screen, with a reference screenshot
+              attached.
+            </p>
+          </div>
+        </details>
+        <div class="project__description">
+          <p>
+            See it for yourself:
+            <a href="https://www.figma.com/make/xqfRkEcngPwzWZiIuo1Zbg/Quiz-flow-design?t=mLoYk2i52VzSk4OE-20&amp;fullscreen=1" target="_blank" rel="noopener">the working quiz in Figma Make ↗</a>
+            and
+            <a href="https://www.figma.com/design/NRJKqjUynXPHg7iPKyEXmB/Designing-Choices?node-id=0-1&amp;t=KwlV6YTfPLLsYYAk-1" target="_blank" rel="noopener">the design file ↗</a>.
           </p>
         </div>
       </section>
@@ -253,8 +314,8 @@
         <ul class="tag-list">
           <li class="tag">Figma Design</li>
           <li class="tag">Figma Make</li>
-          <li class="tag">Claude</li>
-          <li class="tag">Gemini</li>
+          <li class="tag">Claude (free plan)</li>
+          <li class="tag">Gemini (free plan)</li>
         </ul>
       </section>
 
@@ -284,6 +345,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261004i"></script>
+  <script src="script.js?v=20261004j"></script>
+  <script src="case-study.js?v=20261004j"></script>
 </body>
 </html>

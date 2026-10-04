@@ -29,7 +29,7 @@
   <meta name="description" content="A VR/mixed-reality narrative prototype where a magic paintbrush is both the story's core object and an interaction validated step-by-step against Don Norman's Model of Action." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261004i" />
+  <link rel="stylesheet" href="styles.css?v=20261004j" />
 </head>
 <body>
 
@@ -91,8 +91,8 @@
         <li><span class="pitch__label">Context</span><p>A VR course at Universidad EAFIT. Our team of six designed an experience set inside four famous paintings.</p></li>
         <li><span class="pitch__label">Challenge</span><p>One interaction, a magic paintbrush, had to carry the whole story and stay clear without menus.</p></li>
         <li><span class="pitch__label">Solution</span><p>Aim, hold, activate: about five seconds of vibration and visual feedback, reused in every world. I built it in Unity for Meta Quest 3 and coordinated the build.</p></li>
-        <li><span class="pitch__label">Result</span><p>A playable experience of around eight minutes. A level-three bug stopped our teacher from finishing it, and the final build wasn't kept.</p></li>
-        <li><span class="pitch__label">Learning</span><p>A simulator isn't a headset. Test on the device early.</p></li>
+        <li><span class="pitch__label">Result</span><p>A playable experience of around eight minutes, with a menu, tutorial and portal transitions. Its scenes worked as designed in Unity's simulator.</p></li>
+        <li><span class="pitch__label">Learning</span><p>Test on the headset from the start, not only in the simulator.</p></li>
       </ul>
 
       <!-- ===== PROBLEM ===== -->
@@ -100,16 +100,18 @@
         <h2 class="project__section-title">The problem</h2>
         <div class="project__description">
           <p>
-            The experience needed one interaction — a magic paintbrush —
-            to carry the entire story: the user wakes inside a museum and
-            must escape the night by "activating" paintings, each one a
-            portal into the emotional world it depicts. The paintbrush had
-            to work as a piece of narrative (a believable in-fiction object)
-            and, at the same time, hold up as a real piece of interaction
-            design — the player has to always know what the brush can do,
-            when their input has registered, and what's about to happen
-            next. Instructions were built into the world, through a
-            narrating voice and a pointing ghost hand, rather than menus.
+            <strong class="lede">One interaction had to carry a whole story.</strong>
+            The player wakes in a museum they must escape by
+            "activating" paintings, and each painting is a portal into the
+            emotional world it shows.
+          </p>
+          <p>
+            The magic paintbrush had to be a believable object in the
+            story <mark>and</mark> a clear piece of interaction design. The
+            player should always know what the brush can do, when their
+            input registered and what happens next. Instructions live in
+            the world, through a narrating voice and a pointing ghost
+            hand, rather than in menus.
           </p>
         </div>
       </section>
@@ -119,126 +121,149 @@
         <h2 class="project__section-title">My role</h2>
         <div class="project__description">
           <p>
-            We were a team of six. My teammates wrote the narrative, and I
-            took the lead on turning our one-page design into a working VR
-            experience, developing it alongside one other teammate. I
-            was responsible for bringing it to life in Unity:
+            <strong class="lede">Lead Unity developer in a team of six.</strong>
+            My teammates wrote the narrative. I turned our one-page design
+            into a working VR experience, programming and integrating it
+            with one other teammate.
           </p>
           <ul>
-            <li>Built the scenes, set up the assets, and organised the folders and scripts.</li>
+            <li>Built the scenes, set up the assets, organised the folders and scripts.</li>
             <li>Programmed and tested every mechanic, and got imported animations working.</li>
-            <li>Fixed texture and lighting import problems, and adjusted the scenery and colour scheme to match our one-page design and the paintings we chose.</li>
-            <li>Taught the team to use GitHub, so everyone could work on the same project from their own computers.</li>
-            <li>Used AI to draft a development schedule with tasks for each member before our meetings, which we then refined together. I also checked in with people and assigned responsibilities as deadlines got closer.</li>
-            <li>Used AI to help write scripts and debug Unity problems, with very specific prompts so it did exactly what I asked and nothing more.</li>
+            <li>Fixed texture and lighting problems and matched the colours to our one-page design and the paintings.</li>
+            <li>Taught the team GitHub so everyone could work on the same project.</li>
+            <li>Used AI to draft a task schedule before our meetings, which we then refined together, and checked in with people as deadlines got close.</li>
+            <li>Used AI to help write scripts and debug Unity, with very specific prompts so it did exactly what I asked.</li>
           </ul>
-          <p>
-            We worked to a dated plan from 14 April to 19 May, split into
-            three pairs: programming and integration (me and one
-            teammate), assets and spaces, and narrative with dialogue and
-            the graphic line. We ran into real problems along the way:
-            syncing each other's changes, mechanics that broke,
-            optimisation, and transitions between levels.
-          </p>
         </div>
       </section>
 
       <!-- ===== PROCESS ===== -->
       <section class="project__section">
-        <h2 class="project__section-title">Process</h2>
-        <div class="project__description">
-          <p>
-            The world is built as four connected paintings-turned-realities:
-            the Museum (the starting point), Dreaming Hills (an oneiric
-            forest), the home of "the old blind guitarist" (a coastal
-            village built from a blue-period Picasso), and The Blue Grotto
-            (a dark reef). The brush starts as a simple activation tool —
-            opening portals, lighting spaces, interacting with the
-            environment — and evolves into "magic ink": first a way into
-            new worlds, then a light source and orientation tool in the
-            dark, and finally a creative tool for transforming the
-            environment itself. Each world was mapped with its own
-            emotional arc, its own map, and its own set of active
-            mechanics, worked out as a one-page design summary before
-            anything was built.
-          </p>
-          <p>
-            The core interaction sequence — point, hold, activate — was
-            worked out as a four-panel storyboard: the player aims the
-            brush at a painting, holds the action for a few seconds while
-            the system registers it, and watches the painting light up as
-            it activates. That storyboard became the spec for the feedback
-            system: over roughly five seconds, progressive haptic vibration
-            in the controller runs alongside visual changes — the painting
-            beginning to glow, brushstrokes moving, particles of paint
-            appearing — so the player never has to guess whether their
-            input registered.
-          </p>
-          <p>
-            In Unity, all the brush logic lived in one master script. When
-            the brush was grabbed, the hand closed into a fist. When it
-            carried ink, a shader appeared on the tip and the particles
-            switched on. An ink counter ran down as you used the ink to
-            teleport and to "paint" the paintings, so you had to look for
-            more. I also made the shaders for the paintings, the animations
-            and the transitions.
-          </p>
-          <p>
-            To check that the mechanic worked as interaction design and
-            not just as part of the story, the team mapped it directly onto
-            Norman's seven-stage Model of Action: <em>intention</em>
-            (decide to use the brush on the painting), <em>specify the
-            action</em> (aim, guided by signifiers — a voice giving
-            instructions and a ghostly hand pointing), <em>execute</em>
-            (hold the brush against the frame) — causing a change in the
-            world — then <em>perceive</em> (the painting starts glowing),
-            <em>interpret</em> (understand the portal is activating), and
-            <em>evaluate</em> (the portal opens and the goal — entering the
-            new world — is met). Walking the mechanic through every stage
-            surfaced exactly where a signifier was still missing rather
-            than leaving it to guesswork.
-          </p>
-        </div>
+        <h2 class="project__section-title">How it works</h2>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">Four worlds, one brush</span>
+            <p>
+              The Museum (start), a dreamlike forest (Dreaming Hills), a
+              coastal village built from Picasso's blind guitarist, and a
+              dark reef (The Blue Grotto). Each has its own emotional arc,
+              map and mechanics. The brush grows from a tool that opens
+              portals into "magic ink": a light in the dark, then a way to
+              transform the world.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Aim, hold, activate</span>
+            <p>
+              The player points the brush at a painting and holds for a
+              few seconds. The system recognises it and starts a gradual
+              activation. We worked this out as a four-panel storyboard
+              first.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Five seconds of feedback</span>
+            <p>
+              The controller vibrates more and more while the painting
+              glows, brushstrokes move and paint particles appear, so the
+              player never has to guess whether it registered. Then the
+              strokes expand around the player's view and the new world
+              appears.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">One master script</span>
+            <p>
+              In Unity, all the brush logic lives in one script. When it is
+              grabbed the hand closes into a fist. With ink, a shader lights
+              the tip and particles switch on. An ink counter runs down as
+              you use ink to teleport and to "paint", so you have to look
+              for more. I also made the painting shaders, the animations
+              and the transitions.
+            </p>
+          </li>
+        </ol>
+        <details class="more">
+          <summary>Checking the brush against Norman's Model of Action</summary>
+          <div class="more__body">
+            <p>
+              The team mapped the mechanic onto Norman's seven stages to
+              find missing signifiers. <strong>Intention:</strong> decide
+              to use the brush on the painting. <strong>Specify:</strong>
+              aim, guided by a voice and a ghostly hand that points.
+              <strong>Execute:</strong> hold the brush on the frame.
+              <strong>Perceive:</strong> the painting glows.
+              <strong>Interpret:</strong> the portal is activating.
+              <strong>Evaluate:</strong> the portal opens and the goal,
+              entering the new world, is met.
+            </p>
+          </div>
+        </details>
       </section>
 
-      <!-- ===== SOLUTION ===== -->
+      <!-- ===== DECISIONS AND OBSTACLES ===== -->
       <section class="project__section">
-        <h2 class="project__section-title">Solution</h2>
-        <div class="project__description">
-          <p>
-            A single, legible interaction — aim, hold, feel it respond,
-            watch it open — reused across four completely different worlds.
-            The transition itself is treated as its own beat: the painting
-            stops being static, its brushstrokes expand to engulf the
-            player's field of view, and the environment changes around them
-            before they realise they've already arrived in the new level.
-          </p>
-        </div>
+        <h2 class="project__section-title">Decisions and obstacles</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>One tool for everything</h3>
+            <p>Instead of many mechanics, one brush that changes meaning in each world. It keeps the learning small and the story consistent.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstacle</span>
+            <h3>Six people, one project</h3>
+            <p>We struggled to sync each other's changes. I taught the team GitHub and planned who did what, week by week.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstacle</span>
+            <h3>Mechanics, optimisation and transitions</h3>
+            <p>Many scripts, many hours of testing. Import problems, broken mechanics and level transitions were fixed one by one.</p>
+          </li>
+        </ul>
+        <details class="more">
+          <summary>How the team planned the work</summary>
+          <div class="more__body">
+            <p>
+              We worked to a dated plan from 14 April to 19 May, in three
+              pairs: programming and integration (me and one teammate),
+              assets and spaces, and narrative with dialogue and the
+              graphic line. The board is in the gallery below.
+            </p>
+          </div>
+        </details>
       </section>
 
       <!-- ===== RESULT ===== -->
       <section class="project__section">
-        <h2 class="project__section-title">Result &amp; reflection</h2>
+        <h2 class="project__section-title">Result &amp; what I learnt</h2>
+        <ul class="stats">
+          <li><strong>6</strong><span>people on the team</span></li>
+          <li><strong>4</strong><span>connected worlds</span></li>
+          <li><strong>~8 min</strong><span>for a full run</span></li>
+          <li><strong>5 wks</strong><span>14 April – 19 May</span></li>
+        </ul>
         <div class="project__description">
           <p>
-            A playable VR experience on Meta Quest 3, with a menu, a
-            tutorial, transitions between portals and interactive levels
-            (the boat, the sculpture and the full brush interaction). A
-            full run takes around eight minutes. The scenes worked when we
-            tested them in Unity's simulator, but when my teacher tried it,
-            a bug on entering the third level stopped him from continuing.
-            I didn't make the final video or submit the project, and that
-            final build wasn't kept. What survives are the screen
-            recordings I made during development to keep the team updated.
-            They show the experience working step by step.
+            <strong class="lede">A playable VR experience for Meta Quest 3,</strong>
+            with a menu, a tutorial, portal transitions and interactive
+            levels (the boat, the sculpture and the full brush
+            interaction). In Unity's simulator, the scenes worked as we
+            designed them.
           </p>
           <p>
-            This project taught me how to turn a team's design into
-            something that actually runs. I learnt to keep six people
-            working on one codebase and to use AI as a precise tool rather
-            than a shortcut. It also showed me that a simulator isn't a
-            headset: I would test on the device much earlier. When the
-            pressure was on, the job was keeping the whole thing together.
+            <mark>What we don't know:</mark> when my teacher tried it on a
+            headset, the experience stopped as he entered the third level.
+            We never found out why, because the final build wasn't kept.
+            I didn't make the final video or submit the project, so what
+            survives are the screen recordings I made during development.
+          </p>
+          <p>
+            I learnt how to turn a team's design into something that runs,
+            how to keep six people on one codebase and how to use AI as a
+            precise tool rather than a shortcut. And I learnt that a
+            simulator isn't a headset: I would test on the device much
+            earlier.
           </p>
         </div>
       </section>
@@ -267,6 +292,7 @@
           Your browser can't play this video.
         </video>
         <a href="assets/night-at-the-museum/01-one-page-design.jpg" class="gallery__wide" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/01-one-page-design.jpg" alt="The team's one-page design for Noche en el Museo: narrative, magic brush mechanics and four worlds with maps and emotional journeys." width="3000" height="1817" loading="lazy" /></a>
+<a href="assets/night-at-the-museum/12-team-workflow-board.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/12-team-workflow-board.jpg" alt="The team's workflow board for April and May: tasks by date and pair, from the base script and assets to testing the whole experience with the brush." width="3000" height="1723" loading="lazy" /></a>
         <a href="assets/night-at-the-museum/02-start-menu.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/02-start-menu.jpg" alt="The start menu in Meta Quest 3 with the title Noche en el Museo and Iniciar and Tutorial buttons." width="848" height="478" loading="lazy" /></a>
         <a href="assets/night-at-the-museum/03-gallery-corridor.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/03-gallery-corridor.jpg" alt="First-person view down the museum gallery corridor, lined with framed paintings." width="848" height="478" loading="lazy" /></a>
         <a href="assets/night-at-the-museum/04-portal-activating.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/04-portal-activating.jpg" alt="The player holding the magic brush against a painting that is beginning to glow and become a portal." width="670" height="674" loading="lazy" /></a>
@@ -289,6 +315,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261004i"></script>
+  <script src="script.js?v=20261004j"></script>
+  <script src="case-study.js?v=20261004j"></script>
 </body>
 </html>

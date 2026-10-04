@@ -23,7 +23,7 @@
   <meta name="description" content="A VR environment that tells an unseen character's story through spatial design, props and sound alone, built for Virtual Reality Studio at Victoria University of Wellington." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261004i" />
+  <link rel="stylesheet" href="styles.css?v=20261004j" />
 </head>
 <body>
 
@@ -94,20 +94,17 @@
         <h2 class="project__section-title">The problem</h2>
         <div class="project__description">
           <p>
-            For this Virtual Reality Studio piece, the challenge I set myself
-            was to make a character the player never sees feel completely
-            present — entirely through what she left behind. Nuri is an
-            unseen celestial botanical weaver who sustains her greenhouse by
-            turning light and human thought into pigment and thread. The
-            environment had to carry her entire story — who she is, what she
-            does, and the emotional weight of her sudden absence — with no
-            dialogue and no visible character at all.
+            <strong class="lede">Make someone feel present without ever showing her.</strong>
+            Nuri is an unseen celestial botanical weaver who keeps her
+            greenhouse alive by turning light and human thoughts into
+            pigment and thread. The environment had to tell her whole story
+            (who she is, what she does, the weight of her sudden absence)
+            with no dialogue and no visible character.
           </p>
           <p>
-            On top of that, the piece needed a real emotional arc: not a
-            series of disconnected beats, but one continuous movement from
-            nostalgia and emptiness through curiosity into awe, tied to
-            the player's own progress through the space.
+            It also needed one continuous emotional movement, from
+            <mark>nostalgia and emptiness, through curiosity, into
+            awe</mark>, tied to the player's own progress through the space.
           </p>
         </div>
       </section>
@@ -117,69 +114,98 @@
         <h2 class="project__section-title">My role</h2>
         <div class="project__description">
           <p>
-            I designed the environmental storytelling, the spatial layout,
-            the prop placement and the spatial audio direction, and wrote
-            the verbal onboarding that sets up the player's role before they
-            put the headset on: one of the many thoughts Nuri once helped,
-            returning — without realising it — to the space that shaped it.
-            I built the whole experience in Unreal Engine, from the greybox
-            to the final build. It was my first project in the engine, after about three semesters
-            working in Unity.
+            <strong class="lede">Solo designer and builder.</strong> I
+            designed the environmental storytelling, the layout, the prop
+            placement and the spatial audio, and wrote the verbal
+            onboarding that sets the player's role before the headset goes
+            on: one of the many thoughts Nuri once helped, returning
+            without realising it to the space that shaped it.
           </p>
           <p>
-            I used AI in two ways. Gemini generated the images in the book
-            and on the sheets of paper, because I'm not a drawer and
-            fitting 3D models were hard to find for this character. I
-            iterated on the results and gave it reference images to keep
-            them consistent with the space. I also used it as a technical
-            assistant while learning Unreal, for example by sending
-            screenshots of Blueprints and error logs, because the headset
-            connection kept dropping and I only had short windows to work.
-            The 3D models and sound effects are licensed third-party assets,
-            credited in my asset list.
+            I built it in Unreal Engine from greybox to final. It was my
+            first project in the engine, after about three semesters in
+            Unity.
           </p>
         </div>
+        <details class="more">
+          <summary>How I used AI, and what isn't mine</summary>
+          <div class="more__body">
+            <p>
+              <strong>Images.</strong> Gemini generated the images in the
+              book and on the sheets of paper, because I'm not a drawer and
+              fitting 3D models were hard to find for this character. I
+              iterated on the results and gave it reference images to keep
+              them consistent with the space.
+            </p>
+            <p>
+              <strong>Technical help.</strong> While learning Unreal I used
+              it as an assistant, for example by sending screenshots of
+              Blueprints and error logs. The headset connection kept
+              dropping and I only had short windows to work.
+            </p>
+            <p>
+              <strong>Assets.</strong> The 3D models and sound effects are
+              licensed third-party assets, credited in my asset list.
+            </p>
+          </div>
+        </details>
       </section>
 
       <!-- ===== PROCESS ===== -->
       <section class="project__section">
-        <h2 class="project__section-title">Process</h2>
-        <div class="project__description">
-          <p>
-            The environment is built as three connected zones — beginning,
-            transition and destination — each telling a different stage of
-            Nuri's story through props and ambience rather than text. The
-            beginning uses cold light, moss, an open journal, loose paper
-            and a cold cup of tea with flies around it to establish absence
-            and the suddenness of her departure, without a single explicit
-            clue. The transition introduces jars of pigment and spools of
-            thread, revealing how she worked. The destination holds an
-            incomplete embroidery frame with a broken weave and a visibly
-            missing piece — what was left unfinished when she had to leave.
-          </p>
-          <p>
-            Spatial audio reinforces the same arc directly: ambient sound is
-            eerie and sparse in the first zone, growing louder as the player
-            follows a golden thread toward the embroidery, culminating in a
-            spatialised moment of connection with the story. The thread
-            lights up and glows where you step, drifting dust particles
-            fill the air, and grabbing an object has its own sound.
-          </p>
-        </div>
+        <h2 class="project__section-title">How it works</h2>
         <ol class="process-steps">
           <li>
-            <span class="step__date">Greybox → final</span>
+            <span class="step__date">Beginning · absence</span>
             <p>
-              The biggest change between greybox and the final build was
-              moving from an open, boundary-less sky concept to a grounded,
-              walled greenhouse. The open-sky version made it nearly
-              impossible to define clear explorable boundaries or give the
-              player a stable ground reference; enclosing the space solved
-              both problems while keeping the same emotional core, and let
-              me reshape the narrative slightly to read more clearly.
+              Cold light and moss. An open journal, loose paper and a cold
+              cup of tea with flies around it. You infer her habits and how
+              suddenly she left, without a single explicit clue.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Transition · how she worked</span>
+            <p>Jars of pigment and spools of thread show her craft.</p>
+          </li>
+          <li>
+            <span class="step__date">Destination · what was left</span>
+            <p>
+              An incomplete embroidery frame with a broken weave and a
+              visibly missing piece.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Sound that follows you</span>
+            <p>
+              Ambient sound is eerie and sparse at first, then grows louder
+              as you follow a golden thread toward the embroidery. The
+              thread lights up and glows where you step, dust drifts in
+              the air and grabbing an object has its own sound.
             </p>
           </li>
         </ol>
+      </section>
+
+      <!-- ===== DECISIONS AND OBSTACLES ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Decisions and obstacles</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>From open sky to a walled greenhouse</h3>
+            <p>The open-sky greybox made it nearly impossible to define explorable boundaries or give the player stable ground. Enclosing the space solved both, kept the emotional core and let me reshape the story to read more clearly.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Why this needed VR</h3>
+            <p>The climax is physical: the player's own hand connects the missing potion to the final constellation. Walking from the greenhouse to a dome open to space lets scale say what a flat screen could only describe.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstacle</span>
+            <h3>A new engine and an unstable headset</h3>
+            <p>Switching from Unity to Unreal while the headset connection kept failing. I kept moving by getting precise answers in the short windows when everything worked.</p>
+          </li>
+        </ul>
       </section>
 
       <!-- ===== SOLUTION ===== -->
@@ -187,23 +213,15 @@
         <h2 class="project__section-title">Solution</h2>
         <div class="project__description">
           <p>
-            A three-zone VR greenhouse where the story is told mostly
-            through space, props and sound, with a few illustrated book
-            pages and papers. The player is verbally onboarded
-            before putting on the headset, which defines both their role and
-            their agency: they cannot change the outcome of Nuri's story,
-            but they can decipher — with guidance — what might reverse the
-            greenhouse's decay.
+            <strong class="lede">A three-zone VR greenhouse told mostly through space, props and sound,</strong>
+            with a few illustrated book pages and papers.
           </p>
           <p>
-            The climax is a physical, embodied act rather than an observed
-            one: the player's own hand connecting the missing potion to the
-            final constellation is what undoes Nuri's abandonment of the
-            greenhouse. Walking between the enclosed greenhouse and a dome
-            open to outer space lets scale communicate something a flat
-            screen could only describe, not make you feel — which is the
-            reason this story needed VR specifically, not just a nice-to-have
-            format for it.
+            The player is onboarded verbally before putting the headset
+            on. They cannot change the outcome of Nuri's story, but they
+            can decipher, with guidance, what might reverse the
+            greenhouse's decay. Their own hand undoes her abandonment of
+            the greenhouse.
           </p>
         </div>
       </section>
@@ -211,28 +229,32 @@
       <!-- ===== RESULT ===== -->
       <section class="project__section">
         <h2 class="project__section-title">Result &amp; reflection</h2>
+        <ul class="stats">
+          <li><strong>3</strong><span>connected zones</span></li>
+          <li><strong>3</strong><span>people played it: two teachers and a classmate</span></li>
+          <li><strong>1</strong><span>designer and builder</span></li>
+        </ul>
         <div class="project__description">
           <p>
-            A complete, walkable VR environment that tells a character arc
-            without dialogue or the character ever appearing — using
-            environmental storytelling, spatial audio and one embodied
-            action as the emotional payoff.
+            <strong class="lede">A complete, walkable VR environment that tells a character arc</strong>
+            without dialogue or the character ever appearing.
           </p>
           <p>
-            Both of my teachers and a classmate tried it. They worked out
-            who the character was and the main context, though not the
-            whole story. Some got lost in the potions area because they had
-            to guess which potion opens the path. They also suggested
-            putting less text on the images, and that matched what
-            surprised me: the images were sharp, but in VR your hands shake
-            and the resolution keeps adjusting to where you look, so the
-            text was hard to read. The dust, the grab sounds, the spatial
-            audio that grows as you get closer and the glowing thread all
-            worked well.
+            Players worked out who the character was and the main context,
+            though not the whole story. <mark>Some got lost in the potions
+            area</mark>, because they had to guess which potion opens the
+            path. They also suggested putting less text on the images.
           </p>
           <p>
-            I didn't keep a journal or a greybox recording, since this was a
-            solo project. If I continued it, I would cut the book text down
+            That matched what surprised me. The images were sharp, but in
+            VR your hands shake and the resolution keeps adjusting to where
+            you look, so the text was hard to read. The dust, the grab
+            sounds, the spatial audio that grows as you get closer and the
+            glowing thread all worked well.
+          </p>
+          <p>
+            This was a solo project, so I didn't keep a journal or a greybox
+            recording. If I continued it, I would cut the book text down
             and make the path-opening potion easier to find.
           </p>
         </div>
@@ -244,6 +266,8 @@
         <ul class="tag-list">
           <li class="tag">Unreal Engine</li>
           <li class="tag">Meta Quest</li>
+          <li class="tag">AI-generated book images</li>
+          <li class="tag">Licensed third-party models</li>
         </ul>
       </section>
 
@@ -272,6 +296,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261004i"></script>
+  <script src="script.js?v=20261004j"></script>
+  <script src="case-study.js?v=20261004j"></script>
 </body>
 </html>

@@ -36,7 +36,7 @@
   <meta name="description" content="A fully specified narrative universe — its own physics, society, laws and economy — built with a Mythos/Ethos/Topos framework to anchor a 2D videogame, artbook and personality quiz." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261004i" />
+  <link rel="stylesheet" href="styles.css?v=20261004j" />
 </head>
 <body>
 
@@ -85,7 +85,7 @@
         </div>
         <div>
           <dt>My role</dt>
-          <dd>Team of 6. I took the lead on game development, co-wrote the world bible (Mythos/Ethos/Topos) and kept it consistent</dd>
+          <dd>Team of 6. I led the world-building (Mythos, Ethos, Topos, the world bible) and the game development</dd>
         </div>
         <div>
           <dt>Tools</dt>
@@ -97,20 +97,30 @@
         </div>
       </dl>
 
+      <!-- ===== THE 30-SECOND VERSION ===== -->
+      <ul class="pitch" aria-label="Summary of the project">
+        <li><span class="pitch__label">Context</span><p>Three EAFIT courses (Narrative Universes, 2D Animation, Programming Languages) combined into one project by a team of six.</p></li>
+        <li><span class="pitch__label">Challenge</span><p>Invent a world solid enough that a game, an animation, an artbook and a quiz could all come from it without contradicting each other.</p></li>
+        <li><span class="pitch__label">Solution</span><p>A world bible (Mythos, Ethos, Topos), a "rule of three" that links every element, and a 2D platformer-puzzle I developed in Unity.</p></li>
+        <li><span class="pitch__label">Result</span><p>Nominated at Inventiva, EAFIT's creativity and technology showcase, and won Most Creative Project 2024.</p></li>
+        <li><span class="pitch__label">Learning</span><p>My first game as lead developer. It's the project that made me want to keep building games.</p></li>
+      </ul>
+
       <!-- ===== PROBLEM ===== -->
       <section class="project__section">
         <h2 class="project__section-title">The problem</h2>
         <div class="project__description">
           <p>
-            Meldiria needed to work as more than a setting for one game —
-            it had to hold up as a transmedia universe, feeding a 2D
-            videogame, a full artbook, a "Biblia de Mundo," and a
-            personality quiz, all from the same source of truth. That
-            meant the world needed genuine internal consistency: not just
-            a good story, but its own physics, its own economy, its own
-            legal system and social structure, specific enough that every
-            other deliverable could be built from it without contradicting
-            itself.
+            <strong class="lede">One universe had to feed many products.</strong>
+            At EAFIT you can combine three courses into one project, or make
+            three separate pieces. We chose one, because a shared universe
+            gives you more value for the same time.
+          </p>
+          <p>
+            So Meldiria had to hold up as more than a setting for one
+            game. It needed its own physics, social structure and rules,
+            <mark>specific enough that every deliverable could be built
+            from it without contradicting itself.</mark>
           </p>
         </div>
       </section>
@@ -120,88 +130,123 @@
         <h2 class="project__section-title">My role</h2>
         <div class="project__description">
           <p>
-            At EAFIT you can combine three courses into one project.
-            Instead of making three separate pieces, our team of six built
-            one universe in Universos Narrativos (Narrative Universes) and
-            used it as the base for Animación 2D (2D Animation) and
-            Lenguajes de Programación (Programming Languages).
-            Teammates who love animation led the 2D animation. I focused
-            on two things.
+            <strong class="lede">Narrative designer and lead developer in a team of six.</strong>
+            Teammates who love animation led the 2D animation. I focused on
+            two things.
           </p>
-          <p>
-            <strong>The world.</strong> I wrote the Mythos, Ethos and Topos
-            that define how Meldiria's characters behave in their own
-            contexts. I also did the less visible work of a "rule of
-            three", linking every narrative element to others so that
-            even the smallest detail makes sense inside the world. I
-            proposed new, Meldiria-specific names for the three sections,
-            based on musical terms like "clave" (clef), "contrapunto"
-            (counterpoint) and "homorritmia" (homorhythm). I then wrote,
-            checked and laid out the full world bible, the Biblia de
-            Mundo. I used AI to brainstorm and to check my logic for
-            gaps, but every choice had a reason I could explain.
-          </p>
-          <p>
-            <strong>The game.</strong> This was my first time as a
-            developer, and I took the lead on the game, developing it
-            alongside one teammate. I wrote the scripts, checked every mechanic
-            against our project outline,
-            asked teammates for the assets, animations and interfaces we
-            needed, and debugged problems with our lecturer, online
-            research and AI. I also made the final build. This is the
-            project that made me want to keep building games.
-          </p>
+          <p><strong>The world.</strong></p>
+          <ul>
+            <li>Led the writing of the Mythos, Ethos and Topos, which define how Meldiria's characters behave in their own contexts.</li>
+            <li>Built the "rule of three": linking every narrative element to others, so even the smallest detail makes sense inside the world.</li>
+            <li>Proposed new, Meldiria-specific names for the three sections.</li>
+            <li>Wrote, checked and laid out the full world bible, the Biblia de Mundo: numbered, in order, with a clear hierarchy.</li>
+            <li>Used AI to brainstorm and to find gaps in my logic, but every choice had a reason I could explain.</li>
+          </ul>
+          <p><strong>The game.</strong></p>
+          <ul>
+            <li>My first time as a developer. I took the lead, programming it alongside one teammate so I could take breaks.</li>
+            <li>Wrote the scripts and checked every mechanic against our project outline.</li>
+            <li>Asked teammates for the assets, animations and interfaces we needed.</li>
+            <li>Debugged with our lecturer, online research and AI, and made the final build.</li>
+          </ul>
         </div>
       </section>
 
-      <!-- ===== PROCESS ===== -->
+      <!-- ===== THE WORLD ===== -->
       <section class="project__section">
-        <h2 class="project__section-title">Process</h2>
+        <h2 class="project__section-title">Building the world</h2>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">Mythos · who and why</span>
+            <p>
+              The Meldirianos are split into four social roles
+              (architects, farmers, artisans, guardians), each moving
+              through three life stages (child, adult, sage) across 100 to
+              120 years. Their enemy is Dizo, a cosmic-horror jester in
+              CMYK colours who drags people into an incomprehensible fourth
+              mental dimension.
+            </p>
+            <p>
+              A legend says an ocarina hides the key to decoding Dizo's
+              "ecoires" (echo-waves). It sends a farmer-explorer through
+              the biomes, predators and Dizo's interference, a structure
+              that doubles as the game's level progression.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Ethos · how they behave</span>
+            <p>
+              Values, spoken and unspoken: community before the individual,
+              perseverance, loyalty, cyclical renewal. Down to game-ready
+              rules: guardians must hand over the magic dust honestly or
+              face a sanction, and every sanction aims to restore balance
+              and stay proportionate.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Topos · where it happens</span>
+            <p>
+              Eight physical settings, from the central plaza and its Tree
+              of Birth to the sound-dead plains full of predators and the
+              Aurelis range, where magic-making winds blow every six
+              months. Light is replaced by "ecoire" waves, driven by a
+              black sun and a moon's gravity, which create named weather
+              like windy storms, inverse rain and velvet lakes.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Systems · so every scene has rules</span>
+            <p>
+              Rights, obligations and sanctions. Four ruling councils
+              (Sages, Guardians, Artisans, Farmers) plus a community
+              assembly. Guided excursions from age 15 to 25 as education.
+              A harvest inventory that decides how food is shared out.
+            </p>
+          </li>
+        </ol>
+        <details class="more">
+          <summary>Why I renamed Mythos, Ethos and Topos</summary>
+          <div class="more__body">
+            <p>
+              I proposed names from music, so they would fit Meldiria's
+              world of sound waves. <em>La Clave Tiempacte</em> for the
+              Mythos: a "clave" is the clef at the start of a score that
+              tells you how to read it, like the story's starting point,
+              and "Tiempacte" joins time, actors and facts. I sent the
+              group three options with a reason for each, plus alternatives
+              that were not musical.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <!-- ===== THE GAME ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The game</h2>
         <div class="project__description">
           <p>
-            <strong>Mythos</strong> established the founding story and its
-            cast: the Meldirianos, a society split into four social roles
-            (architects, farmers, artisans and guardians) each moving
-            through three life stages (child, adult, sage) across a
-            100–120 year lifespan, and Dizo, a cosmic-horror antagonist — a
-            CMYK-coloured jester who destabilises Meldiria by dragging its
-            people into an incomprehensible fourth mental dimension. The
-            central legend, that an ocarina hides the key to decoding
-            Dizo's CMYK "ecoires" (echo-waves), sends a farmer-explorer
-            through the world's biomes, predators and Dizo's own mental
-            interceptions — an escalating structure written to double as
-            the game's level progression.
+            <strong class="lede">"La llegada de Dizo" is a 2D platformer-puzzle about perception.</strong>
+            You play Do, a farmer. The world is black and white, and only
+            Dizo's CMYK waves have colour. You solve puzzles by reading
+            those waves with sight and sound.
           </p>
+        </div>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Black and white, on purpose</h3>
+            <p>A monochrome style reduces the cost of texturing and lighting, so the team could spend its limited time on the colourful waves and the sound mechanics.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decision</span>
+            <h3>Four levels, drawn from the world</h3>
+            <p>Each level draws on a place in the world, from the Forest in Reverse to the Suffocating Valleys and the lost temple. Two helpers can be played: an architect who can super-jump and an artisan who can shrink.</p>
+          </li>
+        </ul>
+        <div class="project__description">
           <p>
-            <strong>Ethos</strong> defined the society's values, both
-            explicit and implicit — community before individual,
-            perseverance, loyalty, cyclical renewal — down to specific,
-            game-ready rules: guardians must account honestly for their
-            share of "polvillo mágico" (magic dust) or face defined social,
-            spiritual or legal sanctions, each with its own restorative-
-            justice logic (restore balance, re-educate, keep the
-            punishment proportionate).
-          </p>
-          <p>
-            <strong>Topos</strong> grounded all of it in eight distinct
-            physical settings — the Central Plaza and its Tree of Birth,
-            homes near and far from it, the farmers' homes, the Risveliato
-            study centre, the forests, the sound-dead plains full of
-            predators, and the Aurelis mountain range, where
-            magic-generating winds occur every six months — alongside a
-            fully invented physics system: "ecoire" waves (standing in for
-            light) driven by a black sun and a moon's gravity, producing
-            named weather phenomena like windy storms, "inverse rain,"
-            velvet lakes and lightning.
-          </p>
-          <p>
-            On top of that, the team built out legal, political, economic
-            and technological systems — rights, obligations and sanctions;
-            four ruling councils (Sages, Guardians, Artisans, Farmers) plus
-            a community assembly; an education system of guided excursions
-            from age 15 to 25; and a barter-based harvest economy — so that
-            nearly any scene in the eventual game had rules to check itself
-            against.
+            This is how the game was planned in our slides. The gameplay
+            video shows what we built.
           </p>
         </div>
       </section>
@@ -211,12 +256,11 @@
         <h2 class="project__section-title">Solution</h2>
         <div class="project__description">
           <p>
-            A single, structured world bible that the rest of Meldiria's
-            deliverables draw from directly: the 2D videogame's plot and
-            levels, the artbook's visual language, and a personality quiz
-            that assigns players one of Meldiria's own social roles
-            (architect, farmer, artisan or guardian) instead of a generic,
-            disconnected result.
+            <strong class="lede">One structured world bible that every other piece draws from:</strong>
+            the game's plot and levels, the artbook's visual language and a
+            personality quiz that gives players one of Meldiria's own
+            social roles (architect, farmer, artisan or guardian) instead
+            of a generic result.
           </p>
         </div>
       </section>
@@ -224,22 +268,26 @@
       <!-- ===== RESULT ===== -->
       <section class="project__section">
         <h2 class="project__section-title">Result &amp; reflection</h2>
+        <ul class="stats">
+          <li><strong>6</strong><span>people on the team</span></li>
+          <li><strong>3</strong><span>courses, one universe</span></li>
+          <li><strong>8</strong><span>physical settings in the Topos</span></li>
+          <li><strong>1</strong><span>award: Most Creative Project, Inventiva 2024</span></li>
+        </ul>
         <div class="project__description">
           <p>
-            Meldiria was nominated at Inventiva, an EAFIT showcase for
-            creativity, innovation and technology, and won
-            <strong>Most Creative Project 2024</strong>. We presented the
-            game and used the personality quiz to draw people in, and we
-            dressed up as Meldirianos, antennae included. We later
+            <strong class="lede">Meldiria was nominated at Inventiva and won Most Creative Project 2024.</strong>
+            We presented the game, used the personality quiz to draw people
+            in, and dressed up as Meldirianos, antennae included. We later
             collected everything the universe produced into a media
-            portfolio, the "Mapa de Plataformas" (Platform Map).
+            portfolio, the "Mapa de Plataformas".
           </p>
           <p>
-            One thing I learnt: some of my working documents are still
-            visible drafts, with notes still to discuss and a glossary
-            that isn't finished. That's how worldbuilding really works.
-            Knowing which parts of a system are still undecided is as
-            much part of the method as the parts that are done.
+            Some of my working documents are still visible drafts, with
+            notes still to discuss and a glossary that isn't finished.
+            That's how worldbuilding really works: knowing which parts of
+            a system are still undecided is as much part of the method as
+            the parts that are done.
           </p>
         </div>
       </section>
@@ -251,6 +299,7 @@
           <li class="tag">Mythos / Ethos / Topos framework</li>
           <li class="tag">Transmedia worldbuilding</li>
           <li class="tag">Unity</li>
+          <li class="tag">AI-assisted scripting and brainstorming</li>
         </ul>
       </section>
 
@@ -288,6 +337,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261004i"></script>
+  <script src="script.js?v=20261004j"></script>
+  <script src="case-study.js?v=20261004j"></script>
 </body>
 </html>

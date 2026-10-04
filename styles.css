@@ -3271,7 +3271,8 @@ html:not(.js) .route__skills li { opacity: 1; }
    easy to scan. */
 .project__section {
   max-width: 65ch;
-  margin-top: 2.5rem;
+  margin-top: 3rem;
+  scroll-margin-top: 6rem;
 }
 
 .project__section-title {
@@ -3287,24 +3288,286 @@ html:not(.js) .route__skills li { opacity: 1; }
   margin-top: 1rem;
 }
 
-/* The dated stages inside "Process" — a simple list, not a full timeline
-   widget, so it stays easy to edit by hand. */
-.process-steps {
-  list-style: none;
-  padding: 0;
+/* On wide screens each section is a two-column spread, like a magazine:
+   its title sits in the left margin (and stays in view while you read the
+   section), the text in a comfortable column on the right. */
+@media (min-width: 1000px) {
+  .project__section {
+    max-width: none;
+    display: grid;
+    grid-template-columns: minmax(150px, 190px) minmax(0, 66ch);
+    column-gap: 2.5rem;
+    align-items: start;
+  }
+
+  .project__section-title {
+    grid-column: 1;
+    grid-row: 1 / span 14;
+    position: sticky;
+    top: 6.5rem;
+    margin: 0;
+    padding-top: 0.15rem;
+    font-size: 1.15rem;
+    line-height: 1.25;
+  }
+
+  .project__section > :not(.project__section-title) {
+    grid-column: 2;
+  }
 }
 
-.process-steps li + li {
+/* ---- reading aids for long case studies ---- */
+
+/* "Jump to" chips under the summary (built by case-study.js). */
+.toc {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: -0.75rem 0 2rem;
+  padding: 0;
+  list-style: none;
+}
+
+.toc a {
+  display: inline-block;
+  padding: 0.35rem 0.85rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.05);
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--color-muted);
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
+}
+
+.toc a:hover,
+.toc a:focus-visible {
+  color: #ffffff;
+  border-color: rgba(143, 92, 255, 0.7);
+  background: rgba(143, 92, 255, 0.22);
+}
+
+/* A highlighted phrase: a soft violet marker under the key words. */
+.project mark {
+  padding: 0 0.12em;
+  color: inherit;
+  border-radius: 2px;
+  background: linear-gradient(transparent 58%, rgba(143, 92, 255, 0.5) 58%);
+}
+
+/* The bold first sentence that sums up a paragraph. */
+.lede {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+/* Big numbers: only figures that exist in my documents. */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 0.7rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.stats li {
+  padding: 0.85rem 1rem 0.95rem;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 16px;
+  background: linear-gradient(150deg, rgba(143, 92, 255, 0.2), rgba(34, 211, 238, 0.06));
+}
+
+.stats strong {
+  display: block;
+  font-size: 1.7rem;
+  font-weight: 800;
+  line-height: 1.1;
+  background: linear-gradient(90deg, #d4c8ff, #8ff1ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.stats span {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 0.82rem;
+  line-height: 1.3;
+  color: var(--color-muted);
+}
+
+.stats + .project__description,
+.callouts + .project__description {
   margin-top: 1.25rem;
+}
+
+/* Decisions, obstacles and learnings as small labelled cards. */
+.callouts {
+  display: grid;
+  gap: 0.8rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.callout {
+  --tone: #8f5cff;
+  padding: 0.95rem 1.1rem 1.05rem;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-left: 3px solid var(--tone);
+  border-radius: 16px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025) 62%);
+}
+
+.callout--obstacle {
+  --tone: #fd7069;
+}
+
+.callout--learning {
+  --tone: #22d3ee;
+}
+
+.callout__label {
+  display: block;
+  margin-bottom: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--tone);
+}
+
+.callout h3 {
+  margin: 0 0 0.3rem;
+  font-size: 1.02rem;
+  line-height: 1.3;
+}
+
+.project__section .callout p {
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.5;
+}
+
+/* A short quotation from a person I interviewed or tested with. */
+.pullquote {
+  margin: 1.2rem 0 0.4rem;
+  padding: 0.2rem 0 0.2rem 1.1rem;
+  border-left: 3px solid var(--color-pink);
+  font-family: var(--font-script);
+  font-size: 1.5rem;
+  line-height: 1.3;
+  color: #ebe5ff;
+}
+
+.pullquote cite {
+  display: block;
+  margin-top: 0.35rem;
+  font: normal 0.8rem var(--font-body);
+  color: var(--color-muted);
+}
+
+/* Extra detail that is useful but not needed on a first read. */
+.more {
+  margin-top: 1rem;
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.more summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.8rem 1.1rem;
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+}
+
+.more summary::-webkit-details-marker {
+  display: none;
+}
+
+.more summary::after {
+  content: "+";
+  font-size: 1.3rem;
+  line-height: 1;
+  color: #b7a9ff;
+  transition: transform 0.25s ease;
+}
+
+.more[open] summary::after {
+  transform: rotate(45deg);
+}
+
+.more summary:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 16px;
+}
+
+.more__body {
+  padding: 0 1.1rem 1rem;
+}
+
+.project__section .more__body p {
+  font-size: 0.97rem;
+  line-height: 1.55;
+}
+
+/* The numbered stages inside "Process": each step is a small card. */
+.process-steps {
+  display: grid;
+  gap: 0.8rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: step;
+}
+
+.process-steps li {
+  position: relative;
+  counter-increment: step;
+  padding: 1rem 1.1rem 1.05rem 3.6rem;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 16px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.025) 62%);
+}
+
+.process-steps li::before {
+  content: counter(step);
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  display: grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 50%;
+  font-size: 0.85rem;
+  font-weight: 800;
+  color: #ffffff;
+  background: linear-gradient(135deg, #8f5cff, #22d3ee);
 }
 
 .process-steps .step__date {
   display: block;
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-muted);
   margin-bottom: 0.25rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #b7a9ff;
+}
+
+.project__section .process-steps p {
+  font-size: 0.97rem;
+  line-height: 1.5;
 }
 
 /* The one-glance summary under the title (context, challenge, solution,
@@ -3403,42 +3666,190 @@ html:not(.js) .route__skills li { opacity: 1; }
   }
 }
 
-/* Gallery: images sit two per row on wide screens (one on phones);
-   videos take the full width. Tall images are capped so a phone
-   screenshot doesn't fill the whole page. Each image links to the
-   full-size file. */
-.project__gallery {
-  margin-top: 2.5rem;
+/* The mini gallery at the end of every project: one strip you scroll or
+   swipe sideways. Every picture keeps its own shape (nothing is cropped);
+   they all share one height. Pictures open in a bigger viewer
+   (case-study.js); videos play in place. Without JavaScript the pictures
+   simply link to the full-size file. */
+.gallery__controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.4rem;
+}
+
+.gallery__hint {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+.gallery__arrows {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.gallery__arrow {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.5rem;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  padding: 0;
+  font: inherit;
+  font-size: 1.2rem;
+  line-height: 1;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+}
+
+.gallery__arrow:hover:not(:disabled),
+.gallery__arrow:focus-visible {
+  border-color: rgba(143, 92, 255, 0.8);
+  background: rgba(143, 92, 255, 0.3);
+}
+
+.gallery__arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+
+.project__gallery {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  padding: 0.3rem 0.2rem 1.1rem;
+  overflow-x: auto;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(143, 92, 255, 0.6) transparent;
+}
+
+.project__gallery > * {
+  flex: none;
+  height: min(380px, 62vh);
+  scroll-snap-align: start;
 }
 
 .project__gallery video {
-  grid-column: 1 / -1;
-  width: 100%;
-  max-height: 80vh;
-  border-radius: var(--radius);
+  width: auto;
+  aspect-ratio: 16 / 9;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 18px;
   background: #000;
+  object-fit: contain;
 }
 
 .project__gallery a {
   display: block;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  transition: transform 0.35s cubic-bezier(0.3, 0.9, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project__gallery a:hover,
+.project__gallery a:focus-visible {
+  transform: translateY(-4px);
+  border-color: rgba(143, 92, 255, 0.7);
+  box-shadow: 0 24px 50px -28px rgba(143, 92, 255, 0.8);
 }
 
 .project__gallery img {
-  width: 100%;
-  height: auto;
-  max-height: 720px;
-  object-fit: contain;
-  border-radius: var(--radius);
-  background: var(--color-surface);
+  display: block;
+  width: auto;
+  max-width: none;
+  height: 100%;
+  max-height: none;
 }
 
-.project__gallery > img:only-child,
-.project__gallery > a:only-child,
-.project__gallery > a.gallery__wide {
-  grid-column: 1 / -1;
+/* The bigger viewer that opens from a gallery picture. */
+.lightbox {
+  width: min(96vw, 1280px);
+  max-width: none;
+  max-height: 94vh;
+  margin: auto;
+  padding: 0;
+  overflow: visible;
+  color: var(--color-text);
+  border: 0;
+  background: transparent;
+}
+
+.lightbox::backdrop {
+  background: rgba(3, 2, 18, 0.86);
+  backdrop-filter: blur(8px);
+}
+
+.lightbox__stage {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.lightbox__figure {
+  margin: 0;
+  text-align: center;
+}
+
+.lightbox__img {
+  display: inline-block;
+  max-width: 100%;
+  max-height: 78vh;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 40px 100px -40px rgba(143, 92, 255, 0.6);
+}
+
+.lightbox__cap {
+  max-width: 70ch;
+  margin: 0.9rem auto 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+  color: var(--color-muted);
+}
+
+.lightbox__count {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: #b7a9ff;
+}
+
+.lightbox__close {
+  position: absolute;
+  top: -2.6rem;
+  right: 0;
+}
+
+@media (max-width: 700px) {
+  /* on phones the two arrows sit under the picture */
+  .lightbox__stage {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .lightbox__figure {
+    grid-column: 1 / -1;
+    grid-row: 1;
+  }
+
+  .lightbox__stage .gallery__arrow--prev {
+    grid-row: 2;
+    justify-self: start;
+  }
+
+  .lightbox__stage .gallery__arrow--next {
+    grid-row: 2;
+    justify-self: end;
+  }
 }
 
 /* -------------------------------------------------------------
@@ -3503,11 +3914,6 @@ html:not(.js) .route__skills li { opacity: 1; }
    top navigation sit flat across the top of the screen.
    ============================================================= */
 @media (max-width: 700px) {
-
-  /* Gallery: one image per row on phones. */
-  .project__gallery {
-    grid-template-columns: 1fr;
-  }
 
   /* Two small cards per row on phones for the seedbed cards. */
   .grid--compact {
