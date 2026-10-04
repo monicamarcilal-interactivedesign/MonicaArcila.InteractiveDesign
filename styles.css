@@ -1033,7 +1033,7 @@ html.no-webgl .landing-stage.is-awake .lotus-start-cta {
 /* Titles: Sora ExtraBold everywhere (2026-10-04, Mónica's type system). */
 h1, h2, h3, h4,
 .section__title,
-.project-row__title,
+.pcard__title,
 .card__title {
   font-family: var(--font-heading);
   font-weight: var(--weight-title);
@@ -1049,7 +1049,6 @@ h1, h2, h3, h4,
 .about__eyebrow,
 .contact__eyebrow,
 .project__meta,
-.project-row__meta,
 .experience__meta,
 .card__meta {
   font-family: var(--font-script);
@@ -1212,141 +1211,635 @@ h1, h2, h3, h4,
   margin-bottom: 0.5rem;
 }
 
-/* PROJECT LIST: one row per project — image, title, the category name
-   under the title, a short line of facts, and skill tags. The whole row
-   is clickable (the link's ::after stretches over it). Each row is its
-   own glass card (asymmetric corners alternate row to row); it sits flat
-   until you hover or focus it, when it tilts and lifts slightly. */
-.project-list {
-  list-style: none;
+/* =============================================================
+   PROJECTS  (redesigned 2026-10-04 from Mónica's mockups)
+   =============================================================
+   The hero (a big slow-turning star with the opening statement arched
+   over it), a full-width intro, and the BOARD: a grid of project cards
+   you drag around (projects-board.js does the movement). Each card is a
+   taste — picture, title, pitch line, brief, a banner of main skills —
+   colour-coded by category:
+        UX blue · Immersive violet · Game pink · AI cyan · Motion coral
+   Without JavaScript the board is just a normal wrapping grid of cards.
+   ============================================================= */
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
-.project-row {
+/* ---------------- the hero ---------------- */
+.projects-hero {
   position: relative;
+  isolation: isolate;
+  max-width: 1180px;
+  margin-inline: auto;
+  padding: clamp(2.5rem, 7vw, 5rem) var(--space) clamp(2rem, 5vw, 3.5rem);
+  text-align: center;
+  overflow: hidden;
+}
+
+.projects-hero__art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
   display: grid;
-  grid-template-columns: 160px 1fr;
-  gap: 1.25rem;
+  place-items: center;
+  pointer-events: none;
+}
+
+/* The Projects orb's own star, enlarged — the same shape you tapped to
+   get here. --rot is set by projects-board.js from the page scroll. */
+.projects-hero__shape {
+  grid-area: 1 / 1;
+  width: min(74vw, 700px);
+  max-width: none;
+  height: auto;
+  opacity: 0.5;
+  transform: rotate(var(--rot, 0deg));
+  filter: saturate(1.1);
+  -webkit-mask-image: radial-gradient(closest-side, #000 52%, transparent 100%);
+  mask-image: radial-gradient(closest-side, #000 52%, transparent 100%);
+}
+
+/* The same star as a fine outline, turning the other way. */
+.projects-hero__outline {
+  grid-area: 1 / 1;
+  width: min(94vw, 880px);
+  height: auto;
+  fill: none;
+  stroke: url(#starOutline);
+  stroke-width: 0.5;
+  opacity: 0.6;
+  transform: rotate(calc(var(--rot, 0deg) * -0.7));
+}
+
+.projects-hero__text {
+  position: relative;
+  max-width: 48rem;
+  margin-inline: auto;
+}
+
+/* A dark pool behind the words so they stay easy to read over the star. */
+.projects-hero__text::before {
+  content: "";
+  position: absolute;
+  inset: -14% -10%;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgba(6, 4, 28, 0.8) 38%, rgba(6, 4, 28, 0) 100%);
+}
+
+.projects-hero__title {
+  font-size: clamp(2rem, 5.6vw, 4rem);
+  line-height: 1.02;
+  letter-spacing: -0.025em;
+  margin-bottom: clamp(1.2rem, 3vw, 2rem);
+}
+
+.projects-hero__statement {
+  font-size: clamp(1.25rem, 2.8vw, 2.3rem);
+  font-weight: 700;
+  line-height: 1.3;
+  color: #f3f0fb;
+  text-wrap: balance;
+}
+
+/* projects-board.js wraps each word so it can ride the arc. */
+.pword {
+  display: inline-block;
+  transform-origin: 50% 70%;
+}
+
+/* The emphasised words: Over the Rainbow, bigger (it's small and thin),
+   each in its own soft gradient. */
+.pem {
+  font-family: var(--font-script);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 1.34em;
+  line-height: 0.9;
+  padding: 0 0.04em;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.pem--1 { background-image: linear-gradient(100deg, #fbb6ff, #a78bfa); }
+.pem--2 { background-image: linear-gradient(100deg, #67e8f9, #6d8dff); }
+.pem--3 { background-image: linear-gradient(100deg, #ffc1a6, #f887fa); }
+
+/* ---------------- the intro ---------------- */
+.projects-intro {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 0 var(--space) 2.25rem;
+}
+
+.projects-intro p {
+  font-size: clamp(1.02rem, 1.5vw, 1.2rem);
+  line-height: 1.75;
+  opacity: 0.9;
+  text-wrap: pretty;
+}
+
+/* ---------------- filter chips ---------------- */
+.projects-board-section {
+  padding-block: 0.5rem 3rem;
+}
+
+.projects-board-section .container {
+  max-width: 1180px;
+}
+
+.filter__button {
+  display: inline-flex;
   align-items: center;
-  padding: 1.5rem 1.75rem 1.5rem 1.25rem;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-soft) var(--radius) var(--radius-soft) var(--radius);
-  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-  box-shadow: 0 24px 48px -30px rgba(0, 0, 0, 0.55);
-  transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
-/* Alternating corners is the "card asymmetry" from the brief — a small,
-   cheap way to stop every card looking identical. */
-.project-row:nth-child(even) {
-  border-radius: var(--radius) var(--radius-soft) var(--radius) var(--radius-soft);
+.filter__button::before {
+  content: "";
+  width: 0.55em;
+  height: 0.55em;
+  margin-right: 0.55em;
+  border-radius: 50%;
+  background: var(--dot, transparent);
+  box-shadow: 0 0 8px var(--dot, transparent);
 }
 
-.project-row:hover,
-.project-row:focus-within {
-  transform: rotate(-0.6deg) translateY(-4px);
-  box-shadow: 0 30px 55px -26px color-mix(in srgb, var(--color-violet) 45%, transparent);
-  border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+.filter__button[data-filter="featured"]  { --dot: #fbbf24; }
+.filter__button[data-filter="ux"]        { --dot: #4d7dff; }
+.filter__button[data-filter="immersive"] { --dot: #8f5cff; }
+.filter__button[data-filter="game"]      { --dot: #f887fa; }
+.filter__button[data-filter="ai"]        { --dot: #22d3ee; }
+.filter__button[data-filter="motion"]    { --dot: #fd7069; }
+
+/* ---------------- the board ---------------- */
+.board {
+  --card-w: 340px;
+  --card-h: 450px;
+  --gap: 22px;
+  --pad: 22px;
+  position: relative;
+  margin-top: 1.25rem;
 }
 
-.project-row[hidden] {
+.board:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: 12px;
+}
+
+/* Before/without JavaScript: an ordinary wrapping grid. */
+.board__canvas {
+  list-style: none;
+  margin: 0;
+  padding: var(--pad);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+  gap: var(--gap);
+}
+
+.board .pcard {
+  height: var(--card-h);
+}
+
+.board:not(.board--js) .board__edge,
+.board:not(.board--js) .board__hint {
   display: none;
 }
 
-/* The image sits in a small "device" bezel and pokes slightly past the
-   card's own edge — the "peeking" idea, without needing a real cut-out
-   asset yet (see VISUAL_DESIGN_CHECKLIST.md 19 for the real one). */
-.project-row__frame {
+/* With JavaScript: a window onto a bigger sheet that is dragged around. */
+.board--js {
+  overflow: hidden;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: none;
+}
+
+/* Phones: sideways only, so up/down stays the page's. */
+.board--js.is-xonly {
+  touch-action: pan-y;
+}
+
+.board--js .board__canvas {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: max-content;
+  grid-template-columns: repeat(var(--cols, 3), var(--card-w));
+  grid-auto-rows: var(--card-h);
+  will-change: transform;
+}
+
+.board--js .pcard {
+  width: var(--card-w);
+}
+
+.board.is-dragging {
+  cursor: grabbing;
+}
+
+.board.is-dragging .pcard__link {
+  pointer-events: none;
+}
+
+.board.is-arrange .pcard {
+  cursor: grab;
+}
+
+/* The edges glow where more cards are hidden beyond them. */
+.board__edge {
+  position: absolute;
+  z-index: 3;
+  pointer-events: none;
+  filter: blur(3px);
+}
+
+.board__edge--l { left: 0; top: 0; bottom: 0; width: 120px; background: linear-gradient(90deg, rgba(135, 71, 248, 0.5), transparent); opacity: var(--edge-l, 0); }
+.board__edge--r { right: 0; top: 0; bottom: 0; width: 120px; background: linear-gradient(270deg, rgba(34, 211, 238, 0.42), transparent); opacity: var(--edge-r, 0); }
+.board__edge--t { left: 0; right: 0; top: 0; height: 100px; background: linear-gradient(180deg, rgba(248, 135, 250, 0.4), transparent); opacity: var(--edge-t, 0); }
+.board__edge--b { left: 0; right: 0; bottom: 0; height: 100px; background: linear-gradient(0deg, rgba(77, 125, 255, 0.45), transparent); opacity: var(--edge-b, 0); }
+
+/* A glowing nudge that says "this moves" — gone after the first touch. */
+.board__hint {
+  position: absolute;
+  right: 24px;
+  bottom: 20px;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  pointer-events: none;
+  transition: opacity 0.7s ease;
+}
+
+.board.is-touched .board__hint {
+  opacity: 0;
+}
+
+.board__hint-orb {
   position: relative;
-  width: 168px;
-  margin: -0.75rem 0 -0.75rem -0.5rem;
-  z-index: 2;
-  transition: transform 0.3s ease;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200, 248, 255, 0.95) 0 16%, rgba(34, 211, 238, 0.7) 32%, rgba(135, 71, 248, 0.35) 58%, transparent 72%);
+  box-shadow: 0 0 24px rgba(34, 211, 238, 0.5);
+  animation: board-hint-pulse 2.8s ease-in-out infinite;
 }
 
-.project-row:hover .project-row__frame,
-.project-row:focus-within .project-row__frame {
-  transform: rotate(2deg) translateY(-4px);
-}
-
-.project-row__image {
-  width: 100%;
-  aspect-ratio: 4 / 3;
-  object-fit: cover;
-  display: block;
-  border-radius: var(--radius);
-  background: var(--color-surface);
-  border: 6px solid var(--frame-bezel);
-  box-shadow: 0 18px 34px -18px rgba(0, 0, 0, 0.6);
-}
-
-/* "Featured" (and award) tags: small outlined pills above the title. */
-.project-row__label {
-  display: inline-block;
-  font-size: 0.72rem;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--color-accent);
-  border: 1px solid var(--color-accent);
-  border-radius: 999px;
-  padding: 0.1rem 0.6rem;
-  margin: 0 0.35rem 0.4rem 0;
-}
-
-.project-row__title {
-  font-size: 1.2rem;
-  line-height: 1.25;
-}
-
-.project-row__title a {
-  color: inherit;
-  text-decoration: none;
-}
-
-.project-row__title a::after {
+.board__hint-orb::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -6px;
+  border-radius: 50%;
+  border: 1px solid rgba(34, 211, 238, 0.6);
+  animation: board-hint-ring 2.8s ease-out infinite;
 }
 
-.project-row:hover .project-row__title a {
-  color: var(--color-accent);
-  text-decoration: underline;
+.board__hint-text {
+  font-family: var(--font-script);
+  font-size: 1.3rem;
+  color: #dcf8ff;
+  text-shadow: 0 0 14px rgba(34, 211, 238, 0.7);
 }
 
-.project-row:has(a:focus-visible) {
-  outline: 3px solid var(--color-accent);
-  outline-offset: 2px;
-  border-radius: 3px;
+@keyframes board-hint-pulse {
+  0%, 100% { transform: scale(0.92); opacity: 0.8; }
+  50%      { transform: scale(1.08); opacity: 1; }
 }
 
-.project-row__category {
-  color: var(--color-muted);
-  font-size: 0.9rem;
+@keyframes board-hint-ring {
+  0%   { transform: scale(0.8); opacity: 0.8; }
+  100% { transform: scale(1.9); opacity: 0; }
 }
 
-.project-row__meta {
-  margin-top: 0.35rem;
+/* ---------------- a project card ---------------- */
+.pcard {
+  --cat: #4d7dff;
+  --cat2: transparent;
+  position: relative;
+  list-style: none;
 }
 
-.project-row__highlight {
-  font-size: 0.95rem;
-  margin-top: 0.5rem;
-  max-width: 65ch;
+.pcard[data-cat="ux"]        { --cat: #4d7dff; }
+.pcard[data-cat="immersive"] { --cat: #8f5cff; }
+.pcard[data-cat="game"]      { --cat: #f887fa; }
+.pcard[data-cat="ai"]        { --cat: #22d3ee; }
+.pcard[data-cat="motion"]    { --cat: #fd7069; }
+
+.pcard[data-cat2="ux"]        { --cat2: #4d7dff; }
+.pcard[data-cat2="immersive"] { --cat2: #8f5cff; }
+.pcard[data-cat2="game"]      { --cat2: #f887fa; }
+.pcard[data-cat2="ai"]        { --cat2: #22d3ee; }
+.pcard[data-cat2="motion"]    { --cat2: #fd7069; }
+
+.pcard[hidden] {
+  display: none;
 }
 
-.project-row .tag-list {
-  margin-top: 0.75rem;
+.pcard__link {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 24px;
+  color: inherit;
+  text-decoration: none;
+  background: linear-gradient(165deg, color-mix(in srgb, var(--cat) 14%, #0d0c2b) 0%, #0a0a22 58%);
+  border: 1px solid color-mix(in srgb, var(--cat) 38%, rgba(255, 255, 255, 0.1));
+  box-shadow: 0 22px 44px -28px color-mix(in srgb, var(--cat) 70%, transparent), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  transition: transform 0.45s cubic-bezier(0.45, 0, 0.25, 1), box-shadow 0.45s ease, border-color 0.45s ease;
 }
 
-.project-row .tag {
-  font-size: 0.8rem;
-  padding: 0.2rem 0.65rem;
+.pcard__link:hover,
+.pcard__link:focus-visible {
+  transform: translateY(-6px);
+  border-color: var(--cat);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--cat) 55%, transparent), 0 28px 54px -26px var(--cat), 0 0 40px -12px var(--cat);
+}
+
+.pcard__media {
+  position: relative;
+  flex: 0 0 43%;
+  overflow: hidden;
+  background: #07071a;
+}
+
+.pcard__media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  transition: transform 0.9s cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+.pcard__link:hover .pcard__media img,
+.pcard__link:focus-visible .pcard__media img {
+  transform: scale(1.06);
+}
+
+/* A fade into the card, and a coloured line along the top. */
+.pcard__media::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 48%;
+  background: linear-gradient(transparent, rgba(10, 10, 34, 0.94));
+  pointer-events: none;
+}
+
+.pcard__media::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  z-index: 2;
+  background: linear-gradient(90deg, var(--cat), transparent 85%);
+}
+
+.pcard__pill {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 3;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(8, 7, 30, 0.72);
+  border: 1px solid var(--cat);
+  box-shadow: 0 0 14px -2px var(--cat);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+}
+
+.pcard__pill::before {
+  content: "★ ";
+  color: #fbbf24;
+}
+
+.pcard__dot {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--cat2);
+  border: 1.5px solid rgba(255, 255, 255, 0.75);
+  box-shadow: 0 0 12px var(--cat2);
+}
+
+.pcard__body {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.42rem;
+  padding: 0.7rem 1.15rem 0.2rem;
+}
+
+.pcard__title,
+.pcard__hook,
+.pcard__brief {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0;
+}
+
+.pcard__title {
+  -webkit-line-clamp: 3;
+  font-size: 1.08rem;
+  line-height: 1.16;
+  letter-spacing: -0.01em;
+}
+
+.pcard__hook {
+  -webkit-line-clamp: 2;
+  font-size: 0.92rem;
+  font-weight: 600;
+  line-height: 1.38;
+  color: color-mix(in srgb, var(--cat) 30%, #ffffff);
+}
+
+.pcard__brief {
+  -webkit-line-clamp: 3;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: rgba(232, 230, 248, 0.74);
+}
+
+/* The banner of main skills — slides along while the card is on screen,
+   stops under the cursor, and stays still for reduced motion. */
+.pcard__skills {
+  flex: 0 0 auto;
+  margin-top: 0.4rem;
+  padding: 0.6rem 0 0.8rem;
+  overflow: hidden;
+  border-top: 1px solid rgba(255, 255, 255, 0.09);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+  mask-image: linear-gradient(90deg, transparent 0, #000 9%, #000 91%, transparent 100%);
+}
+
+.pcard__track {
+  display: flex;
+  width: max-content;
+  animation: pcard-marquee 26s linear infinite;
+  animation-play-state: paused;
+}
+
+.pcard.is-live .pcard__track {
+  animation-play-state: running;
+}
+
+.pcard__link:hover .pcard__track,
+.pcard__link:focus-visible .pcard__track {
+  animation-play-state: paused;
+}
+
+@keyframes pcard-marquee {
+  to { transform: translateX(-50%); }
+}
+
+.pgroup {
+  display: flex;
+  flex: none;
+  gap: 0.45rem;
+  margin: 0;
+  padding: 0 0.45rem 0 0;
+  list-style: none;
+}
+
+.pcard__skills > .pgroup {
+  flex-wrap: wrap;
+  padding: 0 1rem;
+}
+
+.pgroup li {
+  white-space: nowrap;
+  font-size: 0.7rem;
+  padding: 0.24rem 0.7rem;
+  border-radius: 999px;
+  color: #efecfb;
+  background: color-mix(in srgb, var(--cat) 15%, transparent);
+  border: 1px solid color-mix(in srgb, var(--cat) 50%, transparent);
+}
+
+/* New cards fade up when a filter brings them in. */
+.pcard.is-entering {
+  animation: pcard-in 0.7s cubic-bezier(0.45, 0, 0.25, 1) both;
+}
+
+@keyframes pcard-in {
+  from { opacity: 0; transform: translateY(18px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Rearranging: the empty place the card will land in, and the card in hand. */
+.pcard-slot {
+  width: var(--card-w);
+  height: var(--card-h);
+  border: 1.5px dashed rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pcard.is-dragging {
+  position: fixed;
+  z-index: 200;
+  margin: 0;
+  pointer-events: none;
+  transform: scale(1.04) rotate(1.2deg);
+  filter: drop-shadow(0 30px 40px rgba(0, 0, 0, 0.55));
+}
+
+.pcard.is-dragging .pcard__link {
+  border-color: var(--cat);
+}
+
+/* ---------------- research seedbeds band ---------------- */
+#seedbeds {
+  margin-top: 1rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ---------------- phones ---------------- */
+@media (max-width: 700px) {
+  /* Edge to edge: the hero's star and the board break out of the page's
+     margin, so the next card peeks in from the side and invites a swipe. */
+  .projects-hero {
+    max-width: none;
+    margin-inline: calc(var(--page-margin) * -1);
+  }
+
+  .board {
+    --card-w: min(78vw, 320px);
+    --card-h: 440px;
+    --gap: 16px;
+    --pad: 16px;
+    margin-inline: calc(var(--page-margin) * -1);
+  }
+
+  /* Seven category chips would stack into a tall column — a single row
+     you swipe sideways instead. */
+  .projects-board-section .filter {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .projects-board-section .filter::-webkit-scrollbar {
+    display: none;
+  }
+
+  .projects-board-section .filter__button {
+    flex: none;
+    white-space: nowrap;
+  }
+
+  .projects-hero__shape {
+    width: 120vw;
+  }
+
+  .projects-hero__outline {
+    width: 150vw;
+  }
+
+  .pcard__media {
+    flex-basis: 40%;
+  }
+
+  .board__hint {
+    right: 14px;
+    bottom: 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pcard__track { animation: none; }
+  .pcard__media img,
+  .pcard__link { transition: none; }
+  .pcard.is-entering { animation: none; }
+  .board__hint-orb,
+  .board__hint-orb::after { animation: none; }
 }
 
 .grid {
@@ -1788,23 +2281,6 @@ h1, h2, h3, h4,
 
   .about__photo {
     width: 160px;
-  }
-
-  /* Project rows: image on top of the text instead of beside it, and the
-     "peeking" bezel goes back to sitting flat inside the card. */
-  .project-row {
-    grid-template-columns: 1fr;
-    gap: 0.9rem;
-    padding: 1.25rem;
-  }
-
-  .project-row__frame {
-    width: 100%;
-    margin: 0;
-  }
-
-  .project-row__image {
-    aspect-ratio: 16 / 9;
   }
 
   /* Gallery: one image per row on phones. */

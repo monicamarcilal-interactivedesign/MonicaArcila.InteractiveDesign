@@ -83,42 +83,11 @@ if (aboutSection && !prefersReducedMotion) {
 }
 
 /* -------------------------------------------------------------
-   4. PROJECT CATEGORY FILTER
-   The pill buttons above the Personal Projects list. Each project
-   row has a data-category (e.g. "ux"); clicking a button shows only
-   the rows in that category ("all" shows everything). The buttons
-   start hidden in the HTML and are revealed here, so if JavaScript
-   is off the full list is still visible.
+   4. PROJECT FILTER, THE CARD BOARD AND THE PROJECTS HERO
+   Moved to projects-board.js (2026-10-04) when the Projects section
+   became a draggable board of cards — it is a bigger job than this
+   file is meant to hold.
    ------------------------------------------------------------- */
-const filterBar = document.querySelector(".filter");
-const projectRows = document.querySelectorAll(".project-row");
-const filterStatus = document.querySelector(".filter__status");
-
-if (filterBar && projectRows.length) {
-  const filterButtons = filterBar.querySelectorAll(".filter__button");
-
-  const applyFilter = (category) => {
-    let shown = 0;
-    projectRows.forEach((row) => {
-      // A row can belong to several categories: data-category="ux game".
-      const matches =
-        category === "all" || row.dataset.category.split(" ").includes(category);
-      row.hidden = !matches;
-      if (matches) shown += 1;
-    });
-    filterButtons.forEach((button) => {
-      button.setAttribute("aria-pressed", button.dataset.filter === category);
-    });
-    filterStatus.textContent = `Showing ${shown} of ${projectRows.length} projects`;
-  };
-
-  filterButtons.forEach((button) => {
-    button.addEventListener("click", () => applyFilter(button.dataset.filter));
-  });
-
-  filterBar.hidden = false;
-  applyFilter("all");
-}
 
 /* -------------------------------------------------------------
    5. HOME PAGE NAVIGATION — scenes, the growth trail, and the lotus
