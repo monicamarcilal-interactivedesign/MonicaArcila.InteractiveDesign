@@ -3,10 +3,9 @@
    =============================================================
    Three jobs, all for the #case-studies section:
 
-   1. THE HERO. The opening statement is split into words and each word
-      is nudged up along a gentle arc (and tilted to follow it), so the
-      paragraph looks bent over the rings behind it. The rings glow
-      when you hover the text.
+   1. THE HERO. A banner for the opening statement. Under it, a route
+      from Medellín to Wellington draws itself when the banner scrolls
+      into view (the animation itself is CSS/SVG; this only flips a class).
 
    2. THE BOARD. One card per project, laid out in a balanced grid that
       is bigger than the window. You drag it around:
@@ -41,125 +40,30 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
    1. THE HERO
    ------------------------------------------------------------- */
 const hero = section.querySelector(".projects-hero");
-const statement = document.getElementById("projectsStatement");
-let words = [];
 
-function splitWords() {
-  if (!statement || statement.dataset.split) return;
-  statement.dataset.split = "1";
-  const frag = document.createDocumentFragment();
-  statement.childNodes.forEach((node) => {
-    const emClass = node.nodeType === 1 ? node.className : "";
-    const text = node.textContent;
-    text.split(/(\s+)/).forEach((piece) => {
-      if (!piece) return;
-      if (/^\s+$/.test(piece)) {
-        frag.appendChild(document.createTextNode(" "));
-        return;
-      }
-      const span = document.createElement("span");
-      span.className = "pword" + (emClass ? " " + emClass : "");
-      span.textContent = piece;
-      frag.appendChild(span);
-    });
-  });
-  statement.textContent = "";
-  statement.appendChild(frag);
-  words = Array.from(statement.querySelectorAll(".pword"));
-}
-
-// The rings behind the statement are centred on the section's top edge, so
-// the text is bent as rings around that centre: each line curves like an
-// arc of a circle (ends lifted, middle lowest), the lines nearest the
-// centre curving more and the ones further out flatter — concentric, like
-// the rings behind them. Gentle on purpose (readability comes first),
-// applied per word so line breaking is untouched, and deliberately not
-// scaled: a scaled word grows over the space beside it and the words run
-// together.
-//
-// measureWords() works out where every word sits (once per layout);
-// shapeWords(mould) turns that into the arcs. Hovering the statement raises
-// `mould`, so the words ease further into the rings' curve.
-let wordGeo = [];
-let mould = 1;
-
-function measureWords() {
-  if (!words.length) return;
-  const box = statement.getBoundingClientRect();
-  if (!box.width) return;
-  statement.classList.add("is-measuring");
-  words.forEach((w) => (w.style.transform = ""));
-  const half = box.width / 2;
-  const cx = box.left + half;
-  const rects = words.map((w) => w.getBoundingClientRect());
-  statement.classList.remove("is-measuring");
-
-  // Group the words into the lines the browser made (same top, give or take).
-  const lineTops = [];
-  const lineOf = rects.map((r) => {
-    let i = lineTops.findIndex((t) => Math.abs(t - r.top) < r.height * 0.5);
-    if (i < 0) {
-      lineTops.push(r.top);
-      i = lineTops.length - 1;
-    }
-    return i;
-  });
-  const lines = lineTops.length;
-  wordGeo = rects.map((r, n) => ({
-    depth: lines > 1 ? lineOf[n] / (lines - 1) : 0, // 0 = nearest the star's centre
-    u: clamp((r.left + r.width / 2 - cx) / half, -1, 1),
-    half,
-    base: clamp(box.width * 0.055, 8, 42),
-  }));
-  shapeWords();
-}
-
-function shapeWords() {
-  words.forEach((w, n) => {
-    const g = wordGeo[n];
-    if (!g) return;
-    const amp = g.base * (1.35 - 0.85 * g.depth) * mould;
-    const y = -amp * g.u * g.u;
-    const tilt = (Math.atan((-2 * amp * g.u) / g.half) * 180) / Math.PI;
-    w.style.transform = `translateY(${y.toFixed(1)}px) rotate(${tilt.toFixed(2)}deg)`;
-  });
-}
-
-function setMould(on) {
-  if (!hero) return;
-  mould = on ? 1.8 : 1;
-  hero.classList.toggle("is-moulding", on);
-  shapeWords();
-}
-
+// The banner's route draws itself the first time the banner is mostly in
+// view. With reduced motion (or no IntersectionObserver) it just shows,
+// finished, and its travelling orb is paused.
 function initHero() {
-  if (!hero || !statement) return;
-  splitWords();
-  measureWords();
-  // Re-measure whenever the paragraph's size changes — including the moment
-  // the section first becomes visible (it starts hidden) and once the web
-  // fonts have loaded and changed the word widths.
-  if (window.ResizeObserver) new ResizeObserver(measureWords).observe(statement);
-  if (document.fonts && document.fonts.ready) document.fonts.ready.then(measureWords);
-
-  // Over the statement the words ease into the star's curve and the star's
-  // outline lights up. On touch screens a tap does the same for a moment.
-  if (!reduced) {
-    let tapTimer = 0;
-    hero.addEventListener("pointerenter", (e) => {
-      if (e.pointerType === "mouse") setMould(true);
-    });
-    hero.addEventListener("pointerleave", (e) => {
-      if (e.pointerType === "mouse") setMould(false);
-    });
-    hero.addEventListener("pointerdown", (e) => {
-      if (e.pointerType === "mouse") return;
-      setMould(true);
-      clearTimeout(tapTimer);
-      tapTimer = window.setTimeout(() => setMould(false), 2600);
-    });
+  if (!hero) return;
+  const svg = hero.querySelector(".route__svg");
+  if (reduced || !("IntersectionObserver" in window)) {
+    hero.classList.add("is-static");
+    if (reduced && svg && svg.pauseAnimations) svg.pauseAnimations();
+    return;
   }
+  const io = new IntersectionObserver(
+    (entries) => {
+      if (entries.some((en) => en.isIntersecting)) {
+        hero.classList.add("is-in");
+        io.disconnect();
+      }
+    },
+    { threshold: 0.2 }
+  );
+  io.observe(hero);
 }
+
 
 /* -------------------------------------------------------------
    2. THE BOARD

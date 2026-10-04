@@ -1235,110 +1235,159 @@ h1, h2, h3, h4,
   border: 0;
 }
 
-/* ---------------- the hero ----------------
-   Seven glowing rings centred exactly on the section's top edge, so the
-   edge cuts them in half and the lower half hangs into the page. Five
-   small orbs (one per category colour) swing along them. The statement is
-   bent in concentric arcs around the same centre (projects-board.js) and
-   eases further into the curve while hovered; the title comes after. */
+/* ---------------- the hero: a banner ----------------
+   One glass banner for the paragraph that says who I am as a designer.
+   Under the statement a route runs from Medellín to Wellington, bundled
+   thin curves like the landing page's connections, with the disciplines
+   as stops on it. It draws itself the first time it scrolls into view
+   (projects-board.js adds .is-in) and one orb travels it for ever. */
 .projects-hero {
-  --star: min(112vw, 1080px); /* sizes the half-circle of rings */
   position: relative;
   isolation: isolate;
-  max-width: 1280px;
-  margin-inline: auto;
-  min-height: calc(var(--star) * 0.47);
-  padding: calc(var(--star) * 0.075) var(--space) clamp(2.5rem, 6vw, 4.5rem);
+  max-width: 1180px;
+  margin: clamp(1rem, 3vw, 2rem) auto 0;
+  padding: clamp(2rem, 5.5vw, 4rem) clamp(1.25rem, 5vw, 4rem) clamp(1.6rem, 4vw, 2.6rem);
   text-align: center;
+  border-radius: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background:
+    radial-gradient(70% 90% at 12% 0%, rgba(253, 112, 105, 0.14), transparent 60%),
+    radial-gradient(70% 90% at 90% 100%, rgba(34, 211, 238, 0.16), transparent 60%),
+    linear-gradient(135deg, rgba(135, 71, 248, 0.26), rgba(12, 10, 44, 0.55) 55%, rgba(77, 125, 255, 0.18));
+  box-shadow: 0 30px 80px -40px rgba(135, 71, 248, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
   overflow: hidden;
 }
 
-.projects-hero__art {
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  pointer-events: none;
-  -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 96%);
-  mask-image: linear-gradient(180deg, #000 62%, transparent 96%);
+.projects-hero__statement {
+  position: relative;
+  max-width: 46rem;
+  margin: 0 auto;
+  font-size: clamp(1.3rem, 2.7vw, 2.05rem);
+  font-weight: 700;
+  line-height: 1.32;
+  letter-spacing: -0.01em;
+  color: #f6f3fd;
+  text-wrap: balance;
 }
 
-.projects-hero__rings {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: calc(var(--star) * 1.1);
-  max-width: none;
-  height: auto;
-  transform: translateX(-50%);
+/* ----- the route ----- */
+.route {
+  position: relative;
+  margin: clamp(1.4rem, 3.4vw, 2.4rem) auto 0;
+  max-width: 940px;
+}
+
+.route__svg {
+  display: block;
+  width: 100%;
+  height: clamp(60px, 12vw, 150px);
   overflow: visible;
 }
 
-.projects-hero__rings .rings {
-  opacity: 0.8;
-  transition: opacity 0.6s ease;
+.route__lines path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 2.6s cubic-bezier(0.45, 0, 0.25, 1);
+  filter: drop-shadow(0 0 6px rgba(135, 71, 248, 0.7));
 }
 
-.projects-hero.is-moulding .projects-hero__rings .rings {
-  opacity: 1;
+.route__lines path:nth-child(2) { transition-delay: 0.25s; }
+.route__lines path:nth-child(3) { transition-delay: 0.5s; }
+
+.route__stops circle,
+.route__end,
+.route__orb {
+  opacity: 0;
+  transition: opacity 0.8s ease 1.2s;
 }
 
-.orbit {
-  transform-origin: 0 0;
-  animation: orbit-swing var(--d, 28s) ease-in-out infinite alternate;
+.route__orb {
+  filter: drop-shadow(0 0 9px #ffffff) drop-shadow(0 0 16px #8f5cff);
 }
 
-.orbit circle {
-  filter: drop-shadow(0 0 7px currentColor);
-  transition: r 0.5s ease;
+.projects-hero.is-in .route__lines path { stroke-dashoffset: 0; }
+.projects-hero.is-in .route__stops circle,
+.projects-hero.is-in .route__end,
+.projects-hero.is-in .route__orb { opacity: 1; }
+
+.projects-hero.is-in .route__stops circle {
+  animation: route-pulse 3.4s ease-in-out infinite;
+}
+.projects-hero.is-in .route__stops circle:nth-child(2) { animation-delay: 0.5s; }
+.projects-hero.is-in .route__stops circle:nth-child(3) { animation-delay: 1s; }
+.projects-hero.is-in .route__stops circle:nth-child(4) { animation-delay: 1.5s; }
+.projects-hero.is-in .route__stops circle:nth-child(5) { animation-delay: 2s; }
+
+@keyframes route-pulse {
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
 }
 
-.projects-hero.is-moulding .orbit circle {
-  r: 10px;
+.route__ends {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0.4rem 0 0;
 }
 
-@keyframes orbit-swing {
-  from { transform: rotate(var(--from, -50deg)); }
-  to   { transform: rotate(var(--to, 50deg)); }
+.route__place {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  margin: 0;
+  max-width: 48%;
 }
 
-/* A soft glow behind the rings, centred on the top edge. */
-.projects-hero__art::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 0;
-  width: calc(var(--star) * 0.9);
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(circle, rgba(135, 71, 248, 0.34) 0, rgba(135, 71, 248, 0.12) 42%, transparent 68%);
+.route__place--a { align-items: flex-start; text-align: left; }
+.route__place--b { align-items: flex-end; text-align: right; }
+
+.route__city {
+  font-family: var(--font-script);
+  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  line-height: 1;
 }
 
-.projects-hero__statement {
-  position: relative;
-  max-width: min(36rem, 100%);
-  margin-inline: auto;
-  font-size: clamp(1.1rem, 2.1vw, 1.7rem);
-  font-weight: 700;
-  line-height: 1.34;
-  color: #f6f3fd;
-  text-shadow: 0 2px 22px rgba(10, 5, 40, 0.55);
+.route__place--a .route__city { color: #ffb4a8; }
+.route__place--b .route__city { color: #8ff1ff; }
+
+.route__where {
+  font-size: clamp(0.62rem, 1.1vw, 0.76rem);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(232, 230, 248, 0.7);
 }
 
-/* projects-board.js wraps each word so it can ride its arc. Hovering the
-   statement lets the words ease further into the star's curve. */
-.pword {
-  display: inline-block;
-  transform-origin: 50% 70%;
-  transition: transform 0.7s cubic-bezier(0.3, 0.9, 0.3, 1);
+/* The disciplines: the stops on the route, named. */
+.route__skills {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.5rem 0.6rem;
+  margin: clamp(1rem, 2.6vw, 1.6rem) 0 0;
+  padding: 0;
+  list-style: none;
 }
 
-.is-measuring .pword {
-  transition: none;
+.route__skills li {
+  padding: 0.35rem 0.85rem;
+  border-radius: 999px;
+  font-size: clamp(0.72rem, 1.2vw, 0.84rem);
+  font-weight: 600;
+  color: #efeaff;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
-.projects-hero__statement {
-  cursor: default;
-}
+/* No JavaScript (or reduced motion): the route simply shows, finished. */
+html:not(.js) .route__lines path,
+.projects-hero.is-static .route__lines path { stroke-dashoffset: 0; transition: none; }
+html:not(.js) .route__stops circle,
+html:not(.js) .route__end,
+html:not(.js) .route__orb,
+.projects-hero.is-static .route__stops circle,
+.projects-hero.is-static .route__end,
+.projects-hero.is-static .route__orb { opacity: 1; transition: none; }
 
 /* The emphasised words: Over the Rainbow, bigger (it's small and thin),
    each in its own soft gradient. */
@@ -2029,13 +2078,8 @@ h1, h2, h3, h4,
 
 /* ---------------- phones ---------------- */
 @media (max-width: 700px) {
-  /* Edge to edge: the hero's star and the board break out of the page's
-     margin, so the next card peeks in from the side and invites a swipe. */
-  .projects-hero {
-    max-width: none;
-    margin-inline: calc(var(--page-margin) * -1);
-  }
-
+  /* Edge to edge: the board breaks out of the page's margin, so the next
+     card peeks in from the side and invites a swipe. */
   .board {
     --card-w: min(64vw, 248px);
     --card-h: 352px;
@@ -2063,10 +2107,14 @@ h1, h2, h3, h4,
     white-space: nowrap;
   }
 
-  /* The half-star is wider than the screen, so its two lower points are
-     cut by the edges — more of a star-shaped glow behind the text. */
+  /* The banner: a little tighter, with the route's two city names stacked
+     small under its ends. */
   .projects-hero {
-    --star: 156vw;
+    border-radius: 24px;
+  }
+
+  .route__place {
+    max-width: 46%;
   }
 
   .projects-bar {

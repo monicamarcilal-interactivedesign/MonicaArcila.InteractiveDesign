@@ -233,39 +233,54 @@
          (the link) is where the reading happens. The section's id stays
          "case-studies" so existing links keep working. -->
     <div id="case-studies">
-      <!-- The hero: seven glowing rings (each a bundle of three thin lines,
-           like the landing page's connection curves) centred on the
-           section's top edge, so the edge cuts them in half. Five little
-           orbs swing along them, one per project category colour. The
-           opening statement is bent in concentric arcs over them and
-           eases further into the curve when hovered. The title follows. -->
-      <section class="projects-hero" aria-label="Projects introduction">
-        <div class="projects-hero__art" aria-hidden="true">
-          <svg class="projects-hero__rings" viewBox="-600 0 1200 600" focusable="false">
+      <!-- The hero is a banner for the one paragraph that says who I am as a
+           designer: design as a system, AI-driven flows, moving between
+           disciplines, and being in Aotearoa from Medellín. Under the
+           statement a route is drawn from Medellín to Wellington, with the
+           disciplines as stops along it (the same bundled-curve look as the
+           landing page). The route draws itself when the banner scrolls into
+           view; one orb travels it for ever. -->
+      <section class="projects-hero" id="projectsBanner" aria-label="Projects introduction">
+        <p class="projects-hero__statement" id="projectsStatement">I design <em class="pem pem--1">interactive experiences,</em> design systems and AI-driven workflows — <em class="pem pem--2">moving between</em> UX research, game design and immersive media, <em class="pem pem--3">from Medellín to Wellington.</em></p>
+
+        <div class="route" aria-hidden="true">
+          <svg class="route__svg" viewBox="0 0 1000 140" preserveAspectRatio="none" focusable="false">
             <defs>
-              <linearGradient id="ringGrad" gradientUnits="userSpaceOnUse" x1="-600" y1="0" x2="600" y2="0">
-                <stop offset="0" stop-color="#8f5cff"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#f887fa"/>
+              <linearGradient id="routeGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1000" y2="0">
+                <stop offset="0" stop-color="#fd7069"/><stop offset="0.35" stop-color="#f887fa"/><stop offset="0.7" stop-color="#8f5cff"/><stop offset="1" stop-color="#22d3ee"/>
               </linearGradient>
             </defs>
-            <g class="rings" fill="none" stroke="url(#ringGrad)">
-              <g style="opacity:0.91"><circle r="150" stroke-width="1.8"/><circle r="155" stroke-width="1.1"/><circle r="160" stroke-width="0.5"/></g>
-              <g style="opacity:0.82"><circle r="215" stroke-width="1.8"/><circle r="220" stroke-width="1.1"/><circle r="225" stroke-width="0.5"/></g>
-              <g style="opacity:0.73"><circle r="280" stroke-width="1.8"/><circle r="285" stroke-width="1.1"/><circle r="290" stroke-width="0.5"/></g>
-              <g style="opacity:0.64"><circle r="345" stroke-width="1.8"/><circle r="350" stroke-width="1.1"/><circle r="355" stroke-width="0.5"/></g>
-              <g style="opacity:0.55"><circle r="410" stroke-width="1.8"/><circle r="415" stroke-width="1.1"/><circle r="420" stroke-width="0.5"/></g>
-              <g style="opacity:0.46"><circle r="475" stroke-width="1.8"/><circle r="480" stroke-width="1.1"/><circle r="485" stroke-width="0.5"/></g>
-              <g style="opacity:0.37"><circle r="540" stroke-width="1.8"/><circle r="545" stroke-width="1.1"/><circle r="550" stroke-width="0.5"/></g>
+            <g class="route__lines" fill="none" stroke="url(#routeGrad)" stroke-linecap="round">
+              <path id="routeMain" pathLength="1" d="M30 120 C250 -10 750 -10 970 120" stroke-width="2.2"/>
+              <path pathLength="1" d="M30 120 C250 6 750 6 970 120" stroke-width="1.2" opacity="0.7"/>
+              <path pathLength="1" d="M30 120 C250 -26 750 -26 970 120" stroke-width="1" opacity="0.55"/>
             </g>
-            <g class="orbits">
-              <g class="orbit" style="--d:23s;--from:-62deg;--to:48deg"><circle cx="0" cy="215" r="7" fill="#4d7dff"/></g>
-              <g class="orbit" style="--d:31s;--from:55deg;--to:-58deg"><circle cx="0" cy="280" r="7" fill="#8f5cff"/></g>
-              <g class="orbit" style="--d:27s;--from:-40deg;--to:64deg"><circle cx="0" cy="345" r="7" fill="#f887fa"/></g>
-              <g class="orbit" style="--d:36s;--from:60deg;--to:-35deg"><circle cx="0" cy="410" r="7" fill="#22d3ee"/></g>
-              <g class="orbit" style="--d:29s;--from:-55deg;--to:42deg"><circle cx="0" cy="475" r="7" fill="#fd7069"/></g>
+            <g class="route__stops">
+              <circle cx="191" cy="57.6" r="5" fill="#f887fa"/>
+              <circle cx="340" cy="31.3" r="5" fill="#c58bff"/>
+              <circle cx="500" cy="22.5" r="5" fill="#8f5cff"/>
+              <circle cx="660" cy="31.3" r="5" fill="#4d7dff"/>
+              <circle cx="809" cy="57.6" r="5" fill="#22d3ee"/>
             </g>
+            <circle class="route__end route__end--a" cx="30" cy="120" r="9" fill="#fd7069"/>
+            <circle class="route__end route__end--b" cx="970" cy="120" r="9" fill="#22d3ee"/>
+            <circle class="route__orb" r="7" fill="#ffffff">
+              <animateMotion dur="11s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines="0.45 0 0.55 1"><mpath href="#routeMain"/></animateMotion>
+            </circle>
           </svg>
+          <div class="route__ends">
+            <p class="route__place route__place--a"><span class="route__city">Medellín</span><span class="route__where">Colombia · EAFIT</span></p>
+            <p class="route__place route__place--b"><span class="route__city">Wellington</span><span class="route__where">Aotearoa New Zealand · Te Herenga Waka</span></p>
+          </div>
         </div>
-        <p class="projects-hero__statement" id="projectsStatement">I design <em class="pem pem--1">interactive experiences,</em> design systems and AI-driven workflows — <em class="pem pem--2">moving between</em> UX research, game design and immersive media, <em class="pem pem--3">from Medellín to Wellington.</em></p>
+
+        <ul class="route__skills" aria-label="What I move between">
+          <li>Design systems</li>
+          <li>AI-driven workflows</li>
+          <li>UX research</li>
+          <li>Game design</li>
+          <li>Immersive media</li>
+        </ul>
       </section>
 
       <header class="projects-head">
@@ -349,7 +364,7 @@
             </li>
 
             <li class="pcard" data-category="immersive game featured" data-cat="immersive" data-cat2="game" data-featured>
-              <a class="pcard__link" href="project-nuris-greenhouse.html" data-video="assets/nuris-greenhouse/nuris-gameplay-excerpt.mp4">
+              <a class="pcard__link" href="project-nuris-greenhouse.html" data-video="assets/nuris-greenhouse/nuris-greenhouse-loop.mp4" data-loop="0,30">
                 <div class="pcard__media"><img src="assets/cards/nuris-greenhouse.jpg" alt="The final constellation dome: glowing golden threads forming a star map around a pale orb." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Nuri's Greenhouse</h3>
@@ -363,7 +378,7 @@
             </li>
 
             <li class="pcard" data-category="game featured" data-cat="game" data-featured>
-              <a class="pcard__link" href="project-meldiria.html" data-video="assets/meldiria/meldiria-trailer-excerpt.mp4">
+              <a class="pcard__link" href="project-meldiria.html" data-video="assets/meldiria/meldiria-loop.mp4" data-loop="0,30">
                 <div class="pcard__media"><img src="assets/cards/meldiria.jpg" alt="Personality quiz slide &quot;¿Qué personaje eres?&quot; showing five characters from the Meldiria universe." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Meldiria</h3>
@@ -377,7 +392,7 @@
             </li>
 
             <li class="pcard" data-category="ai ux featured" data-cat="ai" data-cat2="ux" data-featured>
-              <a class="pcard__link" href="project-designing-choices.html" data-video="assets/designing-choices/designing-choices-excerpt.mp4">
+              <a class="pcard__link" href="project-designing-choices.html" data-video="assets/designing-choices/designing-choices-loop.mp4" data-loop="0,30">
                 <div class="pcard__media"><img src="assets/cards/designing-choices.jpg" alt="A screen from the quiz, “The wedding china”, with a story prompt and three coloured choice buttons." loading="lazy" decoding="async" draggable="false" style="object-position: 50% 30%" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">What Kind of Animal Would You Be During a Life Crisis?</h3>
@@ -433,7 +448,7 @@
             </li>
 
             <li class="pcard" data-category="game" data-cat="game">
-              <a class="pcard__link" href="project-hansel-gretel.html" data-video="assets/hansel-gretel/hansel-gameplay-excerpt.mp4">
+              <a class="pcard__link" href="project-hansel-gretel.html" data-video="assets/hansel-gretel/hansel-gretel-loop.mp4" data-loop="0,30">
                 <div class="pcard__media"><img src="assets/cards/hansel-gretel.jpg" alt="A dark blue forest of silhouetted trees with glowing carved faces and two bats." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Hansel &amp; Gretel: Blood and Crumbs</h3>
@@ -475,7 +490,7 @@
             </li>
 
             <li class="pcard" data-category="motion" data-cat="motion">
-              <a class="pcard__link" href="project-capitanas-del-fuego.html" data-video="assets/capitanas-del-fuego/capitanas-visuals-excerpt.mp4">
+              <a class="pcard__link" href="project-capitanas-del-fuego.html" data-video="assets/capitanas-del-fuego/capitanas-loop.mp4" data-loop="0,30">
                 <div class="pcard__media"><img src="assets/cards/capitanas.jpg" alt="Title slide &quot;Las Capitanas del Fuego&quot;, an interactive audiovisual experience for a Dancehall and Sunset party, over a fiery gradient." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Capitanas del Fuego</h3>
