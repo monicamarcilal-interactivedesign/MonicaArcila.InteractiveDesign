@@ -78,20 +78,28 @@
         </div>
       </dl>
 
+      <!-- ===== THE 30-SECOND VERSION ===== -->
+      <ul class="pitch" aria-label="Summary of the project">
+        <li><span class="pitch__label">Context</span><p>A solo project for Generative Graphic Design (COMD 342) at Victoria University of Wellington, August 2026.</p></li>
+        <li><span class="pitch__label">Challenge</span><p>Design one prompt "recipe" that produces a whole grid with a shared identity, and avoid "10,000 bowls of oatmeal": outputs that differ in theory but look the same.</p></li>
+        <li><span class="pitch__label">Solution</span><p>Animals as portraits of wine in a gentle Burlesque style, controlled by constraining each repeated failure one at a time.</p></li>
+        <li><span class="pitch__label">Result</span><p>A grid where each animal and wine pairing is its own character within one staging system.</p></li>
+        <li><span class="pitch__label">Learning</span><p>Don't add more instructions. Find the failure that repeats and constrain only that.</p></li>
+      </ul>
+
       <!-- ===== PROBLEM ===== -->
       <section class="project__section">
         <h2 class="project__section-title">The problem</h2>
         <div class="project__description">
           <p>
-            The brief was to design a themed generative system — one prompt
-            "recipe" that could produce a whole grid of images sharing a
-            visual identity. The real problem underneath that is what Kate
-            Compton calls the "10,000 Bowls of Oatmeal" problem: a
-            generator can produce thousands of mathematically unique
-            outputs that a viewer still perceives as "a lot of oatmeal" —
-            differentiated in theory, but not distinct in practice. My
-            process ran directly into this.
+            <strong class="lede">A generator can make thousands of images that all look the same.</strong>
+            The brief was to design a themed generative system: one prompt
+            recipe that produces a grid of images with a shared identity.
+            Kate Compton calls the trap the "10,000 Bowls of Oatmeal"
+            problem: thousands of mathematically unique outputs that a
+            viewer still sees as "a lot of oatmeal".
           </p>
+          <p>My own process ran straight into it.</p>
         </div>
       </section>
 
@@ -100,8 +108,27 @@
         <h2 class="project__section-title">My role</h2>
         <div class="project__description">
           <p>
-            Solo project: I developed the concept, wrote and diagnosed every
-            iteration of the prompt, and curated the final grid.
+            <strong class="lede">Solo: concept, prompts, diagnosis and curation.</strong>
+            I developed the concept, wrote and diagnosed every iteration of
+            the prompt, and curated the final grid, all with Gemini.
+          </p>
+        </div>
+      </section>
+
+      <!-- ===== THE IDEA ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">The idea</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Animals as portraits of wine, in a Burlesque style.</strong>
+            It sits where three things I like meet: the variety of animal
+            species, wine, and the Burlesque aesthetic, which could give
+            each pairing a strong personality.
+          </p>
+          <p>
+            I moved the tone away from an early, flirtatious version
+            towards something gentler, closer to imagining a pet in a
+            costume than anything seductive.
           </p>
         </div>
       </section>
@@ -109,102 +136,64 @@
       <!-- ===== PROCESS ===== -->
       <section class="project__section">
         <h2 class="project__section-title">Process</h2>
-        <div class="project__description">
-          <p>
-            My concept turns animals into portraits of wine, staged in a
-            Burlesque aesthetic — sitting at the intersection of three
-            personal starting points: the sheer variety of animal species,
-            wine as one of my preferred drinks, and Burlesque as the
-            aesthetic most likely to give each animal-wine pairing a strong
-            sense of personality. I deliberately moved the tone away from
-            an early, more flirtatious framing and toward something
-            gentler — closer to imagining a pet in a costume than anything
-            seductive.
-          </p>
-          <p>
-            About fifteen prompt iterations in, my instinct was that being
-            highly specific — exact expressions, exact framing, exact
-            accessories — would give the model more to work with and
-            therefore produce more variety. The opposite happened:
-            over-specifying the character produced images that repeated the
-            same background, the same pose, and the same attempt to spell
-            the wine's name onto the animal, regardless of which animal or
-            wine I asked for.
-          </p>
-          <p>
-            The fix wasn't more detail — it was a change in what the detail
-            controlled. Instead of prescribing a fixed expression or scene,
-            I isolated each recurring failure point one at a time
-            (background repetition, pose repetition, literal text
-            appearing in the image) and added a narrow, targeted constraint
-            against just that failure, while leaving everything else — the
-            animal's specific personality, its exact posture — open for the
-            model to interpret. That shift, from prescribing the outcome to
-            constraining the failure modes, is what let each animal read as
-            a distinct character instead of a re-used template.
-          </p>
-          <p>
-            The same logic shaped the final prompt's anatomy constraint:
-            "the animal's natural anatomy must not be changed more than
-            80%." I wanted the animals to stay recognisable, real creatures
-            rather than fully invented mascots, so the constraint gives the
-            model a defined, non-zero margin (roughly 20%) to interpret
-            personality through physical detail — instead of leaving
-            "realism" as an unmeasurable, subjective instruction. Framing it
-            as a percentage made it something I could actually check the
-            output against.
-          </p>
-          <p>
-            One specific, testable example: an earlier version of the
-            prompt was missing the line "avoid at all costs including
-            letters or words in the animal" — and, tested on a tortoise
-            embodying a bottle of Port, produced a shell lettered with
-            "VINTAGE PORT" and "BURLESQUE." Adding that single explicit
-            constraint fixed it: the same tortoise, same props (a vest, a
-            chair, a gramophone), but with personality carried entirely
-            through pose and staging instead of text.
-          </p>
-        </div>
-      </section>
-
-      <!-- ===== SOLUTION ===== -->
-      <section class="project__section">
-        <h2 class="project__section-title">Solution</h2>
-        <div class="project__description">
-          <p>
-            The final recipe: <em>"…generate a quite unrealistic image of
-            an [animal] embodying and expressing in their character a
-            bottle of [wine] wine… soft diffused lighting, velvet drapery,
-            warm gold and deep red tones, vintage cabaret staging… the
-            animal's natural anatomy must not be changed more than 80%, it
-            must be recognisable, so no forced facial expressions or human
-            features… avoid at all costs including letters or words…
-            personality is expressed through pose, props and attitude, not
-            through altering the animal's face."</em> Two variables —
-            animal and wine — run through one fixed staging system.
-          </p>
-        </div>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">More detail made it worse</span>
+            <p>About fifteen prompts in, I thought being very specific (exact expressions, framing, accessories) would give more variety. The opposite happened: the images repeated the same background, the same pose and the same attempt to spell the wine's name on the animal.</p>
+          </li>
+          <li>
+            <span class="step__date">Constrain the failures, not the outcome</span>
+            <p>I isolated each repeated failure (background, pose, literal text) and added a narrow constraint against just that one, leaving the animal's personality and posture open for the model to interpret.</p>
+          </li>
+          <li>
+            <span class="step__date">Make "realistic" measurable</span>
+            <p>"The animal's natural anatomy must not be changed more than 80%." The animals stay recognisable, with a defined margin of about 20% to show personality through physical detail. A percentage is something I could check the output against.</p>
+          </li>
+          <li>
+            <span class="step__date">One test, one line</span>
+            <p>Tested on a tortoise embodying a bottle of Port, an earlier version put lettering on the shell. Adding "avoid at all costs including letters or words in the animal" fixed it: same tortoise, same props (a vest, a chair, a gramophone), with personality carried by pose and staging.</p>
+          </li>
+        </ol>
+        <details class="more">
+          <summary>The final recipe</summary>
+          <div class="more__body">
+            <p>
+              "…generate a quite unrealistic image of an [animal] embodying
+              and expressing in their character a bottle of [wine] wine…
+              soft diffused lighting, velvet drapery, warm gold and deep red
+              tones, vintage cabaret staging… the animal's natural anatomy
+              must not be changed more than 80%, it must be recognisable, so
+              no forced facial expressions or human features… avoid at all
+              costs including letters or words… personality is expressed
+              through pose, props and attitude, not through altering the
+              animal's face." Two variables, animal and wine, run through
+              one fixed staging system.
+            </p>
+          </div>
+        </details>
       </section>
 
       <!-- ===== RESULT ===== -->
       <section class="project__section">
         <h2 class="project__section-title">Result &amp; reflection</h2>
+        <ul class="stats">
+          <li><strong>~15</strong><span>prompt iterations before the fix</span></li>
+          <li><strong>2</strong><span>variables: animal and wine</span></li>
+          <li><strong>80%</strong><span>cap on changing the animal's anatomy</span></li>
+          <li><strong>1</strong><span>line removed the lettering</span></li>
+        </ul>
         <div class="project__description">
           <p>
-            I consider the final grid a strong resolution of the brief I set
-            for myself: each animal-wine pairing is recognisable as the
-            same animal, staged in one coherent Burlesque system, while
-            still carrying its own distinct idea — a porcupine reclining
-            like royalty, a cobra in a top hat, a jaguar draped over velvet,
-            a chameleon holding a cocktail glass — rather than blending into
-            the rest of the set.
+            <strong class="lede">Each pairing reads as the same kind of animal, in one coherent Burlesque system.</strong>
+            Each still carries its own idea: a porcupine reclining like
+            royalty, a cobra in a top hat, a jaguar draped over velvet, a
+            chameleon holding a cocktail glass.
           </p>
           <p>
-            The clearest lesson was that fixing a generative-design problem
-            like "10,000 Bowls of Oatmeal" isn't about adding more
-            instructions — it's about finding exactly which failure mode is
-            repeating and constraining only that, one at a time, and
-            checking each fix against a visible before/after result.
+            The clearest lesson: fixing a "10,000 Bowls of Oatmeal" problem
+            isn't about more instructions. It's about finding exactly which
+            failure repeats, constraining only that, and checking each fix
+            against a visible before and after.
           </p>
         </div>
       </section>
@@ -213,7 +202,9 @@
       <section class="project__section">
         <h2 class="project__section-title">Tools &amp; software</h2>
         <ul class="tag-list">
-          <li class="tag">Gemini</li>
+          <li class="tag">Gemini (3.6 Extended Thinking)</li>
+          <li class="tag">Prompt design</li>
+          <li class="tag">Generative systems</li>
         </ul>
       </section>
 
