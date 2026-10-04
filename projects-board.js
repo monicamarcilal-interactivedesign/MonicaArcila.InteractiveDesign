@@ -55,14 +55,36 @@ function initHero() {
   const stops = Array.from(hero.querySelectorAll(".route__stops circle"));
   const links = Array.from(hero.querySelectorAll(".route__links line"));
   const chips = Array.from(hero.querySelectorAll(".route__skills li"));
+  const labels = Array.from(hero.querySelectorAll(".route__labels text"));
   const lightAll = (on) => {
     stops.forEach((s, i) => {
       s.classList.toggle("is-lit", on);
       s.style.color = s.getAttribute("fill");
       if (links[i]) links[i].classList.toggle("is-lit", on);
       if (chips[i]) chips[i].classList.toggle("is-lit", on);
+      if (labels[i]) labels[i].classList.toggle("is-lit", on);
     });
   };
+
+  // Seat each label exactly under its point: find how far along the label
+  // path the point's x position is, and start the (centred) text there.
+  const lp = hero.querySelector("#routeLabelPath");
+  if (lp && lp.getTotalLength) {
+    const lpLen = lp.getTotalLength();
+    stops.forEach((s, i) => {
+      const tp = labels[i] && labels[i].querySelector("textPath");
+      if (!tp) return;
+      const x = +s.getAttribute("cx");
+      let lo = 0;
+      let hi = lpLen;
+      for (let k = 0; k < 24; k++) {
+        const mid = (lo + hi) / 2;
+        if (lp.getPointAtLength(mid).x < x) lo = mid;
+        else hi = mid;
+      }
+      tp.setAttribute("startOffset", `${((lo / lpLen) * 100).toFixed(2)}%`);
+    });
+  }
 
   if (reduced || !("IntersectionObserver" in window) || !main || !main.getTotalLength) {
     hero.classList.add("is-static");
@@ -111,6 +133,7 @@ function initHero() {
         stops[lit].style.color = stops[lit].getAttribute("fill");
         if (links[lit]) links[lit].classList.add("is-lit");
         if (chips[lit]) chips[lit].classList.add("is-lit");
+        if (labels[lit]) labels[lit].classList.add("is-lit");
         lit++;
       }
     } else if (t < TRAVEL + HOLD) {
@@ -165,6 +188,18 @@ function initBannerNav() {
   if (!hero) return;
   const header = document.querySelector(".site-header");
   let queued = false;
+  // The banner is exactly one screen tall and starts at the very top of the
+  // page, whatever the window size or top-bar height: measure where it
+  // naturally sits, pull it up by that much, and make it as tall as the
+  // window, so its line is always at the bottom edge of the screen.
+  const fit = () => {
+    if (hero.offsetParent === null) return;
+    hero.style.marginTop = "0px";
+    const natural = hero.getBoundingClientRect().top + window.scrollY;
+    hero.style.marginTop = `${-natural}px`;
+    hero.style.minHeight = `${window.innerHeight}px`;
+    hero.style.setProperty("--top", `${natural}px`);
+  };
   const update = () => {
     queued = false;
     const h = header ? header.offsetHeight : 0;
@@ -179,8 +214,18 @@ function initBannerNav() {
     requestAnimationFrame(update);
   };
   window.addEventListener("scroll", queue, { passive: true });
-  window.addEventListener("resize", queue);
-  if (window.ResizeObserver) new ResizeObserver(queue).observe(hero);
+  window.addEventListener("resize", () => {
+    fit();
+    queue();
+  });
+  if (window.ResizeObserver) {
+    new ResizeObserver(() => {
+      fit();
+      queue();
+    }).observe(hero);
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
+  fit();
   update();
 }
 
