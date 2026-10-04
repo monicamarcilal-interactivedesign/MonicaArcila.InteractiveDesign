@@ -233,13 +233,37 @@
          (the link) is where the reading happens. The section's id stays
          "case-studies" so existing links keep working. -->
     <div id="case-studies">
-      <!-- The hero: the Projects orb's star, enlarged and cut in half by the
-           section's top edge (as in Mónica's reference), with the opening
-           statement bent over its lower half in concentric arcs around the
-           star's centre. The title comes after the star. -->
+      <!-- The hero: seven glowing rings (each a bundle of three thin lines,
+           like the landing page's connection curves) centred on the
+           section's top edge, so the edge cuts them in half. Five little
+           orbs swing along them, one per project category colour. The
+           opening statement is bent in concentric arcs over them and
+           eases further into the curve when hovered. The title follows. -->
       <section class="projects-hero" aria-label="Projects introduction">
         <div class="projects-hero__art" aria-hidden="true">
-          <img class="projects-hero__shape" src="assets/site/orb-case-studies.png" alt="" />
+          <svg class="projects-hero__rings" viewBox="-600 0 1200 600" focusable="false">
+            <defs>
+              <linearGradient id="ringGrad" gradientUnits="userSpaceOnUse" x1="-600" y1="0" x2="600" y2="0">
+                <stop offset="0" stop-color="#8f5cff"/><stop offset="0.5" stop-color="#22d3ee"/><stop offset="1" stop-color="#f887fa"/>
+              </linearGradient>
+            </defs>
+            <g class="rings" fill="none" stroke="url(#ringGrad)">
+              <g style="opacity:0.91"><circle r="150" stroke-width="1.8"/><circle r="155" stroke-width="1.1"/><circle r="160" stroke-width="0.5"/></g>
+              <g style="opacity:0.82"><circle r="215" stroke-width="1.8"/><circle r="220" stroke-width="1.1"/><circle r="225" stroke-width="0.5"/></g>
+              <g style="opacity:0.73"><circle r="280" stroke-width="1.8"/><circle r="285" stroke-width="1.1"/><circle r="290" stroke-width="0.5"/></g>
+              <g style="opacity:0.64"><circle r="345" stroke-width="1.8"/><circle r="350" stroke-width="1.1"/><circle r="355" stroke-width="0.5"/></g>
+              <g style="opacity:0.55"><circle r="410" stroke-width="1.8"/><circle r="415" stroke-width="1.1"/><circle r="420" stroke-width="0.5"/></g>
+              <g style="opacity:0.46"><circle r="475" stroke-width="1.8"/><circle r="480" stroke-width="1.1"/><circle r="485" stroke-width="0.5"/></g>
+              <g style="opacity:0.37"><circle r="540" stroke-width="1.8"/><circle r="545" stroke-width="1.1"/><circle r="550" stroke-width="0.5"/></g>
+            </g>
+            <g class="orbits">
+              <g class="orbit" style="--d:23s;--from:-62deg;--to:48deg"><circle cx="0" cy="215" r="7" fill="#4d7dff"/></g>
+              <g class="orbit" style="--d:31s;--from:55deg;--to:-58deg"><circle cx="0" cy="280" r="7" fill="#8f5cff"/></g>
+              <g class="orbit" style="--d:27s;--from:-40deg;--to:64deg"><circle cx="0" cy="345" r="7" fill="#f887fa"/></g>
+              <g class="orbit" style="--d:36s;--from:60deg;--to:-35deg"><circle cx="0" cy="410" r="7" fill="#22d3ee"/></g>
+              <g class="orbit" style="--d:29s;--from:-55deg;--to:42deg"><circle cx="0" cy="475" r="7" fill="#fd7069"/></g>
+            </g>
+          </svg>
         </div>
         <p class="projects-hero__statement" id="projectsStatement">I design <em class="pem pem--1">interactive experiences,</em> design systems and AI-driven workflows — <em class="pem pem--2">moving between</em> UX research, game design and immersive media, <em class="pem pem--3">from Medellín to Wellington.</em></p>
       </section>
@@ -325,7 +349,7 @@
             </li>
 
             <li class="pcard" data-category="immersive game featured" data-cat="immersive" data-cat2="game" data-featured>
-              <a class="pcard__link" href="project-nuris-greenhouse.html">
+              <a class="pcard__link" href="project-nuris-greenhouse.html" data-video="assets/nuris-greenhouse/nuris-gameplay-excerpt.mp4">
                 <div class="pcard__media"><img src="assets/cards/nuris-greenhouse.jpg" alt="The final constellation dome: glowing golden threads forming a star map around a pale orb." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Nuri's Greenhouse</h3>
@@ -339,7 +363,7 @@
             </li>
 
             <li class="pcard" data-category="game featured" data-cat="game" data-featured>
-              <a class="pcard__link" href="project-meldiria.html">
+              <a class="pcard__link" href="project-meldiria.html" data-video="assets/meldiria/meldiria-trailer-excerpt.mp4">
                 <div class="pcard__media"><img src="assets/cards/meldiria.jpg" alt="Personality quiz slide &quot;¿Qué personaje eres?&quot; showing five characters from the Meldiria universe." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Meldiria</h3>
@@ -353,7 +377,7 @@
             </li>
 
             <li class="pcard" data-category="ai ux featured" data-cat="ai" data-cat2="ux" data-featured>
-              <a class="pcard__link" href="project-designing-choices.html">
+              <a class="pcard__link" href="project-designing-choices.html" data-video="assets/designing-choices/designing-choices-excerpt.mp4">
                 <div class="pcard__media"><img src="assets/cards/designing-choices.jpg" alt="A screen from the quiz, “The wedding china”, with a story prompt and three coloured choice buttons." loading="lazy" decoding="async" draggable="false" style="object-position: 50% 30%" /><span class="pcard__pill">Featured</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">What Kind of Animal Would You Be During a Life Crisis?</h3>
@@ -409,7 +433,7 @@
             </li>
 
             <li class="pcard" data-category="game" data-cat="game">
-              <a class="pcard__link" href="project-hansel-gretel.html">
+              <a class="pcard__link" href="project-hansel-gretel.html" data-video="assets/hansel-gretel/hansel-gameplay-excerpt.mp4">
                 <div class="pcard__media"><img src="assets/cards/hansel-gretel.jpg" alt="A dark blue forest of silhouetted trees with glowing carved faces and two bats." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Hansel &amp; Gretel: Blood and Crumbs</h3>
@@ -451,7 +475,7 @@
             </li>
 
             <li class="pcard" data-category="motion" data-cat="motion">
-              <a class="pcard__link" href="project-capitanas-del-fuego.html">
+              <a class="pcard__link" href="project-capitanas-del-fuego.html" data-video="assets/capitanas-del-fuego/capitanas-visuals-excerpt.mp4">
                 <div class="pcard__media"><img src="assets/cards/capitanas.jpg" alt="Title slide &quot;Las Capitanas del Fuego&quot;, an interactive audiovisual experience for a Dancehall and Sunset party, over a fiery gradient." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Capitanas del Fuego</h3>

@@ -1236,14 +1236,13 @@ h1, h2, h3, h4,
 }
 
 /* ---------------- the hero ----------------
-   The Projects orb's star, enlarged, with its centre exactly on the
-   section's top edge — so the edge cuts it in half and the lower half
-   hangs into the page (Mónica's reference). The statement sits over that
-   lower half, bent in arcs around the star's centre (projects-board.js);
-   the title comes after the star. No outline, no fade: the shape is shown
-   as it is. --rot is set from the page scroll. */
+   Seven glowing rings centred exactly on the section's top edge, so the
+   edge cuts them in half and the lower half hangs into the page. Five
+   small orbs (one per category colour) swing along them. The statement is
+   bent in concentric arcs around the same centre (projects-board.js) and
+   eases further into the curve while hovered; the title comes after. */
 .projects-hero {
-  --star: min(112vw, 1080px);
+  --star: min(112vw, 1080px); /* sizes the half-circle of rings */
   position: relative;
   isolation: isolate;
   max-width: 1280px;
@@ -1259,21 +1258,50 @@ h1, h2, h3, h4,
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  -webkit-mask-image: linear-gradient(180deg, #000 62%, transparent 96%);
+  mask-image: linear-gradient(180deg, #000 62%, transparent 96%);
 }
 
-.projects-hero__shape {
+.projects-hero__rings {
   position: absolute;
   left: 50%;
   top: 0;
-  width: var(--star);
+  width: calc(var(--star) * 1.1);
   max-width: none;
   height: auto;
-  aspect-ratio: 1;
-  transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
-  will-change: transform;
+  transform: translateX(-50%);
+  overflow: visible;
 }
 
-/* A soft glow behind the star that does not turn with it. */
+.projects-hero__rings .rings {
+  opacity: 0.8;
+  transition: opacity 0.6s ease;
+}
+
+.projects-hero.is-moulding .projects-hero__rings .rings {
+  opacity: 1;
+}
+
+.orbit {
+  transform-origin: 0 0;
+  animation: orbit-swing var(--d, 28s) ease-in-out infinite alternate;
+}
+
+.orbit circle {
+  filter: drop-shadow(0 0 7px currentColor);
+  transition: r 0.5s ease;
+}
+
+.projects-hero.is-moulding .orbit circle {
+  r: 10px;
+}
+
+@keyframes orbit-swing {
+  from { transform: rotate(var(--from, -50deg)); }
+  to   { transform: rotate(var(--to, 50deg)); }
+}
+
+/* A soft glow behind the rings, centred on the top edge. */
 .projects-hero__art::before {
   content: "";
   position: absolute;
@@ -1284,17 +1312,6 @@ h1, h2, h3, h4,
   transform: translate(-50%, -50%);
   background: radial-gradient(circle, rgba(135, 71, 248, 0.34) 0, rgba(135, 71, 248, 0.12) 42%, transparent 68%);
 }
-
-/* The star's outline, hidden until the pointer is over the statement. */
-.star__edge {
-  opacity: 0;
-  transition: opacity 0.6s ease;
-}
-
-.projects-hero.is-moulding .star__edge {
-  opacity: 0.95;
-}
-
 
 .projects-hero__statement {
   position: relative;

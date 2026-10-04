@@ -5,8 +5,8 @@
 
    1. THE HERO. The opening statement is split into words and each word
       is nudged up along a gentle arc (and tilted to follow it), so the
-      paragraph looks bent over the big star behind it. The star turns a
-      little as you scroll.
+      paragraph looks bent over the rings behind it. The rings glow
+      when you hover the text.
 
    2. THE BOARD. One card per project, laid out in a balanced grid that
       is bigger than the window. You drag it around:
@@ -68,93 +68,18 @@ function splitWords() {
   words = Array.from(statement.querySelectorAll(".pword"));
 }
 
-// The star is a vector now (drawn here as SVG, so it stays razor sharp at
-// any size and its lines can react to the pointer). It is a six-pointed
-// star made of many nested outlines, each turned a little further than the
-// last, which is what gives it the twisting, string-art spiral.
-function buildStar() {
-  const art = hero && hero.querySelector(".projects-hero__art");
-  const old = art && art.querySelector(".projects-hero__shape");
-  if (!art || !old || art.querySelector("svg")) return;
-  const NS = "http://www.w3.org/2000/svg";
-  const R = 240;
-  const r = R / Math.sqrt(3);
-  const outline = (scale, turn) => {
-    const pts = [];
-    for (let k = 0; k < 12; k++) {
-      const a = ((-90 + k * 30) * Math.PI) / 180 + turn;
-      const d = (k % 2 === 0 ? R : r) * scale;
-      pts.push(`${(Math.cos(a) * d).toFixed(1)},${(Math.sin(a) * d).toFixed(1)}`);
-    }
-    return pts.join(" ");
-  };
-
-  const svg = document.createElementNS(NS, "svg");
-  svg.setAttribute("viewBox", "-250 -250 500 500");
-  svg.setAttribute("class", "projects-hero__shape");
-  svg.setAttribute("aria-hidden", "true");
-  svg.setAttribute("focusable", "false");
-
-  let layers = `
-    <defs>
-      <radialGradient id="starFill" r="0.5">
-        <stop offset="0" stop-color="#d9ccff"/>
-        <stop offset="0.12" stop-color="#9b82ff"/>
-        <stop offset="0.45" stop-color="#4a28b8"/>
-        <stop offset="1" stop-color="#2a1479"/>
-      </radialGradient>
-      <clipPath id="starClip"><polygon points="${outline(1, 0)}"/></clipPath>
-      <linearGradient id="starEdge" x1="0" y1="0" x2="1" y2="1">
-        <stop offset="0" stop-color="#cdbbff"/>
-        <stop offset="1" stop-color="#8aa4ff"/>
-      </linearGradient>
-    </defs>
-    <polygon points="${outline(1, 0)}" fill="url(#starFill)"/>`;
-
-  // Nested outlines, each smaller and turned a little more.
-  const N = 46;
-  layers += '<g clip-path="url(#starClip)"><g fill="none" stroke="#c9b6ff" stroke-width="0.8" stroke-linejoin="round" class="star__lines">';
-  for (let i = 0; i < N; i++) {
-    const t = i / N;
-    const scale = 1 - t * 0.96;
-    const turn = t * 1.9;
-    layers += `<polygon points="${outline(scale, turn)}" opacity="${(0.08 + 0.22 * (1 - t)).toFixed(2)}"/>`;
-  }
-  layers += "</g></g>";
-
-  // Six soft spiral arms flowing from the centre.
-  layers += '<g fill="none" stroke-linecap="round" class="star__arms">';
-  for (let k = 0; k < 6; k++) {
-    let d = "";
-    for (let s = 0; s <= 40; s++) {
-      const rad = (s / 40) * 150;
-      const a = (k * Math.PI) / 3 + rad * 0.024;
-      d += `${s ? "L" : "M"}${(Math.cos(a) * rad).toFixed(1)},${(Math.sin(a) * rad).toFixed(1)}`;
-    }
-    layers += `<path d="${d}" stroke="#efe8ff" stroke-width="2.6" opacity="0.5"/>`;
-    layers += `<path d="${d}" stroke="#b79cff" stroke-width="16" opacity="0.16"/>`;
-  }
-  layers += "</g>";
-
-  // The outline that lights up when the pointer is over the statement.
-  layers += `<polygon class="star__edge" points="${outline(1, 0)}" fill="none" stroke="url(#starEdge)" stroke-width="1.6" stroke-linejoin="round"/>`;
-
-  svg.innerHTML = layers;
-  old.replaceWith(svg);
-}
-
-// The star behind the statement is centred on the section's top edge, so
+// The rings behind the statement are centred on the section's top edge, so
 // the text is bent as rings around that centre: each line curves like an
 // arc of a circle (ends lifted, middle lowest), the lines nearest the
 // centre curving more and the ones further out flatter — concentric, like
-// the spiral behind them. Gentle on purpose (readability comes first),
+// the rings behind them. Gentle on purpose (readability comes first),
 // applied per word so line breaking is untouched, and deliberately not
 // scaled: a scaled word grows over the space beside it and the words run
 // together.
 //
 // measureWords() works out where every word sits (once per layout);
 // shapeWords(mould) turns that into the arcs. Hovering the statement raises
-// `mould`, so the words ease further into the star's curve.
+// `mould`, so the words ease further into the rings' curve.
 let wordGeo = [];
 let mould = 1;
 
@@ -209,7 +134,6 @@ function setMould(on) {
 
 function initHero() {
   if (!hero || !statement) return;
-  buildStar();
   splitWords();
   measureWords();
   // Re-measure whenever the paragraph's size changes — including the moment
@@ -235,25 +159,6 @@ function initHero() {
       tapTimer = window.setTimeout(() => setMould(false), 2600);
     });
   }
-
-  if (reduced) return;
-  // The star turns a little with the page scroll.
-  let ticking = false;
-  const spin = () => {
-    ticking = false;
-    hero.style.setProperty("--rot", `${(window.scrollY * 0.07).toFixed(2)}deg`);
-  };
-  window.addEventListener(
-    "scroll",
-    () => {
-      if (!ticking) {
-        ticking = true;
-        requestAnimationFrame(spin);
-      }
-    },
-    { passive: true }
-  );
-  spin();
 }
 
 /* -------------------------------------------------------------
@@ -757,12 +662,13 @@ if ("IntersectionObserver" in window) {
 }
 
 /* ---- cards that have a video: the video is the card's main picture ----
-   The still stays as the poster. On a mouse the clip plays (muted, looped)
-   while you hover or focus the card; on touch screens the card that is
-   mostly in view plays. Clips start loading only when they are wanted
-   (they're large), and they stay still if the visitor prefers reduced
-   motion or has Data Saver on. A clip that can't load is simply dropped,
-   leaving the picture. */
+   Once the section is on screen, every card that is in view plays its clip
+   (muted, on a loop); a card that scrolls or drags out of view pauses, so
+   only what you can see is working. The still stays as the poster until
+   the clip is really playing. Each clip loops just a short stretch of the
+   video (data-loop="start,end" in seconds, default 2 to 9), so only a few
+   seconds are ever streamed. Skipped for reduced motion and Data Saver,
+   and a clip that can't load is dropped, leaving the picture. */
 const clips = [];
 cards.concat(researchCards).forEach((card) => {
   const link = card.querySelector("[data-video]");
@@ -773,7 +679,8 @@ cards.concat(researchCards).forEach((card) => {
   badge.setAttribute("aria-hidden", "true");
   badge.textContent = "Video";
   media.appendChild(badge);
-  clips.push({ card, link, media, badge, video: null, timer: 0, broken: false });
+  const span = (link.dataset.loop || "2,9").split(",").map(Number);
+  clips.push({ card, link, media, badge, video: null, broken: false, from: span[0] || 0, to: span[1] || 9 });
 });
 
 const saveData = !!(navigator.connection && navigator.connection.saveData);
@@ -784,15 +691,25 @@ function playClip(clip) {
     const v = document.createElement("video");
     v.className = "pcard__video";
     v.muted = true;
-    v.loop = true;
-    v.preload = "none";
+    v.preload = "metadata";
     v.setAttribute("muted", "");
     v.setAttribute("playsinline", "");
     v.setAttribute("aria-hidden", "true");
     v.tabIndex = -1;
     const still = clip.media.querySelector("img");
     if (still && still.style.objectPosition) v.style.objectPosition = still.style.objectPosition;
+    v.addEventListener("loadedmetadata", () => {
+      // Start the loop part-way in (the first seconds are often a title or a black frame).
+      v.currentTime = Math.min(clip.from, Math.max(0, (v.duration || clip.from) - 1));
+    });
     v.addEventListener("playing", () => clip.media.classList.add("is-playing"));
+    v.addEventListener("timeupdate", () => {
+      if (v.currentTime >= Math.min(clip.to, v.duration || clip.to) - 0.05) v.currentTime = clip.from;
+    });
+    v.addEventListener("ended", () => {
+      v.currentTime = clip.from;
+      v.play().catch(() => {});
+    });
     v.addEventListener("error", () => {
       clip.broken = true;
       clip.media.classList.remove("is-playing");
@@ -809,43 +726,22 @@ function playClip(clip) {
 }
 
 function stopClip(clip) {
-  clearTimeout(clip.timer);
   if (!clip.video) return;
   clip.video.pause();
-  clip.media.classList.remove("is-playing");
 }
 
-const hoverDevice = window.matchMedia("(hover: hover)").matches;
-clips.forEach((clip) => {
-  if (hoverDevice) {
-    clip.card.addEventListener("pointerenter", (e) => {
-      if (e.pointerType !== "mouse") return;
-      clearTimeout(clip.timer);
-      clip.timer = window.setTimeout(() => playClip(clip), 220);
-    });
-    clip.card.addEventListener("pointerleave", () => stopClip(clip));
-  }
-  clip.card.addEventListener("focusin", () => playClip(clip));
-  clip.card.addEventListener("focusout", () => stopClip(clip));
-});
-
-if (!hoverDevice && "IntersectionObserver" in window) {
-  const ratios = new Map();
-  let current = null;
+if ("IntersectionObserver" in window) {
+  // Observed against the page's viewport; the board's clipping is counted,
+  // so a card dragged out of the board counts as out of view.
   const vio = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((en) => ratios.set(en.target, en.intersectionRatio));
-      let best = null;
-      clips.forEach((c) => {
-        const r = ratios.get(c.card) || 0;
-        if (r >= 0.7 && (!best || r > (ratios.get(best.card) || 0))) best = c;
-      });
-      if (best === current) return;
-      if (current) stopClip(current);
-      current = best;
-      if (current) playClip(current);
-    },
-    { threshold: [0, 0.3, 0.5, 0.7, 0.9, 1] }
+    (entries) =>
+      entries.forEach((en) => {
+        const clip = clips.find((c) => c.card === en.target);
+        if (!clip) return;
+        if (en.isIntersecting) playClip(clip);
+        else stopClip(clip);
+      }),
+    { threshold: 0.35 }
   );
   clips.forEach((c) => vio.observe(c.card));
 }
@@ -853,6 +749,7 @@ if (!hoverDevice && "IntersectionObserver" in window) {
 document.addEventListener("visibilitychange", () => {
   if (document.hidden) clips.forEach(stopClip);
 });
+
 // Duplicate each skills list once so the banner can loop seamlessly.
 cards.concat(researchCards).forEach((card) => {
   const wrap = card.querySelector(".pcard__skills");
