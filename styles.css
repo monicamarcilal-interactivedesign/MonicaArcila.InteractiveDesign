@@ -1224,7 +1224,7 @@ h1, h2, h3, h4,
   --hue: 270;
   position: relative;
   isolation: isolate;
-  overflow: hidden;
+  /* not overflow:hidden: the sun on the photo's corner must never be cut off */
   padding: clamp(1.4rem, 4vw, 3rem);
 }
 
@@ -1234,7 +1234,9 @@ h1, h2, h3, h4,
    the card. */
 .about-card__glow {
   position: absolute;
-  inset: -10%;
+  inset: 0;
+  border-radius: inherit;
+  clip-path: inset(0 round var(--glass-radius)); /* the glow stays inside the card, the sun does not */
   z-index: -2;
   pointer-events: none;
   opacity: 0;
@@ -1258,10 +1260,10 @@ h1, h2, h3, h4,
    photo or over the sun itself (script.js adds .is-glint for the photo). */
 .about-card__sun {
   position: absolute;
-  z-index: 3;
+  z-index: 20; /* on top of everything in the card */
   left: 0;
   bottom: 0;
-  width: 38%;
+  width: 30%;
   max-width: none;
   translate: -50% 50%;
   filter: drop-shadow(0 0 10px rgba(255, 190, 70, 0.35));
