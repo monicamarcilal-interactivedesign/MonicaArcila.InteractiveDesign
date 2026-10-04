@@ -757,7 +757,8 @@ cards.concat(researchCards).forEach((card) => {
   clips.push({ card, link, media, badge, video: null, broken: false, from: span[0] || 0, to: span[1] || 9 });
 });
 
-const saveData = !!(navigator.connection && navigator.connection.saveData);
+// ?novideo in the address keeps the clips off (handy when testing layout).
+const saveData = !!(navigator.connection && navigator.connection.saveData) || /[?&]novideo/.test(location.search);
 
 function playClip(clip) {
   if (reduced || saveData || clip.broken) return;

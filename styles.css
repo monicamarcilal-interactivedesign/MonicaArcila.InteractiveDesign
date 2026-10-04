@@ -1328,7 +1328,7 @@ body.is-banner .growth-trail {
 .projects-hero__statement {
   max-width: 62rem;
   margin: 0 auto;
-  font-size: clamp(1.15rem, 2.15vw, 1.8rem);
+  font-size: clamp(1.1rem, min(2.15vw, 3.8vh), 1.8rem);
   font-weight: 700;
   line-height: 1.34;
   letter-spacing: -0.01em;
@@ -1369,7 +1369,9 @@ body.is-banner .growth-trail {
 /* ----- the route ----- */
 .route {
   position: relative;
-  margin: clamp(0.8rem, 2.4vw, 1.6rem) auto 0;
+  /* The statement is its own block; the graphic (route, skills, cities) is a
+     second block, held together and set well apart from the statement. */
+  margin: clamp(2rem, 9vh, 5rem) auto 0;
   max-width: 1150px;
 }
 
@@ -1378,6 +1380,7 @@ body.is-banner .growth-trail {
   width: 100%;
   height: auto;
   aspect-ratio: 1000 / 150;
+  margin-bottom: -2.4%; /* trims the empty strip under the curve's ends so the cities sit close to their dots */
   overflow: visible;
 }
 
@@ -1512,24 +1515,60 @@ body.is-banner .growth-trail {
 /* Narrow screens: the curve is too small for text on it, so the labels
    become a quiet wrapped line under the route (still lighting in turn). */
 @media (max-width: 900px) {
+  .projects-hero__statement {
+    font-size: clamp(1.2rem, min(3.6vw, 4vh), 1.9rem);
+  }
+
+  .projects-hero__from {
+    font-size: clamp(1.15rem, min(3.4vw, 3.8vh), 1.8rem);
+  }
+
+  /* The curve is too small for text on it, so the skills become a short
+     centred line. Order on the screen: curve, then the two cities right
+     under their dots, then the skills held close beneath. */
+  .route {
+    display: flex;
+    flex-direction: column;
+    margin-top: clamp(2rem, 7vh, 3.2rem);
+  }
+
+  .route__svg {
+    margin-bottom: -4.5%;
+  }
+
   .route__labels {
     display: none;
   }
 
+  .route__ends {
+    order: 2;
+    margin-top: 0.5rem;
+  }
+
   .route__skills {
+    order: 3;
     position: static;
     width: auto;
     height: auto;
-    margin: 0.6rem 0 0;
+    max-width: 24rem;
+    margin: 0.9rem auto 0;
     overflow: visible;
     clip: auto;
     white-space: normal;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 0.3rem 1rem;
+    gap: 0.3rem 0.9rem;
     font-size: 0.74rem;
     font-weight: 600;
+  }
+
+  .route__skills li {
+    opacity: 0.5;
+  }
+
+  .route__skills li.is-lit {
+    opacity: 1;
   }
 }
 
@@ -1574,7 +1613,7 @@ html:not(.js) .route__skills li { opacity: 1; }
 /* The title, after the star, with room around it. */
 .projects-head {
   max-width: 1180px;
-  margin: clamp(1.5rem, 4vw, 3rem) auto 0;
+  margin: clamp(2.6rem, 7vw, 4.5rem) auto 0;
   padding: 0 var(--space);
 }
 
@@ -2812,4 +2851,8 @@ html:not(.js) .route__skills li { opacity: 1; }
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+}
+
+.nowrap {
+  white-space: nowrap;
 }
