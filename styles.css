@@ -3223,3 +3223,305 @@ html:not(.js) .route__skills li { opacity: 1; }
 .nowrap {
   white-space: nowrap;
 }
+
+/* =============================================================
+   PROFESSIONAL EXPERIENCE (2026-10-04)
+   =============================================================
+   The role card on the left, wide; on the right a column of "stickers",
+   one per public post I worked on. Each sticker is a die-cut paper square
+   (white edge, a lifted, curling corner, a soft shadow, a little tilt).
+   Hover or focus one and it straightens, grows and tells what I did; on a
+   phone a first tap does that and a second tap opens the post. The column
+   scrolls (wheel, touch, or drag with the mouse) with no scroll bar. On
+   narrow screens the column turns into a sideways strip under the card.
+   ============================================================= */
+#experience {
+  max-width: 1360px; /* wider than before: the card grows to the left */
+}
+
+.exp__tagline {
+  margin: -0.3rem 0 1.6rem;
+  font-family: var(--font-script);
+  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
+  line-height: 1.2;
+  color: var(--color-muted);
+}
+
+.exp__layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+  gap: clamp(1.2rem, 3vw, 2.4rem);
+  align-items: stretch;
+}
+
+.exp .experience__item {
+  max-width: none;
+  margin-top: 0;
+  padding: clamp(1.3rem, 3vw, 2.2rem);
+}
+
+/* ---- the sticker column ---- */
+.stickers {
+  position: relative;
+  min-height: 420px;
+}
+
+.stickers__scroll {
+  position: absolute;
+  inset: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  cursor: grab;
+  border-radius: 20px;
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 36px, #000 calc(100% - 44px), transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 36px, #000 calc(100% - 44px), transparent 100%);
+}
+
+.stickers__scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.stickers__scroll.is-dragging {
+  cursor: grabbing;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.stickers__scroll:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+.stickers__track {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.8rem 0.6rem;
+  margin: 0;
+  padding: 2.4rem 0.8rem 3.4rem;
+  list-style: none;
+}
+
+@property --peel {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 26px;
+}
+
+.sticker {
+  --r: 0deg;
+  --s: 150px;
+  --peel: 26px;
+  position: relative;
+  justify-self: center;
+  width: var(--s);
+  aspect-ratio: 1;
+  font-size: calc(var(--s) / 11);
+  transform: rotate(var(--r));
+  transition: transform 0.5s cubic-bezier(0.3, 0.9, 0.3, 1), --peel 0.4s ease;
+  /* the shadow follows the sticker's cut-out shape, curl included */
+  filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.55));
+}
+
+/* Different sizes and tilts, so they look scattered rather than gridded. */
+.sticker:nth-child(4n + 1) { --r: -6deg; --s: 158px; }
+.sticker:nth-child(4n + 2) { --r: 5deg;  --s: 134px; margin-top: 46px; }
+.sticker:nth-child(4n + 3) { --r: 3deg;  --s: 142px; }
+.sticker:nth-child(4n)     { --r: -7deg; --s: 164px; margin-top: 30px; }
+
+.sticker a {
+  position: absolute;
+  inset: 0;
+  display: block;
+  color: #ffffff;
+  text-decoration: none;
+  -webkit-user-drag: none;
+}
+
+/* White paper edge with the curled-up corner cut out of it... */
+.sticker__face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.15em 1.1em 1em;
+  border-radius: 1.25em;
+  background: #f7f3ff;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--peel)), calc(100% - var(--peel)) 100%, 0 100%);
+}
+
+/* ...the coloured print inside it... */
+.sticker__face::before {
+  content: "";
+  position: absolute;
+  inset: 0.55em;
+  z-index: 0;
+  border-radius: 0.9em;
+  background: linear-gradient(145deg, #8f5cff, #f887fa);
+}
+
+.sticker--reel .sticker__face::before { background: linear-gradient(145deg, #22d3ee, #4d7dff); }
+.sticker--post .sticker__face::before { background: linear-gradient(145deg, #fd7069, #f887fa); }
+.sticker--x .sticker__face::before    { background: linear-gradient(145deg, #34344f, #0e0e1c); }
+
+.sticker__face > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* ...and the folded flap (the back of the paper) in the corner. */
+.sticker a::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: var(--peel);
+  height: var(--peel);
+  background: linear-gradient(135deg, #ffffff 10%, #cdc3e8 100%);
+  clip-path: polygon(100% 0, 0 100%, 0 0);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
+}
+
+.sticker__glyph {
+  display: block;
+  width: 2.2em;
+  height: 2.2em;
+  margin-top: 0.2em;
+  background: center / 70% no-repeat;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+}
+
+.sticker__glyph--ig { background-image: url("assets/stickers/instagram.svg"); }
+.sticker__glyph--x  { background-image: url("assets/stickers/x.svg"); }
+
+.sticker__type {
+  position: absolute;
+  top: 1.15em;
+  right: 1.2em;
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+
+.sticker__title {
+  margin-bottom: 0.1em;
+  font-size: 1.02em;
+  font-weight: 800;
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+}
+
+.sticker__num {
+  position: absolute;
+  right: 1.4em;
+  bottom: 1.5em;
+  font-size: 0.8em;
+  font-weight: 700;
+  opacity: 0.45;
+}
+
+/* What I did: covers the sticker while it is hovered, focused or tapped. */
+.sticker__role {
+  position: absolute;
+  inset: 0.55em;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.5em;
+  padding: 0.9em 0.9em 0.8em;
+  border-radius: 0.9em;
+  background: rgba(12, 10, 42, 0.92);
+  font-size: 0.76em;
+  line-height: 1.3;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--peel) + 0.55em), calc(100% - var(--peel) + 0.55em) 100%, 0 100%);
+}
+
+.sticker__open {
+  font-size: 0.86em;
+  font-weight: 700;
+  color: #8ff1ff;
+}
+
+.sticker:hover,
+.sticker:focus-within,
+.sticker.is-open {
+  z-index: 5;
+  --peel: 40px;
+  transform: rotate(0deg) scale(1.45);
+}
+
+.sticker:hover .sticker__role,
+.sticker:focus-within .sticker__role,
+.sticker.is-open .sticker__role {
+  opacity: 1;
+}
+
+.sticker a:focus-visible {
+  outline: 2px solid #8ff1ff;
+  outline-offset: 4px;
+  border-radius: 1.25em;
+}
+
+/* ---- narrower screens: the column becomes a sideways strip ---- */
+@media (max-width: 900px) {
+  .exp__layout {
+    grid-template-columns: 1fr;
+  }
+
+  .stickers {
+    min-height: 0;
+    height: 250px;
+  }
+
+  .stickers__scroll {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 36px), transparent 100%);
+    mask-image: linear-gradient(90deg, transparent 0, #000 28px, #000 calc(100% - 36px), transparent 100%);
+  }
+
+  .stickers__track {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+    width: max-content;
+    height: 100%;
+    padding: 1rem 2rem;
+  }
+
+  .sticker,
+  .sticker:nth-child(n) {
+    flex: none;
+    margin-top: 0;
+    --s: 138px;
+  }
+
+  .sticker:nth-child(even) { --r: 4deg; }
+  .sticker:nth-child(odd)  { --r: -5deg; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker {
+    transition: none;
+  }
+}
+
+/* Stickers with a long note are a bit bigger, so the note fits (script.js
+   adds .sticker--long to notes over about 110 characters). */
+.sticker.sticker--long {
+  --s: 178px;
+}
+
+.sticker--long .sticker__role {
+  font-size: 0.68em;
+}

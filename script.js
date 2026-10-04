@@ -108,6 +108,80 @@ if (aboutCard && !prefersReducedMotion) {
 }
 
 /* -------------------------------------------------------------
+   6. PROFESSIONAL EXPERIENCE — THE STICKER COLUMN
+   The column scrolls with the wheel or a touch swipe on its own; this adds
+   (a) drag-to-scroll with the mouse (down the column, or sideways when it
+   is the strip under the card on narrow screens) and (b) on touch screens,
+   a first tap on a sticker shows what I did on it and a second tap opens
+   the post. A drag never opens a post.
+   ------------------------------------------------------------- */
+const stickerScroll = document.getElementById("stickersScroll");
+if (stickerScroll) {
+  stickerScroll.querySelectorAll(".sticker").forEach((sticker) => {
+    const note = sticker.querySelector(".sticker__role-text");
+    if (note && note.textContent.length > 110) sticker.classList.add("sticker--long");
+  });
+
+  let press = null;
+  let wasDragged = false;
+  const sideways = () => stickerScroll.scrollWidth > stickerScroll.clientWidth + 2;
+
+  stickerScroll.addEventListener("pointerdown", (event) => {
+    if (event.pointerType !== "mouse" || event.button !== 0) return;
+    press = {
+      x: event.clientX,
+      y: event.clientY,
+      left: stickerScroll.scrollLeft,
+      top: stickerScroll.scrollTop,
+      moved: false,
+    };
+  });
+
+  window.addEventListener("pointermove", (event) => {
+    if (!press) return;
+    const dx = event.clientX - press.x;
+    const dy = event.clientY - press.y;
+    if (!press.moved && Math.hypot(dx, dy) < 6) return;
+    press.moved = true;
+    stickerScroll.classList.add("is-dragging");
+    if (sideways()) stickerScroll.scrollLeft = press.left - dx;
+    else stickerScroll.scrollTop = press.top - dy;
+  });
+
+  const endPress = () => {
+    if (!press) return;
+    wasDragged = press.moved;
+    press = null;
+    stickerScroll.classList.remove("is-dragging");
+    window.setTimeout(() => (wasDragged = false), 60);
+  };
+  window.addEventListener("pointerup", endPress);
+  window.addEventListener("pointercancel", endPress);
+
+  // The browser would start dragging a link as a file; we want a scroll instead.
+  stickerScroll.addEventListener("dragstart", (event) => event.preventDefault());
+
+  stickerScroll.addEventListener(
+    "click",
+    (event) => {
+      const sticker = event.target.closest(".sticker");
+      if (wasDragged) {
+        event.preventDefault();
+        event.stopPropagation();
+        return;
+      }
+      // No hover on touch screens: first tap = read, second tap = open.
+      if (sticker && window.matchMedia("(hover: none)").matches && !sticker.classList.contains("is-open")) {
+        event.preventDefault();
+        stickerScroll.querySelectorAll(".sticker.is-open").forEach((s) => s.classList.remove("is-open"));
+        sticker.classList.add("is-open");
+      }
+    },
+    true
+  );
+}
+
+/* -------------------------------------------------------------
    4. PROJECT FILTER, THE CARD BOARD AND THE PROJECTS HERO
    Moved to projects-board.js (2026-10-04) when the Projects section
    became a draggable board of cards — it is a bigger job than this
