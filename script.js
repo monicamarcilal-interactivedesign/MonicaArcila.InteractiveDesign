@@ -165,23 +165,47 @@ if (stickerScroll) {
 
 
   // ---- the reader for stickers that are files, not web pages ----
+  // A sticker with data-video plays that video (muted, looping, with controls,
+  // its still as the poster); otherwise its pages open as stacked pictures.
   const viewer = document.getElementById("viewer");
   const viewerPages = document.getElementById("viewerPages");
   const viewerTitle = document.getElementById("viewerTitle");
+  const viewerKicker = document.getElementById("viewerKicker");
+  const viewerCaption = document.getElementById("viewerCaption");
   let viewerOpener = null;
   const openViewer = (link) => {
     if (!viewer || !viewer.showModal) return false; // old browser: the link opens the first page
     viewerOpener = link;
     viewerTitle.textContent = link.dataset.title || "";
+    viewerKicker.textContent = link.dataset.kicker || "";
+    viewerKicker.hidden = !link.dataset.kicker;
+    viewerCaption.textContent = link.dataset.caption || "";
+    viewerCaption.hidden = !link.dataset.caption;
     viewerPages.textContent = "";
-    link.dataset.pages.split(",").forEach((name, i, all) => {
-      const img = document.createElement("img");
-      img.src = `assets/stickers/${name}.jpg`;
-      img.alt = `${link.dataset.alt || "Page"}${all.length > 1 ? `, page ${i + 1} of ${all.length}` : ""}`;
-      img.loading = i < 2 ? "eager" : "lazy";
-      img.decoding = "async";
-      viewerPages.appendChild(img);
-    });
+    const pages = link.dataset.pages.split(",");
+    viewer.classList.toggle("viewer--single", pages.length === 1);
+    if (link.dataset.video) {
+      const video = document.createElement("video");
+      video.src = link.dataset.video;
+      video.poster = `assets/stickers/${pages[0]}.jpg`;
+      video.muted = true;
+      video.loop = true;
+      video.controls = true;
+      video.autoplay = true;
+      video.playsInline = true;
+      video.setAttribute("aria-label", link.dataset.alt || "Video");
+      video.addEventListener("error", () => video.removeAttribute("controls")); // the poster stays
+      viewerPages.appendChild(video);
+    } else {
+      pages.forEach((name, i, all) => {
+        const img = document.createElement("img");
+        img.src = `assets/stickers/${name}.jpg`;
+        img.alt = `${link.dataset.alt || "Page"}${all.length > 1 ? `, page ${i + 1} of ${all.length}` : ""}`;
+        img.loading = i < 2 ? "eager" : "lazy";
+        img.decoding = "async";
+        viewerPages.appendChild(img);
+      });
+    }
     viewerPages.scrollTop = 0;
     viewer.showModal();
     return true;
@@ -193,10 +217,17 @@ if (stickerScroll) {
       if (event.target === viewer) viewer.close();
     });
     viewer.addEventListener("close", () => {
+      if (viewer.open) return; // reopened before this (late) event arrived
+      viewerPages.querySelectorAll("video").forEach((v) => {
+        v.pause();
+        v.removeAttribute("src");
+        v.load();
+      });
+      viewerPages.textContent = "";
       if (viewerOpener) viewerOpener.focus();
     });
   }
-  // The browser would start dragging a link as a file; we want none of that.
+
   stickerScroll.addEventListener("dragstart", (event) => event.preventDefault());
 
   stickerScroll.addEventListener(
