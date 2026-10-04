@@ -250,195 +250,102 @@ if (stickerScroll) {
 }
 
 /* -------------------------------------------------------------
-   7. CONTACT — GLOWING RIPPLES, A WRIGGLING HEADLINE, COPY BUTTON
-   (a) The pond: a small height-field "water" simulation drawn on a canvas
-       behind the words. Moving the mouse (or a finger) over the section
-       disturbs it, a click drops a bigger stone, and a gentle drop falls now
-       and then on its own. It is drawn as light, not as water: violet,
-       cyan and pink glows whose strength is capped so the text on top keeps
-       its contrast. It only runs while the section is on screen.
-   (b) The headline: each letter rides a travelling wave while the pointer is
-       over it, strongest near the pointer, with a wave of colour through the
-       site's palette; it eases back to still, white letters afterwards.
+   7. CONTACT — A GLOWING ORB THAT FOLLOWS THE POINTER, A HEADLINE THAT BOUNCES
+   (a) The background of the whole section reacts: a chain of glowing orbs,
+       drawn like the colour droplets on the first screen, follows the
+       pointer like thick liquid and throws soft rings when dragged fast.
+   (b) The letters of the headline bounce away from the lead orb as it
+       passes, glowing in the site's palette, and settle back.
    (c) A button that copies the email address (with a quiet confirmation).
-   Both effects stay still for visitors who ask for reduced motion.
+   Everything stays still for visitors who ask for reduced motion, and the
+   background only runs while the section is on screen.
    ------------------------------------------------------------- */
 const contactSection = document.getElementById("contact");
 const contactReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-/* ---- (a) the pond ---- */
-const waterCanvas = document.getElementById("contactWater");
-if (contactSection && waterCanvas && !contactReduced) {
-  const ctx = waterCanvas.getContext("2d");
-  const CELL = window.matchMedia("(pointer: coarse)").matches ? 12 : 8; // pixels per water cell
-  let W = 0;
-  let H = 0;
-  let cur = new Float32Array(0);
-  let prev = new Float32Array(0);
-  let image = null;
+/* ---- (a) + (b) the glowing orb that follows the pointer, and the headline it moves ----
+   The whole background of the section reacts (the canvas is fixed behind the
+   page, no panel). It is drawn like the colour droplets on the first screen:
+   soft discs, strongest at the head, with a tail of shrinking, fading discs
+   behind. A chain of three of them follows the pointer like a thick liquid
+   (each one trails the one before, with its own lag and colour), and fast
+   movement sends out soft rings, so a drag paints waves. The letters of the
+   headline bounce away from the head as it passes (springs, with a travelling
+   wave and a glow in the site's palette) and settle back. When the pointer is
+   still or away, the orbs drift on their own, far from the words. */
+const pondCanvas = document.getElementById("contactWater");
+const snake = document.getElementById("contactSnake");
+if (contactSection && pondCanvas && !contactReduced) {
+  const ctx = pondCanvas.getContext("2d");
+  const SCALE = 3; // the canvas is a third of the screen size: the discs are soft anyway
   let running = false;
   let frameId = 0;
-  let lastDrop = 0;
-  let last = { x: -1, y: -1, t: 0 };
+  let pointerAt = -1e9;
+  const pointer = { x: window.innerWidth * 0.7, y: window.innerHeight * 0.6 };
 
-  const build = () => {
-    const rect = contactSection.getBoundingClientRect();
-    if (!rect.width || !rect.height) return;
-    W = Math.max(12, Math.ceil(rect.width / CELL));
-    H = Math.max(8, Math.ceil(rect.height / CELL));
-    waterCanvas.width = W;
-    waterCanvas.height = H;
-    cur = new Float32Array(W * H);
-    prev = new Float32Array(W * H);
-    image = ctx.createImageData(W, H);
+  const resize = () => {
+    pondCanvas.width = Math.ceil(window.innerWidth / SCALE);
+    pondCanvas.height = Math.ceil(window.innerHeight / SCALE);
+    ctx.setTransform(1 / SCALE, 0, 0, 1 / SCALE, 0, 0); // draw in screen pixels
   };
+  resize();
+  window.addEventListener("resize", resize);
 
-  // Push the water at a cell (a soft 3x3 splash).
-  const splash = (cx, cy, strength) => {
-    if (!W) return;
-    for (let dy = -1; dy <= 1; dy++) {
-      for (let dx = -1; dx <= 1; dx++) {
-        const x = cx + dx;
-        const y = cy + dy;
-        if (x < 1 || y < 1 || x >= W - 1 || y >= H - 1) continue;
-        cur[y * W + x] += strength * (dx === 0 && dy === 0 ? 1 : 0.55);
-      }
-    }
-  };
+  window.addEventListener(
+    "pointermove",
+    (event) => {
+      if (!running) return;
+      pointer.x = event.clientX;
+      pointer.y = event.clientY;
+      pointerAt = performance.now();
+    },
+    { passive: true }
+  );
 
-  const toCell = (event) => {
-    const rect = contactSection.getBoundingClientRect();
-    return {
-      x: Math.floor(((event.clientX - rect.left) / rect.width) * W),
-      y: Math.floor(((event.clientY - rect.top) / rect.height) * H),
-    };
-  };
+  // ---- the chain of orbs that follows the pointer ----
+  const CHAIN = [
+    { rgb: [143, 92, 255], k: 0.16, size: 1.0 }, // violet, quickest
+    { rgb: [34, 211, 238], k: 0.09, size: 0.85 }, // cyan
+    { rgb: [248, 135, 250], k: 0.055, size: 0.8 }, // pink, slowest
+  ].map((o) => ({ ...o, x: pointer.x, y: pointer.y, hist: [] }));
+  const HIST = 34;
 
-  contactSection.addEventListener("pointermove", (event) => {
-    const now = performance.now();
-    const cell = toCell(event);
-    if (last.x >= 0) {
-      const speed = Math.hypot(cell.x - last.x, cell.y - last.y) / Math.max(1, now - last.t);
-      splash(cell.x, cell.y, Math.min(9, 1.2 + speed * 60));
-    }
-    last = { x: cell.x, y: cell.y, t: now };
-  });
-  contactSection.addEventListener("pointerleave", () => (last.x = -1));
-  contactSection.addEventListener("pointerdown", (event) => {
-    const cell = toCell(event);
-    splash(cell.x, cell.y, 40);
-  });
-
-  const step = (now) => {
-    // an occasional drop of its own, so the pond is alive before anyone touches it
-    if (now - lastDrop > 3200) {
-      lastDrop = now;
-      splash(2 + Math.floor(Math.random() * (W - 4)), 2 + Math.floor(Math.random() * (H - 4)), 12);
-    }
-    const out = image.data;
-    for (let y = 1; y < H - 1; y++) {
-      for (let x = 1; x < W - 1; x++) {
-        const i = y * W + x;
-        // the ripple rule: the average of the neighbours, minus what was here before, a little damped
-        let n = (cur[i - 1] + cur[i + 1] + cur[i - W] + cur[i + W]) * 0.5 - prev[i];
-        n *= 0.982;
-        prev[i] = n;
-      }
-    }
-    const swap = prev;
-    prev = cur;
-    cur = swap;
-    // draw it as light: the slope of the surface catches the light, the height tints it
-    for (let y = 1; y < H - 1; y++) {
-      for (let x = 1; x < W - 1; x++) {
-        const i = y * W + x;
-        const h = cur[i];
-        const slope = cur[i + 1] - cur[i - 1] + (cur[i + W] - cur[i - W]);
-        const k = (i << 2);
-        const glint = Math.max(0, Math.min(1, Math.abs(slope) * 0.3));
-        const body = Math.max(0, Math.min(1, Math.abs(h) * 0.05));
-        const a = Math.min(0.55, glint * 0.55 + body * 0.35); // never much brighter than half strength
-        let r;
-        let g;
-        let b;
-        if (slope > 0) {
-          r = 80; g = 215; b = 245; // cyan light
-        } else if (h > 0) {
-          r = 143; g = 92; b = 255; // violet
-        } else {
-          r = 248; g = 135; b = 250; // pink
-        }
-        out[k] = r;
-        out[k + 1] = g;
-        out[k + 2] = b;
-        out[k + 3] = a * 255;
-      }
-    }
-    ctx.putImageData(image, 0, 0);
-  };
-
-  const loop = (now) => {
-    if (!running) return;
-    step(now);
-    frameId = requestAnimationFrame(loop);
-  };
-
-  build();
-  if ("ResizeObserver" in window) new ResizeObserver(build).observe(contactSection);
-  if ("IntersectionObserver" in window) {
-    new IntersectionObserver(
-      (entries) => {
-        const visible = entries.some((en) => en.isIntersecting);
-        if (visible && !running) {
-          running = true;
-          frameId = requestAnimationFrame(loop);
-        } else if (!visible && running) {
-          running = false;
-          cancelAnimationFrame(frameId);
-        }
-      },
-      { threshold: 0.05 }
-    ).observe(contactSection);
-  } else {
-    running = true;
-    frameId = requestAnimationFrame(loop);
-  }
-}
-
-/* ---- (b) the headline that wriggles ---- */
-const snake = document.getElementById("contactSnake");
-if (snake && !contactReduced) {
-  const text = snake.textContent;
-  snake.textContent = "";
-  snake.setAttribute("aria-hidden", "true");
-  // Letters are grouped in words that never break in the middle; the spaces
-  // between words stay ordinary, breakable spaces.
-  const letters = [];
-  text.split(" ").forEach((word, w, all) => {
-    const wordEl = document.createElement("span");
-    wordEl.className = "snake__word";
-    Array.from(word).forEach((ch) => {
-      const span = document.createElement("span");
-      span.className = "snake__ch";
-      span.textContent = ch;
-      wordEl.appendChild(span);
-      letters.push(span);
-    });
-    snake.appendChild(wordEl);
-    if (w < all.length - 1) snake.appendChild(document.createTextNode(" "));
-  });
-  // keep the sentence available to screen readers on the heading itself
-  snake.parentElement.setAttribute("aria-label", text);
-
-  const PALETTE = [
-    [143, 92, 255], // violet
-    [248, 135, 250], // pink
-    [253, 112, 105], // coral
-    [255, 209, 102], // warm gold
-    [34, 211, 238], // cyan
-    [77, 125, 255], // blue
+  // ---- orbs that drift on their own (the first screen's droplets, thinner) ----
+  const DRIFT = [
+    { rgb: [135, 71, 248], cx: 0.62, cy: 0.62, ax: 0.3, ay: 0.28, t1: 31, t2: 43, p1: 0.0, p2: 1.3, size: 1.0 },
+    { rgb: [77, 125, 255], cx: 0.5, cy: 0.7, ax: 0.42, ay: 0.2, t1: 37, t2: 29, p1: 2.1, p2: 0.4, size: 0.85 },
+    { rgb: [248, 135, 250], cx: 0.7, cy: 0.55, ax: 0.26, ay: 0.3, t1: 27, t2: 39, p1: 5.2, p2: 3.1, size: 0.75 },
   ];
+  const driftAt = (d, t) => ({
+    x: window.innerWidth * (d.cx + d.ax * Math.sin((6.2832 / d.t1) * t + d.p1)),
+    y: window.innerHeight * (d.cy + d.ay * Math.sin((6.2832 / d.t2) * t + d.p2)),
+  });
+
+  const blob = (x, y, r, rgb, a) => {
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`);
+    g.addColorStop(0.5, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a * 0.4})`);
+    g.addColorStop(1, `rgba(${rgb[0]},${rgb[1]},${rgb[2]},0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(x - r, y - r, r * 2, r * 2);
+  };
+
+  // ---- rings: the waves a fast drag leaves behind ----
+  const rings = [];
+  let lastRing = 0;
+
+  // ---- the headline's letters ----
+  const letters = [];
+  const spring = [];
   const WHITE = [244, 241, 255];
+  const PALETTE = [
+    [143, 92, 255],
+    [248, 135, 250],
+    [253, 112, 105],
+    [255, 209, 102],
+    [34, 211, 238],
+    [77, 125, 255],
+  ];
   const paletteAt = (u) => {
     const n = PALETTE.length;
     const p = ((u % n) + n) % n;
@@ -448,64 +355,164 @@ if (snake && !contactReduced) {
     const b = PALETTE[(i + 1) % n];
     return [a[0] + (b[0] - a[0]) * f, a[1] + (b[1] - a[1]) * f, a[2] + (b[2] - a[2]) * f];
   };
-
-  let pointerX = -9999;
-  let hovering = false;
-  let strength = 0; // 0 = still, 1 = fully wriggling; eases both ways
-  let frame = 0;
-  let centres = [];
-
-  const measure = () => {
-    centres = letters.map((el) => {
-      const r = el.getBoundingClientRect();
-      return r.left + r.width / 2;
-    });
-  };
-
-  const tick = (now) => {
-    strength += ((hovering ? 1 : 0) - strength) * 0.08;
-    if (!hovering && strength < 0.01) {
-      letters.forEach((el) => {
-        el.style.transform = "";
-        el.style.color = "";
+  if (snake) {
+    const text = snake.textContent;
+    snake.textContent = "";
+    snake.setAttribute("aria-hidden", "true");
+    // Letters are grouped in words that never break in the middle; the
+    // spaces between words stay ordinary, breakable spaces.
+    text.split(" ").forEach((word, w, all) => {
+      const wordEl = document.createElement("span");
+      wordEl.className = "snake__word";
+      Array.from(word).forEach((ch) => {
+        const span = document.createElement("span");
+        span.className = "snake__ch";
+        span.textContent = ch;
+        wordEl.appendChild(span);
+        letters.push(span);
+        spring.push({ y: 0, v: 0, x: 0, dirty: false });
       });
-      frame = 0;
-      return;
-    }
-    const t = now * 0.001;
-    letters.forEach((el, i) => {
-      const d = Math.abs(pointerX - centres[i]);
-      const near = Math.exp(-Math.pow(d / 220, 2)); // 1 beside the pointer, fading away from it
-      const phase = t * 7 - i * 0.55;
-      const amount = strength * (0.3 + 0.7 * near);
-      const y = Math.sin(phase) * 0.17 * amount; // in em: never more than a fifth of a letter
-      const pop = 1 + Math.max(0, Math.sin(phase + 1.2)) * 0.12 * amount;
-      const tilt = Math.cos(phase) * 7 * amount;
-      el.style.transform = `translateY(${y.toFixed(3)}em) rotate(${tilt.toFixed(2)}deg) scale(${pop.toFixed(3)})`;
-      const c = paletteAt(t * 1.1 + i * 0.28);
-      const mix = Math.min(1, strength * (0.35 + 0.65 * near) * 1.15);
-      el.style.color = `rgb(${Math.round(WHITE[0] + (c[0] - WHITE[0]) * mix)}, ${Math.round(WHITE[1] + (c[1] - WHITE[1]) * mix)}, ${Math.round(WHITE[2] + (c[2] - WHITE[2]) * mix)})`;
+      snake.appendChild(wordEl);
+      if (w < all.length - 1) snake.appendChild(document.createTextNode(" "));
     });
-    frame = requestAnimationFrame(tick);
+    // the sentence stays readable for screen readers, on the heading itself
+    snake.parentElement.setAttribute("aria-label", text);
+  }
+
+  let presence = 0; // 0 = the pointer is away, 1 = it is moving over the section
+  let lastFrame = 0;
+
+  const frame = (now) => {
+    if (!running) return;
+    frameId = requestAnimationFrame(frame);
+    const dt = Math.min(0.05, (now - lastFrame) / 1000 || 0.016);
+    lastFrame = now;
+    const t = now / 1000;
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+    const active = now - pointerAt < 2200;
+    presence += ((active ? 1 : 0) - presence) * 0.06;
+
+    // where the lead orb is heading: the pointer, or a slow wander of its own
+    const home = driftAt(DRIFT[0], t);
+    const target = active ? pointer : { x: home.x, y: home.y };
+    let prevX = target.x;
+    let prevY = target.y;
+    let lead = null;
+    CHAIN.forEach((o, i) => {
+      const ox = o.x;
+      const oy = o.y;
+      o.x += (prevX - o.x) * o.k;
+      o.y += (prevY - o.y) * o.k;
+      o.hist.push({ x: o.x, y: o.y });
+      if (o.hist.length > HIST) o.hist.shift();
+      if (i === 0) lead = { x: o.x, y: o.y, vx: o.x - ox, vy: o.y - oy };
+      prevX = o.x;
+      prevY = o.y;
+    });
+
+    // a fast drag throws a ring
+    const speed = Math.hypot(lead.vx, lead.vy);
+    if (active && speed > 5 && now - lastRing > 130) {
+      lastRing = now;
+      rings.push({ x: lead.x, y: lead.y, born: now, rgb: paletteAt(t * 0.5), size: Math.min(1.4, 0.7 + speed / 40) });
+    }
+
+    // ---- draw ----
+    ctx.clearRect(0, 0, vw, vh);
+    ctx.globalCompositeOperation = "lighter";
+    const headR = Math.max(vw, vh) * 0.085;
+    // the orbs that drift on their own
+    DRIFT.forEach((d) => {
+      for (let i = 22; i >= 0; i--) {
+        const s = i / 22;
+        const pos = driftAt(d, t - s * 7);
+        blob(pos.x, pos.y, headR * d.size * (0.3 + 0.7 * Math.pow(1 - s, 1.2)), d.rgb, 0.04 * Math.pow(1 - s, 1.05));
+      }
+      const head = driftAt(d, t);
+      blob(head.x, head.y, headR * d.size * 0.85, d.rgb, 0.17);
+    });
+    // the orbs that follow the pointer: stronger while it moves
+    const strength = 0.3 + 0.7 * presence;
+    CHAIN.forEach((o) => {
+      const n = o.hist.length;
+      for (let j = 0; j < n; j++) {
+        const s = j / n; // 0 = newest
+        const pos = o.hist[n - 1 - j];
+        blob(pos.x, pos.y, headR * o.size * (0.3 + 0.7 * Math.pow(1 - s, 1.2)), o.rgb, 0.06 * strength * Math.pow(1 - s, 1.05));
+      }
+      blob(o.x, o.y, headR * o.size * 0.85, o.rgb, 0.21 * strength); // kept dim: three of them overlap at the head
+    });
+    // soft rings
+    for (let i = rings.length - 1; i >= 0; i--) {
+      const age = (now - rings[i].born) / 1400;
+      if (age >= 1) {
+        rings.splice(i, 1);
+        continue;
+      }
+      const r = rings[i];
+      const radius = headR * (0.35 + 1.9 * age) * r.size;
+      ctx.strokeStyle = `rgba(${Math.round(r.rgb[0])},${Math.round(r.rgb[1])},${Math.round(r.rgb[2])},${0.3 * (1 - age) * (1 - age)})`;
+      ctx.lineWidth = 3 + 7 * (1 - age);
+      ctx.beginPath();
+      ctx.arc(r.x, r.y, radius, 0, 6.2832);
+      ctx.stroke();
+    }
+    ctx.globalCompositeOperation = "source-over";
+
+    // ---- the letters bounce away from the lead orb, glow, and settle ----
+    letters.forEach((el, i) => {
+      const rect = el.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      const dx = cx - lead.x;
+      const dy = cy - lead.y;
+      const d = Math.hypot(dx, dy) || 1;
+      const near = Math.exp(-Math.pow(d / (headR * 1.5), 2)) * presence;
+      const s = spring[i];
+      const targetY = -near * 0.2; // lifted, in em
+      s.v += (targetY - s.y) * 0.2;
+      s.v *= 0.78;
+      s.y += s.v;
+      const pushX = (dx / d) * near * 0.07;
+      const wave = Math.sin(t * 7 - i * 0.55) * 0.13 * near;
+      const settled = Math.abs(s.y) < 0.002 && Math.abs(s.v) < 0.002 && near < 0.01;
+      if (settled) {
+        if (s.dirty) {
+          el.style.transform = "";
+          el.style.color = "";
+          el.style.textShadow = "";
+          s.dirty = false;
+        }
+        return;
+      }
+      s.dirty = true;
+      el.style.transform = `translate(${pushX.toFixed(3)}em, ${(s.y + wave).toFixed(3)}em) rotate(${(Math.cos(t * 7 - i * 0.55) * 6 * near).toFixed(2)}deg) scale(${(1 + near * 0.13).toFixed(3)})`;
+      const c = paletteAt(t * 1.1 + i * 0.28);
+      const mix = Math.min(1, near * 1.3);
+      const col = `${Math.round(WHITE[0] + (c[0] - WHITE[0]) * mix)}, ${Math.round(WHITE[1] + (c[1] - WHITE[1]) * mix)}, ${Math.round(WHITE[2] + (c[2] - WHITE[2]) * mix)}`;
+      el.style.color = `rgb(${col})`;
+      // the glisten: a glow in the letter's colour that swells as the orb passes
+      el.style.textShadow = `0 0 ${(6 + 16 * near).toFixed(1)}px rgba(${col}, ${(0.75 * near).toFixed(2)}), 0 2px 28px rgba(6, 4, 34, 0.7)`;
+    });
   };
 
-  const start = () => {
-    if (!frame) frame = requestAnimationFrame(tick);
+  const setRunning = (on) => {
+    if (on && !running) {
+      running = true;
+      lastFrame = performance.now();
+      frameId = requestAnimationFrame(frame);
+    } else if (!on && running) {
+      running = false;
+      cancelAnimationFrame(frameId);
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    }
   };
-  const title = snake.parentElement;
-  title.addEventListener("pointerenter", () => {
-    measure();
-    hovering = true;
-    start();
-  });
-  title.addEventListener("pointermove", (event) => {
-    pointerX = event.clientX;
-  });
-  title.addEventListener("pointerleave", () => {
-    hovering = false;
-    start();
-  });
-  window.addEventListener("resize", measure);
+  if ("IntersectionObserver" in window) {
+    new IntersectionObserver((entries) => setRunning(entries.some((en) => en.isIntersecting)), { threshold: 0.05 }).observe(contactSection);
+  } else {
+    setRunning(true);
+  }
 }
 
 /* ---- (c) copy the address ---- */

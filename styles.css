@@ -2909,38 +2909,50 @@ html:not(.js) .route__skills li { opacity: 1; }
 /* -------------------------------------------------------------
    CONTACT (redesigned 2026-10-04)
    -------------------------------------------------------------
-   One wide glass "pond". Behind the words, glowing ripples follow the
-   mouse (a canvas, script.js job 7, kept dim). The headline is in the
-   primary font (Sora); the eyebrow, the call to action and the small
+   No panel: the section sits straight on the page, and the BACKGROUND of
+   the whole screen is what reacts. Glowing orbs (drawn like the droplets on
+   the first screen; script.js job 7) follow the pointer like thick liquid
+   behind the words and bounce the headline's letters. The headline is in
+   the primary font (Sora); the eyebrow, the call to action and the small
    notes are in the script font. The call to action is the email itself.
    Three glass cards carry the details. */
 #contact {
   position: relative;
   isolation: isolate;
   max-width: 1360px;
-  overflow: hidden;
-  border: 1px solid var(--glass-edge, rgba(255, 255, 255, 0.17));
-  border-radius: 30px;
-  background:
-    radial-gradient(60% 70% at 8% 0%, rgba(135, 71, 248, 0.26), transparent 70%),
-    radial-gradient(55% 70% at 100% 100%, rgba(34, 211, 238, 0.14), transparent 70%),
-    linear-gradient(160deg, rgba(10, 8, 44, 0.9), rgba(5, 3, 24, 0.95));
-  box-shadow: 0 40px 100px -50px rgba(143, 92, 255, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.12);
 }
 
 #contact[hidden] {
   display: none;
 }
 
+/* Fixed to the screen (not to the section), behind everything in it. It is
+   only drawn while this section is showing. */
 .contact__water {
-  position: absolute;
+  position: fixed;
   inset: 0;
   z-index: -1;
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   pointer-events: none;
-  opacity: 0.95;
-  filter: blur(5px) saturate(1.25); /* softens the grid of water cells into light */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* No moving orbs: a still, soft glow instead. */
+  .contact__water {
+    display: none;
+  }
+
+  #contact::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(40% 40% at 70% 60%, rgba(135, 71, 248, 0.22), transparent 70%),
+      radial-gradient(30% 30% at 50% 75%, rgba(34, 211, 238, 0.14), transparent 70%);
+  }
 }
 
 .contact__inner {
