@@ -3,13 +3,14 @@
    =============================================================
    Three jobs, all for the #case-studies section:
 
-   1. THE HERO. A banner for the opening statement. Under it, a route
-      from Medellín to Wellington draws itself when the banner scrolls
-      into view (the animation itself is CSS/SVG; this only flips a class).
+   1. THE HERO. A banner for the opening statement. Under it a route runs
+      from Medellín to Wellington; an orb travels it and each discipline
+      lights up as the orb reaches its stop.
 
    2. THE BOARD. One card per project, laid out in a balanced grid that
       is bigger than the window. You drag it around:
-        - desktop: any direction (with momentum), sideways wheel/trackpad,
+        - desktop: sideways or up/down, one direction per drag (with
+          momentum), sideways wheel/trackpad,
           or the arrow keys; focusing a card brings it into view
         - phones: sideways only, so up/down still scrolls the page
       The card area fades out at an edge where more cards are hidden.
@@ -41,25 +42,115 @@ const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
    ------------------------------------------------------------- */
 const hero = section.querySelector(".projects-hero");
 
-// The banner's route draws itself the first time the banner is mostly in
-// view. With reduced motion (or no IntersectionObserver) it just shows,
-// finished, and its travelling orb is paused.
+// The banner's route: the first time the banner is in view the curves draw
+// themselves, then an orb travels from Medellín to Wellington and each
+// discipline lights up as the orb reaches its stop. When the orb arrives
+// everything stays lit for a moment, fades, and the journey starts again.
+// It only runs while the banner is on screen. With reduced motion (or no
+// IntersectionObserver) the finished route shows and everything is lit.
 function initHero() {
   if (!hero) return;
-  const svg = hero.querySelector(".route__svg");
-  if (reduced || !("IntersectionObserver" in window)) {
+  const main = hero.querySelector("#routeMain");
+  const orb = hero.querySelector(".route__orb");
+  const stops = Array.from(hero.querySelectorAll(".route__stops circle"));
+  const links = Array.from(hero.querySelectorAll(".route__links line"));
+  const chips = Array.from(hero.querySelectorAll(".route__skills li"));
+  const lightAll = (on) => {
+    stops.forEach((s, i) => {
+      s.classList.toggle("is-lit", on);
+      s.style.color = s.getAttribute("fill");
+      if (links[i]) links[i].classList.toggle("is-lit", on);
+      if (chips[i]) chips[i].classList.toggle("is-lit", on);
+    });
+  };
+
+  if (reduced || !("IntersectionObserver" in window) || !main || !main.getTotalLength) {
     hero.classList.add("is-static");
-    if (reduced && svg && svg.pauseAnimations) svg.pauseAnimations();
+    lightAll(true);
     return;
   }
+
+  // How far along the route (0..1) each stop sits, from its x position.
+  const total = main.getTotalLength();
+  const progress = stops.map((s) => {
+    const x = +s.getAttribute("cx");
+    let lo = 0;
+    let hi = total;
+    for (let i = 0; i < 24; i++) {
+      const mid = (lo + hi) / 2;
+      if (main.getPointAtLength(mid).x < x) lo = mid;
+      else hi = mid;
+    }
+    return lo / total;
+  });
+
+  const TRAVEL = 7500;
+  const HOLD = 2600;
+  const GAP = 900;
+  let start = 0;
+  let rafId = 0;
+  let lit = 0;
+
+  const ease = (t) => 0.5 - 0.5 * Math.cos(Math.PI * t);
+
+  const frame = (now) => {
+    if (!start) start = now;
+    if (now < start) {
+      rafId = requestAnimationFrame(frame);
+      return;
+    }
+    const t = now - start;
+    if (t < TRAVEL) {
+      const p = ease(t / TRAVEL);
+      const pt = main.getPointAtLength(p * total);
+      orb.setAttribute("cx", pt.x.toFixed(1));
+      orb.setAttribute("cy", pt.y.toFixed(1));
+      orb.classList.add("is-on");
+      while (lit < stops.length && p >= progress[lit]) {
+        stops[lit].classList.add("is-lit");
+        stops[lit].style.color = stops[lit].getAttribute("fill");
+        if (links[lit]) links[lit].classList.add("is-lit");
+        if (chips[lit]) chips[lit].classList.add("is-lit");
+        lit++;
+      }
+    } else if (t < TRAVEL + HOLD) {
+      orb.classList.remove("is-on");
+    } else if (t < TRAVEL + HOLD + GAP) {
+      if (lit) {
+        lightAll(false);
+        lit = 0;
+      }
+    } else {
+      start = now;
+    }
+    rafId = requestAnimationFrame(frame);
+  };
+
+  const run = () => {
+    if (!start) start = performance.now() + 1600; // let the curves draw first
+    if (!rafId) rafId = requestAnimationFrame(frame);
+  };
+  const halt = () => {
+    cancelAnimationFrame(rafId);
+    rafId = 0;
+    start = 0;
+    lightAll(false);
+    lit = 0;
+    orb.classList.remove("is-on");
+  };
+
   const io = new IntersectionObserver(
     (entries) => {
-      if (entries.some((en) => en.isIntersecting)) {
-        hero.classList.add("is-in");
-        io.disconnect();
-      }
+      entries.forEach((en) => {
+        if (en.isIntersecting) {
+          hero.classList.add("is-in");
+          run();
+        } else {
+          halt();
+        }
+      });
     },
-    { threshold: 0.2 }
+    { threshold: 0.25 }
   );
   io.observe(hero);
 }
@@ -275,6 +366,11 @@ board.addEventListener("pointermove", (e) => {
   if (!drag.moved) {
     if (Math.hypot(dx, dy) < 6) return;
     drag.moved = true;
+    // One direction at a time: whichever way the drag starts (sideways or
+    // up/down) is the only way this drag moves the board. If the board can
+    // only slide one way, that way is used.
+    const canY = metrics.panY && !phoneQuery.matches;
+    drag.axis = !canY ? "x" : !metrics.panX ? "y" : Math.abs(dx) >= Math.abs(dy) ? "x" : "y";
     // Only now take over the pointer, so a plain click on a card link still
     // reaches the link.
     try {
@@ -293,9 +389,9 @@ board.addEventListener("pointermove", (e) => {
   const now = performance.now();
   drag.samples.push({ t: now, x: e.clientX, y: e.clientY });
   while (drag.samples.length > 2 && now - drag.samples[0].t > 90) drag.samples.shift();
-  const x = metrics.panX ? rubber(drag.px + dx, metrics.minX, metrics.maxX) : pos.x;
+  const x = metrics.panX && drag.axis === "x" ? rubber(drag.px + dx, metrics.minX, metrics.maxX) : pos.x;
   // Phones: sideways only — up/down is the page's.
-  const y = metrics.panY && !phoneQuery.matches ? rubber(drag.py + dy, metrics.minY, metrics.maxY) : pos.y;
+  const y = metrics.panY && !phoneQuery.matches && drag.axis === "y" ? rubber(drag.py + dy, metrics.minY, metrics.maxY) : pos.y;
   pos.x = x;
   pos.y = y;
   applyPos();
@@ -326,8 +422,8 @@ function endDrag(e, cancelled) {
   const a = s[0];
   const b = s[s.length - 1];
   const span = Math.max(1, b.t - a.t);
-  vel.x = metrics.panX ? (b.x - a.x) / span : 0;
-  vel.y = metrics.panY && !phoneQuery.matches ? (b.y - a.y) / span : 0;
+  vel.x = metrics.panX && d.axis === "x" ? clamp((b.x - a.x) / span, -3, 3) : 0;
+  vel.y = metrics.panY && !phoneQuery.matches && d.axis === "y" ? clamp((b.y - a.y) / span, -3, 3) : 0;
   if (reduced) {
     vel.x = vel.y = 0;
     setPos(pos.x, pos.y);

@@ -1236,51 +1236,71 @@ h1, h2, h3, h4,
 }
 
 /* ---------------- the hero: a banner ----------------
-   One glass banner for the paragraph that says who I am as a designer.
-   Under the statement a route runs from Medellín to Wellington, bundled
-   thin curves like the landing page's connections, with the disciplines
-   as stops on it. It draws itself the first time it scrolls into view
-   (projects-board.js adds .is-in) and one orb travels it for ever. */
+   The statement (two lines, with "from Medellín to Wellington" on its own
+   line), then a route from Medellín to Wellington: bundled thin curves
+   like the landing page's connections, with the disciplines as stops and
+   chips hanging under them. An orb travels the route and each discipline
+   lights up as the orb reaches it (projects-board.js adds .is-lit, and
+   .is-in when the banner scrolls into view). */
 .projects-hero {
   position: relative;
-  isolation: isolate;
   max-width: 1180px;
   margin: clamp(1rem, 3vw, 2rem) auto 0;
-  padding: clamp(2rem, 5.5vw, 4rem) clamp(1.25rem, 5vw, 4rem) clamp(1.6rem, 4vw, 2.6rem);
+  padding: clamp(1.4rem, 3.5vw, 2.6rem) var(--space) clamp(1rem, 3vw, 2rem);
   text-align: center;
-  border-radius: 30px;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  background:
-    radial-gradient(70% 90% at 12% 0%, rgba(253, 112, 105, 0.14), transparent 60%),
-    radial-gradient(70% 90% at 90% 100%, rgba(34, 211, 238, 0.16), transparent 60%),
-    linear-gradient(135deg, rgba(135, 71, 248, 0.26), rgba(12, 10, 44, 0.55) 55%, rgba(77, 125, 255, 0.18));
-  box-shadow: 0 30px 80px -40px rgba(135, 71, 248, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  overflow: hidden;
 }
 
 .projects-hero__statement {
-  position: relative;
-  max-width: 46rem;
+  max-width: 62rem;
   margin: 0 auto;
-  font-size: clamp(1.3rem, 2.7vw, 2.05rem);
+  font-size: clamp(1.15rem, 2.15vw, 1.8rem);
   font-weight: 700;
-  line-height: 1.32;
+  line-height: 1.34;
   letter-spacing: -0.01em;
   color: #f6f3fd;
   text-wrap: balance;
 }
 
+.projects-hero__from {
+  margin: clamp(0.9rem, 2.4vw, 1.6rem) 0 0;
+  font-size: clamp(1.1rem, 2vw, 1.7rem);
+}
+
+.projects-hero__from .pem {
+  display: inline-block;
+  font-size: 1.25em;
+  background-image: none;
+  color: #f4f0ff;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+}
+
+.from__a {
+  background: linear-gradient(100deg, #ffd166, #fd7069);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.from__b {
+  background: linear-gradient(100deg, #8ff1ff, #8aa4ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
 /* ----- the route ----- */
 .route {
   position: relative;
-  margin: clamp(1.4rem, 3.4vw, 2.4rem) auto 0;
-  max-width: 940px;
+  margin: clamp(0.8rem, 2.4vw, 1.6rem) auto 0;
+  max-width: 1040px;
 }
 
 .route__svg {
   display: block;
   width: 100%;
-  height: clamp(60px, 12vw, 150px);
+  height: auto;
+  aspect-ratio: 1000 / 150;
   overflow: visible;
 }
 
@@ -1296,38 +1316,69 @@ h1, h2, h3, h4,
 
 .route__stops circle,
 .route__end,
-.route__orb {
+.route__links line {
   opacity: 0;
-  transition: opacity 0.8s ease 1.2s;
+  transition: opacity 0.8s ease 1.2s, r 0.4s ease, filter 0.4s ease;
 }
 
 .route__orb {
+  opacity: 0;
+  transition: opacity 0.6s ease;
   filter: drop-shadow(0 0 9px #ffffff) drop-shadow(0 0 16px #8f5cff);
 }
 
 .projects-hero.is-in .route__lines path { stroke-dashoffset: 0; }
-.projects-hero.is-in .route__stops circle,
-.projects-hero.is-in .route__end,
-.projects-hero.is-in .route__orb { opacity: 1; }
+.projects-hero.is-in .route__end { opacity: 1; }
+.projects-hero.is-in .route__stops circle { opacity: 0.55; }
+.projects-hero.is-in .route__links line { opacity: 0.35; }
+.projects-hero.is-in .route__orb.is-on { opacity: 1; }
 
-.projects-hero.is-in .route__stops circle {
-  animation: route-pulse 3.4s ease-in-out infinite;
+/* A stop the orb has reached, and its chip. */
+.route__stops circle.is-lit {
+  opacity: 1 !important;
+  r: 8.5px;
+  filter: drop-shadow(0 0 8px currentColor);
 }
-.projects-hero.is-in .route__stops circle:nth-child(2) { animation-delay: 0.5s; }
-.projects-hero.is-in .route__stops circle:nth-child(3) { animation-delay: 1s; }
-.projects-hero.is-in .route__stops circle:nth-child(4) { animation-delay: 1.5s; }
-.projects-hero.is-in .route__stops circle:nth-child(5) { animation-delay: 2s; }
 
-@keyframes route-pulse {
-  0%, 100% { opacity: 0.55; }
-  50%      { opacity: 1; }
+.route__links line.is-lit { opacity: 0.9 !important; }
+
+.route__skills {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  pointer-events: none;
+}
+
+.route__skills li {
+  position: absolute;
+  left: var(--x);
+  top: calc(100 / 150 * 100%);
+  transform: translate(-50%, -50%);
+  padding: 0.36rem 0.72rem;
+  border-radius: 999px;
+  font-size: clamp(0.62rem, 1.1vw, 0.84rem);
+  font-weight: 600;
+  white-space: nowrap;
+  color: rgba(239, 234, 255, 0.78);
+  background: rgba(20, 18, 60, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  transition: color 0.4s ease, background 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.route__skills li.is-lit {
+  color: #ffffff;
+  background: color-mix(in srgb, var(--c) 38%, #0c0b28);
+  border-color: var(--c);
+  box-shadow: 0 0 20px -4px var(--c);
 }
 
 .route__ends {
   display: flex;
   justify-content: space-between;
   gap: 1rem;
-  margin: 0.4rem 0 0;
+  margin: clamp(0.4rem, 1.4vw, 1rem) 0 0;
 }
 
 .route__place {
@@ -1343,7 +1394,7 @@ h1, h2, h3, h4,
 
 .route__city {
   font-family: var(--font-script);
-  font-size: clamp(1.4rem, 2.8vw, 2rem);
+  font-size: clamp(1.4rem, 2.8vw, 2.1rem);
   line-height: 1;
 }
 
@@ -1351,43 +1402,48 @@ h1, h2, h3, h4,
 .route__place--b .route__city { color: #8ff1ff; }
 
 .route__where {
-  font-size: clamp(0.62rem, 1.1vw, 0.76rem);
+  font-size: clamp(0.6rem, 1.05vw, 0.74rem);
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: rgba(232, 230, 248, 0.7);
 }
 
-/* The disciplines: the stops on the route, named. */
-.route__skills {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 0.5rem 0.6rem;
-  margin: clamp(1rem, 2.6vw, 1.6rem) 0 0;
-  padding: 0;
-  list-style: none;
+/* Narrow screens: the chips would collide under the stops, so they become a
+   wrapped row under the route instead (they still light up in turn). */
+@media (max-width: 900px) {
+  .route__skills {
+    position: static;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.45rem 0.5rem;
+    margin: 0.6rem 0 0;
+  }
+
+  .route__skills li {
+    position: static;
+    transform: none;
+    font-size: 0.74rem;
+    padding: 0.32rem 0.75rem;
+  }
+
+  .route__links {
+    display: none;
+  }
 }
 
-.route__skills li {
-  padding: 0.35rem 0.85rem;
-  border-radius: 999px;
-  font-size: clamp(0.72rem, 1.2vw, 0.84rem);
-  font-weight: 600;
-  color: #efeaff;
-  background: rgba(255, 255, 255, 0.07);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-}
-
-/* No JavaScript (or reduced motion): the route simply shows, finished. */
+/* No JavaScript (or reduced motion): the finished route simply shows. */
 html:not(.js) .route__lines path,
 .projects-hero.is-static .route__lines path { stroke-dashoffset: 0; transition: none; }
 html:not(.js) .route__stops circle,
 html:not(.js) .route__end,
-html:not(.js) .route__orb,
+html:not(.js) .route__links line,
 .projects-hero.is-static .route__stops circle,
 .projects-hero.is-static .route__end,
-.projects-hero.is-static .route__orb { opacity: 1; transition: none; }
+.projects-hero.is-static .route__links line { opacity: 0.9; transition: none; }
+.projects-hero.is-static .route__orb { opacity: 0; }
+html:not(.js) .route__orb { opacity: 0; }
 
 /* The emphasised words: Over the Rainbow, bigger (it's small and thin),
    each in its own soft gradient. */

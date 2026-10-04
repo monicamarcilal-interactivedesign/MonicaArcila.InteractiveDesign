@@ -236,51 +236,60 @@
       <!-- The hero is a banner for the one paragraph that says who I am as a
            designer: design as a system, AI-driven flows, moving between
            disciplines, and being in Aotearoa from Medellín. Under the
-           statement a route is drawn from Medellín to Wellington, with the
-           disciplines as stops along it (the same bundled-curve look as the
-           landing page). The route draws itself when the banner scrolls into
-           view; one orb travels it for ever. -->
+           statement a route runs from Medellín to Wellington (the same
+           bundled-curve look as the landing page) with the five
+           disciplines as stops. An orb travels the route, and each
+           discipline lights up as the orb reaches its stop
+           (projects-board.js). The route draws itself when the banner
+           scrolls into view. -->
       <section class="projects-hero" id="projectsBanner" aria-label="Projects introduction">
-        <p class="projects-hero__statement" id="projectsStatement">I design <em class="pem pem--1">interactive experiences,</em> design systems and AI-driven workflows — <em class="pem pem--2">moving between</em> UX research, game design and immersive media, <em class="pem pem--3">from Medellín to Wellington.</em></p>
+        <p class="projects-hero__statement" id="projectsStatement">I design <em class="pem pem--1">interactive experiences,</em> design systems and AI-driven workflows — <em class="pem pem--2">moving between</em> UX research, game design and immersive media,</p>
+        <p class="projects-hero__from"><span class="pem pem--3">from <span class="from__a">Medellín</span> to <span class="from__b">Wellington.</span></span></p>
 
-        <div class="route" aria-hidden="true">
-          <svg class="route__svg" viewBox="0 0 1000 140" preserveAspectRatio="none" focusable="false">
+        <div class="route">
+          <svg class="route__svg" viewBox="0 0 1000 150" focusable="false" aria-hidden="true">
             <defs>
               <linearGradient id="routeGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1000" y2="0">
                 <stop offset="0" stop-color="#fd7069"/><stop offset="0.35" stop-color="#f887fa"/><stop offset="0.7" stop-color="#8f5cff"/><stop offset="1" stop-color="#22d3ee"/>
               </linearGradient>
             </defs>
             <g class="route__lines" fill="none" stroke="url(#routeGrad)" stroke-linecap="round">
-              <path id="routeMain" pathLength="1" d="M30 120 C250 -10 750 -10 970 120" stroke-width="2.2"/>
-              <path pathLength="1" d="M30 120 C250 6 750 6 970 120" stroke-width="1.2" opacity="0.7"/>
-              <path pathLength="1" d="M30 120 C250 -26 750 -26 970 120" stroke-width="1" opacity="0.55"/>
+              <path id="routeMain" pathLength="1" d="M30 100 C250 -24 750 -24 970 100" stroke-width="2.2"/>
+              <path pathLength="1" d="M30 100 C250 -10 750 -10 970 100" stroke-width="1.2" opacity="0.7"/>
+              <path pathLength="1" d="M30 100 C250 -38 750 -38 970 100" stroke-width="1" opacity="0.55"/>
+            </g>
+            <g class="route__links" stroke-width="1" stroke-dasharray="2 4" stroke-linecap="round">
+              <line x1="191" y1="40.5" x2="191" y2="82" stroke="#f887fa"/>
+              <line x1="340" y1="15.4" x2="340" y2="82" stroke="#c58bff"/>
+              <line x1="500" y1="7" x2="500" y2="82" stroke="#8f5cff"/>
+              <line x1="660" y1="15.4" x2="660" y2="82" stroke="#4d7dff"/>
+              <line x1="809" y1="40.5" x2="809" y2="82" stroke="#22d3ee"/>
             </g>
             <g class="route__stops">
-              <circle cx="191" cy="57.6" r="5" fill="#f887fa"/>
-              <circle cx="340" cy="31.3" r="5" fill="#c58bff"/>
-              <circle cx="500" cy="22.5" r="5" fill="#8f5cff"/>
-              <circle cx="660" cy="31.3" r="5" fill="#4d7dff"/>
-              <circle cx="809" cy="57.6" r="5" fill="#22d3ee"/>
+              <circle cx="191" cy="40.5" r="5.5" fill="#f887fa"/>
+              <circle cx="340" cy="15.4" r="5.5" fill="#c58bff"/>
+              <circle cx="500" cy="7" r="5.5" fill="#8f5cff"/>
+              <circle cx="660" cy="15.4" r="5.5" fill="#4d7dff"/>
+              <circle cx="809" cy="40.5" r="5.5" fill="#22d3ee"/>
             </g>
-            <circle class="route__end route__end--a" cx="30" cy="120" r="9" fill="#fd7069"/>
-            <circle class="route__end route__end--b" cx="970" cy="120" r="9" fill="#22d3ee"/>
-            <circle class="route__orb" r="7" fill="#ffffff">
-              <animateMotion dur="11s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines="0.45 0 0.55 1"><mpath href="#routeMain"/></animateMotion>
-            </circle>
+            <circle class="route__end route__end--a" cx="30" cy="100" r="9" fill="#fd7069"/>
+            <circle class="route__end route__end--b" cx="970" cy="100" r="9" fill="#22d3ee"/>
+            <circle class="route__orb" cx="30" cy="100" r="7" fill="#ffffff"/>
           </svg>
+
+          <ul class="route__skills" aria-label="What I move between">
+            <li style="--x:19.1%;--c:#f887fa">Design systems</li>
+            <li style="--x:34%;--c:#c58bff">AI-driven workflows</li>
+            <li style="--x:50%;--c:#8f5cff">UX research</li>
+            <li style="--x:66%;--c:#4d7dff">Game design</li>
+            <li style="--x:80.9%;--c:#22d3ee">Immersive media</li>
+          </ul>
+
           <div class="route__ends">
             <p class="route__place route__place--a"><span class="route__city">Medellín</span><span class="route__where">Colombia · EAFIT</span></p>
             <p class="route__place route__place--b"><span class="route__city">Wellington</span><span class="route__where">Aotearoa New Zealand · Te Herenga Waka</span></p>
           </div>
         </div>
-
-        <ul class="route__skills" aria-label="What I move between">
-          <li>Design systems</li>
-          <li>AI-driven workflows</li>
-          <li>UX research</li>
-          <li>Game design</li>
-          <li>Immersive media</li>
-        </ul>
       </section>
 
       <header class="projects-head">
