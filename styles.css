@@ -3227,66 +3227,81 @@ html:not(.js) .route__skills li { opacity: 1; }
 /* =============================================================
    PROFESSIONAL EXPERIENCE (2026-10-04)
    =============================================================
-   The role card on the left, wide; on the right a column of "stickers",
-   one per public post I worked on. Each sticker is a die-cut paper square
-   (white edge, a lifted, curling corner, a soft shadow, a little tilt).
+   The title and the role card on the left; on the right a tall column of
+   "stickers", one per public post I worked on (a selection, in no
+   particular order), running the full height of the section down to the
+   footer. Each sticker is a die-cut paper print of the post: a frosted
+   white edge, a curling corner, a glow in its type's colour (violet: the
+   #YoHagoParte series, blue: reels, coral: posts, dark: X), a little tilt.
    Hover or focus one and it straightens, grows and tells what I did; on a
    phone a first tap does that and a second tap opens the post. The column
-   scrolls (wheel, touch, or drag with the mouse) with no scroll bar. On
-   narrow screens the column turns into a sideways strip under the card.
+   scrolls (wheel or touch; no scroll bar) and, while it moves, the stickers
+   leave a faint trail behind them. On narrow screens the column becomes a
+   sideways strip under the card.
    ============================================================= */
 #experience {
   max-width: 1360px; /* wider than before: the card grows to the left */
 }
 
-.exp__tagline {
-  margin: -0.3rem 0 1.6rem;
-  font-family: var(--font-script);
-  font-size: clamp(1.3rem, 2.4vw, 1.9rem);
-  line-height: 1.2;
-  color: var(--color-muted);
+#experience.exp {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
+  column-gap: clamp(1.2rem, 3vw, 2.4rem);
+  align-items: start;
 }
 
 .exp__layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(300px, 400px);
-  gap: clamp(1.2rem, 3vw, 2.4rem);
-  align-items: stretch;
+  display: contents;
+}
+
+.exp .section__title {
+  grid-column: 1;
 }
 
 .exp .experience__item {
+  grid-column: 1;
   max-width: none;
   margin-top: 0;
   padding: clamp(1.3rem, 3vw, 2.2rem);
 }
 
-/* ---- the sticker column ---- */
+/* ---- the sticker column: the whole height of the section ---- */
 .stickers {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: stretch;
   position: relative;
   min-height: 420px;
 }
 
+.stickers__label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  margin: 0;
+  font-family: var(--font-script);
+  font-size: 1.15rem;
+  line-height: 1.2;
+  text-align: center;
+  color: var(--color-muted);
+  pointer-events: none;
+}
+
 .stickers__scroll {
   position: absolute;
-  inset: 0;
+  inset: 1.9rem 0 0;
   overflow-y: auto;
   overscroll-behavior: contain;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  cursor: grab;
-  border-radius: 20px;
-  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 36px, #000 calc(100% - 44px), transparent 100%);
-  mask-image: linear-gradient(180deg, transparent 0, #000 36px, #000 calc(100% - 44px), transparent 100%);
+  -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 40px, #000 calc(100% - 52px), transparent 100%);
+  mask-image: linear-gradient(180deg, transparent 0, #000 40px, #000 calc(100% - 52px), transparent 100%);
 }
 
 .stickers__scroll::-webkit-scrollbar {
   display: none;
-}
-
-.stickers__scroll.is-dragging {
-  cursor: grabbing;
-  user-select: none;
-  -webkit-user-select: none;
 }
 
 .stickers__scroll:focus-visible {
@@ -3294,12 +3309,14 @@ html:not(.js) .route__skills li { opacity: 1; }
   outline-offset: 2px;
 }
 
+/* Generous padding all round, so a sticker that straightens and grows on
+   hover is never cut off by the edge of the column. */
 .stickers__track {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 1.8rem 0.6rem;
+  gap: 2.4rem 1.2rem;
   margin: 0;
-  padding: 2.4rem 0.8rem 3.4rem;
+  padding: 3.4rem 2rem 4.4rem;
   list-style: none;
 }
 
@@ -3313,6 +3330,7 @@ html:not(.js) .route__skills li { opacity: 1; }
   --r: 0deg;
   --s: 150px;
   --peel: 26px;
+  --kc: #b86bff; /* the colour of the sticker's type */
   position: relative;
   justify-self: center;
   width: var(--s);
@@ -3320,9 +3338,19 @@ html:not(.js) .route__skills li { opacity: 1; }
   font-size: calc(var(--s) / 11);
   transform: rotate(var(--r));
   transition: transform 0.5s cubic-bezier(0.3, 0.9, 0.3, 1), --peel 0.4s ease;
-  /* the shadow follows the sticker's cut-out shape, curl included */
-  filter: drop-shadow(0 12px 12px rgba(0, 0, 0, 0.55));
+  /* Shadows follow the sticker's cut-out shape, curl included: a deep one
+     underneath, a glow in its colour, and the scroll trail (script.js sets
+     --trail / --trail-x while the column is moving). */
+  filter:
+    drop-shadow(0 12px 12px rgba(0, 0, 0, 0.5))
+    drop-shadow(0 0 9px color-mix(in srgb, var(--kc) 32%, transparent))
+    drop-shadow(calc(var(--trail-x, 0) * -0.5px) calc(var(--trail, 0) * -0.5px) 1px color-mix(in srgb, var(--kc) 42%, transparent))
+    drop-shadow(calc(var(--trail-x, 0) * -1px) calc(var(--trail, 0) * -1px) 3px color-mix(in srgb, var(--kc) 24%, transparent));
 }
+
+.sticker--reel   { --kc: #38b2f5; }
+.sticker--post   { --kc: #fd7a78; }
+.sticker--x      { --kc: #8a86c9; }
 
 /* Different sizes and tilts, so they look scattered rather than gridded. */
 .sticker:nth-child(4n + 1) { --r: -6deg; --s: 158px; }
@@ -3339,36 +3367,40 @@ html:not(.js) .route__skills li { opacity: 1; }
   -webkit-user-drag: none;
 }
 
-/* White paper edge with the curled-up corner cut out of it... */
+/* Frosted-white paper edge with the curled corner cut out of it... */
 .sticker__face {
   position: absolute;
   inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 1.15em 1.1em 1em;
+  display: block;
   border-radius: 1.25em;
-  background: #f7f3ff;
+  background: linear-gradient(150deg, #ffffff, #e6defa);
   clip-path: polygon(0 0, 100% 0, 100% calc(100% - var(--peel)), calc(100% - var(--peel)) 100%, 0 100%);
 }
 
-/* ...the coloured print inside it... */
+/* ...the picture of the post inside it... */
+.sticker__pic {
+  position: absolute;
+  inset: 0.55em;
+  z-index: 0;
+  width: calc(100% - 1.1em);
+  height: calc(100% - 1.1em);
+  object-fit: cover;
+  border-radius: 0.9em;
+  background: #151236;
+}
+
+/* ...tinted with the type's colour, strongest at the bottom where the title is. */
 .sticker__face::before {
   content: "";
   position: absolute;
   inset: 0.55em;
-  z-index: 0;
+  z-index: 1;
   border-radius: 0.9em;
-  background: linear-gradient(145deg, #8f5cff, #f887fa);
+  background: linear-gradient(180deg, color-mix(in srgb, var(--kc) 34%, transparent) 0%, transparent 38%, color-mix(in srgb, var(--kc) 92%, #0a0828) 100%);
 }
 
-.sticker--reel .sticker__face::before { background: linear-gradient(145deg, #22d3ee, #4d7dff); }
-.sticker--post .sticker__face::before { background: linear-gradient(145deg, #fd7069, #f887fa); }
-.sticker--x .sticker__face::before    { background: linear-gradient(145deg, #34344f, #0e0e1c); }
-
-.sticker__face > * {
-  position: relative;
-  z-index: 1;
+.sticker__face > :not(.sticker__pic) {
+  z-index: 2;
 }
 
 /* ...and the folded flap (the back of the paper) in the corner. */
@@ -3381,17 +3413,18 @@ html:not(.js) .route__skills li { opacity: 1; }
   height: var(--peel);
   background: linear-gradient(135deg, #ffffff 10%, #cdc3e8 100%);
   clip-path: polygon(100% 0, 0 100%, 0 0);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.4);
 }
 
 .sticker__glyph {
-  display: block;
-  width: 2.2em;
-  height: 2.2em;
-  margin-top: 0.2em;
-  background: center / 70% no-repeat;
-  background-color: rgba(255, 255, 255, 0.2);
+  position: absolute;
+  top: 1.05em;
+  left: 1.05em;
+  width: 2em;
+  height: 2em;
+  background: center / 66% no-repeat;
+  background-color: color-mix(in srgb, var(--kc) 70%, #0a0828);
   border-radius: 50%;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
 }
 
 .sticker__glyph--ig { background-image: url("assets/stickers/instagram.svg"); }
@@ -3399,45 +3432,43 @@ html:not(.js) .route__skills li { opacity: 1; }
 
 .sticker__type {
   position: absolute;
-  top: 1.15em;
-  right: 1.2em;
-  font-size: 0.78em;
+  top: 1.2em;
+  right: 1.25em;
+  padding: 0.18em 0.55em;
+  border-radius: 999px;
+  font-size: 0.7em;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  opacity: 0.9;
+  background: rgba(10, 8, 40, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
 }
 
 .sticker__title {
-  margin-bottom: 0.1em;
-  font-size: 1.02em;
+  position: absolute;
+  left: 1.1em;
+  right: 1.3em;
+  bottom: 1.05em;
+  font-size: 1em;
   font-weight: 800;
   line-height: 1.12;
   letter-spacing: -0.01em;
-  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
-}
-
-.sticker__num {
-  position: absolute;
-  right: 1.4em;
-  bottom: 1.5em;
-  font-size: 0.8em;
-  font-weight: 700;
-  opacity: 0.45;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.45);
 }
 
 /* What I did: covers the sticker while it is hovered, focused or tapped. */
 .sticker__role {
   position: absolute;
   inset: 0.55em;
-  z-index: 2;
+  z-index: 3;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   gap: 0.5em;
   padding: 0.9em 0.9em 0.8em;
   border-radius: 0.9em;
-  background: rgba(12, 10, 42, 0.92);
+  background: rgba(12, 10, 42, 0.93);
   font-size: 0.76em;
   line-height: 1.3;
   opacity: 0;
@@ -3457,7 +3488,7 @@ html:not(.js) .route__skills li { opacity: 1; }
 .sticker.is-open {
   z-index: 5;
   --peel: 40px;
-  transform: rotate(0deg) scale(1.45);
+  transform: rotate(0deg) scale(1.32);
 }
 
 .sticker:hover .sticker__role,
@@ -3472,15 +3503,31 @@ html:not(.js) .route__skills li { opacity: 1; }
   border-radius: 1.25em;
 }
 
+/* Stickers with a long note are a bit bigger, so the note fits (script.js
+   adds .sticker--long to notes over about 110 characters). */
+.sticker.sticker--long {
+  --s: 178px;
+}
+
+.sticker--long .sticker__role {
+  font-size: 0.68em;
+}
+
 /* ---- narrower screens: the column becomes a sideways strip ---- */
 @media (max-width: 900px) {
-  .exp__layout {
+  #experience.exp {
     grid-template-columns: 1fr;
   }
 
   .stickers {
+    grid-column: 1;
+    grid-row: auto;
     min-height: 0;
-    height: 250px;
+    height: 272px;
+  }
+  .stickers__label {
+    font-size: 1rem;
+    white-space: nowrap;
   }
 
   .stickers__scroll {
@@ -3493,10 +3540,10 @@ html:not(.js) .route__skills li { opacity: 1; }
   .stickers__track {
     display: flex;
     align-items: center;
-    gap: 1.6rem;
+    gap: 2rem;
     width: max-content;
     height: 100%;
-    padding: 1rem 2rem;
+    padding: 1.2rem 2.6rem;
   }
 
   .sticker,
@@ -3506,6 +3553,10 @@ html:not(.js) .route__skills li { opacity: 1; }
     --s: 138px;
   }
 
+  .sticker.sticker--long {
+    --s: 160px;
+  }
+
   .sticker:nth-child(even) { --r: 4deg; }
   .sticker:nth-child(odd)  { --r: -5deg; }
 }
@@ -3513,15 +3564,8 @@ html:not(.js) .route__skills li { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
   .sticker {
     transition: none;
+    filter:
+      drop-shadow(0 12px 12px rgba(0, 0, 0, 0.5))
+      drop-shadow(0 0 9px color-mix(in srgb, var(--kc) 32%, transparent));
   }
-}
-
-/* Stickers with a long note are a bit bigger, so the note fits (script.js
-   adds .sticker--long to notes over about 110 characters). */
-.sticker.sticker--long {
-  --s: 178px;
-}
-
-.sticker--long .sticker__role {
-  font-size: 0.68em;
 }

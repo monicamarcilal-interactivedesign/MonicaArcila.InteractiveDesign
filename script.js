@@ -109,11 +109,12 @@ if (aboutCard && !prefersReducedMotion) {
 
 /* -------------------------------------------------------------
    6. PROFESSIONAL EXPERIENCE — THE STICKER COLUMN
-   The column scrolls with the wheel or a touch swipe on its own; this adds
-   (a) drag-to-scroll with the mouse (down the column, or sideways when it
-   is the strip under the card on narrow screens) and (b) on touch screens,
-   a first tap on a sticker shows what I did on it and a second tap opens
-   the post. A drag never opens a post.
+   The column scrolls on its own (wheel or touch). This adds (a) a faint
+   trail: while it is moving, each sticker leaves a ghost of itself behind,
+   which eases away once it stops (it sets --trail, or --trail-x for the
+   sideways strip, and the CSS turns that into shadows); and (b) on touch
+   screens, a first tap on a sticker shows what I did on it and a second
+   tap opens the post.
    ------------------------------------------------------------- */
 const stickerScroll = document.getElementById("stickersScroll");
 if (stickerScroll) {
@@ -122,54 +123,53 @@ if (stickerScroll) {
     if (note && note.textContent.length > 110) sticker.classList.add("sticker--long");
   });
 
-  let press = null;
-  let wasDragged = false;
-  const sideways = () => stickerScroll.scrollWidth > stickerScroll.clientWidth + 2;
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    let lastTop = stickerScroll.scrollTop;
+    let lastLeft = stickerScroll.scrollLeft;
+    let trailY = 0;
+    let trailX = 0;
+    let wantY = 0;
+    let wantX = 0;
+    let frame = 0;
+    const clampTrail = (v) => Math.max(-34, Math.min(34, v));
 
-  stickerScroll.addEventListener("pointerdown", (event) => {
-    if (event.pointerType !== "mouse" || event.button !== 0) return;
-    press = {
-      x: event.clientX,
-      y: event.clientY,
-      left: stickerScroll.scrollLeft,
-      top: stickerScroll.scrollTop,
-      moved: false,
+    const settle = () => {
+      // Move toward what the scroll just asked for, then let it fade to nothing.
+      trailY += (wantY - trailY) * 0.35;
+      trailX += (wantX - trailX) * 0.35;
+      wantY *= 0.82;
+      wantX *= 0.82;
+      stickerScroll.style.setProperty("--trail", trailY.toFixed(2));
+      stickerScroll.style.setProperty("--trail-x", trailX.toFixed(2));
+      if (Math.abs(trailY) > 0.2 || Math.abs(trailX) > 0.2 || Math.abs(wantY) > 0.2 || Math.abs(wantX) > 0.2) {
+        frame = requestAnimationFrame(settle);
+      } else {
+        frame = 0;
+        stickerScroll.style.setProperty("--trail", "0");
+        stickerScroll.style.setProperty("--trail-x", "0");
+      }
     };
-  });
 
-  window.addEventListener("pointermove", (event) => {
-    if (!press) return;
-    const dx = event.clientX - press.x;
-    const dy = event.clientY - press.y;
-    if (!press.moved && Math.hypot(dx, dy) < 6) return;
-    press.moved = true;
-    stickerScroll.classList.add("is-dragging");
-    if (sideways()) stickerScroll.scrollLeft = press.left - dx;
-    else stickerScroll.scrollTop = press.top - dy;
-  });
+    stickerScroll.addEventListener(
+      "scroll",
+      () => {
+        wantY = clampTrail((stickerScroll.scrollTop - lastTop) * 1.6);
+        wantX = clampTrail((stickerScroll.scrollLeft - lastLeft) * 1.6);
+        lastTop = stickerScroll.scrollTop;
+        lastLeft = stickerScroll.scrollLeft;
+        if (!frame) frame = requestAnimationFrame(settle);
+      },
+      { passive: true }
+    );
+  }
 
-  const endPress = () => {
-    if (!press) return;
-    wasDragged = press.moved;
-    press = null;
-    stickerScroll.classList.remove("is-dragging");
-    window.setTimeout(() => (wasDragged = false), 60);
-  };
-  window.addEventListener("pointerup", endPress);
-  window.addEventListener("pointercancel", endPress);
-
-  // The browser would start dragging a link as a file; we want a scroll instead.
+  // The browser would start dragging a link as a file; we want none of that.
   stickerScroll.addEventListener("dragstart", (event) => event.preventDefault());
 
   stickerScroll.addEventListener(
     "click",
     (event) => {
       const sticker = event.target.closest(".sticker");
-      if (wasDragged) {
-        event.preventDefault();
-        event.stopPropagation();
-        return;
-      }
       // No hover on touch screens: first tap = read, second tap = open.
       if (sticker && window.matchMedia("(hover: none)").matches && !sticker.classList.contains("is-open")) {
         event.preventDefault();
