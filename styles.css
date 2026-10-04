@@ -1351,16 +1351,16 @@ body.is-banner .growth-trail {
 }
 
 .from__a {
-  /* Colombia's flag: yellow (top half), blue, red — blue and red lifted a little so they read on the dark. */
-  background: linear-gradient(180deg, #ffd21f 0 50%, #4a86ff 50% 74%, #ff4d5f 74% 100%);
+  /* Colombia's flag, left to right: yellow, blue, red (blue and red lifted a little so they read on the dark). */
+  background: linear-gradient(90deg, #ffd21f 10%, #4a86ff 52%, #ff4d5f 92%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 
 .from__b {
-  /* Wellington city flag: gold and blue (its black cross would vanish on the dark, so it is left out). */
-  background: linear-gradient(100deg, #ffd24a 25%, #55aaff 75%);
+  /* New Zealand's flag, left to right: blue, white, red (blue and red lifted a little so they read on the dark). */
+  background: linear-gradient(90deg, #4f8bff 8%, #ffffff 50%, #ff4d5f 92%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1370,7 +1370,7 @@ body.is-banner .growth-trail {
 .route {
   position: relative;
   margin: clamp(0.8rem, 2.4vw, 1.6rem) auto 0;
-  max-width: 1040px;
+  max-width: 1150px;
 }
 
 .route__svg {
@@ -1428,11 +1428,12 @@ body.is-banner .growth-trail {
   font-weight: 600;
   letter-spacing: 0.02em;
   opacity: 0.28;
-  transition: opacity 0.4s ease, fill 0.4s ease;
+  transition: opacity 0.4s ease, fill 0.4s ease, filter 0.4s ease;
 }
 
 .route__labels text.is-lit {
   opacity: 1;
+  filter: drop-shadow(0 0 4px var(--c)) drop-shadow(0 0 9px var(--c));
   fill: color-mix(in srgb, var(--c) 45%, #ffffff);
 }
 
@@ -1484,13 +1485,13 @@ body.is-banner .growth-trail {
 }
 
 .route__place--a .route__city {
-  background: linear-gradient(180deg, #ffd21f 0 50%, #4a86ff 50% 74%, #ff4d5f 74% 100%);
+  background: linear-gradient(90deg, #ffd21f 10%, #4a86ff 52%, #ff4d5f 92%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
 .route__place--b .route__city {
-  background: linear-gradient(100deg, #ffd24a 25%, #55aaff 75%);
+  background: linear-gradient(90deg, #4f8bff 8%, #ffffff 50%, #ff4d5f 92%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -1560,8 +1561,14 @@ html:not(.js) .route__skills li { opacity: 1; }
   text-shadow: none;
 }
 
-.pem--1 { background-image: linear-gradient(100deg, #fbb6ff, #b9a2ff); }
-.pem--2 { background-image: linear-gradient(100deg, #8ff1ff, #8aa4ff); }
+/* The emphasised phrases stay quiet (soft white) so the route and the two cities are what stand out. */
+.pem--1,
+.pem--2 {
+  background-image: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: #e9e5fa;
+}
 .pem--3 { background-image: linear-gradient(100deg, #ffd0b8, #ff9be6); }
 
 /* The title, after the star, with room around it. */
