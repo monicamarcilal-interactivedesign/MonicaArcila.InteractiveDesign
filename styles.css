@@ -3307,6 +3307,102 @@ html:not(.js) .route__skills li { opacity: 1; }
   margin-bottom: 0.25rem;
 }
 
+/* The one-glance summary under the title (context, challenge, solution,
+   result, learning): five short glass cards, readable in 30 seconds. */
+.pitch {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 2.25rem;
+  padding: 0;
+  list-style: none;
+}
+
+.pitch li {
+  padding: 0.9rem 1rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 18px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.09), rgba(255, 255, 255, 0.03) 62%);
+}
+
+.pitch__label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #b7a9ff;
+}
+
+.pitch p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.42;
+}
+
+/* A row of captioned pictures (e.g. "where we started"): four across on
+   wide screens, two on phones. */
+.project__compare {
+  margin-top: 2.5rem;
+}
+
+.compare__note {
+  max-width: 65ch;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+}
+
+.compare__row {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.compare__row figure {
+  margin: 0;
+}
+
+.compare__row img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--radius);
+  background: var(--color-surface);
+}
+
+.compare__row figcaption {
+  margin-top: 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1.38;
+  color: var(--color-muted);
+}
+
+@media (max-width: 1000px) {
+  .pitch {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pitch li:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 800px) {
+  .compare__row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .pitch {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* Gallery: images sit two per row on wide screens (one on phones);
    videos take the full width. Tall images are capped so a phone
    screenshot doesn't fill the whole page. Each image links to the

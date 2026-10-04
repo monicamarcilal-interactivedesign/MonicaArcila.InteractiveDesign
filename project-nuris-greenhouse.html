@@ -23,7 +23,7 @@
   <meta name="description" content="A VR environment that tells an unseen character's story through spatial design, props and sound alone, built for Virtual Reality Studio at Victoria University of Wellington." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261004h" />
+  <link rel="stylesheet" href="styles.css?v=20261004i" />
 </head>
 <body>
 
@@ -72,13 +72,22 @@
         </div>
         <div>
           <dt>Tools</dt>
-          <dd>Unreal Engine (my first project in it) · Meta Quest</dd>
+          <dd>Unreal Engine (my first project in it) · Meta Quest · AI-generated book images · licensed third-party 3D models</dd>
         </div>
         <div>
           <dt>Format</dt>
           <dd>Room-scale VR, headset-based</dd>
         </div>
       </dl>
+
+      <!-- ===== THE 30-SECOND VERSION ===== -->
+      <ul class="pitch" aria-label="Summary of the project">
+        <li><span class="pitch__label">Context</span><p>Virtual Reality Studio at Victoria University of Wellington. A solo VR environment.</p></li>
+        <li><span class="pitch__label">Challenge</span><p>Make a character the player never sees feel present, through what she left behind.</p></li>
+        <li><span class="pitch__label">Solution</span><p>A walled greenhouse in three zones, told through props, light and spatial audio, ending in one action with the player's own hand.</p></li>
+        <li><span class="pitch__label">Result</span><p>A walkable environment tested by two teachers and a classmate. They read the character well but got lost at the potions and found the book text hard to read.</p></li>
+        <li><span class="pitch__label">Learning</span><p>Text in VR needs far fewer words. My first Unreal project taught me to design for boundaries and a stable ground.</p></li>
+      </ul>
 
       <!-- ===== PROBLEM ===== -->
       <section class="project__section">
@@ -97,8 +106,8 @@
           <p>
             On top of that, the piece needed a real emotional arc: not a
             series of disconnected beats, but one continuous movement from
-            nostalgia and emptiness through curiosity into awe, tracked
-            precisely to the player's own progress through the space.
+            nostalgia and emptiness through curiosity into awe, tied to
+            the player's own progress through the space.
           </p>
         </div>
       </section>
@@ -116,6 +125,18 @@
             I built the whole experience in Unreal Engine, from the greybox
             to the final build. It was my first project in the engine, after about three semesters
             working in Unity.
+          </p>
+          <p>
+            I used AI in two ways. Gemini generated the images in the book
+            and on the sheets of paper, because I'm not a drawer and
+            fitting 3D models were hard to find for this character. I
+            iterated on the results and gave it reference images to keep
+            them consistent with the space. I also used it as a technical
+            assistant while learning Unreal, for example by sending
+            screenshots of Blueprints and error logs, because the headset
+            connection kept dropping and I only had short windows to work.
+            The 3D models and sound effects are licensed third-party assets,
+            credited in my asset list.
           </p>
         </div>
       </section>
@@ -140,7 +161,9 @@
             Spatial audio reinforces the same arc directly: ambient sound is
             eerie and sparse in the first zone, growing louder as the player
             follows a golden thread toward the embroidery, culminating in a
-            spatialised moment of connection with the story.
+            spatialised moment of connection with the story. The thread
+            lights up and glows where you step, drifting dust particles
+            fill the air, and grabbing an object has its own sound.
           </p>
         </div>
         <ol class="process-steps">
@@ -164,8 +187,9 @@
         <h2 class="project__section-title">Solution</h2>
         <div class="project__description">
           <p>
-            A three-zone VR greenhouse where the story is told entirely
-            through space, props and sound. The player is verbally onboarded
+            A three-zone VR greenhouse where the story is told mostly
+            through space, props and sound, with a few illustrated book
+            pages and papers. The player is verbally onboarded
             before putting on the headset, which defines both their role and
             their agency: they cannot change the outcome of Nuri's story,
             but they can decipher — with guidance — what might reverse the
@@ -189,15 +213,28 @@
         <h2 class="project__section-title">Result &amp; reflection</h2>
         <div class="project__description">
           <p>
-            A complete, walkable VR environment that tells a full character
-            arc without dialogue, narration text, or the character ever
-            appearing — using environmental storytelling, spatial audio and
-            one embodied action as the emotional payoff.
+            A complete, walkable VR environment that tells a character arc
+            without dialogue or the character ever appearing — using
+            environmental storytelling, spatial audio and one embodied
+            action as the emotional payoff.
           </p>
-          <!-- REPLACE/ADD: once you're ready, a line or two on what you'd
-               refine further, or what surprised you when playtesting it,
-               would round this section out — this is the "especially light"
-               reflection bit CLAUDE.md flags as yours to write, not mine. -->
+          <p>
+            Both of my teachers and a classmate tried it. They worked out
+            who the character was and the main context, though not the
+            whole story. Some got lost in the potions area because they had
+            to guess which potion opens the path. They also suggested
+            putting less text on the images, and that matched what
+            surprised me: the images were sharp, but in VR your hands shake
+            and the resolution keeps adjusting to where you look, so the
+            text was hard to read. The dust, the grab sounds, the spatial
+            audio that grows as you get closer and the glowing thread all
+            worked well.
+          </p>
+          <p>
+            I didn't keep a journal or a greybox recording, since this was a
+            solo project. If I continued it, I would cut the book text down
+            and make the path-opening potion easier to find.
+          </p>
         </div>
       </section>
 
@@ -235,6 +272,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261004h"></script>
+  <script src="script.js?v=20261004i"></script>
 </body>
 </html>

@@ -22,7 +22,7 @@
   <meta name="description" content="A Lean UX redesign of SIATA's citizen weather-and-risk portal for Medellín: interviews, tree testing, collaborative prototyping, a working mobile-web prototype and a Hotjar + Maze evaluation." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261004h" />
+  <link rel="stylesheet" href="styles.css?v=20261004i" />
 </head>
 <body>
 
@@ -67,7 +67,7 @@
       <dl class="project__facts">
         <div>
           <dt>My role</dt>
-          <dd>Team of 5. I did the user interviews and testing, built the working prototype and wrote the analytics report</dd>
+          <dd>Team of 5. I did the user interviews and testing, built the working prototype with generative AI and wrote the analytics report</dd>
         </div>
         <div>
           <dt>Tools</dt>
@@ -79,17 +79,29 @@
         </div>
       </dl>
 
+      <!-- ===== THE 30-SECOND VERSION ===== -->
+      <ul class="pitch" aria-label="Summary of the project">
+        <li><span class="pitch__label">Context</span><p>SIATA is Medellín's early-warning system. It runs a technical website and a separate citizen portal.</p></li>
+        <li><span class="pitch__label">Challenge</span><p>Searching "siata" leads to the technical site, and the citizen portal is still crowded on a phone. How can someone check rain and risk without knowing meteorology?</p></li>
+        <li><span class="pitch__label">Solution</span><p>A map-first mobile web prototype with less on screen, sliding panels, everyday words and two route tools.</p></li>
+        <li><span class="pitch__label">Result</span><p>36 recorded sessions and 981 clicks, gathered on the entry button and map controls. Maze could not score success, and I reported that as a limit.</p></li>
+        <li><span class="pitch__label">Learning</span><p>Keep the first version small, and say what the data can't show.</p></li>
+      </ul>
+
       <!-- ===== PROBLEM ===== -->
       <section class="project__section">
         <h2 class="project__section-title">The problem</h2>
         <div class="project__description">
           <p>
             SIATA is the early-warning and environmental monitoring system
-            for Medellín's metropolitan area. It runs two websites: a
-            technical one and one meant for ordinary citizens. Most people
-            don't know the citizen portal exists. When they search for
-            SIATA they land on the technical site, where they meet
-            unexplained abbreviations, crowded screens and no guidance.
+            for Medellín's metropolitan area. It runs two websites. The
+            first, siata.gov.co, is the technical one, aimed at people who
+            already understand meteorology, and it is the one that comes up
+            when you search for SIATA. The second, Geoportal Ciudadanos, is
+            meant for ordinary people and should be friendlier, but it is
+            much less recognised. That is our own observation as a team.
+            In our interviews some people had never heard of SIATA, and
+            several preferred Apple Weather or Google.
           </p>
           <p>
             The course brief asked us to pick a public website or app and
@@ -101,6 +113,30 @@
         </div>
       </section>
 
+      <!-- ===== STARTING POINT (before) ===== -->
+      <section class="project__compare">
+        <h2 class="project__section-title">Where we started</h2>
+        <p class="compare__note">The live sites on a phone, recorded in October 2026, so small details may differ from what we saw in March.</p>
+        <ul class="compare__row">
+          <li><figure>
+            <img src="assets/siata/before-1-search.jpg" alt="Phone screenshot of a Google search for 'siata' with siata.gov.co, the technical site, as the first result." width="576" height="1218" loading="lazy" />
+            <figcaption>Searching "siata" puts the technical site first.</figcaption>
+          </figure></li>
+          <li><figure>
+            <img src="assets/siata/before-2-technical-site.jpg" alt="The technical SIATA site on a phone: a dark panel titled 'Información geoespacial' with a long list of checkboxes over a map." width="576" height="1218" loading="lazy" />
+            <figcaption>The technical site: a long stack of layers and checkboxes.</figcaption>
+          </figure></li>
+          <li><figure>
+            <img src="assets/siata/before-3-find-citizen-portal.jpg" alt="Phone screenshot of a Google search for 'siata geoportal ciudadanos' with the citizen portal as the first result." width="576" height="1218" loading="lazy" />
+            <figcaption>The citizen portal appears when you already know its full name.</figcaption>
+          </figure></li>
+          <li><figure>
+            <img src="assets/siata/before-4-citizen-portal.jpg" alt="The Geoportal Ciudadanos on a phone: a map of Medellín covered in moon icons and temperature markers, with small blue buttons on the right." width="576" height="1218" loading="lazy" />
+            <figcaption>The citizen portal: a map crowded with icons, tools as small buttons.</figcaption>
+          </figure></li>
+        </ul>
+      </section>
+
       <!-- ===== MY ROLE ===== -->
       <section class="project__section">
         <h2 class="project__section-title">My role</h2>
@@ -109,12 +145,43 @@
             This was a five-person team project. I ran and recorded user
             interviews, shared the test links and helped build the Figma
             baseline prototype. I then developed the final working
-            prototype as HTML using Gemini Canvas. In our weekly meetings
-            I helped decide which functions to change, rewrote SIATA's
-            technical terms in plain language and made the vector assets
-            that explain the UI and buttons. I also wrote an individual
-            analytics report on how people actually used the prototype.
+            prototype as HTML using Gemini Canvas, a generative AI tool,
+            working from our Figma baseline and the decisions we made as a
+            group. In our weekly meetings I helped decide which functions
+            to change, rewrote SIATA's technical terms in plain language
+            and made the vector assets that explain the UI and buttons. I
+            also wrote an individual analytics report on how people
+            actually used the prototype, and used AI to help bring the
+            findings from our documents and tests together in it.
           </p>
+        </div>
+      </section>
+
+      <!-- ===== DECISIONS ===== -->
+      <section class="project__section">
+        <h2 class="project__section-title">Decisions and obstacles</h2>
+        <div class="project__description">
+          <ul>
+            <li><strong>Keep the first version small.</strong> In a session
+              with our teacher we saw that I was building every section we
+              wanted to change in Gemini Canvas. That was not a minimum
+              viable product. With the teacher's direction we built only
+              the parts needed to test our main hypotheses.</li>
+            <li><strong>Show less on screen.</strong> We argued about
+              interface choices from our own experience, then checked them
+              against the concepts behind them. Cutting what is visible
+              reduces cognitive overload, and sliding panels let each one
+              hold only specific, useful information.</li>
+            <li><strong>Use everyday words.</strong> I replaced technical
+              terms with plain ones, for example <em>precipitación</em>
+              became <em>lluvia</em>, even where people may know the
+              term, to remove even small doubts.</li>
+            <li><strong>Test without a moderator.</strong> People received a
+              link and did the tasks alone. That showed freer behaviour but
+              meant we couldn't confirm everyone understood the
+              instructions, and it caused the tracking limits described
+              in the results.</li>
+          </ul>
         </div>
       </section>
 
@@ -160,10 +227,9 @@
           <li>
             <span class="step__date">4 — Collaborative prototyping</span>
             <p>
-              We gave participants our first structure and asked them to
-              rearrange it. They consistently asked for fewer categories,
-              a more direct route to navigation and alerts, and current
-              conditions on the home screen.
+              We gave two participants our first structure and asked them to
+              rearrange it. Both asked for fewer categories and a simpler
+              layout, with alerts and the main weather data easier to reach.
             </p>
           </li>
           <li>
@@ -177,7 +243,10 @@
               the weather along your route, and <em>Mejor hora para
               salir</em>, which suggests the best time to leave to avoid
               rain or traffic. We tested it without a moderator, using
-              Maze missions and Hotjar recordings and heatmaps.
+              Maze missions and Hotjar recordings and heatmaps. The people
+              who tried it were friends and acquaintances of the team, and
+              their recorded paths gave each of us the same data to write
+              our own final report from.
             </p>
           </li>
         </ol>
@@ -205,7 +274,8 @@
           <p>
             Hotjar recorded <strong>36 sessions</strong> (half on phones,
             half on computers), with an average of 4:52 minutes and 15.4
-            pages per session, 981 clicks and no rage clicks. Clicks
+            pages per session, 981 clicks and no rage clicks. The bounce
+            rate was 38.9%, so some people left quickly. Clicks
             clustered on the Explorar button and the map controls, so
             people found the entry point and treated the map as the heart
             of the experience. "Consultar ruta" (check your route, 17
@@ -213,8 +283,11 @@
             among the most-used features.
           </p>
           <p>
-            Not everything worked, and I reported the problems too. Maze
-            showed 0% mission success. That wasn't because everyone
+            Not everything worked, and I reported the problems too. The
+            sample was small and close to the team, and Maze showed 13
+            responses, of which I counted 12 as valid because one had no
+            complete recording. It also showed 0% mission success. That
+            wasn't because everyone
             failed: the paths were never reviewed and categorised by hand,
             so the tool couldn't score them. Hotjar also couldn't track
             parts of the prototype that were embedded as iframes. I
@@ -222,8 +295,9 @@
             as final. My recommendations were clearer active and inactive
             states for the layer buttons, short helper text, less visual
             load when many layers are on, and a re-test with light
-            moderation. For me, being honest about what the data can't
-            show is part of doing UX research properly.
+            moderation. What I took from this: build the smallest thing
+            that tests the idea, and be honest about what the data can't
+            show, because that is part of doing UX research properly.
           </p>
         </div>
       </section>
@@ -242,7 +316,7 @@
           <li class="tag">Maze</li>
           <li class="tag">Hotjar</li>
           <li class="tag">Figma</li>
-          <li class="tag">Gemini Canvas</li>
+          <li class="tag">Gemini Canvas (generative AI)</li>
         </ul>
       </section>
 
@@ -273,6 +347,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261004h"></script>
+  <script src="script.js?v=20261004i"></script>
 </body>
 </html>

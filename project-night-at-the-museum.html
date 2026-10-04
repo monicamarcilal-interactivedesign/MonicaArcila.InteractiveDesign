@@ -29,7 +29,7 @@
   <meta name="description" content="A VR/mixed-reality narrative prototype where a magic paintbrush is both the story's core object and an interaction validated step-by-step against Don Norman's Model of Action." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261004h" />
+  <link rel="stylesheet" href="styles.css?v=20261004i" />
 </head>
 <body>
 
@@ -86,6 +86,15 @@
         </div>
       </dl>
 
+      <!-- ===== THE 30-SECOND VERSION ===== -->
+      <ul class="pitch" aria-label="Summary of the project">
+        <li><span class="pitch__label">Context</span><p>A VR course at Universidad EAFIT. Our team of six designed an experience set inside four famous paintings.</p></li>
+        <li><span class="pitch__label">Challenge</span><p>One interaction, a magic paintbrush, had to carry the whole story and stay clear without menus.</p></li>
+        <li><span class="pitch__label">Solution</span><p>Aim, hold, activate: about five seconds of vibration and visual feedback, reused in every world. I built it in Unity for Meta Quest 3 and coordinated the build.</p></li>
+        <li><span class="pitch__label">Result</span><p>A playable experience of around eight minutes. A level-three bug stopped our teacher from finishing it, and the final build wasn't kept.</p></li>
+        <li><span class="pitch__label">Learning</span><p>A simulator isn't a headset. Test on the device early.</p></li>
+      </ul>
+
       <!-- ===== PROBLEM ===== -->
       <section class="project__section">
         <h2 class="project__section-title">The problem</h2>
@@ -99,8 +108,8 @@
             and, at the same time, hold up as a real piece of interaction
             design — the player has to always know what the brush can do,
             when their input has registered, and what's about to happen
-            next, without a single line of on-screen instruction once
-            they're inside the headset.
+            next. Instructions were built into the world, through a
+            narrating voice and a pointing ghost hand, rather than menus.
           </p>
         </div>
       </section>
@@ -124,9 +133,12 @@
             <li>Used AI to help write scripts and debug Unity problems, with very specific prompts so it did exactly what I asked and nothing more.</li>
           </ul>
           <p>
-            We ran into real problems along the way: syncing each other's
-            changes, mechanics that broke, optimisation, and transitions
-            between levels. We still shipped a complete experience.
+            We worked to a dated plan from 14 April to 19 May, split into
+            three pairs: programming and integration (me and one
+            teammate), assets and spaces, and narrative with dialogue and
+            the graphic line. We ran into real problems along the way:
+            syncing each other's changes, mechanics that broke,
+            optimisation, and transitions between levels.
           </p>
         </div>
       </section>
@@ -161,6 +173,15 @@
             beginning to glow, brushstrokes moving, particles of paint
             appearing — so the player never has to guess whether their
             input registered.
+          </p>
+          <p>
+            In Unity, all the brush logic lived in one master script. When
+            the brush was grabbed, the hand closed into a fist. When it
+            carried ink, a shader appeared on the tip and the particles
+            switched on. An ink counter ran down as you used the ink to
+            teleport and to "paint" the paintings, so you had to look for
+            more. I also made the shaders for the paintings, the animations
+            and the transitions.
           </p>
           <p>
             To check that the mechanic worked as interaction design and
@@ -202,18 +223,22 @@
           <p>
             A playable VR experience on Meta Quest 3, with a menu, a
             tutorial, transitions between portals and interactive levels
-            (the boat, the sculpture and the full brush interaction). I
-            didn't make the final video or submit the project, and that
-            final build was lost. What survives are the screen recordings
-            I made during development to keep the team updated. They show
-            the experience working step by step.
+            (the boat, the sculpture and the full brush interaction). A
+            full run takes around eight minutes. The scenes worked when we
+            tested them in Unity's simulator, but when my teacher tried it,
+            a bug on entering the third level stopped him from continuing.
+            I didn't make the final video or submit the project, and that
+            final build wasn't kept. What survives are the screen
+            recordings I made during development to keep the team updated.
+            They show the experience working step by step.
           </p>
           <p>
             This project taught me how to turn a team's design into
             something that actually runs. I learnt to keep six people
             working on one codebase and to use AI as a precise tool rather
-            than a shortcut. When the pressure was on, the job was keeping
-            the whole thing together.
+            than a shortcut. It also showed me that a simulator isn't a
+            headset: I would test on the device much earlier. When the
+            pressure was on, the job was keeping the whole thing together.
           </p>
         </div>
       </section>
@@ -264,6 +289,6 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261004h"></script>
+  <script src="script.js?v=20261004i"></script>
 </body>
 </html>
