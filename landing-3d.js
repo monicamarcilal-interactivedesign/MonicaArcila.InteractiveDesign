@@ -152,11 +152,32 @@ let lastCanvasW = 0;
 let lastCanvasH = 0;
 let modelHalfWidth = 1; // widest horizontal reach from the centre, for fitting narrow screens
 
+// Pixel ratio of the drawing buffer: lower on touch screens, and lowered
+// further by landing-fx.js's quality governor if the device struggles
+// (setQuality below; the tier is also kept in sessionStorage so a page that
+// loads after a slow one starts at the right level).
+let qualityTier = 0;
+try {
+  qualityTier = Number(sessionStorage.getItem("fxTier")) || 0;
+} catch (error) { /* private mode: starts at tier 0 */ }
+{
+  const forced = new URLSearchParams(window.location.search).get("fxtier");
+  if (forced !== null && /^[0-2]$/.test(forced)) qualityTier = Number(forced);
+}
+function pixelRatio() {
+  const cap = qualityTier >= 2 ? 1 : qualityTier === 1 ? 1.25 : isTouch ? 1.5 : 2;
+  return Math.min(window.devicePixelRatio || 1, cap);
+}
+function setQuality(tier) {
+  qualityTier = tier;
+  resizeRenderer();
+}
+
 function initRenderer() {
   renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
   // 3x phone screens would render ~2.25x the pixels of the 2x cap for no
   // visible gain on a flower that's softened and blurred anyway.
-  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2));
+  renderer.setPixelRatio(pixelRatio());
   renderer.outputColorSpace = THREE.SRGBColorSpace;
   // Without tone mapping, bright highlights just clip to flat white
   // instead of rolling off smoothly — that clipping is most of what was
@@ -188,7 +209,7 @@ function resizeRenderer() {
   // for an unchanged size would just flicker.
   // The pixel ratio can change on its own too (browser zoom, moving the
   // window to another screen): re-read it, and rebuild the buffer if so.
-  const ratio = Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2);
+  const ratio = pixelRatio();
   const ratioChanged = ratio !== renderer.getPixelRatio();
   if (ratioChanged) renderer.setPixelRatio(ratio);
   if (!ratioChanged && clientWidth === lastCanvasW && clientHeight === lastCanvasH) return;
@@ -581,7 +602,7 @@ function init() {
 
 init();
 
-window.lotusScene = { ready, activate, settle, reset, refresh, coreOffsetY, jumpToSettled };
+window.lotusScene = { setQuality, ready, activate, settle, reset, refresh, coreOffsetY, jumpToSettled };
 // `ready` above is captured before the async chain settles is fine —
 // callers await window.lotusScene.ready directly; re-assign so it's
 // always the live promise rather than whatever it was at this exact line.

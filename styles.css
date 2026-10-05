@@ -5226,3 +5226,17 @@ body.is-banner .lang-switch {
 .pcard--personal .pcard__media {
   box-shadow: 0 0 0 1px rgba(249, 168, 255, 0.55), 0 0 26px -6px rgba(249, 168, 255, 0.7);
 }
+
+/* ============================================================
+   Landing quality tier 2 (2026-10-06)
+   landing-fx.js adds html.fx-lite only if a device cannot keep up (or the
+   address has ?fxtier=2). The two big blurs on the landing are what a phone
+   pays for most, so they get smaller; everything else looks the same.
+   ============================================================ */
+html.fx-lite #fxDroplets {
+  filter: blur(6px);
+}
+
+html.fx-lite .lotus-spotlight {
+  filter: blur(18px);
+}

@@ -38,6 +38,8 @@ const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 const isTouch = window.matchMedia("(pointer: coarse)").matches;
 const DPR = Math.min(window.devicePixelRatio || 1, isTouch ? 1.5 : 2);
 const DROP_SCALE = isTouch ? 0.5 : 0.45;
+// What the quality governor (section 5) changes if a device struggles.
+let dprNow = DPR;
 
 const dropCtx = cDrop.getContext("2d");
 const dustCtx = cDust.getContext("2d");
@@ -122,6 +124,9 @@ const DROPLETS = [
 ];
 const TRAIL_SECONDS = 7.5;
 const TRAIL_STEPS = 44;
+let trailSteps = TRAIL_STEPS; // fewer, stronger steps if the device struggles
+let dropEvery = 1; // redraw the droplets every n-th frame (they move very slowly)
+let dropCount = 0;
 
 function dropletAt(d, t) {
   return {
@@ -139,17 +144,22 @@ function blob(ctx, x, y, r, rgb, a) {
   ctx.fillRect(x - r, y - r, r * 2, r * 2);
 }
 
+// (A cached-sprite version was tried on 2026-10-06 and dropped: stamping an
+// 8-bit disc loses the faint end of the tails, which the gradient's own
+// dithering keeps, so the look changed.)
 function drawDroplets(t) {
   dropCtx.clearRect(0, 0, W, H);
   dropCtx.globalCompositeOperation = "lighter";
   const headR = Math.max(W, H) * 0.115;
   const time = reduced ? 20 : t;
+  // With fewer steps each one is stronger, so the tail keeps its density.
+  const boost = TRAIL_STEPS / trailSteps;
   for (const d of DROPLETS) {
-    for (let i = TRAIL_STEPS; i >= 0; i--) {
-      const s = i / TRAIL_STEPS; // 0 = head, 1 = tail tip
+    for (let i = trailSteps; i >= 0; i--) {
+      const s = i / trailSteps; // 0 = head, 1 = tail tip
       const pos = dropletAt(d, time - s * TRAIL_SECONDS);
       const r = headR * d.size * (0.3 + 0.7 * Math.pow(1 - s, 1.2));
-      const a = 0.075 * d.strength * Math.pow(1 - s, 1.05);
+      const a = 0.075 * boost * d.strength * Math.pow(1 - s, 1.05);
       blob(dropCtx, pos.x, pos.y, r, d.rgb, a);
     }
     const head = dropletAt(d, time);
@@ -383,7 +393,7 @@ function size() {
   if (w === W && h === H) return true;
   W = w;
   H = h;
-  for (const [c, ctx, k] of [[cDust, dustCtx, DPR], [cLines, lineCtx, DPR], [cDrop, dropCtx, DROP_SCALE]]) {
+  for (const [c, ctx, k] of [[cDust, dustCtx, dprNow], [cLines, lineCtx, dprNow], [cDrop, dropCtx, DROP_SCALE]]) {
     c.width = Math.round(W * k);
     c.height = Math.round(H * k);
     ctx.setTransform(k, 0, 0, k, 0, 0);
@@ -391,6 +401,82 @@ function size() {
   seedDust();
   return true;
 }
+
+/* -------------------------------------------------------------
+   5. QUALITY GOVERNOR (2026-10-06, after the landing lagged on a phone)
+   Nothing changes on a device that keeps up. If more than 60 percent of
+   the last 90 frames took longer than 45 ms (under about 22 frames a
+   second; a phone locked to 30 fps in low-power mode does not count), the
+   show steps down one tier and never back up until the page is reloaded:
+     tier 1  droplets redrawn every 3rd frame with 28 steps instead of 44
+             (each a little stronger, so the tails look the same), and the
+             3D flower drawn at a pixel ratio of at most 1.25
+     tier 2  droplets every 4th frame with 16 steps, dust and connection
+             canvases and the flower at pixel ratio 1, and the blurs on the
+             droplets and the glow behind the flower made smaller
+             (html.fx-lite in styles.css)
+   The tier is kept for the browser session (sessionStorage) so coming
+   back from a project page does not start slow again. To compare on a
+   phone, add ?fxtier=0, ?fxtier=1 or ?fxtier=2 to the address: that
+   forces a tier and switches the governor off.
+   ------------------------------------------------------------- */
+const TIER_KEY = "fxTier";
+let tier = 0;
+let governorOn = true;
+const recent = [];
+let lastTierChange = 0;
+
+function applyTier(n) {
+  tier = n;
+  trailSteps = [TRAIL_STEPS, 28, 16][n];
+  dropEvery = [1, 3, 4][n];
+  dprNow = n >= 2 ? 1 : DPR;
+  document.documentElement.classList.toggle("fx-lite", n >= 2);
+  W = 0; // makes size() rebuild the canvases at the new resolution
+  try {
+    if (window.lotusScene && window.lotusScene.setQuality) window.lotusScene.setQuality(n);
+  } catch (error) {
+    console.warn("landing-fx: quality", error);
+  }
+}
+
+function watchFrameRate(raw, t) {
+  if (!governorOn || reduced || tier >= 2) return;
+  // A tab that was in the background, or a hitch while the model decodes,
+  // says nothing about how fast the show runs.
+  if (document.hidden || raw > 0.5) {
+    recent.length = 0;
+    return;
+  }
+  recent.push(raw);
+  if (recent.length > 90) recent.shift();
+  if (recent.length < 90 || t - lastTierChange < 3) return;
+  const slow = recent.filter((v) => v > 0.045).length;
+  if (slow / recent.length > 0.6) {
+    lastTierChange = t;
+    recent.length = 0;
+    applyTier(tier + 1);
+    try {
+      sessionStorage.setItem(TIER_KEY, String(tier));
+    } catch (error) { /* private mode: it just starts at tier 0 next time */ }
+  }
+}
+
+(function startTier() {
+  let n = 0;
+  const forced = new URLSearchParams(window.location.search).get("fxtier");
+  if (forced !== null && /^[0-2]$/.test(forced)) {
+    governorOn = false;
+    n = Number(forced);
+  } else {
+    try {
+      n = Number(sessionStorage.getItem(TIER_KEY)) || 0;
+    } catch (error) {
+      n = 0;
+    }
+  }
+  if (n > 0 || document.documentElement.classList.contains("fx-lite")) applyTier(Math.min(2, n));
+})();
 
 function frame(now) {
   rafId = 0;
@@ -401,6 +487,7 @@ function frame(now) {
   }
   const t = now / 1000;
   const dt = lastT ? Math.min(t - lastT, 0.1) : 0.016;
+  if (lastT) watchFrameRate(t - lastT, t);
   lastT = t;
 
   if (stage.classList.contains("is-awake")) lastAwake = t;
@@ -408,8 +495,14 @@ function frame(now) {
   // others, and the loop always carries on to the next frame.
   try {
     // Keep drawing droplets while they fade out after a reset, then stop.
-    if (t - lastAwake < 3.8) drawDroplets(t);
-    else dropCtx.clearRect(0, 0, W, H);
+    if (t - lastAwake < 3.8) {
+      // The droplets take 30-40 s per loop, so on a struggling device they
+      // are redrawn only every n-th frame; the canvas keeps what is on it.
+      if (++dropCount >= dropEvery) {
+        dropCount = 0;
+        drawDroplets(t);
+      }
+    } else dropCtx.clearRect(0, 0, W, H);
   } catch (error) {
     console.warn("landing-fx: droplets", error);
   }
