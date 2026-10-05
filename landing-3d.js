@@ -88,7 +88,7 @@ const MODEL_CONFIG = {
   type: "glb",
   glb: { url: RAW_BASE + "lotus-shaded.glb" },
   // Phones and tablets (touch screens) get a lighter copy of the same
-  // model (2026-10-06): same shape, texture 2048 to 1536 px as a JPEG,
+  // model (2026-10-05): same shape, texture 2048 to 1536 px as a JPEG,
   // normals and UVs stored in 16 bits. 9.6 MB down to 3.9 MB. Desktop
   // keeps the original file. If the light copy fails to load, the
   // original is tried before giving up (see loadLotusModel).

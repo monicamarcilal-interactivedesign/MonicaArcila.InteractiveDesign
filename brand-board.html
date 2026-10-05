@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<!--
+  BRAND BOARD — a working proposal for Mónica's brand identity (2026-10-05)
+  Not linked from the site. It shows the identity as a system: lockups, the
+  devices that make it recognisable, colour, type, voice, naming ideas and
+  applications (Instagram grid, LinkedIn banner, business card, signature).
+  Every element is HTML/CSS so it can be screenshotted for the journal.
+  Colours: the logo blue was sampled from assets/site/logo-mark.png.
+  Nothing here states a fact about Mónica that is not on her site or in her
+  outline; naming ideas are labelled as ideas.
+-->
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Brand board — Mónica Arcila</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="styles.css?v=20261005x" />
+  <link rel="stylesheet" href="brand.css?v=20261005x" />
+  <style>
+    /* the same tokens as brand.css, scoped so both skins can sit side by side */
+    .sk-day   { --b-bg:#f5efe6; --b-bg-2:#fbf7f1; --b-ink:#15123b; --b-muted:#5a5680; --b-blue:#2048d8; --b-blue-text:#1c3fbd; --b-spark:#22d3ee; --b-warm:#fd7069; --b-card:rgba(255,255,255,.78); --b-line:rgba(21,18,59,.16); background:var(--b-bg); color:var(--b-ink); }
+    .sk-night { --b-bg:#050318; --b-bg-2:#0b0637; --b-ink:#f4f1ff; --b-muted:#b6aede; --b-blue:#4d7dff; --b-blue-text:#8fa8ff; --b-spark:#22d3ee; --b-warm:#fd7069; --b-card:rgba(255,255,255,.07); --b-line:rgba(255,255,255,.16); background:var(--b-bg); color:var(--b-ink); }
+
+    .bb-top { position:static; }
+    .bb-wrap { width:min(100% - 2.4rem, 1040px); margin-inline:auto; }
+    .bb-sec { padding: clamp(2.2rem, 6vw, 4rem) 0; border-top: 1px solid var(--b-line); }
+    .bb-sec > .bb-wrap > h2 { margin:0 0 .3rem; font-size:clamp(1.6rem,5.5vw,2.4rem); font-weight:800; letter-spacing:-.02em; line-height:1.1; }
+    .bb-sec .lead { margin:.2rem 0 1.6rem; color:var(--b-muted); max-width:42rem; }
+    .bb-grid { display:grid; gap:1rem; }
+    @media (min-width: 720px) { .g2 { grid-template-columns:1fr 1fr; } .g3 { grid-template-columns:repeat(3,1fr); } .g4 { grid-template-columns:repeat(4,1fr); } }
+    .tag-note { display:inline-block; margin:0 0 .8rem; padding:.3rem .55rem; font:800 .62rem/1 var(--font-body); letter-spacing:.14em; text-transform:uppercase; color:var(--b-draft-text); background:var(--b-draft-bg); border-radius:6px; }
+    .panel { border:1px solid var(--b-line); border-radius:22px 6px 22px 6px; padding:1.2rem; container-type:inline-size; }
+    .panel h3 { margin:.2rem 0 .3rem; font-size:1rem; font-weight:800; }
+    .panel p { margin:0; font-size:.92rem; color:var(--b-muted); }
+    .cap { margin:.5rem 0 0; font-size:.78rem; color:var(--b-muted); }
+
+    /* ---- lockups ---- */
+    .lock { display:flex; align-items:center; justify-content:center; min-height:220px; padding:1.4rem; border-radius:18px; border:1px solid var(--b-line); }
+    .lock--stack { flex-direction:column; text-align:center; gap:.5rem; }
+    .lock--row { gap:1rem; }
+    .lock img { display:block; height:auto; }
+    .lock .nm { font-weight:800; letter-spacing:-.02em; line-height:1.05; }
+    .lock .rl { font-size:.62rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--b-muted); }
+    .lock .hw { font-family:var(--font-script); color:var(--b-blue-text); line-height:1.1; }
+    .sk-night .lock img { filter:drop-shadow(0 0 18px rgba(77,125,255,.5)); }
+
+    /* ---- devices ---- */
+    .dev { min-height:200px; display:flex; flex-direction:column; justify-content:space-between; }
+    .dev svg { width:100%; height:auto; display:block; }
+    .spark { display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--b-spark); box-shadow:0 0 0 4px color-mix(in srgb,var(--b-spark) 22%,transparent), 0 0 16px var(--b-spark); }
+    .loops { height:120px; border-radius:12px; background-color:var(--b-bg-2); background-image:url("assets/personal-brand/logo.png"); background-size:62px auto; background-repeat:repeat; background-position:0 0; position:relative; overflow:hidden; }
+    .loops::after { content:""; position:absolute; inset:0; background:var(--b-bg); opacity:.86; }
+
+    /* ---- colour ---- */
+    .sw { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.8rem; }
+    .sw div { border:1px solid var(--b-line); border-radius:14px; overflow:hidden; background:var(--b-card); }
+    .sw i { display:block; height:84px; }
+    .sw b { display:block; padding:.55rem .7rem 0; font-size:.88rem; }
+    .sw span { display:block; padding:0 .7rem .6rem; font-size:.74rem; color:var(--b-muted); }
+    .ratio { display:flex; height:30px; border-radius:999px; overflow:hidden; margin:1.4rem 0 .4rem; border:1px solid var(--b-line); }
+    .ratio i { display:block; }
+    table.ct { width:100%; border-collapse:collapse; font-size:.86rem; margin-top:1rem; }
+    table.ct th, table.ct td { text-align:left; padding:.5rem .6rem; border-bottom:1px solid var(--b-line); }
+    table.ct th { font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--b-muted); }
+    .chip-s { display:inline-block; padding:.15rem .5rem; border-radius:6px; font-weight:700; font-size:.78rem; }
+
+    /* ---- type ---- */
+    .spec h4 { margin:0; font-size:clamp(2rem,8vw,3.4rem); font-weight:800; letter-spacing:-.025em; line-height:1.02; }
+    .spec .sc { font-family:var(--font-script); font-size:clamp(1.4rem,5vw,2rem); color:var(--b-blue-text); }
+
+    /* ---- applications: all sized in cqw so they scale with their box ---- */
+    .ig { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; max-width:560px; }
+    .ig .t { aspect-ratio:1/1; container-type:inline-size; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; padding:8cqw; }
+    .ig .t .sm { font-size:5cqw; font-weight:700; letter-spacing:.16em; text-transform:uppercase; opacity:.7; }
+    .ig .t .big { font-size:11cqw; font-weight:800; line-height:1.08; letter-spacing:-.02em; }
+    .ig .t .hand { font-family:var(--font-script); font-size:10cqw; line-height:1; color:var(--b-blue-text); }
+    .ig .t img.mk { width:16cqw; height:auto; }
+    .ig .t .spark { width:5cqw; height:5cqw; }
+    .ig .t .num { font-size:26cqw; font-weight:800; line-height:.9; color:transparent; -webkit-text-stroke:.6cqw var(--b-blue); }
+    .ig .t.pic { padding:0; }
+    .ig .t.pic img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+    .ig .t.pic .lab { position:absolute; left:6cqw; bottom:6cqw; right:6cqw; padding:3cqw 4cqw; border-radius:3cqw; background:rgba(5,3,24,.72); color:#f4f1ff; font-size:5.2cqw; font-weight:700; }
+    .ig .t.pat { background-image:url("assets/personal-brand/logo.png"); background-size:30cqw auto; }
+    .ig .t.pat::after { content:""; position:absolute; inset:0; background:var(--b-bg); opacity:.82; }
+    .ig .t.pat > * { position:relative; z-index:1; }
+
+    .li { aspect-ratio:4/1; container-type:inline-size; display:flex; align-items:center; gap:3cqw; padding:0 5cqw; border-radius:10px; position:relative; overflow:hidden; border:1px solid var(--b-line); }
+    .li img.mk { height:68%; width:auto; }
+    .li .nm { font-size:4.4cqw; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
+    .li .tg { font-size:2.1cqw; color:var(--b-muted); margin-top:.6cqw; }
+    .li .hw { font-family:var(--font-script); font-size:3cqw; color:var(--b-blue-text); }
+    .li .ln { position:absolute; right:0; top:0; bottom:0; width:26%; background-image:url("assets/personal-brand/logo.png"); background-size:9cqw auto; opacity:.1; }
+    .li .ln + .spark { position:absolute; right:6cqw; top:50%; width:1.6cqw; height:1.6cqw; }
+
+    .card { aspect-ratio:7/4; container-type:inline-size; border-radius:6px; padding:6cqw; display:flex; flex-direction:column; justify-content:space-between; border:1px solid var(--b-line); box-shadow:0 18px 30px -22px rgba(0,0,0,.6); }
+    .card .nm { font-size:7.4cqw; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
+    .card .rl { font-size:3.2cqw; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--b-muted); }
+    .card .sm { font-size:3.4cqw; color:var(--b-muted); }
+    .card img.mk { width:15cqw; height:auto; }
+    .card .hand { font-family:var(--font-script); font-size:8cqw; color:var(--b-blue-text); line-height:1.05; }
+
+    .sig { padding:1rem 1.2rem; border-radius:12px; border:1px solid var(--b-line); font-size:.88rem; display:flex; gap:.9rem; align-items:center; background:#fff; color:#15123b; --b-muted:#5a5680; }
+    .sig img { width:54px; height:auto; }
+    .sig b { display:block; font-size:1rem; }
+    .sig .hw { font-family:var(--font-script); color:#1c3fbd; font-size:1.1rem; }
+    .sig small { color:#5a5680; }
+
+    .dd { display:grid; gap:.8rem; }
+    @media (min-width: 720px) { .dd { grid-template-columns:1fr 1fr; } }
+    .dd ul { margin:.4rem 0 0; padding-left:1.1rem; color:var(--b-muted); font-size:.92rem; }
+    .dd li { margin:.25rem 0; }
+    .nm-card { border:1px solid var(--b-line); border-radius:18px; padding:1.1rem; background:var(--b-card); }
+    .nm-card b { font-size:1.25rem; font-weight:800; letter-spacing:-.02em; display:block; margin:.1rem 0 .3rem; }
+    .nm-card p { margin:0 0 .4rem; font-size:.9rem; color:var(--b-muted); }
+    .rec { color:var(--b-blue-text); font-weight:700; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; }
+  </style>
+</head>
+<body class="brand-page" data-skin="daylight">
+
+  <header class="b-top bb-top">
+    <a class="b-back" href="ask-monica.html">← Ask Mónica</a>
+    <span class="b-eyebrow" style="margin:0">Brand board · working proposal</span>
+  </header>
+
+  <main>
+    <section class="b-hero" style="padding-bottom:2.4rem">
+      <div class="b-wrap">
+        <p class="b-eyebrow">Personal project · identity system</p>
+        <h1 class="b-title" style="font-size:clamp(2.2rem,9vw,4.2rem)">One line,<br />one light.</h1>
+        <p class="b-script">a brand you can put on a profile, a card or a screen</p>
+        <p class="b-lede">This is my reading of your logo: a single line that keeps looping and ends in a glowing dot. Everything below is built from those two things, plus the type and the blue you already use. If the logo means something else to you, tell me and the system changes with it.</p>
+      </div>
+    </section>
+
+    <!-- 1 LOCKUPS -->
+    <section class="bb-sec"><div class="bb-wrap">
+      <h2>1. Lockups</h2>
+      <p class="lead">How the logo, the name and the role sit together. Stacked is the main one; the row is for headers; the mark alone is for avatars and favicons.</p>
+      <div class="bb-grid g3">
+        <div class="sk-day lock lock--stack"><img src="assets/personal-brand/logo.png" alt="" width="110" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="rl">Interactive designer</span><span class="hw" style="font-size:1.3rem">designing to be felt and valued</span></div>
+        <div class="sk-day lock lock--row"><img src="assets/personal-brand/logo.png" alt="" width="64" /><div><span class="nm" style="font-size:1.4rem;display:block">Mónica Arcila</span><span class="rl">Interactive designer</span></div></div>
+        <div class="sk-day lock"><img src="assets/personal-brand/logo.png" alt="" width="96" /></div>
+        <div class="sk-night lock lock--stack"><img src="assets/personal-brand/logo.png" alt="" width="110" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="rl">Interactive designer</span><span class="hw" style="font-size:1.3rem">designing to be felt and valued</span></div>
+        <div class="sk-night lock lock--row"><img src="assets/personal-brand/logo.png" alt="" width="64" /><div><span class="nm" style="font-size:1.4rem;display:block">Mónica Arcila</span><span class="rl">Interactive designer</span></div></div>
+        <div class="sk-night lock"><img src="assets/personal-brand/logo.png" alt="" width="96" /></div>
+      </div>
+      <p class="cap">The motto is yours (<q>Designing to be felt and valued, not just seen</q>); the short form is used under the lockup. Keep clear space around the mark equal to the height of its glowing dot.</p>
+    </div></section>
+
+    <!-- 2 DEVICES -->
+    <section class="bb-sec"><div class="bb-wrap">
+      <h2>2. Four devices that make it recognisable</h2>
+      <p class="lead">A brand is mostly a few things repeated. These four come straight from your logo and your portfolio, so the brand feels like yours and not like a template.</p>
+      <div class="bb-grid g4">
+        <div class="sk-day panel dev"><div><h3>The line</h3><p>One continuous curve, as in the logo. Used as a divider, a connector between steps, an underline.</p></div>
+          <svg viewBox="0 0 260 60" aria-hidden="true"><path d="M4 40 C 40 4, 70 4, 100 30 S 160 58, 200 28 S 236 20, 250 34" fill="none" stroke="#2048d8" stroke-width="3" stroke-linecap="round"/><circle cx="250" cy="34" r="6" fill="#22d3ee"/><circle cx="250" cy="34" r="11" fill="#22d3ee" opacity=".25"/></svg></div>
+        <div class="sk-day panel dev"><div><h3>The spark</h3><p>The glowing dot. One per layout, always cyan, never on text. It marks <q>someone is here</q>: typing, live, new.</p></div>
+          <div style="display:flex;gap:1rem;align-items:center"><span class="spark"></span><span style="font-size:.8rem;color:var(--b-muted)">1 per composition</span></div></div>
+        <div class="sk-day panel dev"><div><h3>The loops</h3><p>The logo repeated small and very faint, as texture behind quotes, covers and the back of a card.</p></div><div class="loops"></div></div>
+        <div class="sk-day panel dev"><div><h3>The hand</h3><p>Your handwriting font for one short line per layout: the voice. Everything else is Sora.</p></div><div class="spec"><span class="sc">hello, I'm Mónica</span></div></div>
+      </div>
+    </div></section>
+
+    <!-- 3 COLOUR -->
+    <section class="bb-sec"><div class="bb-wrap">
+      <h2>3. Colour</h2>
+      <p class="lead">Your logo blue is the signature. Daylight and Night use the same roles; only the base flips. Proportion: mostly the base, then ink, then blue, with the spark as a rare accent.</p>
+      <div class="sw">
+        <div><i style="background:#f5efe6"></i><b>Paper</b><span>#F5EFE6 · base in Daylight</span></div>
+        <div><i style="background:#15123b"></i><b>Ink</b><span>#15123B · text in Daylight, base of cards</span></div>
+        <div><i style="background:#2048d8"></i><b>Signal blue</b><span>#2048D8 · from your logo</span></div>
+        <div><i style="background:#4d7dff"></i><b>Signal blue, Night</b><span>#4D7DFF · the portfolio's blue</span></div>
+        <div><i style="background:#22d3ee"></i><b>Spark</b><span>#22D3EE · the dot only</span></div>
+        <div><i style="background:#050318"></i><b>Night</b><span>#050318 · base in Night</span></div>
+        <div><i style="background:#fd7069"></i><b>Ember</b><span>#FD7069 · soft highlighter</span></div>
+        <div><i style="background:#8747f8"></i><b>Orchid</b><span>#8747F8 · link to the portfolio's glow</span></div>
+      </div>
+      <div class="ratio" aria-label="Proportion of the colours: 60 base, 25 ink, 10 signal blue, 5 spark and ember">
+        <i style="width:60%;background:#f5efe6"></i><i style="width:25%;background:#15123b"></i><i style="width:10%;background:#2048d8"></i><i style="width:5%;background:#22d3ee"></i>
+      </div>
+      <p class="cap">60 base · 25 ink · 10 signal blue · 5 spark and ember</p>
+      <table class="ct">
+        <tr><th>Pair</th><th>Contrast</th><th>Use</th></tr>
+        <tr><td>Ink on Paper</td><td>15.5 : 1</td><td>Body text, headings</td></tr>
+        <tr><td>Muted on Paper</td><td>6.0 : 1</td><td>Secondary text</td></tr>
+        <tr><td>Blue text on Paper</td><td>7.4 : 1</td><td>Links, labels</td></tr>
+        <tr><td>White on Signal blue</td><td>7.0 : 1</td><td>Buttons, bubbles</td></tr>
+        <tr><td>Text on Night</td><td>18.3 : 1</td><td>Body text, headings</td></tr>
+        <tr><td>Blue text on Night</td><td>8.9 : 1</td><td>Links, labels</td></tr>
+        <tr><td>Spark on Night</td><td>11.3 : 1</td><td>The dot</td></tr>
+        <tr><td>Spark on Paper</td><td>1.6 : 1</td><td>Decoration only; never text</td></tr>
+      </table>
+    </div></section>
+
+    <!-- 4 TYPE + VOICE -->
+    <section class="bb-sec"><div class="bb-wrap">
+      <h2>4. Type and voice</h2>
+      <p class="lead">Two fonts you already own on the site, used with a rule: Sora does the work, the handwriting says one short thing.</p>
+      <div class="bb-grid g2">
+        <div class="sk-day panel spec"><span class="rec">Sora ExtraBold, 800</span><h4>Say it plainly.</h4><p style="margin-top:.8rem">Sora Regular for every paragraph: clear, even, easy to read at length. Spaced capitals for small labels.</p><span class="sc" style="display:block;margin-top:.6rem">Over the Rainbow: one short line, never a paragraph</span></div>
+        <div class="dd" style="grid-template-columns:1fr">
+          <div class="panel sk-day"><h3>Voice, from your own outline</h3><ul><li><b>Analytical:</b> say what the data can and cannot show.</li><li><b>Narrative:</b> tell what happened, in order, as a person.</li><li><b>Conversational:</b> short sentences; write to one reader.</li><li><b>Clear for the average person:</b> explain, don't show off.</li></ul></div>
+          <div class="panel sk-night"><h3>What to avoid (your own notes)</h3><ul><li>Neon or thin type on anything long.</li><li>Space or astronaut imagery.</li><li>Claims you cannot back up with a project.</li></ul></div>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- 5 NAMES -->
+    <section class="bb-sec"><div class="bb-wrap">
+      <h2>5. If it were a studio: naming ideas</h2>
+      <p class="lead">You asked how it could look as an enterprise, a service or a product. A name is the first decision. These are ideas to react to, not decisions.</p>
+      <div class="bb-grid g3 sk-day" style="padding:0">
+        <div class="nm-card"><span class="rec">Recommended for now</span><b>Mónica Arcila · Interactive Design</b><p>Your name is the brand, which fits a personal brand and a freelance service. Nothing to explain.</p></div>
+        <div class="nm-card"><b>Line &amp; Spark</b><p>Taken from the logo. Reads like a small studio. The tagline would carry <q>interactive design by Mónica Arcila</q>.</p></div>
+        <div class="nm-card"><b>Felt &amp; Valued</b><p>Taken from your motto. Warm and memorable; says what the work is for, not what it is.</p></div>
+      </div>
+      <p class="cap">Your two services could be shown as named offers later (for example a prototype sprint and a project plan). That needs your wording and your prices, so I left them out.</p>
+    </div></section>
+
+    <!-- 6 APPLICATIONS -->
+    <section class="bb-sec"><div class="bb-wrap">
+      <h2>6. Where it lives</h2>
+      <p class="lead">The brand in use. Your outline mentioned a dedicated Instagram account as a start; this is what its first six posts could look like, plus a banner, a card and a signature.</p>
+
+      <h3 style="margin:1.4rem 0 .6rem">Instagram grid</h3>
+      <div class="ig" style="border-radius:8px;overflow:hidden">
+        <div class="t sk-day"><span class="sm">Ask Mónica</span><span class="big">How are you adapting to AI as an interactive designer?</span><span style="display:flex;align-items:center;justify-content:space-between"><span class="hand">swipe for my answer</span><span class="spark"></span></span></div>
+        <div class="t sk-night"><span class="sm">Service 01</span><span><span class="num">01</span><span class="big" style="display:block;margin-top:2cqw">UX/UI and prototyping</span></span><span class="sm" style="opacity:.55">See your idea in action</span></div>
+        <div class="t pic sk-night"><img src="assets/cards/nature-wine.jpg" alt="" /><span class="lab">Nature's Embodiment of Wine</span></div>
+        <div class="t pat sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" style="width:34cqw;margin:auto" /></div>
+        <div class="t sk-day"><span class="sm">What you can expect</span><span class="big">Rigour and honesty.</span><span class="hand">say what the data can and cannot show</span></div>
+        <div class="t sk-night"><span class="sm">Let's talk</span><span class="big">Tell me what you are making and where it is stuck.</span><span style="display:flex;align-items:center;gap:3cqw"><span class="spark"></span><span class="sm">link in bio</span></span></div>
+      </div>
+      <p class="cap">The quote tiles use your outline's own sentences. The project tile uses a card image already on your site.</p>
+
+      <h3 style="margin:2rem 0 .6rem">LinkedIn banner (4 : 1)</h3>
+      <div class="bb-grid">
+        <div class="li sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">UX/UI, prototypes and a plan to get there</div><div class="tg">INTERACTIVE DESIGNER</div></div><div class="ln"></div><span class="spark"></span></div>
+        <div class="li sk-night"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">UX/UI, prototypes and a plan to get there</div><div class="tg">INTERACTIVE DESIGNER</div></div><div class="ln"></div><span class="spark"></span></div>
+      </div>
+
+      <h3 style="margin:2rem 0 .6rem">Business card, front and back (3.5 × 2 in)</h3>
+      <div class="bb-grid g2" style="max-width:640px">
+        <div class="card sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="rl">Interactive designer</div></div></div>
+        <div class="card sk-night"><span class="hand">designing to be felt and valued</span><div style="display:flex;align-items:center;justify-content:space-between"><span class="sm">[website]</span><span class="spark"></span></div></div>
+      </div>
+
+      <h3 style="margin:2rem 0 .6rem">Email signature</h3>
+      <div class="sig"><img src="assets/personal-brand/logo.png" alt="" /><div><b>Mónica Arcila</b><span class="hw">UX/UI, prototypes and a plan to get there</span><br /><small>Interactive designer · [website]</small></div></div>
+    </div></section>
+
+    <!-- 7 RELATION TO THE PORTFOLIO -->
+    <section class="bb-sec"><div class="bb-wrap">
+      <h2>7. How it relates to the portfolio</h2>
+      <div class="bb-grid g2">
+        <div class="sk-night panel"><h3>The portfolio is the stage</h3><p>Dark, lit, full of movement. It shows the work. Neon, glass and orbs belong here.</p></div>
+        <div class="sk-day panel"><h3>The brand is the person</h3><p>Daylight by default, calm, made for reading and for printing. It shows how I think. It shares the logo, Sora, the handwriting, the blue and the spark with the stage, so the two are clearly the same person.</p></div>
+      </div>
+      <p class="lead" style="margin-top:1.2rem">You do not have to choose one skin: Daylight is the brand's home, Night is the same brand on the portfolio's stage. Use Night for screens next to the portfolio and Daylight for anything that is read or printed.</p>
+    </div></section>
+  </main>
+
+  <footer class="b-foot"><div class="b-wrap"><a href="ask-monica.html">Back to Ask Mónica</a></div></footer>
+</body>
+</html>

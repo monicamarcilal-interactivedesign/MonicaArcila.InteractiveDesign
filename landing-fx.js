@@ -144,7 +144,7 @@ function blob(ctx, x, y, r, rgb, a) {
   ctx.fillRect(x - r, y - r, r * 2, r * 2);
 }
 
-// (A cached-sprite version was tried on 2026-10-06 and dropped: stamping an
+// (A cached-sprite version was tried on 2026-10-05 and dropped: stamping an
 // 8-bit disc loses the faint end of the tails, which the gradient's own
 // dithering keeps, so the look changed.)
 function drawDroplets(t) {
@@ -403,7 +403,7 @@ function size() {
 }
 
 /* -------------------------------------------------------------
-   5. QUALITY GOVERNOR (2026-10-06, after the landing lagged on a phone)
+   5. QUALITY GOVERNOR (2026-10-05, after the landing lagged on a phone)
    Nothing changes on a device that keeps up. If more than 60 percent of
    the last 90 frames took longer than 45 ms (under about 22 frames a
    second; a phone locked to 30 fps in low-power mode does not count), the
