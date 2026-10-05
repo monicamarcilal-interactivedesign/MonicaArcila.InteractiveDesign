@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<!-- Versión en español de ask-monica.html. Mismos estilos, scripts e imágenes; cambia solo el texto. -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="en" href="ask-monica.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pregúntale a Mónica y Trabaja conmigo — Mónica Arcila</title>
+  <meta name="description" content="Mi proyecto personal, en curso: una breve conversación que puedes tener conmigo y una página sobre cómo trabajar conmigo." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css?v=20261005x" />
+  <link rel="stylesheet" href="brand.css?v=20261005x" />
+</head>
+<body class="brand-page" data-skin="daylight"
+      data-t-who="Mónica"
+      data-t-more="Haz otra pregunta, o ve a Trabaja conmigo."
+      data-t-night="Noche" data-t-day="Día"
+      data-t-to-night-label="Cambiar al estilo nocturno" data-t-to-day-label="Cambiar al estilo diurno">
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="b-top">
+    <a class="b-back" href="index.es.html#case-studies">← Volver al portafolio</a>
+    <button id="skinBtn" class="b-skin" type="button" aria-pressed="false" aria-label="Cambiar al estilo nocturno"><span data-skin-icon aria-hidden="true">☾</span><span data-skin-label>Noche</span></button>
+  </header>
+
+  <div class="lang-switch" role="group" aria-label="Idioma">
+    <a class="lang-switch__opt" href="ask-monica.html" hreflang="en" lang="en" aria-label="View this page in English" title="English">EN</a>
+    <span class="lang-switch__opt" lang="es" aria-current="true">ES</span>
+  </div>
+
+  <main id="main">
+
+    <section class="b-hero">
+      <div class="b-wrap">
+        <div class="b-mark"><img src="assets/personal-brand/logo.png" alt="Mi logo: un monograma azul fluido hecho de lazos, con un punto cian brillante al final de su trazo más bajo." width="800" height="787" /></div>
+        <p class="b-eyebrow">Proyecto personal · en curso</p>
+        <h1 class="b-title">Pregúntale a Mónica</h1>
+        <p class="b-script">no es un portafolio, es una conversación</p>
+        <p class="b-lede">Elige una pregunta y lee mi respuesta. Si te gusta lo que lees, más abajo hay una página sobre cómo trabajar conmigo.</p>
+        <div class="b-actions">
+          <a class="b-btn" href="#ask">Empezar a preguntar</a>
+          <a class="b-link" href="#work-with-me">o ir a Trabaja conmigo</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="ask" class="b-section" aria-labelledby="ask-h">
+      <div class="b-wrap">
+        <h2 id="ask-h" class="b-h2">Pregúntame algo</h2>
+        <p class="b-sub">cinco preguntas, mis respuestas</p>
+
+        <ul class="b-chips" aria-label="Preguntas que puedes hacer">
+          <li><button class="b-chip" type="button" data-q="designer">¿Qué hace una diseñadora interactiva?</button></li>
+          <li><button class="b-chip" type="button" data-q="offer">¿Qué puedes ofrecerme?</button></li>
+          <li><button class="b-chip" type="button" data-q="team">¿Cómo trabajas en equipo?</button></li>
+          <li><button class="b-chip" type="button" data-q="ai">¿Cómo te estás adaptando a la IA como diseñadora interactiva?</button></li>
+          <li><button class="b-chip" type="button" data-q="proud">¿De qué proyecto estás más orgullosa y por qué?</button></li>
+        </ul>
+
+        <div class="b-thread" id="thread" aria-live="polite"></div>
+        <p class="b-hint" id="hint">Elige una pregunta para empezar.</p>
+      </div>
+    </section>
+
+    <section id="work-with-me" class="b-section b-alt" aria-labelledby="work-h">
+      <div class="b-wrap b-wrap--wide">
+        <h2 id="work-h" class="b-h2">Trabaja conmigo</h2>
+        <p class="b-sub">UX/UI, prototipos y un plan para llegar</p>
+
+        <ul class="b-services">
+          <li class="b-service">
+            <span class="b-tag">Servicio principal</span>
+            <span class="b-num" aria-hidden="true">01</span>
+            <h3>UX/UI y prototipado</h3>
+            <p>Estructuro el flujo de una idea hasta convertirlo en un prototipo interactivo en Figma, lo valido con pruebas de usabilidad y traduzco lo que observo en recomendaciones concretas, para que veas tu idea en acción antes de invertir en desarrollo.</p>
+          </li>
+          <li class="b-service">
+            <span class="b-tag">Segundo servicio</span>
+            <span class="b-num" aria-hidden="true">02</span>
+            <h3>Coordinación y planeación de proyectos interactivos</h3>
+            <p>El plan de ejecución, el cronograma y las responsabilidades de cada persona, con seguimiento hasta la entrega.</p>
+          </li>
+        </ul>
+
+        <h3 class="b-h3">Cómo va un proyecto conmigo</h3>
+        <ol class="b-steps">
+          <li><strong>Descompongo la idea en entregables</strong><span>Qué tiene que existir exactamente al final y quién se encarga de cada pieza.</span></li>
+          <li><strong>La planeo</strong><span>Un plan de ejecución, un cronograma y listas de verificación para la entrega final.</span></li>
+          <li><strong>Prototipo y pruebo</strong><span>Un prototipo interactivo en Figma, probado con personas reales.</span></li>
+          <li><strong>Entrego</strong><span>Recomendaciones con las que puedes actuar y la presentación para exponerlas.</span></li>
+        </ol>
+
+        <h3 class="b-h3">Qué puedes esperar de mí</h3>
+        <ul class="b-strengths">
+          <li><strong>Convierto ideas en entregables</strong><span>Plan de ejecución, cronograma, listas de verificación para la entrega y un esquema de presentación.</span></li>
+          <li><strong>Uso la IA con pensamiento crítico</strong><span>Primero entiendo la lógica del tema y luego decido dónde, por qué y cómo usar la IA.</span></li>
+          <li><strong>Persistencia e investigación autónoma</strong><span>Cuando no sé algo, investigo hasta saber cómo lograr la meta.</span></li>
+          <li><strong>Organizo y lidero equipos</strong><span>Coordino, delego, detecto a tiempo los huecos y cuestiono las decisiones de diseño que se están tomando.</span></li>
+          <li><strong>Rigor y honestidad</strong><span>Analizo los datos con espíritu crítico y digo con claridad lo que pueden y no pueden mostrar.</span></li>
+          <li><strong>Hago claras las ideas complejas</strong><span>Pienso desde el punto de vista de la persona promedio, no solo de quienes dominan lo técnico.</span></li>
+        </ul>
+
+        <div class="b-placeholder">
+          <span class="b-draft">Borrador · lo escribo yo</span>
+          <p>Lo que no negocio y algo que me gustaría que un equipo supiera antes de empezar. Esta sección la escribiré yo misma.</p>
+        </div>
+
+        <div class="b-cta">
+          <h3>Hablemos</h3>
+          <p>Cuéntame qué estás creando y dónde se ha atascado.</p>
+          <a class="b-btn" href="index.es.html#contact">Escríbeme</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="b-foot">
+    <div class="b-wrap">
+      <a href="index.es.html#case-studies">Volver al portafolio</a>
+      <a href="project-personal-brand.es.html">Sobre este proyecto</a>
+      <p>© <span id="year"></span> Mónica Arcila</p>
+    </div>
+  </footer>
+
+  <!-- Las respuestas. Cada una se copia en la conversación al elegir su pregunta (brand.js). -->
+  <template id="a-designer">
+    <span class="b-draft">Borrador · lo reescribo con mis palabras</span>
+    <p>Diseño experiencias interactivas, sistemas de diseño y flujos de trabajo con IA, moviéndome entre <mark>investigación UX, diseño de juegos y medios inmersivos</mark>.</p>
+    <p>Estudio Diseño Interactivo, que para mí significa UI/UX y jugar con interacciones dinámicas.</p>
+  </template>
+
+  <template id="a-offer">
+    <span class="b-draft">Borrador · lo reescribo con mis palabras</span>
+    <p>Mi servicio principal es <mark>UX/UI y prototipado</mark>: tomo el flujo de una idea y lo convierto en un prototipo interactivo en Figma que podemos probar con personas.</p>
+    <p>Mi segundo servicio es la <mark>coordinación y planeación</mark> de proyectos interactivos: el plan, el cronograma y quién responde por qué, con seguimiento hasta la entrega.</p>
+  </template>
+
+  <template id="a-team">
+    <span class="b-draft">Borrador · lo reescribo con mis palabras</span>
+    <p>Coordino, delego y <mark>detecto a tiempo los huecos</mark>. También cuestiono las decisiones de diseño que estamos tomando.</p>
+  </template>
+
+  <template id="a-ai">
+    <span class="b-draft">Borrador · lo reescribo con mis palabras</span>
+    <p>No empiezo por la herramienta. Primero entiendo la lógica del tema y luego decido <mark>dónde, por qué y cómo</mark> usar la IA.</p>
+    <p>Y lo digo en voz alta: en este portafolio Claude escribió buena parte del código y yo tomé las decisiones, y mis proyectos dicen dónde se usó IA.</p>
+  </template>
+
+  <template id="a-proud">
+    <span class="b-draft">Borrador · lo elijo y lo escribo yo</span>
+    <p>Todavía estoy eligiendo de qué proyecto hablar aquí. Vuelve pronto.</p>
+  </template>
+
+  <script src="script.js?v=20261005x"></script>
+  <script src="brand.js?v=20261005x"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<!--
+  ASK MÓNICA & WORK WITH ME — personal project (provisional layout, 2026-10-06)
+  Built from brand.css (two skins: daylight / night) and brand.js.
+  Every answer below that carries a DRAFT tag is made only from facts already
+  on this site or in Mónica's Project 3 outline; she rewrites them in her own
+  words. Spanish twin: ask-monica.es.html (keep both in step).
+-->
+<html lang="en-NZ">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="es" href="ask-monica.es.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ask Mónica &amp; Work with me — Mónica Arcila</title>
+  <meta name="description" content="My personal project, in progress: a short conversation you can have with me, and a page about working with me." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css?v=20261005x" />
+  <link rel="stylesheet" href="brand.css?v=20261005x" />
+</head>
+<body class="brand-page" data-skin="daylight"
+      data-t-who="Mónica"
+      data-t-more="Ask another one, or jump to Work with me."
+      data-t-night="Night" data-t-day="Day"
+      data-t-to-night-label="Switch to the night skin" data-t-to-day-label="Switch to the daylight skin">
+
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="b-top">
+    <a class="b-back" href="index.html#case-studies">← Back to the portfolio</a>
+    <button id="skinBtn" class="b-skin" type="button" aria-pressed="false" aria-label="Switch to the night skin"><span data-skin-icon aria-hidden="true">☾</span><span data-skin-label>Night</span></button>
+  </header>
+
+  <div class="lang-switch" role="group" aria-label="Language">
+    <span class="lang-switch__opt" lang="en" aria-current="true">EN</span>
+    <a class="lang-switch__opt" href="ask-monica.es.html" data-base="ask-monica.es.html" hreflang="es" lang="es" aria-label="Ver esta página en español" title="Español">ES</a>
+  </div>
+
+  <main id="main">
+
+    <section class="b-hero">
+      <div class="b-wrap">
+        <div class="b-mark"><img src="assets/personal-brand/logo.png" alt="My logo: a flowing blue monogram built from loops, with a glowing cyan dot at the end of its lowest stroke." width="800" height="787" /></div>
+        <p class="b-eyebrow">Personal project · in progress</p>
+        <h1 class="b-title">Ask Mónica</h1>
+        <p class="b-script">not a portfolio, a conversation</p>
+        <p class="b-lede">Pick a question and read my answer. If you like what you read, further down there is a page about working with me.</p>
+        <div class="b-actions">
+          <a class="b-btn" href="#ask">Start asking</a>
+          <a class="b-link" href="#work-with-me">or go to Work with me</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="ask" class="b-section" aria-labelledby="ask-h">
+      <div class="b-wrap">
+        <h2 id="ask-h" class="b-h2">Ask me something</h2>
+        <p class="b-sub">five questions, my answers</p>
+
+        <ul class="b-chips" aria-label="Questions you can ask">
+          <li><button class="b-chip" type="button" data-q="designer">What does an interactive designer do?</button></li>
+          <li><button class="b-chip" type="button" data-q="offer">What can you offer me?</button></li>
+          <li><button class="b-chip" type="button" data-q="team">How do you work in a team?</button></li>
+          <li><button class="b-chip" type="button" data-q="ai">How are you adapting to AI as an interactive designer?</button></li>
+          <li><button class="b-chip" type="button" data-q="proud">Which project are you proudest of, and why?</button></li>
+        </ul>
+
+        <div class="b-thread" id="thread" aria-live="polite"></div>
+        <p class="b-hint" id="hint">Pick a question to begin.</p>
+      </div>
+    </section>
+
+    <section id="work-with-me" class="b-section b-alt" aria-labelledby="work-h">
+      <div class="b-wrap b-wrap--wide">
+        <h2 id="work-h" class="b-h2">Work with me</h2>
+        <p class="b-sub">UX/UI, prototypes and a plan to get there</p>
+
+        <ul class="b-services">
+          <li class="b-service">
+            <span class="b-tag">Main service</span>
+            <span class="b-num" aria-hidden="true">01</span>
+            <h3>UX/UI and prototyping</h3>
+            <p>I structure the flow of an idea into an interactive prototype in Figma, validate it with usability testing and turn what I observe into concrete recommendations, so you can see your idea in action before investing in development.</p>
+          </li>
+          <li class="b-service">
+            <span class="b-tag">Second service</span>
+            <span class="b-num" aria-hidden="true">02</span>
+            <h3>Coordination and planning of interactive projects</h3>
+            <p>The execution plan, the timeline and each person's responsibilities, followed through to delivery.</p>
+          </li>
+        </ul>
+
+        <h3 class="b-h3">How a project with me goes</h3>
+        <ol class="b-steps">
+          <li><strong>Break the idea into deliverables</strong><span>What exactly has to exist at the end, and who owns each piece.</span></li>
+          <li><strong>Plan it</strong><span>An execution plan, a timeline and checklists for the final delivery.</span></li>
+          <li><strong>Prototype and test</strong><span>An interactive prototype in Figma, tested with real people.</span></li>
+          <li><strong>Deliver</strong><span>Recommendations you can act on, and the pitch to present them.</span></li>
+        </ol>
+
+        <h3 class="b-h3">What you can expect from me</h3>
+        <ul class="b-strengths">
+          <li><strong>I turn ideas into deliverables</strong><span>Execution plan, timeline, delivery checklists and a pitch outline.</span></li>
+          <li><strong>I use AI with critical thinking</strong><span>I understand the logic of the topic first, then decide where, why and how to use AI.</span></li>
+          <li><strong>Persistence and self-directed research</strong><span>When I don't know something, I research until I know how to reach the goal.</span></li>
+          <li><strong>I organise and lead teams</strong><span>I coordinate, delegate, spot gaps early and question the design decisions being made.</span></li>
+          <li><strong>Rigour and honesty</strong><span>I analyse data critically and say clearly what it can and cannot show.</span></li>
+          <li><strong>I make complex ideas clear</strong><span>I think from the point of view of the average person, not only of the people who master the technical side.</span></li>
+        </ul>
+
+        <div class="b-placeholder">
+          <span class="b-draft">Draft · to be written by me</span>
+          <p>What I won't compromise on, and one thing I'd like a team to know before we start. I will write this section myself.</p>
+        </div>
+
+        <div class="b-cta">
+          <h3>Let's talk</h3>
+          <p>Tell me what you are making and where it is stuck.</p>
+          <a class="b-btn" href="index.html#contact">Contact me</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="b-foot">
+    <div class="b-wrap">
+      <a href="index.html#case-studies">Back to the portfolio</a>
+      <a href="project-personal-brand.html">About this project</a>
+      <p>© <span id="year"></span> Mónica Arcila</p>
+    </div>
+  </footer>
+
+  <!-- The answers. Each is copied into the thread when its question is picked (brand.js). -->
+  <template id="a-designer">
+    <span class="b-draft">Draft · rewrite in my own words</span>
+    <p>I design interactive experiences, design systems and AI-driven workflows, moving between <mark>UX research, game design and immersive media</mark>.</p>
+    <p>I'm studying Interactive Design, which for me means UI/UX and playing with dynamic interactions.</p>
+  </template>
+
+  <template id="a-offer">
+    <span class="b-draft">Draft · rewrite in my own words</span>
+    <p>My main service is <mark>UX/UI and prototyping</mark>: I take the flow of an idea and turn it into an interactive prototype in Figma that we can test with people.</p>
+    <p>My second service is <mark>coordination and planning</mark> of interactive projects: the plan, the timeline and who is responsible for what, followed through to delivery.</p>
+  </template>
+
+  <template id="a-team">
+    <span class="b-draft">Draft · rewrite in my own words</span>
+    <p>I coordinate, I delegate, and I <mark>spot gaps early</mark>. I also question the design decisions we are making.</p>
+  </template>
+
+  <template id="a-ai">
+    <span class="b-draft">Draft · rewrite in my own words</span>
+    <p>I don't start with the tool. I first understand the logic of the topic, then I decide <mark>where, why and how</mark> to use AI.</p>
+    <p>And I say it out loud: on this portfolio Claude wrote much of the code and I made the decisions, and my projects say where AI was used.</p>
+  </template>
+
+  <template id="a-proud">
+    <span class="b-draft">Draft · I choose and write this one</span>
+    <p>I'm still choosing which project to talk about here. Check back soon.</p>
+  </template>
+
+  <script src="script.js?v=20261005x"></script>
+  <script src="brand.js?v=20261005x"></script>
+</body>
+</html>
