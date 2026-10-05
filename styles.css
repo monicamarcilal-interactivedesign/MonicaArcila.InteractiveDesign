@@ -1024,10 +1024,10 @@ html:not(.js) .landing-motto__part {
   }
 
   .orb--about        { --px: 50; --py: 52; }
-  .orb--skills       { --px: 70; --py: 32; }
-  .orb--case-studies { --px: 79; --py: 51; }
-  .orb--experience   { --px: 62; --py: 76; }
-  .orb--contact      { --px: 17; --py: 61; }
+  .orb--skills       { --px: 68; --py: 24; }
+  .orb--case-studies { --px: 85; --py: 46; }
+  .orb--experience   { --px: 62; --py: 72; }
+  .orb--contact      { --px: 18; --py: 43; }
 
   .landing-stage.is-settling .lotus-canvas {
     filter: saturate(0.55) contrast(0.92) brightness(0.62) blur(1.5px);
@@ -4742,4 +4742,357 @@ body.is-landing .lang-switch {
     margin: 0.8rem 0 0;
     padding-bottom: 0.7rem;
   }
+}
+
+/* Phone top bar: the leaves grow out of the stem itself and alternate like on
+   desktop: one rises above the line, the next hangs below it, and so on. */
+@media (max-width: 900px) {
+  .lotus-nav__glyph,
+  .lotus-nav__leaf:nth-of-type(odd) .lotus-nav__glyph,
+  .lotus-nav__leaf:nth-of-type(even) .lotus-nav__glyph {
+    left: 50%;
+    right: auto;
+    top: 19.6px; /* the leaf's base sits on the stem line (line centre ~28px) */
+    width: 24px;
+    height: 12px;
+    margin: 0;
+    transform-origin: 0 70%;
+  }
+
+  .lotus-nav__leaf:nth-of-type(odd) .lotus-nav__glyph {
+    transform: rotate(-24deg);
+  }
+
+  .lotus-nav__leaf:nth-of-type(even) .lotus-nav__glyph {
+    transform: scaleY(-1) rotate(-24deg);
+  }
+}
+
+/* ---------------------------------------------------------------
+   SKILLS WHEEL (skills-wheel.js). The pink Skills orb is a spiral
+   rosette: it sits in the middle and the eight areas of skills are
+   petals around it, the same leaf as the lotus navigation. Choose a
+   petal and its skills open in a glass panel; choose a skill and the
+   projects where it was used appear as links.
+   --------------------------------------------------------------- */
+.skills.is-replaced {
+  display: none;
+}
+
+.skwheel {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.6rem;
+  align-items: center;
+  margin-top: 2rem;
+}
+
+@media (min-width: 1000px) {
+  .skwheel {
+    grid-template-columns: minmax(0, 560px) minmax(0, 1fr);
+    gap: 3.5rem;
+  }
+}
+
+.skwheel__stage {
+  position: relative;
+  width: min(100%, 540px);
+  aspect-ratio: 1;
+  margin-inline: auto;
+}
+
+/* soft pink glow behind the rosette */
+.skwheel__stage::before {
+  content: "";
+  position: absolute;
+  inset: 12%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(249, 96, 202, 0.28), rgba(143, 92, 255, 0.12) 55%, transparent 72%);
+  filter: blur(18px);
+  pointer-events: none;
+}
+
+.skwheel__stems {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.skwheel__stem {
+  fill: none;
+  stroke: url(#skStem);
+  stroke-width: 0.35;
+  stroke-linecap: round;
+  opacity: 0.3;
+  transition: opacity 0.4s ease, stroke-width 0.4s ease;
+}
+
+.skwheel__stem.is-on {
+  opacity: 1;
+  stroke-width: 0.8;
+  stroke-dasharray: 2.4 1.6;
+  filter: drop-shadow(0 0 1.4px rgba(249, 96, 202, 0.9));
+}
+
+.skwheel.is-alive .skwheel__stem.is-on {
+  animation: skwheel-flow 2.2s linear infinite;
+}
+
+@keyframes skwheel-flow {
+  to { stroke-dashoffset: -8; }
+}
+
+.skwheel__core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 30%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  filter: drop-shadow(0 0 22px rgba(249, 96, 202, 0.65));
+  pointer-events: none;
+}
+
+.skwheel__core img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.skwheel.is-alive .skwheel__core img {
+  animation: skwheel-spin 48s linear infinite;
+}
+
+@keyframes skwheel-spin {
+  to { transform: rotate(360deg); }
+}
+
+.skwheel__petal {
+  position: absolute;
+  width: 17%;
+  aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: rgba(255, 220, 245, 0.92);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.skwheel__petal:focus-visible {
+  outline: 2px solid #f960ca;
+  outline-offset: 4px;
+}
+
+/* the leaf points outward from the centre */
+.skwheel__leaf {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 118%;
+  aspect-ratio: 220 / 112;
+  transform: translate(-50%, -50%) rotate(calc(var(--a) - 90deg)) translateX(8%);
+  transition: scale 0.35s cubic-bezier(0.3, 0.9, 0.3, 1);
+}
+
+.skwheel__leaf i {
+  position: absolute;
+  inset: 0;
+  background: center / contain no-repeat;
+  transition: opacity 0.35s ease, filter 0.35s ease;
+}
+
+.skwheel__leaf i:nth-child(1) {
+  background-image: url("assets/nav/leaf-outline-idle.png");
+  opacity: 0.85;
+}
+
+.skwheel__leaf i:nth-child(2) {
+  background-image: url("assets/nav/leaf-fill-glow.png");
+  opacity: 0;
+}
+
+.skwheel__petal:hover .skwheel__leaf {
+  scale: 1.1;
+}
+
+.skwheel__petal:hover .skwheel__leaf i:nth-child(1) {
+  filter: drop-shadow(0 0 7px rgba(249, 96, 202, 0.9)) brightness(1.3);
+}
+
+.skwheel__petal[aria-pressed="true"] .skwheel__leaf {
+  scale: 1.18;
+}
+
+.skwheel__petal[aria-pressed="true"] .skwheel__leaf i:nth-child(1) {
+  opacity: 0;
+}
+
+.skwheel__petal[aria-pressed="true"] .skwheel__leaf i:nth-child(2) {
+  opacity: 1;
+  filter: drop-shadow(0 0 9px rgba(249, 96, 202, 0.9)) hue-rotate(60deg) saturate(1.3);
+}
+
+.skwheel__num {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(0.62rem, 1.9vw, 0.82rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 8px rgba(10, 6, 40, 0.9);
+}
+
+.skwheel__name {
+  display: none;
+}
+
+.skwheel__arrows {
+  position: absolute;
+  left: 50%;
+  bottom: -2.6rem;
+  display: flex;
+  gap: 0.6rem;
+  transform: translateX(-50%);
+}
+
+.skwheel__arrow {
+  width: 2.6rem;
+  height: 2.6rem;
+  border: 1px solid var(--glass-edge, rgba(255, 255, 255, 0.17));
+  border-radius: 50%;
+  background: rgba(14, 10, 44, 0.6);
+  color: #ffffff;
+  font-size: 1.3rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease;
+}
+
+.skwheel__arrow:hover,
+.skwheel__arrow:focus-visible {
+  background: rgba(249, 96, 202, 0.35);
+  border-color: rgba(249, 96, 202, 0.8);
+}
+
+/* the glass panel with the skills */
+.skwheel__panel {
+  margin-top: 2.8rem;
+  padding: clamp(1.2rem, 3vw, 2rem);
+  background: var(--glass-fill);
+  border: 1px solid var(--glass-edge);
+  border-radius: var(--glass-radius);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.16), 0 28px 60px -34px rgba(0, 0, 0, 0.7);
+}
+
+@media (min-width: 1000px) {
+  .skwheel__panel {
+    margin-top: 0;
+  }
+}
+
+.skwheel__panel.is-in {
+  animation: skwheel-in 0.45s ease both;
+}
+
+@keyframes skwheel-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.skwheel__count {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #f960ca;
+}
+
+.skwheel__title {
+  margin: 0.3rem 0 1rem;
+  font-size: clamp(1.25rem, 3vw, 1.7rem);
+  line-height: 1.15;
+}
+
+.skwheel__chips,
+.skwheel__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.skwheel__chip {
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #ece8ff;
+  font: inherit;
+  font-size: 0.88rem;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  transition: background 0.25s ease, border-color 0.25s ease, transform 0.25s ease;
+}
+
+.skwheel__chip:hover,
+.skwheel__chip:focus-visible {
+  border-color: rgba(249, 96, 202, 0.75);
+  background: rgba(249, 96, 202, 0.16);
+}
+
+.skwheel__chip[aria-pressed="true"] {
+  border-color: #f960ca;
+  background: linear-gradient(135deg, rgba(249, 96, 202, 0.4), rgba(143, 92, 255, 0.4));
+  color: #ffffff;
+}
+
+.skwheel__where {
+  margin-top: 1.3rem;
+  padding-top: 1.1rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.skwheel__where-label {
+  margin: 0 0 0.7rem;
+  font-size: 0.86rem;
+  color: var(--color-muted);
+}
+
+.skwheel__link {
+  display: inline-block;
+  padding: 0.42rem 0.85rem;
+  border: 1px solid rgba(110, 231, 240, 0.5);
+  border-radius: 999px;
+  color: #bff6ff;
+  font-size: 0.84rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.skwheel__link::after {
+  content: " ↗";
+}
+
+.skwheel__link:hover,
+.skwheel__link:focus-visible {
+  background: rgba(110, 231, 240, 0.18);
+  transform: translateY(-2px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skwheel__panel.is-in { animation: none; }
 }
