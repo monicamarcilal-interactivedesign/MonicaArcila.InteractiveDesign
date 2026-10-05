@@ -87,6 +87,12 @@ const MODEL_CONFIG = {
   // needs to change either way since both are .glb.
   type: "glb",
   glb: { url: RAW_BASE + "lotus-shaded.glb" },
+  // Phones and tablets (touch screens) get a lighter copy of the same
+  // model (2026-10-06): same shape, texture 2048 to 1536 px as a JPEG,
+  // normals and UVs stored in 16 bits. 9.6 MB down to 3.9 MB. Desktop
+  // keeps the original file. If the light copy fails to load, the
+  // original is tried before giving up (see loadLotusModel).
+  glbLight: { url: RAW_BASE + "lotus-shaded-mobile.glb" },
   obj: {
     url: RAW_BASE + "base.obj",
     textures: {
@@ -226,13 +232,16 @@ async function loadLotusModel() {
   if (MODEL_CONFIG.type === "glb") {
     // load() instead of loadAsync() so the download progress can drive the
     // hint text — the model is ~10MB, a real wait on a phone's data.
-    const gltf = await new Promise((resolve, reject) => {
-      new THREE.GLTFLoader().load(MODEL_CONFIG.glb.url, resolve, (event) => {
+    const fetchGlb = (url) => new Promise((resolve, reject) => {
+      new THREE.GLTFLoader().load(url, resolve, (event) => {
         if (hintEl && event.lengthComputable && event.total) {
           hintEl.textContent = (LANDING_ES ? "Cargando " : "Loading ") + Math.round((event.loaded / event.total) * 100) + "%";
         }
       }, reject);
     });
+    const gltf = isTouch
+      ? await fetchGlb(MODEL_CONFIG.glbLight.url).catch(() => fetchGlb(MODEL_CONFIG.glb.url))
+      : await fetchGlb(MODEL_CONFIG.glb.url);
     // The baked texture itself is a fairly hard, glossy neon — nudging
     // roughness up and metalness down softens the sharp specular
     // "sparkle" that was reading as rough/cheap, without touching the
