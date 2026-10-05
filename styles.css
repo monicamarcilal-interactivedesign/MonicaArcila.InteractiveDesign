@@ -4984,7 +4984,7 @@ body.is-landing .lang-switch {
 
 /* the glass panel with the skills */
 .skwheel__panel {
-  margin-top: 2.8rem;
+  margin-top: 1.2rem;
   padding: clamp(1.2rem, 3vw, 2rem);
   background: var(--glass-fill);
   border: 1px solid var(--glass-edge);
@@ -5110,4 +5110,119 @@ body.is-landing .lang-switch {
   .stickers__scroll {
     inset: 2.5rem 0 0;
   }
+}
+
+/* ---- language pill, second pass (after testing on a real phone) ----
+   - It steps aside with the navigation while the Projects banner is on screen,
+     and comes back when the navbar does.
+   - On phones it sits in the bottom-right corner, smaller and see-through, so the
+     page behind it stays readable.
+   - On the landing screen it stays bottom-left (the motto ends bottom-right). */
+.lang-switch {
+  transition: opacity 0.35s ease, visibility 0.35s ease, background 0.25s ease;
+}
+
+body.is-banner .lang-switch {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  .lang-switch {
+    top: auto;
+    bottom: 12px;
+    right: 10px;
+    background: rgba(14, 10, 44, 0.3);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    border-color: rgba(255, 255, 255, 0.14);
+    box-shadow: none;
+    opacity: 0.85;
+  }
+
+  .lang-switch:hover,
+  .lang-switch:focus-within {
+    opacity: 1;
+    background: rgba(14, 10, 44, 0.6);
+  }
+
+  .lang-switch__opt {
+    min-width: 2.1rem;
+    min-height: 1.9rem;
+    padding: 0 0.55rem;
+    font-size: 0.68rem;
+  }
+
+  body.is-landing .lang-switch {
+    top: auto;
+    right: auto;
+    bottom: 16px;
+    left: 14px;
+  }
+}
+
+/* ---- Experience stickers on phones, second pass ----
+   The strip now runs edge to edge, the handwritten label sits right above it
+   (left-aligned with the text) and the stickers are bigger, with no empty space. */
+@media (max-width: 900px) {
+  .stickers {
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: auto;
+    margin: 1.6rem 0 0 calc(50% - 50vw);
+  }
+
+  .stickers__label {
+    position: static;
+    margin: 0 0 0.2rem;
+    padding: 0 max(1.4rem, var(--page-margin));
+    font-size: 1.05rem;
+    text-align: left;
+    white-space: normal;
+  }
+
+  .stickers__scroll {
+    position: relative;
+    inset: auto;
+    height: 212px;
+  }
+
+  .stickers__track {
+    padding: 0.7rem 1.4rem 0.7rem max(1.4rem, var(--page-margin));
+  }
+
+  .sticker,
+  .sticker:nth-child(n) {
+    --s: 168px;
+  }
+
+  .sticker.sticker--long {
+    --s: 186px;
+  }
+}
+
+/* ============================================================
+   Personal project card (provisional, 2026-10-05)
+   The one card that is not coursework. A solid, warm pill (the other
+   pills are dark outlines) so it reads as different at a glance, and a
+   soft glow around the cover. Stays in the Game & Narrative category.
+   ============================================================ */
+.pcard__pill.pcard__pill--personal {
+  color: #1a1030;
+  background: linear-gradient(100deg, #ffd9a0, #f9a8ff);
+  border-color: transparent;
+  box-shadow: 0 0 18px -2px rgba(249, 168, 255, 0.85);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.pcard__pill.pcard__pill--personal::before {
+  content: "✦ ";
+  color: #1a1030;
+}
+
+.pcard--personal .pcard__media {
+  box-shadow: 0 0 0 1px rgba(249, 168, 255, 0.55), 0 0 26px -6px rgba(249, 168, 255, 0.7);
 }

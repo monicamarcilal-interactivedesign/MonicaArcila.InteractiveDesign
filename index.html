@@ -39,7 +39,7 @@
   <!-- The little icon in the browser tab. Replace assets/favicon.svg with your own. -->
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261005q" />
+  <link rel="stylesheet" href="styles.css?v=20261005u" />
 
   <!-- The 3D lotus on the landing screen (landing-3d.js) uses Three.js,
        loaded straight from a CDN — no build step, same "just open
@@ -59,13 +59,13 @@
   <script src="https://unpkg.com/three@0.140.0/build/three.min.js" defer></script>
   <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/GLTFLoader.js" defer></script>
   <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/OBJLoader.js" defer></script>
-  <script src="landing-3d.js?v=20261005q" defer></script>
+  <script src="landing-3d.js?v=20261005u" defer></script>
   <!-- Dust/stars, drifting colour droplets and the glowing connections
        between the orbs and motto words — plain 2D canvas, no libraries. -->
-  <script src="landing-fx.js?v=20261005q" defer></script>
+  <script src="landing-fx.js?v=20261005u" defer></script>
   <!-- The Projects section: filter, the draggable card board, and the
        hero's arched statement. -->
-  <script src="projects-board.js?v=20261005q" defer></script>
+  <script src="projects-board.js?v=20261005u" defer></script>
 </head>
 <body>
 
@@ -436,6 +436,20 @@
                 </div>
                 <div class="pcard__skills" aria-label="Main skills">
                   <ul class="pgroup"><li>Unity 3D development</li><li>Scripting &amp; game mechanics</li><li>NavMesh &amp; NPCs</li><li>Debugging</li><li>Horror game design</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard pcard--personal" data-category="game personal" data-cat="game" data-personal>
+              <a class="pcard__link" href="project-personal-brand.html">
+                <div class="pcard__media"><img src="assets/cards/personal-brand.jpg" alt="My logo, a flowing blue monogram made of loops, glowing on a deep indigo background." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill pcard__pill--personal">Personal project</span></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Ask Mónica &amp; Work with me</h3>
+                  <p class="pcard__hook">My personal brand, as a small conversation you can have with me.</p>
+                  <p class="pcard__brief">The one project here I'm making only because I want to. In progress: you pick a question and read my answer, then see how I could work with you.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Main skills">
+                  <ul class="pgroup"><li>Personal branding</li><li>UX writing</li><li>Figma Make</li><li>Conversation design</li></ul>
                 </div>
               </a>
             </li>
@@ -977,7 +991,7 @@
     <p class="viewer__caption" id="viewerCaption"></p>
   </dialog>
 
-  <script src="script.js?v=20261005q"></script>
-  <script src="skills-wheel.js?v=20261005q"></script>
+  <script src="script.js?v=20261005u"></script>
+  <script src="skills-wheel.js?v=20261005u"></script>
 </body>
 </html>

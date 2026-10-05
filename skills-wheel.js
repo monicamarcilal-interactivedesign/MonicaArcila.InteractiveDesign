@@ -321,18 +321,6 @@
     });
   });
 
-  // Previous / next arrows under the wheel (a clear control on touch screens).
-  var arrows = document.createElement("div");
-  arrows.className = "skwheel__arrows";
-  arrows.innerHTML =
-    '<button type="button" class="skwheel__arrow" data-d="-1" aria-label="' + TEXT.prev + '">‹</button>' +
-    '<button type="button" class="skwheel__arrow" data-d="1" aria-label="' + TEXT.next + '">›</button>';
-  arrows.addEventListener("click", function (e) {
-    var b = e.target.closest(".skwheel__arrow");
-    if (b) select(current + Number(b.dataset.d), false);
-  });
-  stage.appendChild(arrows);
-
   select(0, false);
 
   // Put the wheel in and hide the plain cards (they stay in the page for
