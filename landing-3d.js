@@ -60,6 +60,7 @@ const hintEl = document.getElementById("lotusHint");
 // Phones and tablets: a touch screen taps rather than clicks, and gets a
 // lower pixel-ratio cap (below) to keep the full-screen render affordable.
 const isTouch = window.matchMedia("(pointer: coarse)").matches;
+const LANDING_ES = (document.documentElement.lang || "").toLowerCase().indexOf("es") === 0;
 
 /* -------------------------------------------------------------
    1. MODEL CONFIG — swap the asset without touching anything else.
@@ -228,7 +229,7 @@ async function loadLotusModel() {
     const gltf = await new Promise((resolve, reject) => {
       new THREE.GLTFLoader().load(MODEL_CONFIG.glb.url, resolve, (event) => {
         if (hintEl && event.lengthComputable && event.total) {
-          hintEl.textContent = `Loading ${Math.round((event.loaded / event.total) * 100)}%`;
+          hintEl.textContent = (LANDING_ES ? "Cargando " : "Loading ") + Math.round((event.loaded / event.total) * 100) + "%";
         }
       }, reject);
     });
@@ -532,7 +533,7 @@ function init() {
   // Nothing to begin until the model is in — the hint shows download
   // progress meanwhile (see loadLotusModel) and the canvas ignores taps.
   if (landingStageEl) landingStageEl.classList.add("is-loading");
-  if (hintEl) hintEl.textContent = "Loading…";
+  if (hintEl) hintEl.textContent = LANDING_ES ? "Cargando…" : "Loading…";
 
   ready = loadLotusModel()
     .then((loaded) => {
@@ -540,7 +541,7 @@ function init() {
       scene.add(model);
       frameCameraToModel();
       startIdleLoop();
-      if (hintEl) hintEl.textContent = isTouch ? "Tap to begin" : "Click to begin";
+      if (hintEl) hintEl.textContent = LANDING_ES ? (isTouch ? "Toca para empezar" : "Haz clic para empezar") : (isTouch ? "Tap to begin" : "Click to begin");
       if (landingStageEl) landingStageEl.classList.remove("is-loading");
     })
     .catch((error) => {

@@ -5,6 +5,9 @@
    touch it, but here's what it does so nothing feels like magic.
    ============================================================= */
 
+/* The page language, so the few words this file writes follow it. */
+const PAGE_IS_ES = (document.documentElement.lang || "").toLowerCase().indexOf("es") === 0;
+
 /* -------------------------------------------------------------
    1. MOBILE MENU
    (Retired 2026-10-04: the hamburger menu was replaced by the lotus nav.)
@@ -20,7 +23,7 @@ if (toggle && links) {
     const isOpen = links.classList.toggle("nav__links--open");
     // Tell screen readers whether the menu is open, and match the label to it.
     toggle.setAttribute("aria-expanded", isOpen);
-    toggle.setAttribute("aria-label", isOpen ? "Close menu" : "Open menu");
+    toggle.setAttribute("aria-label", isOpen ? (PAGE_IS_ES ? "Cerrar el menú" : "Close menu") : (PAGE_IS_ES ? "Abrir el menú" : "Open menu"));
   });
 
   // Close the menu again after tapping a link.
@@ -28,7 +31,7 @@ if (toggle && links) {
     link.addEventListener("click", () => {
       links.classList.remove("nav__links--open");
       toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-label", "Open menu");
+      toggle.setAttribute("aria-label", PAGE_IS_ES ? "Abrir el menú" : "Open menu");
     });
   });
 }
@@ -193,7 +196,7 @@ if (stickerScroll) {
       video.controls = true;
       video.autoplay = true;
       video.playsInline = true;
-      video.setAttribute("aria-label", link.dataset.alt || "Video");
+      video.setAttribute("aria-label", link.dataset.alt || (PAGE_IS_ES ? "Vídeo" : "Video"));
       video.addEventListener("error", () => video.removeAttribute("controls")); // the poster stays
       viewerPages.appendChild(video);
     } else {
@@ -589,7 +592,7 @@ if (copyButton) {
       field.remove();
     }
     if (copiedNote) {
-      copiedNote.textContent = ok ? "Copied ✓" : `Copy it from here: ${address}`;
+      copiedNote.textContent = ok ? (PAGE_IS_ES ? "Copiado ✓" : "Copied ✓") : (PAGE_IS_ES ? `Cópialo desde aquí: ${address}` : `Copy it from here: ${address}`);
       window.setTimeout(() => (copiedNote.textContent = ""), 2600);
     }
   });
@@ -808,6 +811,13 @@ if (trailBuds.length && heroSection) {
   }
 
   /* ---- scene switching ---- */
+  // The EN / ES pill follows you: switching language keeps the section you are in.
+  const langLinks = document.querySelectorAll(".lang-switch a[data-base]");
+  const syncLang = () => {
+    langLinks.forEach((link) => {
+      link.href = link.dataset.base + (activeId ? "#" + activeId : "");
+    });
+  };
   const showSection = (id) => {
     if (!sectionMeta.some((section) => section.id === id)) return;
     // Hide the whole landing stage, not just #hero inside it — .landing-stage
@@ -838,6 +848,7 @@ if (trailBuds.length && heroSection) {
     });
     activeId = id;
     markVisited(id);
+    syncLang();
     updateTrail();
     window.scrollTo(0, 0);
   };
@@ -861,6 +872,7 @@ if (trailBuds.length && heroSection) {
     }
     activeId = null;
     updateTrail();
+    syncLang();
     window.scrollTo(0, 0);
   };
 

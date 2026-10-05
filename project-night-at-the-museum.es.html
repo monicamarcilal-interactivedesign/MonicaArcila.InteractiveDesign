@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<!-- Versión en español de project-night-at-the-museum.html. Mismos estilos, scripts e imágenes; cambia solo el texto. -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="en" href="project-night-at-the-museum.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Una noche en el museo — Mónica Arcila</title>
+  <meta name="description" content="Un prototipo narrativo de VR y realidad mixta donde un pincel mágico es a la vez el objeto central de la historia y una interacción validada paso a paso con el Modelo de Acción de Don Norman." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css?v=20261005f" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <nav class="lotus-nav" aria-label="Ir a una sección" style="--cur: -1">
+      <a href="index.es.html" class="lotus-nav__home" aria-label="Volver a la página principal">
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <span class="lotus-nav__label">Volver a la página principal</span>
+      </a>
+      <div class="lotus-nav__leaves">
+        <span class="lotus-nav__pulse" aria-hidden="true"></span>
+        <a href="index.es.html#about" class="lotus-nav__leaf" data-section="about" style="--i:0"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Sobre mí</span></a>
+        <a href="index.es.html#case-studies" class="lotus-nav__leaf" data-section="case-studies" style="--i:1"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Proyectos</span></a>
+        <a href="index.es.html#experience" class="lotus-nav__leaf" data-section="experience" style="--i:2"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Experiencia</span></a>
+        <a href="index.es.html#skills" class="lotus-nav__leaf" data-section="skills" style="--i:3"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Habilidades</span></a>
+        <a href="index.es.html#contact" class="lotus-nav__leaf" data-section="contact" style="--i:4"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Contacto</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="lang-switch" role="group" aria-label="Idioma">
+    <a class="lang-switch__opt" href="project-night-at-the-museum.html" hreflang="en" lang="en" aria-label="View this page in English" title="English">EN</a>
+    <span class="lang-switch__opt" lang="es" aria-current="true">ES</span>
+  </div>
+
+  <main id="main">
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.es.html#work">← Volver a los proyectos</a>
+
+      <h1 class="project__title">Una noche en el museo</h1>
+      <p class="project__meta">Experiencia narrativa en VR · Narrativas en Realidad Virtual y Mixta, Universidad EAFIT · 2026</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>Mi rol</dt>
+          <dd>Equipo de 6. Fui la desarrolladora líder de Unity y coordiné la versión final</dd>
+        </div>
+        <div>
+          <dt>Herramientas</dt>
+          <dd>Unity · Meta Quest 3 · GitHub · scripts con ayuda de IA</dd>
+        </div>
+        <div>
+          <dt>Mecánica central</dt>
+          <dd>Un único pincel mágico</dd>
+        </div>
+      </dl>
+
+      <ul class="pitch" aria-label="Resumen del proyecto">
+        <li><span class="pitch__label">Contexto</span><p>Un curso de VR en la Universidad EAFIT. Nuestro equipo de seis diseñó una experiencia ambientada dentro de cuatro pinturas famosas.</p></li>
+        <li><span class="pitch__label">Reto</span><p>Una sola interacción, un pincel mágico, tenía que sostener toda la historia y mantenerse clara sin menús.</p></li>
+        <li><span class="pitch__label">Solución</span><p>Apuntar, mantener, activar: unos cinco segundos de vibración y retroalimentación visual, reutilizados en cada mundo. La construí en Unity para Meta Quest 3 y coordiné la versión final.</p></li>
+        <li><span class="pitch__label">Resultado</span><p>Una experiencia jugable de unos ocho minutos, con menú, tutorial y transiciones por portales. Sus escenas funcionaron como se diseñaron en el simulador de Unity.</p></li>
+        <li><span class="pitch__label">Aprendizaje</span><p>Probar en el visor desde el principio, no solo en el simulador.</p></li>
+      </ul>
+
+      <section class="project__section">
+        <h2 class="project__section-title">El problema</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Una interacción tenía que sostener una historia entera.</strong>
+            El jugador despierta en un museo del que debe escapar «activando»
+            pinturas, y cada pintura es un portal al mundo emocional que
+            muestra.
+          </p>
+          <p>
+            El pincel mágico tenía que ser un objeto creíble dentro de la
+            historia <mark>y</mark> una pieza clara de diseño de interacción.
+            El jugador siempre debía saber qué puede hacer el pincel, cuándo
+            se registró su acción y qué pasa después. Las instrucciones viven
+            en el mundo, a través de una voz narradora y una mano fantasma que
+            señala, no en menús.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Mi rol</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Desarrolladora líder de Unity en un equipo de seis.</strong>
+            Mis compañeros escribieron la narrativa. Yo convertí nuestro diseño
+            de una página en una experiencia de VR funcional, programándola e
+            integrándola con otra persona del equipo.
+          </p>
+          <ul>
+            <li>Construí las escenas, preparé los recursos y organicé las carpetas y los scripts.</li>
+            <li>Programé y probé cada mecánica, y logré que funcionaran las animaciones importadas.</li>
+            <li>Resolví problemas de texturas e iluminación y ajusté los colores a nuestro diseño de una página y a las pinturas.</li>
+            <li>Le enseñé GitHub al equipo para que todos pudieran trabajar en el mismo proyecto.</li>
+            <li>Usé IA para redactar un cronograma de tareas antes de nuestras reuniones, que luego afinamos entre todos, y hacía seguimiento con las personas cuando se acercaban las fechas de entrega.</li>
+            <li>Usé IA para ayudarme a escribir scripts y depurar Unity, con instrucciones muy específicas para que hiciera exactamente lo que le pedía.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Cómo funciona</h2>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">Cuatro mundos, un pincel</span>
+            <p>
+              El Museo (inicio), un bosque onírico (Dreaming Hills), un pueblo
+              costero construido a partir del guitarrista ciego de Picasso, y
+              un arrecife oscuro (La Gruta Azul). Cada uno tiene su propio arco
+              emocional, mapa y mecánicas. El pincel crece de una herramienta
+              que abre portales a «tinta mágica»: una luz en la oscuridad y
+              luego una forma de transformar el mundo.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Apuntar, mantener, activar</span>
+            <p>
+              El jugador apunta el pincel a una pintura y lo mantiene unos
+              segundos. El sistema lo reconoce y comienza una activación
+              gradual. Primero lo resolvimos con un storyboard de cuatro
+              viñetas.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Cinco segundos de retroalimentación</span>
+            <p>
+              El control vibra cada vez más mientras la pintura brilla, las
+              pinceladas se mueven y aparecen partículas de pintura, para que
+              el jugador nunca tenga que adivinar si se registró. Luego las
+              pinceladas se expanden alrededor de la vista del jugador y
+              aparece el nuevo mundo.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Un script maestro</span>
+            <p>
+              En Unity, toda la lógica del pincel vive en un solo script.
+              Cuando se agarra, la mano se cierra en un puño. Con tinta, un
+              shader ilumina la punta y se encienden las partículas. Un
+              contador de tinta baja a medida que usas tinta para teletransportarte
+              y para «pintar», así que tienes que buscar más. También hice los
+              shaders de las pinturas, las animaciones y las transiciones.
+            </p>
+          </li>
+        </ol>
+        <details class="more">
+          <summary>Revisar el pincel con el Modelo de Acción de Norman</summary>
+          <div class="more__body">
+            <p>
+              El equipo proyectó la mecánica sobre las siete etapas de Norman
+              para encontrar significantes que faltaban.
+              <strong>Intención:</strong> decidir usar el pincel en la pintura.
+              <strong>Especificar:</strong> apuntar, guiado por una voz y una
+              mano fantasmal que señala. <strong>Ejecutar:</strong> mantener el
+              pincel sobre el marco. <strong>Percibir:</strong> la pintura
+              brilla. <strong>Interpretar:</strong> el portal se está
+              activando. <strong>Evaluar:</strong> el portal se abre y se
+              cumple la meta, entrar al nuevo mundo.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Decisiones y obstáculos</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Una herramienta para todo</h3>
+            <p>En lugar de muchas mecánicas, un pincel que cambia de significado en cada mundo. Mantiene pequeño el aprendizaje y coherente la historia.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstáculo</span>
+            <h3>Seis personas, un proyecto</h3>
+            <p>Nos costó sincronizar los cambios de cada una y cada uno. Le enseñé GitHub al equipo y planeé quién hacía qué, semana a semana.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstáculo</span>
+            <h3>Mecánicas, optimización y transiciones</h3>
+            <p>Muchos scripts, muchas horas de pruebas. Los problemas de importación, las mecánicas rotas y las transiciones entre niveles se resolvieron uno por uno.</p>
+          </li>
+        </ul>
+        <details class="more">
+          <summary>Cómo planeó el equipo el trabajo</summary>
+          <div class="more__body">
+            <p>
+              Trabajamos con un plan con fechas del 14 de abril al 19 de mayo,
+              en tres parejas: programación e integración (yo y otra persona
+              del equipo), recursos y espacios, y narrativa con diálogos y
+              línea gráfica. El tablero está en la galería de abajo.
+            </p>
+          </div>
+        </details>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Resultado y lo que aprendí</h2>
+        <ul class="stats">
+          <li><strong>6</strong><span>personas en el equipo</span></li>
+          <li><strong>4</strong><span>mundos conectados</span></li>
+          <li><strong>~8 min</strong><span>para un recorrido completo</span></li>
+          <li><strong>5 sem.</strong><span>del 14 de abril al 19 de mayo</span></li>
+        </ul>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Una experiencia de VR jugable para Meta Quest 3,</strong>
+            con menú, tutorial, transiciones por portales y niveles interactivos
+            (el bote, la escultura y la interacción completa con el pincel). En
+            el simulador de Unity, las escenas funcionaron como las diseñamos.
+          </p>
+          <p>
+            <mark>Lo que no sabemos:</mark> cuando mi profesor la probó en un
+            visor, la experiencia se detuvo al entrar al tercer nivel. Nunca
+            supimos por qué, porque la versión final no se conservó. Yo no hice
+            el vídeo final ni entregué el proyecto, así que lo que se conserva
+            son las grabaciones de pantalla que hice durante el desarrollo.
+          </p>
+          <p>
+            Aprendí a convertir el diseño de un equipo en algo que funciona, a
+            mantener a seis personas en un mismo código y a usar la IA como una
+            herramienta precisa y no como un atajo. Y aprendí que un simulador
+            no es un visor: probaría en el dispositivo mucho antes.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Herramientas y software</h2>
+        <ul class="tag-list">
+          <li class="tag">Unity</li>
+          <li class="tag">Meta Quest 3</li>
+          <li class="tag">GitHub</li>
+          <li class="tag">Scripts con ayuda de IA</li>
+        </ul>
+      </section>
+
+      <div class="project__gallery">
+        <video controls preload="none" poster="assets/night-at-the-museum/museum-menu-tutorial-poster.jpg" aria-label="Grabación en Meta Quest 3 del menú, el tutorial y el comienzo de la experiencia.">
+          <source src="assets/night-at-the-museum/museum-menu-tutorial.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir este vídeo.
+        </video>
+        <video controls preload="none" poster="assets/night-at-the-museum/museum-boat-interaction-poster.jpg" aria-label="Grabación de pantalla de la interacción del bote en el segundo nivel y la transición al siguiente nivel.">
+          <source src="assets/night-at-the-museum/museum-boat-interaction.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir este vídeo.
+        </video>
+        <a data-stage="Inicio" href="assets/night-at-the-museum/01-one-page-design.jpg" class="gallery__wide" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/01-one-page-design.jpg" alt="El diseño de una página del equipo para Noche en el Museo: narrativa, mecánica del pincel mágico y cuatro mundos con mapas y recorridos emocionales." width="3000" height="1817" loading="lazy" /></a>
+        <a data-stage="Inicio" href="assets/night-at-the-museum/12-team-workflow-board.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/12-team-workflow-board.jpg" alt="El tablero de flujo de trabajo del equipo para abril y mayo: tareas por fecha y pareja, desde el script base y los recursos hasta probar toda la experiencia con el pincel." width="3000" height="1723" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/night-at-the-museum/06-norman-slide-title.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/06-norman-slide-title.jpg" alt="Diapositiva «Una noche en el museo: interacción con pincel y portales» sobre una pintura de una cueva azul oscura." width="3000" height="1688" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/night-at-the-museum/07-activation-process.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/07-activation-process.jpg" alt="Diapositiva «Proceso de activación» con los pasos de apuntar, mantener y activar una pintura con el pincel." width="3000" height="1688" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/night-at-the-museum/08-system-feedback.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/08-system-feedback.jpg" alt="Diapositiva «Feedback del sistema»: vibración háptica en el control más cambios visuales durante unos cinco segundos." width="3000" height="1688" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/night-at-the-museum/09-norman-model.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/09-norman-model.jpg" alt="Diagrama del Modelo de Acción de Norman aplicado a activar el portal de una pintura con el pincel mágico." width="3000" height="1688" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/night-at-the-museum/10-reef-cave.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/10-reef-cave.jpg" alt="Vista del editor de Unity de la cueva azul oscura del arrecife usada en el último nivel." width="1476" height="797" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/night-at-the-museum/11-reef-map.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/11-reef-map.jpg" alt="Vista cenital del mapa del nivel del arrecife, con el camino azul que sigue el jugador." width="1171" height="611" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/night-at-the-museum/02-start-menu.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/02-start-menu.jpg" alt="El menú de inicio en Meta Quest 3 con el título Noche en el Museo y los botones Iniciar y Tutorial." width="848" height="478" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/night-at-the-museum/03-gallery-corridor.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/03-gallery-corridor.jpg" alt="Vista en primera persona por el corredor de la galería del museo, bordeado de pinturas enmarcadas." width="848" height="478" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/night-at-the-museum/04-portal-activating.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/04-portal-activating.jpg" alt="El jugador sosteniendo el pincel mágico contra una pintura que empieza a brillar y a convertirse en portal." width="670" height="674" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/night-at-the-museum/05-blue-village.jpg" target="_blank" rel="noopener"><img src="assets/night-at-the-museum/05-blue-village.jpg" alt="El nivel del pueblo costero azul de noche, con subtítulos que guían al jugador." width="1280" height="656" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__row">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+      <a class="footer__contact" href="index.es.html#contact">Escríbeme <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+
+  <script src="script.js?v=20261005f"></script>
+  <script src="case-study.js?v=20261005f"></script>
+</body>
+</html>

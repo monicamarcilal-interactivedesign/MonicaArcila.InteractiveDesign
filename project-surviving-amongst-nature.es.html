@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<!-- Versión en español de project-surviving-amongst-nature.html. Mismos estilos, scripts e imágenes; cambia solo el texto. -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="en" href="project-surviving-amongst-nature.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surviving Amongst Nature — Mónica Arcila</title>
+  <meta name="description" content="Una receta repetible de generación de imágenes con IA que mezcla objetos de terror y supervivencia de Resident Evil con anatomía de libélula, documentada a través de todo su proceso de prueba y error de ingeniería de prompts." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css?v=20261005f" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <nav class="lotus-nav" aria-label="Ir a una sección" style="--cur: -1">
+      <a href="index.es.html" class="lotus-nav__home" aria-label="Volver a la página principal">
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <span class="lotus-nav__label">Volver a la página principal</span>
+      </a>
+      <div class="lotus-nav__leaves">
+        <span class="lotus-nav__pulse" aria-hidden="true"></span>
+        <a href="index.es.html#about" class="lotus-nav__leaf" data-section="about" style="--i:0"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Sobre mí</span></a>
+        <a href="index.es.html#case-studies" class="lotus-nav__leaf" data-section="case-studies" style="--i:1"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Proyectos</span></a>
+        <a href="index.es.html#experience" class="lotus-nav__leaf" data-section="experience" style="--i:2"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Experiencia</span></a>
+        <a href="index.es.html#skills" class="lotus-nav__leaf" data-section="skills" style="--i:3"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Habilidades</span></a>
+        <a href="index.es.html#contact" class="lotus-nav__leaf" data-section="contact" style="--i:4"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Contacto</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="lang-switch" role="group" aria-label="Idioma">
+    <a class="lang-switch__opt" href="project-surviving-amongst-nature.html" hreflang="en" lang="en" aria-label="View this page in English" title="English">EN</a>
+    <span class="lang-switch__opt" lang="es" aria-current="true">ES</span>
+  </div>
+
+  <main id="main">
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.es.html#work">← Volver a los proyectos</a>
+
+      <h1 class="project__title">Surviving Amongst Nature</h1>
+      <p class="project__meta">Cuadrícula de imágenes generadas con IA · DSDN142, Victoria University of Wellington · 2026</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>Mi rol</dt>
+          <dd>Individual: concepto, ingeniería de prompts, curaduría y documentación del proceso</dd>
+        </div>
+        <div>
+          <dt>Herramientas</dt>
+          <dd>Gemini (3.6 Thinking)</dd>
+        </div>
+        <div>
+          <dt>Duración</dt>
+          <dd>Del 16 al 28 de junio de 2026</dd>
+        </div>
+      </dl>
+
+      <ul class="pitch" aria-label="Resumen del proyecto">
+        <li><span class="pitch__label">Contexto</span><p>Un proyecto individual para DSDN142 en Victoria University of Wellington, del 16 al 28 de junio de 2026: una receta repetible para imágenes con IA.</p></li>
+        <li><span class="pitch__label">Reto</span><p>Una sola plantilla de prompt que dé una cuadrícula de 16 a 25 imágenes que claramente van juntas, pero de las que cada una valga la pena mirar. Y documentar lo que falló.</p></li>
+        <li><span class="pitch__label">Solución</span><p>Un párrafo con una sola variable, el objeto, fijado a un mundo de videojuego: objetos de Resident Evil construidos con anatomía de libélula.</p></li>
+        <li><span class="pitch__label">Resultado</span><p>Una cuadrícula de 23 imágenes que se lee como un solo conjunto. No estoy segura de que siga siendo lo bastante sorprendente.</p></li>
+        <li><span class="pitch__label">Aprendizaje</span><p>Usa la IA como traductora de vocabulario, no solo como generadora de imágenes.</p></li>
+      </ul>
+
+      <section class="project__section">
+        <h2 class="project__section-title">El problema</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Cohesivo pero no aburrido, y mostrando tu pensamiento.</strong>
+            El brief pedía una «receta»: una plantilla de prompt con unos pocos
+            marcadores variables, lo bastante específica para sostener una
+            identidad visual en una cuadrícula de 16 a 25 imágenes, pero lo
+            bastante flexible para que cada imagen siguiera siendo interesante
+            por sí sola.
+          </p>
+          <p>
+            Demasiado suelta se lee como un montón sin relación. Demasiado
+            ajustada da un conjunto cohesivo pero aburrido. El brief también
+            exigía <mark>documentar el desarrollo de la receta</mark>: qué
+            prompts probé, qué no funcionó y por qué.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Mi rol</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Individual: concepto, prompts, curaduría y documentación.</strong>
+            Elegí el concepto, escribí e iteré cada versión de la receta,
+            evalué cada tanda contra los dos objetivos en conflicto (cohesión e
+            interés) y documenté los callejones sin salida. Todas las imágenes
+            se hicieron con Gemini.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">La idea</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Armas reconstruidas como libélulas.</strong>
+            Empecé con Resident Evil, un juego que descubrí en la PlayStation
+            3. Me atraía lo lejos que está de una libélula: un insecto frágil
+            e iridiscente frente a un juego de armas, sangre y supervivencia.
+            Llevé sus objetos icónicos (un lanzacohetes, una escopeta, una
+            granada, una poción) a una estética fairycore y fantasycore,
+            construidos con la anatomía de las libélulas (orden Odonata).
+          </p>
+          <p>
+            Cada imagen debía sentirse como un recurso real que podría existir
+            en un Resident Evil alternativo, con la función y la silueta del
+            objeto todavía reconocibles.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Proceso</h2>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">16 de junio</span>
+            <p>Mezclé insectos con objetos de cocina y de cerámica y roté entre varios videojuegos (God of War Ragnarok, Zelda, Genshin Impact, The Sims 4). Los resultados no eran cohesivos: cada objeto parecía de un conjunto distinto.</p>
+          </li>
+          <li>
+            <span class="step__date">21 de junio</span>
+            <p>Ajusté la redacción en torno a contornos, vivacidad y textura. Una prueba que mezcló un juego de pixel art rompió la cohesión de todo el conjunto. Cambié la variable a animales, pero todos los resultados convergieron en el mismo aspecto (hongos, musgo, alas, poses parecidas). Una tercera idea, famosos recreando memes conocidos, no capturó lo que hace que un meme funcione.</p>
+          </li>
+          <li>
+            <span class="step__date">26 de junio</span>
+            <p>Volví a la idea del objeto y le pedí a la IA que tradujera lo que tenía en la cabeza a vocabulario técnico preciso. De ahí salió la decisión clave: fijar el videojuego a uno solo (Resident Evil), para que el objeto fuera la única variable.</p>
+          </li>
+          <li>
+            <span class="step__date">28 de junio</span>
+            <p>Pequeños ajustes deliberados de encuadre, cada uno probado contra el conjunto en crecimiento: «no debe ser una imagen en primer plano», luego «debe estar captado mientras se usa», y luego afinar la instrucción del fondo para que cada imagen muestre un escenario distinto del juego. La receta por fin se sostuvo.</p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Decisiones y obstáculos</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Un juego, una variable</h3>
+            <p>Cada vez que el juego cambiaba, el conjunto perdía cohesión, porque cada juego tiene su propio lenguaje estético. Fijarlo hizo que el objeto fuera lo único que varía.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>La IA como traductora</h3>
+            <p>No tenía experiencia previa escribiendo prompts de imágenes y mi vocabulario era limitado. Pedirle a la IA que convirtiera mi imagen mental en lenguaje técnico fue lo que más mejoró los resultados.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstáculo</span>
+            <h3>Tres callejones sin salida</h3>
+            <p>La cerámica y los insectos, los animales y los memes de famosos fallaron antes del enfoque que funcionó. Documenté cada uno.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstáculo</span>
+            <h3>Una sola pieza fuera de lugar deshace un conjunto</h3>
+            <p>Una prueba de pixel art mostró cómo un solo choque de lenguaje estético puede romper la coherencia de toda la cuadrícula.</p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Solución</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Un solo párrafo de prompt con una variable, el objeto.</strong>
+            Pide un render de alta fidelidad, como recurso de videojuego 3D, de
+            un objeto de terror y supervivencia (una poción, una chaqueta, una
+            escopeta, una granada, etcétera) construido con anatomía de libélula
+            orgánica e iridiscente, con un aspecto suave fantasycore y
+            fairycore, siempre mostrado en uso, en un fondo distinto del juego
+            cada vez y nunca en primer plano.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Resultado y reflexión</h2>
+        <ul class="stats">
+          <li><strong>23</strong><span>imágenes que se leen como un solo conjunto</span></li>
+          <li><strong>4</strong><span>días de trabajo documentados: 16, 21, 26 y 28 de junio</span></li>
+          <li><strong>3</strong><span>callejones sin salida documentados</span></li>
+          <li><strong>1</strong><span>variable en la receta final</span></li>
+        </ul>
+        <div class="project__description">
+          <p>
+            <strong class="lede">La cuadrícula se sostiene.</strong> El punto de
+            inflexión fue fijar el videojuego y variar solo el objeto.
+          </p>
+          <p>
+            <mark>De lo que no estoy segura:</mark> si el conjunto además sigue
+            siendo lo bastante interesante como para que alguien quiera ver más
+            variaciones. Fijar la receta de manera tan estricta (mismo juego,
+            estética y encuadre) compró consistencia, quizás a costa de la
+            sorpresa. Con más tiempo variaría cómo se usa cada objeto, no solo
+            cuál es.
+          </p>
+          <p>
+            Casi todo lo que aprendí vino del ensayo y error documentado, ya
+            que nunca antes había escrito prompts para imágenes.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Herramientas y software</h2>
+        <ul class="tag-list">
+          <li class="tag">Gemini (3.6 Thinking)</li>
+          <li class="tag">Diseño de prompts</li>
+          <li class="tag">Curaduría</li>
+        </ul>
+      </section>
+
+      <div class="project__gallery">
+        <a data-stage="Inicio" href="assets/surviving-amongst-nature/10-test-genshin-plate.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/10-test-genshin-plate.jpg" alt="Una imagen de prueba temprana: un plato de cerámica con alas de libélula mostrado como una tarjeta de objeto al estilo de un juego de rol." width="661" height="370" loading="lazy" /></a>
+        <a data-stage="Inicio" href="assets/surviving-amongst-nature/11-test-sims-mug.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/11-test-sims-mug.jpg" alt="Una imagen de prueba temprana: una taza de libélula puesta como un objeto en un juego de simulación de vida." width="665" height="372" loading="lazy" /></a>
+        <a data-stage="Inicio" href="assets/surviving-amongst-nature/12-test-cyberpunk-sculpture.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/12-test-cyberpunk-sculpture.jpg" alt="Una imagen de prueba temprana: una escultura de libélula sobre un mostrador cyberpunk de neón." width="674" height="377" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/surviving-amongst-nature/14-animals-same-look-1.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/14-animals-same-look-1.jpg" alt="Un callejón sin salida: cuando la variable pasó a ser los animales, un zorro con alas de libélula entre hongos y musgo del bosque." width="639" height="348" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/surviving-amongst-nature/15-animals-same-look-2.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/15-animals-same-look-2.jpg" alt="Un callejón sin salida: otro animal con alas en casi la misma pose y el mismo escenario, así que el conjunto se veía repetitivo." width="647" height="353" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/surviving-amongst-nature/13-test-pixel-art-plate.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/13-test-pixel-art-plate.jpg" alt="La prueba de pixel art que rompió el conjunto: un plato de libélula en un juego de vóxeles, claramente de otra familia de imágenes." width="719" height="401" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/surviving-amongst-nature/16-technical-vocabulary-fork.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/16-technical-vocabulary-fork.jpg" alt="Después de pedirle a la IA vocabulario técnico preciso: un tenedor pálido de cerámica construido con anatomía de libélula sobre una piedra cubierta de musgo." width="457" height="249" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/surviving-amongst-nature/01-dragonfly-torch.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/01-dragonfly-torch.jpg" alt="Una antorcha con cuerpo de libélula que arde con una pequeña llama sobre un escritorio en una biblioteca de terror y supervivencia." width="1196" height="896" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/surviving-amongst-nature/02-winged-book.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/02-winged-book.jpg" alt="Un sobreviviente consulta un libro enorme con tapas de alas de libélula a la luz de un farol." width="1408" height="768" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/surviving-amongst-nature/03-brooch.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/03-brooch.jpg" alt="Una mano enguantada sostiene un broche de libélula con una gema rosada." width="1408" height="768" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/surviving-amongst-nature/04-grenade.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/04-grenade.jpg" alt="Un sobreviviente examina una granada con forma de libélula en un escritorio desordenado." width="1376" height="768" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/surviving-amongst-nature/05-long-weapon.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/05-long-weapon.jpg" alt="Un sobreviviente apunta un arma larga con cuerpo de libélula en un corredor en ruinas." width="1408" height="768" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/surviving-amongst-nature/06-door-handle.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/06-door-handle.jpg" alt="Un personaje abre una puerta de madera con una manija dorada en forma de libélula." width="1196" height="896" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/surviving-amongst-nature/07-medical-case.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/07-medical-case.jpg" alt="Un personaje abre un estuche de suministros médicos brillantes con tema de libélula." width="1024" height="1024" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/surviving-amongst-nature/08-statue-emblem.jpg" target="_blank" rel="noopener"><img src="assets/surviving-amongst-nature/08-statue-emblem.jpg" alt="Un personaje toca un emblema de libélula incrustado en una estatua cubierta de musgo." width="1408" height="768" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__row">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+      <a class="footer__contact" href="index.es.html#contact">Escríbeme <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+
+  <script src="script.js?v=20261005f"></script>
+  <script src="case-study.js?v=20261005f"></script>
+</body>
+</html>

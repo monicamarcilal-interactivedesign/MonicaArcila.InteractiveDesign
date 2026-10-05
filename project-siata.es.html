@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<!-- Versión en español de project-siata.html. Mismos estilos, scripts e imágenes; cambia solo el texto. -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="en" href="project-siata.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIATA Geoportal Ciudadanos — Mónica Arcila</title>
+  <meta name="description" content="Un rediseño Lean UX del portal ciudadano de clima y riesgo de SIATA en Medellín: entrevistas, prueba de árbol, prototipado colaborativo, un prototipo web móvil funcional y una evaluación con Hotjar y Maze." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css?v=20261005f" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <nav class="lotus-nav" aria-label="Ir a una sección" style="--cur: -1">
+      <a href="index.es.html" class="lotus-nav__home" aria-label="Volver a la página principal">
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <span class="lotus-nav__label">Volver a la página principal</span>
+      </a>
+      <div class="lotus-nav__leaves">
+        <span class="lotus-nav__pulse" aria-hidden="true"></span>
+        <a href="index.es.html#about" class="lotus-nav__leaf" data-section="about" style="--i:0"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Sobre mí</span></a>
+        <a href="index.es.html#case-studies" class="lotus-nav__leaf" data-section="case-studies" style="--i:1"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Proyectos</span></a>
+        <a href="index.es.html#experience" class="lotus-nav__leaf" data-section="experience" style="--i:2"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Experiencia</span></a>
+        <a href="index.es.html#skills" class="lotus-nav__leaf" data-section="skills" style="--i:3"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Habilidades</span></a>
+        <a href="index.es.html#contact" class="lotus-nav__leaf" data-section="contact" style="--i:4"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Contacto</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="lang-switch" role="group" aria-label="Idioma">
+    <a class="lang-switch__opt" href="project-siata.html" hreflang="en" lang="en" aria-label="View this page in English" title="English">EN</a>
+    <span class="lang-switch__opt" lang="es" aria-current="true">ES</span>
+  </div>
+
+  <main id="main">
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.es.html#work">← Volver a los proyectos</a>
+
+      <h1 class="project__title">SIATA Geoportal Ciudadanos</h1>
+      <p class="project__meta">Rediseño Lean UX · Prototipo web móvil · User Experience, Universidad EAFIT · 2026</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>Mi rol</dt>
+          <dd>Equipo de 5. Hice las entrevistas y las pruebas con usuarios, construí el prototipo funcional con IA generativa y escribí el informe de analítica</dd>
+        </div>
+        <div>
+          <dt>Herramientas</dt>
+          <dd>Figma, Gemini Canvas (prototipo en HTML), Optimal Workshop, Maze, Hotjar</dd>
+        </div>
+        <div>
+          <dt>Periodo</dt>
+          <dd>Marzo – mayo de 2026</dd>
+        </div>
+      </dl>
+
+      <ul class="pitch" aria-label="Resumen del proyecto">
+        <li><span class="pitch__label">Contexto</span><p>SIATA es el sistema de alerta temprana de Medellín. Tiene un sitio web técnico y un portal ciudadano aparte.</p></li>
+        <li><span class="pitch__label">Reto</span><p>Al buscar «siata» se llega al sitio técnico, y el portal ciudadano sigue saturado en un celular. ¿Cómo puede alguien consultar la lluvia y el riesgo sin saber de meteorología?</p></li>
+        <li><span class="pitch__label">Solución</span><p>Un prototipo web móvil que parte del mapa, con menos cosas en pantalla, paneles deslizables, palabras de todos los días y dos herramientas de ruta.</p></li>
+        <li><span class="pitch__label">Resultado</span><p>36 sesiones grabadas y 981 clics, concentrados en el botón de entrada y en los controles del mapa. Maze no pudo puntuar el éxito, y lo reporté como un límite.</p></li>
+        <li><span class="pitch__label">Aprendizaje</span><p>Mantén pequeña la primera versión y di lo que los datos no pueden mostrar.</p></li>
+      </ul>
+
+      <section class="project__section">
+        <h2 class="project__section-title">El problema</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">SIATA tiene dos sitios web, y la gente llega al equivocado.</strong>
+            El primero, siata.gov.co, es el técnico, pensado para personas que
+            ya entienden de meteorología. Es el que aparece cuando buscas
+            SIATA.
+          </p>
+          <p>
+            El segundo, Geoportal Ciudadanos, está pensado para la gente del
+            común y debería ser más amable, pero es mucho menos conocido. Eso
+            es una observación propia del equipo. En nuestras entrevistas
+            algunas personas nunca habían oído hablar de SIATA, y varias
+            preferían Apple Weather o Google.
+          </p>
+          <p>
+            El brief del curso nos pedía rediseñar un sitio web o una app
+            pública con un proceso Lean UX. Nuestra pregunta: <mark>¿cómo
+            puede alguien consultar el clima y los riesgos, como la lluvia o
+            el desbordamiento de quebradas, sin entender de
+            meteorología?</mark>
+          </p>
+        </div>
+      </section>
+
+      <section class="project__compare">
+        <h2 class="project__section-title">Dónde empezamos</h2>
+        <p class="compare__note">Los sitios reales en un celular, grabados en octubre de 2026, así que pequeños detalles pueden diferir de lo que vimos en marzo.</p>
+        <ul class="compare__row">
+          <li><figure>
+            <img src="assets/siata/before-1-search.jpg" alt="Captura de un celular con una búsqueda en Google de 'siata' en la que siata.gov.co, el sitio técnico, es el primer resultado." width="576" height="1218" loading="lazy" />
+            <figcaption>Al buscar «siata», el sitio técnico sale primero.</figcaption>
+          </figure></li>
+          <li><figure>
+            <img src="assets/siata/before-2-technical-site.jpg" alt="El sitio técnico de SIATA en un celular: un panel oscuro titulado 'Información geoespacial' con una larga lista de casillas sobre un mapa." width="576" height="1218" loading="lazy" />
+            <figcaption>El sitio técnico: una larga pila de capas y casillas.</figcaption>
+          </figure></li>
+          <li><figure>
+            <img src="assets/siata/before-3-find-citizen-portal.jpg" alt="Captura de un celular con una búsqueda en Google de 'siata geoportal ciudadanos' en la que el portal ciudadano es el primer resultado." width="576" height="1218" loading="lazy" />
+            <figcaption>El portal ciudadano aparece cuando ya conoces su nombre completo.</figcaption>
+          </figure></li>
+          <li><figure>
+            <img src="assets/siata/before-4-citizen-portal.jpg" alt="El Geoportal Ciudadanos en un celular: un mapa de Medellín cubierto de íconos de luna y marcadores de temperatura, con pequeños botones azules a la derecha." width="576" height="1218" loading="lazy" />
+            <figcaption>El portal ciudadano: un mapa saturado de íconos, con las herramientas como botones pequeños.</figcaption>
+          </figure></li>
+        </ul>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Mi rol</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Investigadora y constructora del prototipo en un equipo de cinco.</strong>
+          </p>
+          <ul>
+            <li>Hice y grabé las entrevistas con usuarios, y compartí los enlaces de las pruebas.</li>
+            <li>Ayudé a construir el prototipo base en Figma.</li>
+            <li>Construí el prototipo funcional final en HTML con Gemini Canvas, una herramienta de IA generativa, a partir de nuestra base en Figma y de las decisiones del grupo.</li>
+            <li>En las reuniones semanales, ayudé a decidir qué funciones cambiar.</li>
+            <li>Reescribí los términos técnicos de SIATA en lenguaje sencillo e hice los recursos vectoriales que explican la interfaz y los botones.</li>
+            <li>Escribí un informe de analítica individual sobre cómo la gente usó el prototipo. Usé IA para ayudarme a reunir en él nuestros documentos y los hallazgos de las pruebas.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Proceso</h2>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">Plantear las suposiciones</span>
+            <p>
+              Un Lean UX Canvas (Jeff Gothelf) planteó el problema, dos
+              proto-personas (de 17–28 y de 29–50 años) y las suposiciones más
+              riesgosas. ¿Podría la gente entender los términos y los íconos?
+              ¿Qué alertas importaban? ¿Ayudaría un widget?
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Entrevistas · 27 de marzo de 2026</span>
+            <p>
+              Seis estudiantes de EAFIT de diferentes carreras. La mayoría solo
+              consulta el clima para tomar una decisión práctica, como llevar
+              un paraguas. La mayoría usaba Apple Weather o Google porque SIATA
+              les parecía complejo y técnico.
+            </p>
+            <blockquote class="pullquote">«Debe ser simple y que me muestre solo si va a llover.»<cite>Una estudiante o un estudiante entrevistado</cite></blockquote>
+          </li>
+          <li>
+            <span class="step__date">Recorridos y prueba de árbol</span>
+            <p>
+              La gente fue directo a los elementos más visuales: la nube, el
+              marcador de ubicación, la capa de lluvia. Dudaron con los nombres
+              técnicos de las categorías y a veces no veían las tarjetas como
+              botones. Las etiquetas necesitaban lenguaje cotidiano.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Prototipado colaborativo</span>
+            <p>
+              Les dimos a dos participantes nuestra primera estructura y les
+              pedimos que la reorganizaran. Las dos pidieron menos categorías y
+              un diseño más simple, con las alertas y los datos principales del
+              clima más fáciles de alcanzar.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Construir y evaluar · mayo de 2026</span>
+            <p>
+              Reconstruí el prototipo como una aplicación web móvil funcional:
+              una pantalla de inicio con un botón «Explorar», luego un mapa en
+              vivo con capas que se pueden activar para lluvia, calidad del
+              aire y niveles de ríos, y dos herramientas. <em>Clima
+              origen–destino</em> consulta el clima a lo largo de tu ruta, y
+              <em>Mejor hora para salir</em> sugiere la mejor hora para
+              partir. Amigos y conocidos del equipo lo probaron sin moderador, y
+              sus recorridos grabados nos dieron a todas y todos los mismos
+              datos para nuestro propio informe.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Decisiones y obstáculos</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Mantener pequeña la primera versión</h3>
+            <p>En una sesión con nuestro profesor vimos que yo estaba construyendo en Gemini Canvas todas las secciones que queríamos cambiar. Eso no era un producto mínimo viable. Con la guía del profesor construimos solo lo necesario para probar nuestras hipótesis principales.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Mostrar menos en pantalla</h3>
+            <p>Discutimos las decisiones de interfaz desde nuestra propia experiencia y luego las contrastamos con los conceptos que las sustentan. Recortar lo visible reduce la sobrecarga cognitiva, y los paneles deslizables guardan solo información específica y útil.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Usar palabras de todos los días</h3>
+            <p><em>Precipitación</em> pasó a ser <em>lluvia</em>, incluso donde la gente pueda conocer el término, para eliminar hasta las dudas pequeñas.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstáculo</span>
+            <h3>Probar sin moderador</h3>
+            <p>Las personas hicieron las tareas solas desde un enlace. Eso mostró un comportamiento más libre, pero no pudimos confirmar que todas entendieran las instrucciones, y causó los límites de seguimiento que aparecen abajo.</p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Solución</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Un portal ciudadano que parte del mapa y responde rápido una pregunta:</strong>
+            ¿va a llover donde voy y qué debo hacer al respecto?
+          </p>
+          <p>
+            Las variables técnicas siguen ahí como capas opcionales del mapa,
+            pero ya no encabezan la página. Las etiquetas están en un español
+            cotidiano. Las dos herramientas basadas en rutas convierten los
+            datos del clima en una decisión sobre cuándo y cómo viajar.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Resultado y reflexión</h2>
+        <ul class="stats">
+          <li><strong>36</strong><span>sesiones grabadas (18 en celular, 18 en computador)</span></li>
+          <li><strong>981</strong><span>clics, ninguno de ellos clics de frustración</span></li>
+          <li><strong>4:52</strong><span>duración promedio de la sesión</span></li>
+          <li><strong>38,9 %</strong><span>tasa de rebote: algunos se fueron rápido</span></li>
+        </ul>
+        <div class="project__description">
+          <p>
+            <strong class="lede">La gente encontró el punto de entrada y trató el mapa como el corazón de la experiencia.</strong>
+            Los clics se concentraron en el botón Explorar (18 sesiones) y en
+            los controles del mapa. <em>Consultar ruta</em> (17 sesiones) y
+            <em>Mejor hora para salir</em> (16) estuvieron entre las funciones
+            más usadas.
+          </p>
+          <p>
+            <mark>No todo funcionó, y eso también lo reporté.</mark>
+            La muestra fue pequeña y cercana al equipo. Maze mostró 0 % de éxito
+            en la misión, pero no porque todos hubieran fallado: los
+            recorridos nunca se revisaron ni se categorizaron a mano, así que
+            la herramienta no pudo puntuarlos.
+          </p>
+        </div>
+        <details class="more">
+          <summary>Los límites y lo que recomendé</summary>
+          <div class="more__body">
+            <p>
+              Maze registró 13 respuestas y conté 12 como válidas, porque una
+              no tenía grabación completa. Hotjar tampoco pudo hacer
+              seguimiento de partes del prototipo que estaban incrustadas como
+              iframes. Registré ambas cosas como limitaciones en lugar de tratar
+              los números como definitivos.
+            </p>
+            <p>
+              Mis recomendaciones: estados activos e inactivos más claros en
+              los botones de capas, textos de ayuda cortos, menos carga visual
+              cuando hay muchas capas activas, y una nueva prueba con
+              moderación ligera.
+            </p>
+          </div>
+        </details>
+        <div class="project__description">
+          <p>
+            Lo que me llevo: construye lo más pequeño que ponga a prueba la
+            idea, y sé honesta sobre lo que los datos no pueden mostrar,
+            porque eso es parte de hacer bien la investigación UX.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Métodos y herramientas</h2>
+        <ul class="tag-list">
+          <li class="tag">Lean UX Canvas</li>
+          <li class="tag">Proto-personas</li>
+          <li class="tag">Entrevistas con usuarios</li>
+          <li class="tag">Recorrido cognitivo</li>
+          <li class="tag">Encuesta Likert</li>
+          <li class="tag">Prueba de árbol</li>
+          <li class="tag">Prototipado colaborativo</li>
+          <li class="tag">Maze</li>
+          <li class="tag">Hotjar</li>
+          <li class="tag">Figma</li>
+          <li class="tag">Gemini Canvas (IA generativa)</li>
+        </ul>
+      </section>
+
+      <div class="project__gallery">
+        <video controls preload="none" poster="assets/siata/siata-prototype-poster.jpg" aria-label="Grabación de pantalla del prototipo móvil funcional de SIATA: el mapa, las capas, el clima de la ruta y la mejor hora para salir.">
+          <source src="assets/siata/siata-prototype.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir este vídeo.
+        </video>
+        <a data-stage="Inicio" href="assets/siata/06-lean-ux-canvas.jpg" target="_blank" rel="noopener"><img src="assets/siata/06-lean-ux-canvas.jpg" alt="El Lean UX Canvas del portal ciudadano de SIATA, con el problema de negocio, los usuarios, las ideas y las hipótesis en casillas." width="3000" height="2319" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/siata/10-figma-board-early.png" target="_blank" rel="noopener"><img src="assets/siata/10-figma-board-early.png" alt="Tablero temprano de Figma: los colores y logos de SIATA, bocetos y las primeras pantallas de tutoriales, capas, widget y notificaciones." width="882" height="613" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/siata/09-figma-board-prototype.png" target="_blank" rel="noopener"><img src="assets/siata/09-figma-board-prototype.png" alt="Tablero de Figma con las pantallas del prototipo: widget y app, primer tutorial, capas (lluvia, calidad del aire, riesgo, mapa), desplazamiento, búsqueda de municipio, menú, configuración y el tutorial revisado." width="693" height="706" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/siata/11-figma-board-notifications.png" target="_blank" rel="noopener"><img src="assets/siata/11-figma-board-notifications.png" alt="Tablero posterior de Figma: la interfaz con y sin una notificación, y los tutoriales." width="792" height="602" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/siata/01-weather-panel.jpg" target="_blank" rel="noopener"><img src="assets/siata/01-weather-panel.jpg" alt="Pantalla de celular del prototipo ciudadano de SIATA con 24 grados y lecturas de lluvia y humedad sobre una barra de búsqueda." width="576" height="1280" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/siata/02-map-layers.jpg" target="_blank" rel="noopener"><img src="assets/siata/02-map-layers.jpg" alt="Pantalla del mapa del prototipo con un panel de capas activas para encender y apagar lluvia, calidad del aire y nivel de los ríos." width="576" height="1280" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/siata/03-route-weather.jpg" target="_blank" rel="noopener"><img src="assets/siata/03-route-weather.jpg" alt="Pantalla del prototipo «Clima en la ruta» con un origen y un destino y avisos del clima a lo largo de la ruta." width="576" height="1280" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/siata/04-best-time.jpg" target="_blank" rel="noopener"><img src="assets/siata/04-best-time.jpg" alt="Pantalla del prototipo «Mejor hora para salir» con una lista de las mejores horas para partir y barras de colores para cada hora." width="576" height="1280" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/siata/05-personalised-info.jpg" target="_blank" rel="noopener"><img src="assets/siata/05-personalised-info.jpg" alt="Panel del prototipo «Información personalizada» que ofrece el clima en el origen y el destino y la mejor hora para salir." width="576" height="1280" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/siata/07-hotjar-heatmaps.jpg" target="_blank" rel="noopener"><img src="assets/siata/07-hotjar-heatmaps.jpg" alt="Página de mi informe de analítica con dos mapas de calor de Hotjar que muestran dónde hizo clic la gente en el prototipo." width="3000" height="3883" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__row">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+      <a class="footer__contact" href="index.es.html#contact">Escríbeme <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+
+  <script src="script.js?v=20261005f"></script>
+  <script src="case-study.js?v=20261005f"></script>
+</body>
+</html>

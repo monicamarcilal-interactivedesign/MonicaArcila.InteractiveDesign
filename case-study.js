@@ -16,6 +16,84 @@
 
   var reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
+  /* Words the script writes itself, in the page's language. */
+  var es = (document.documentElement.lang || "").toLowerCase().indexOf("es") === 0;
+  var T = es
+    ? {
+        gallery: "Galería",
+        jump: "Ir a una parte de esta página",
+        group: "Galería del proyecto",
+        one: " elemento",
+        many: " elementos",
+        hint: " · desliza hacia los lados o usa las flechas",
+        left: "Desplazar la galería a la izquierda",
+        right: "Desplazar la galería a la derecha",
+        viewer: "Visor de imágenes",
+        close: "Cerrar el visor",
+        prev: "Imagen anterior",
+        next: "Imagen siguiente",
+        of: " de ",
+      }
+    : {
+        gallery: "Gallery",
+        jump: "Jump to a part of this page",
+        group: "Project gallery",
+        one: " item",
+        many: " items",
+        hint: " · scroll sideways or use the arrows",
+        left: "Scroll the gallery left",
+        right: "Scroll the gallery right",
+        viewer: "Picture viewer",
+        close: "Close the viewer",
+        prev: "Previous picture",
+        next: "Next picture",
+        of: " of ",
+      };
+
+  /* ---- 0. YouTube players. Each one starts by itself, muted (browsers only
+     allow autoplay without sound; the player has its own sound button), and
+     loops. It loads when it scrolls into view and pauses when it scrolls out,
+     so the page stays light. On a file:// copy YouTube refuses embeds, so the
+     poster stays and its link opens YouTube in a new tab. ---- */
+  var canEmbed = /^https?:$/.test(window.location.protocol);
+  var command = function (frame, name) {
+    try {
+      frame.contentWindow.postMessage(JSON.stringify({ event: "command", func: name, args: [] }), "*");
+    } catch (e) {}
+  };
+  Array.prototype.forEach.call(document.querySelectorAll(".yt[data-yt]"), function (box) {
+    if (!canEmbed || !("IntersectionObserver" in window)) return;
+    var id = box.getAttribute("data-yt");
+    var frame = null;
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            if (!frame) {
+              frame = document.createElement("iframe");
+              frame.src =
+                "https://www.youtube-nocookie.com/embed/" + id +
+                "?autoplay=1&mute=1&loop=1&playlist=" + id +
+                "&rel=0&modestbranding=1&playsinline=1&enablejsapi=1";
+              frame.title = box.getAttribute("data-title") || "Video";
+              frame.allow = "autoplay; encrypted-media; picture-in-picture; fullscreen";
+              frame.referrerPolicy = "strict-origin-when-cross-origin";
+              box.textContent = "";
+              box.classList.add("is-playing");
+              box.appendChild(frame);
+            } else {
+              command(frame, "playVideo");
+            }
+          } else if (frame) {
+            command(frame, "pauseVideo");
+          }
+        });
+      },
+      { threshold: 0.35 }
+    );
+    observer.observe(box);
+  });
+
   /* ---- 1. "Jump to" chips ---- */
   var slug = function (text) {
     return text
@@ -32,7 +110,7 @@
     galleryTitle.className = "project__section-title gallery__title";
     galleryTitle.id = "gallery";
     galleryTitle.style.marginTop = "3rem";
-    galleryTitle.textContent = "Gallery";
+    galleryTitle.textContent = T.gallery;
     gallery.parentNode.insertBefore(galleryTitle, gallery);
   }
 
@@ -49,7 +127,7 @@
   if (anchorAfter && anchors.length >= 3) {
     var list = document.createElement("ul");
     list.className = "toc";
-    list.setAttribute("aria-label", "Jump to a part of this page");
+    list.setAttribute("aria-label", T.jump);
     anchors.forEach(function (a) {
       var li = document.createElement("li");
       var link = document.createElement("a");
@@ -65,17 +143,17 @@
 
   /* ---- 2. The strip: hint and arrows ---- */
   gallery.setAttribute("role", "group");
-  gallery.setAttribute("aria-label", "Project gallery");
+  gallery.setAttribute("aria-label", T.group);
   gallery.tabIndex = 0;
 
   var count = gallery.children.length;
   var controls = document.createElement("div");
   controls.className = "gallery__controls";
   controls.innerHTML =
-    '<p class="gallery__hint">' + count + (count === 1 ? " item" : " items") + " · scroll sideways or use the arrows</p>" +
+    '<p class="gallery__hint">' + count + (count === 1 ? T.one : T.many) + T.hint + "</p>" +
     '<div class="gallery__arrows">' +
-    '<button class="gallery__arrow" type="button" data-dir="-1" aria-label="Scroll the gallery left">‹</button>' +
-    '<button class="gallery__arrow" type="button" data-dir="1" aria-label="Scroll the gallery right">›</button>' +
+    '<button class="gallery__arrow" type="button" data-dir="-1" aria-label="' + T.left + '">‹</button>' +
+    '<button class="gallery__arrow" type="button" data-dir="1" aria-label="' + T.right + '">›</button>' +
     "</div>";
   gallery.parentNode.insertBefore(controls, gallery);
 
@@ -100,21 +178,21 @@
   syncArrows();
 
   /* ---- 3. The bigger viewer ---- */
-  var links = Array.prototype.slice.call(gallery.querySelectorAll("a"));
+  var links = Array.prototype.slice.call(gallery.querySelectorAll("a:not(.yt__link)"));
   if (!links.length || typeof HTMLDialogElement !== "function") return;
 
   var dialog = document.createElement("dialog");
   dialog.className = "lightbox";
-  dialog.setAttribute("aria-label", "Picture viewer");
+  dialog.setAttribute("aria-label", T.viewer);
   dialog.innerHTML =
-    '<button class="gallery__arrow lightbox__close" type="button" aria-label="Close the viewer">×</button>' +
+    '<button class="gallery__arrow lightbox__close" type="button" aria-label="' + T.close + '">×</button>' +
     '<div class="lightbox__stage">' +
-    '<button class="gallery__arrow gallery__arrow--prev" type="button" aria-label="Previous picture">‹</button>' +
+    '<button class="gallery__arrow gallery__arrow--prev" type="button" aria-label="' + T.prev + '">‹</button>' +
     '<figure class="lightbox__figure">' +
     '<img class="lightbox__img" alt="" />' +
     '<figcaption class="lightbox__cap"></figcaption>' +
     "</figure>" +
-    '<button class="gallery__arrow gallery__arrow--next" type="button" aria-label="Next picture">›</button>' +
+    '<button class="gallery__arrow gallery__arrow--next" type="button" aria-label="' + T.next + '">›</button>' +
     "</div>";
   document.body.appendChild(dialog);
 
@@ -134,7 +212,7 @@
     var text = document.createTextNode(stage ? stage + ": " + alt : alt);
     var counter = document.createElement("span");
     counter.className = "lightbox__count";
-    counter.textContent = current + 1 + " of " + links.length;
+    counter.textContent = current + 1 + T.of + links.length;
     caption.appendChild(text);
     caption.appendChild(counter);
   };

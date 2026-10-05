@@ -23,12 +23,13 @@
 <html lang="en-NZ">
 <head>
   <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="es" href="project-hansel-gretel.es.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Hansel &amp; Gretel: Blood and Crumbs — Mónica Arcila</title>
   <meta name="description" content="A 3D horror survival game in Unity where a sceptic gets lost in the same forest as a local legend. Mónica led development on a team project and made the final build." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261005c" />
+  <link rel="stylesheet" href="styles.css?v=20261005f" />
 </head>
 <body>
 
@@ -61,6 +62,11 @@
       </div>
     </nav>
   </header>
+
+  <div class="lang-switch" role="group" aria-label="Language">
+    <span class="lang-switch__opt" lang="en" aria-current="true">EN</span>
+    <a class="lang-switch__opt" href="project-hansel-gretel.es.html" data-base="project-hansel-gretel.es.html" hreflang="es" lang="es" aria-label="Ver esta página en español" title="Español">ES</a>
+  </div>
 
   <main id="main">
     <article class="section container project">
@@ -266,10 +272,13 @@
         Web-sized exports live in assets/hansel-gretel/. Each image links to its full-size
         file; the alt text says what it shows. -->
       <div class="project__gallery">
-        <video controls preload="none" poster="assets/hansel-gretel/hansel-gameplay-excerpt-poster.jpg" aria-label="Excerpt of the gameplay video: exploring the dark house with a candle count and hearts on screen.">
-          <source src="assets/hansel-gretel/hansel-gameplay-excerpt.mp4" type="video/mp4" />
-          Your browser can't play this video.
-        </video>
+        <div class="yt" data-yt="ZdUbYK__k4Q" data-title="Hansel &amp; Gretel: Blood and Crumbs, full gameplay">
+          <img src="assets/hansel-gretel/hansel-gameplay-excerpt-poster.jpg" alt="" width="1656" height="920" loading="lazy" />
+          <a class="yt__link" href="https://youtu.be/ZdUbYK__k4Q" target="_blank" rel="noopener" aria-label="Play the full gameplay video of Hansel &amp; Gretel: Blood and Crumbs (9 minutes). Opens YouTube.">
+            <span class="yt__play" aria-hidden="true"></span>
+            <span class="yt__label">Full gameplay · 9:00</span>
+          </a>
+        </div>
         <a data-stage="Beginning" href="assets/hansel-gretel/01-one-page-design.jpg" class="gallery__wide" target="_blank" rel="noopener"><img src="assets/hansel-gretel/01-one-page-design.jpg" alt="The one-page design for the game: narrative, objective, mechanics, floor plans, cinematic beats and storyboard." width="3000" height="1688" loading="lazy" /></a>
         <a data-stage="Middle" href="assets/hansel-gretel/02-opening-map.jpg" target="_blank" rel="noopener"><img src="assets/hansel-gretel/02-opening-map.jpg" alt="Opening card: a hand-drawn map with a red route and the label Sopetown 1972." width="1656" height="920" loading="lazy" /></a>
         <a data-stage="Middle" href="assets/hansel-gretel/03-forest-opening.jpg" target="_blank" rel="noopener"><img src="assets/hansel-gretel/03-forest-opening.jpg" alt="Silhouetted forest with glowing eyes and bats in the opening sequence." width="1656" height="920" loading="lazy" /></a>
@@ -287,7 +296,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261005c"></script>
-  <script src="case-study.js?v=20261005c"></script>
+  <script src="script.js?v=20261005f"></script>
+  <script src="case-study.js?v=20261005f"></script>
 </body>
 </html>

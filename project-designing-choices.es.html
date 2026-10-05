@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<!-- Versión en español de project-designing-choices.html. Mismos estilos, scripts e imágenes; cambia solo el texto. -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="en" href="project-designing-choices.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>¿Qué tipo de animal serías durante una crisis de vida? — Mónica Arcila</title>
+  <meta name="description" content="Un quiz interactivo de dos caminos hecho en Figma y Figma Make, que explora cómo las elecciones, el tono y el contenido asistido por IA pueden dar forma a una experiencia web guiada por decisiones." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css?v=20261005f" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <nav class="lotus-nav" aria-label="Ir a una sección" style="--cur: -1">
+      <a href="index.es.html" class="lotus-nav__home" aria-label="Volver a la página principal">
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <span class="lotus-nav__label">Volver a la página principal</span>
+      </a>
+      <div class="lotus-nav__leaves">
+        <span class="lotus-nav__pulse" aria-hidden="true"></span>
+        <a href="index.es.html#about" class="lotus-nav__leaf" data-section="about" style="--i:0"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Sobre mí</span></a>
+        <a href="index.es.html#case-studies" class="lotus-nav__leaf" data-section="case-studies" style="--i:1"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Proyectos</span></a>
+        <a href="index.es.html#experience" class="lotus-nav__leaf" data-section="experience" style="--i:2"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Experiencia</span></a>
+        <a href="index.es.html#skills" class="lotus-nav__leaf" data-section="skills" style="--i:3"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Habilidades</span></a>
+        <a href="index.es.html#contact" class="lotus-nav__leaf" data-section="contact" style="--i:4"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Contacto</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="lang-switch" role="group" aria-label="Idioma">
+    <a class="lang-switch__opt" href="project-designing-choices.html" hreflang="en" lang="en" aria-label="View this page in English" title="English">EN</a>
+    <span class="lang-switch__opt" lang="es" aria-current="true">ES</span>
+  </div>
+
+  <main id="main">
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.es.html#work">← Volver a los proyectos</a>
+
+      <h1 class="project__title">¿Qué tipo de animal serías durante una crisis de vida?</h1>
+      <p class="project__meta">Quiz interactivo con ramificaciones · DSDN142, Victoria University of Wellington · 2026</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>Mi rol</dt>
+          <dd>Individual: concepto, redacción UX, diseño de interacción, sistema visual y construcción asistida por IA</dd>
+        </div>
+        <div>
+          <dt>Herramientas</dt>
+          <dd>Figma Design, Figma Make, Claude, Gemini</dd>
+        </div>
+        <div>
+          <dt>Duración</dt>
+          <dd>Del 13 de agosto al 3 de septiembre de 2026</dd>
+        </div>
+      </dl>
+
+      <ul class="pitch" aria-label="Resumen del proyecto">
+        <li><span class="pitch__label">Contexto</span><p>Un proyecto individual para DSDN142 en Victoria University of Wellington: una experiencia web interactiva guiada por decisiones, construida en tres semanas.</p></li>
+        <li><span class="pitch__label">Reto</span><p>Cada elección tenía que cambiar de verdad el resultado, y todo debía ser fácil de recorrer para alguien que lo ve por primera vez.</p></li>
+        <li><span class="pitch__label">Solución</span><p>Un quiz de dos caminos, «¿Qué tipo de animal serías durante una crisis de vida?», con cinco elecciones por camino que suman hacia uno de tres finales.</p></li>
+        <li><span class="pitch__label">Resultado</span><p>Una experiencia que funciona por completo en Figma Make y cumple cada punto del brief.</p></li>
+        <li><span class="pitch__label">Aprendizaje</span><p>La IA funciona mejor como una capa de traducción para ideas que ya tienes, no como un generador de contenido.</p></li>
+      </ul>
+
+      <section class="project__section">
+        <h2 class="project__section-title">El problema</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Verse bien no bastaba.</strong>
+            El brief pedía una experiencia web guiada por decisiones, diseñada
+            en Figma y hecha funcional con Figma Make: una página de inicio,
+            al menos cinco elecciones con las que interactuar y al menos tres
+            finales distintos.
+          </p>
+          <p>
+            Como es un brief de diseño de interacción, <mark>cada elección
+            tenía que cambiar de verdad el tono y el resultado</mark>, y una
+            persona que nunca lo hubiera visto tenía que recorrerlo con
+            confianza. Lo difícil era sostener dos cosas a la vez: ramificación
+            real y un estilo lo bastante simple para construirlo con mis
+            propias habilidades en el tiempo disponible.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Mi rol</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Individual: concepto, redacción, diseño de interacción, sistema visual y construcción.</strong>
+          </p>
+          <ul>
+            <li>Escribí la narrativa ramificada de los dos caminos.</li>
+            <li>Diseñé el modelo de interacción: affordances, retroalimentación y navegación.</li>
+            <li>Construí el sistema visual: color, tipografía y un pequeño personaje que reacciona.</li>
+            <li>Usé Claude y Gemini durante todo el proceso, no para que diseñaran por mí, sino para probar la lógica de las ramificaciones, redactar y revisar el texto de las opciones, desarrollar el personaje y convertir lo que quería en las variables y acciones condicionales que necesita Figma Make.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">La idea</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">El mismo mecanismo emocional, ejecutado dos veces.</strong>
+            Al comienzo eliges qué crisis vivir. Los dos caminos tienen cinco
+            elecciones que van escalando y tres finales, pero cada uno tiene su
+            propio escenario, tono y animales, así que el formato mismo comenta
+            la diferencia entre generaciones.
+          </p>
+        </div>
+        <ul class="callouts">
+          <li class="callout">
+            <span class="callout__label">Camino 1 · Millennial</span>
+            <h3>La lenta toma de conciencia de que el divorcio es una opción a los 40</h3>
+            <p>Cinco elecciones, desde «El recibo» hasta «La última mañana». Finales: <strong>Tortuga</strong>, <strong>Lobo</strong> y <strong>Mariposa</strong>.</p>
+          </li>
+          <li class="callout">
+            <span class="callout__label">Camino 2 · Gen Z</span>
+            <h3>Un trabajo de entrada y una nueva jefa o jefe a quien una vez dejaste en visto</h3>
+            <p>Cinco elecciones, desde una «oportunidad» sin pago en la inducción hasta una oferta de trabajo de la competencia. Finales: <strong>Gato</strong>, <strong>Zarigüeya</strong> y <strong>Capibara</strong>.</p>
+          </li>
+        </ul>
+        <div class="project__description">
+          <p>
+            Cada opción marca en silencio a uno de los tres animales del
+            camino, y el animal con más marcas decide tu final. Las elecciones
+            escalan en una escala de cinco niveles de «descontrol», un nivel
+            por elección.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Proceso</h2>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">13 de agosto · Confusión total</span>
+            <p>
+              Empecé con una revisión del diagrama de flujo de Figma junto con
+              Claude. Mi primer wireframe tenía nodos «inicio → decisión» sin
+              conexiones visibles y pantallas duplicadas en lugar de un camino
+              limpio. Decidí construir bien el camino Millennial antes de tocar
+              el de Gen Z, y generé ideas para las situaciones de partida con
+              Claude hasta que el concepto me convenció.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">28 de agosto · Estilo y diseño de escritorio</span>
+            <p>
+              Con las cinco elecciones Millennial escritas, pasé al aspecto.
+              Diseñé un personaje reactivo básico con ayuda de Gemini para que
+              tuviera una expresión facial por cada elección, y elegí la paleta.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">29 de agosto · Problemas estructurales</span>
+            <p>
+              Una nueva revisión contra la rúbrica mostró que las elecciones 1 a
+              4 no afectaban el final, solo la 5. Marqué cada opción con uno de
+              tres animales y pasé a un conteo. Eso significó descartar un cuarto
+              final posible para que el patrón se mantuviera legible.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">1 de septiembre · El segundo camino</span>
+            <p>
+              Reflejé la estructura en el camino Gen Z con un escenario nuevo,
+              basado en una búsqueda rápida sobre lo que enfrentan hoy las
+              personas de veintitantos (incluido un artículo de la BBC) y en mi
+              propia experiencia de la generación. Le pedí a Claude que
+              comprobara que cada animal tuviera detrás una referencia cultural
+              real y actual, y así el meme del Capibara de la Indiferencia
+              reemplazó a un Mapache.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">3 de septiembre · Retroalimentación</span>
+            <p>
+              Terminé los finales Gen Z y construí la capa de retroalimentación
+              en Figma Make: una línea de «eco» reactiva que responde a la
+              opción exacta que acabas de elegir, para que la interfaz siempre
+              reconozca tu última acción aunque no haya un puntaje visible.
+            </p>
+          </li>
+        </ol>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Decisiones y obstáculos</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Elecciones bloqueadas</h3>
+            <p>Una vez eliges una opción no hay vuelta atrás. Es más sencillo de construir de forma fiable en Figma Make, y refuerza el peso de cada elección, porque en la vida real tampoco puedes deshacer una decisión.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Affordances visibles</h3>
+            <p>Los botones tienen un estado de reposo claro (un borde fino) y un estado de hover (relleno sólido, y la caja se ensancha un poco), siguiendo la idea de Norman de los significantes visibles. La interactividad se lee antes del clic.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Un personaje que reacciona</h3>
+            <p>Al elegir una opción, todo se desenfoca excepto un avatar y un globo de reacción. La misma línea te sigue a la pantalla siguiente como un recordatorio simple en cursiva, para que la consecuencia emocional de una elección siga visible una pantalla más.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Una paleta de color que inquieta un poco</h3>
+            <p>Un fondo casi negro con rosa neón, cian y lima saturados, más cercano a una etiqueta de advertencia que a «limpio y moderno», para que el aspecto escale igual que las elecciones.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Dos voces</h3>
+            <p>Una voz sarcástica, estilo TikTok, para las líneas de reacción entre elecciones, como un amigo o amiga divertido y honesto que juzga tu vida, y una voz más calmada, de documental, para la revelación final, de modo que el humor y el resultado no se mezclen.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstáculo</span>
+            <h3>Elecciones que no importaban</h3>
+            <p>Solo la última elección afectaba el final, hasta la revisión de la rúbrica del 29 de agosto. El sistema de conteo lo arregló.</p>
+          </li>
+          <li class="callout callout--obstacle">
+            <span class="callout__label">Obstáculo</span>
+            <h3>Horas invertidas en algo que Figma Make podía hacer</h3>
+            <p>Construí a mano el diseño de escritorio y después supe que Figma Make podría haberlo hecho en minutos. La próxima vez probaría primero la herramienta.</p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Resultado y reflexión</h2>
+        <ul class="stats">
+          <li><strong>2</strong><span>caminos, uno por generación</span></li>
+          <li><strong>5</strong><span>elecciones que escalan por camino</span></li>
+          <li><strong>3</strong><span>finales por camino</span></li>
+          <li><strong>3 sem.</strong><span>del 13 de agosto al 3 de septiembre</span></li>
+        </ul>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Una experiencia de dos caminos que funciona por completo en Figma Make</strong>
+            y cumple cada punto del brief: una página de inicio, cinco
+            elecciones por camino y tres finales, que se ganan con el camino
+            recorrido y no con el último clic.
+          </p>
+          <p>
+            El camino Millennial suma 6 Tortuga, 5 Lobo y 4 Mariposa. Lo dejé
+            ligeramente desparejo a propósito, porque un reparto perfecto se
+            habría sentido mecánico. El camino Gen Z quedó en 5, 5 y 5, porque
+            cada animal se mantiene coherente con su propia lógica.
+          </p>
+          <p>
+            Mi mayor lección fue usar la IA como una capa de traducción, no
+            como un generador de contenido. Claude y Gemini fueron más útiles
+            para convertir una estructura que ya tenía en la cabeza en el
+            lenguaje exacto que necesitaba Figma Make, y para probar si un
+            patrón de ramificación se sostenía antes de construirlo.
+          </p>
+        </div>
+        <details class="more">
+          <summary>Cómo le di instrucciones a Figma Make, con un ejemplo</summary>
+          <div class="more__body">
+            <p>
+              Para las reacciones después de cada elección, le dije a Figma
+              Make que cada situación tiene tres opciones, y le di, para cada
+              una, el texto exacto del globo del personaje y de la línea de la
+              pantalla siguiente, con una captura de referencia adjunta.
+            </p>
+          </div>
+        </details>
+        <div class="project__description">
+          <p>
+            Míralo tú misma o mismo:
+            <a href="https://www.figma.com/make/xqfRkEcngPwzWZiIuo1Zbg/Quiz-flow-design?t=mLoYk2i52VzSk4OE-20&amp;fullscreen=1" target="_blank" rel="noopener">el quiz funcionando en Figma Make ↗</a>
+            y
+            <a href="https://www.figma.com/design/NRJKqjUynXPHg7iPKyEXmB/Designing-Choices?node-id=0-1&amp;t=KwlV6YTfPLLsYYAk-1" target="_blank" rel="noopener">el archivo de diseño ↗</a>.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Herramientas y software</h2>
+        <ul class="tag-list">
+          <li class="tag">Figma Design</li>
+          <li class="tag">Figma Make</li>
+          <li class="tag">Claude (plan gratuito)</li>
+          <li class="tag">Gemini (plan gratuito)</li>
+        </ul>
+      </section>
+
+      <div class="project__gallery">
+        <video controls preload="none" poster="assets/designing-choices/designing-choices-excerpt-poster.jpg" aria-label="Fragmento del prototipo terminado del quiz en uso, desde las elecciones hasta una pantalla de resultado.">
+          <source src="assets/designing-choices/designing-choices-excerpt.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir este vídeo.
+        </video>
+        <a data-stage="Inicio" href="assets/designing-choices/06-branching-flowchart.jpg" class="gallery__wide" target="_blank" rel="noopener"><img src="assets/designing-choices/06-branching-flowchart.jpg" alt="Diagrama de flujo ramificado de las elecciones y los finales en ambos caminos." width="1253" height="437" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/designing-choices/05-character-expressions.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/05-character-expressions.jpg" alt="Hoja con las expresiones faciales del personaje reactivo." width="892" height="510" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/designing-choices/01-flow-overview.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/01-flow-overview.jpg" alt="Vista general de las pantallas del quiz: bienvenida, elegir una crisis y El recibo." width="1278" height="290" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/designing-choices/02-wedding-china.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/02-wedding-china.jpg" alt="La vajilla de la boda: una pantalla de elección con tres opciones en verde, rosa y azul." width="1055" height="638" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/designing-choices/03-freaking-dog.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/03-freaking-dog.jpg" alt="El perro histérico: una pantalla de elección con el pequeño personaje reactivo." width="1046" height="633" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/designing-choices/04-ending-orange-cat.jpg" target="_blank" rel="noopener"><img src="assets/designing-choices/04-ending-orange-cat.jpg" alt="Pantalla de final «You're an Orange Cat» (eres un gato naranja) con un botón para repetir." width="285" height="186" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__row">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+      <a class="footer__contact" href="index.es.html#contact">Escríbeme <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+
+  <script src="script.js?v=20261005f"></script>
+  <script src="case-study.js?v=20261005f"></script>
+</body>
+</html>

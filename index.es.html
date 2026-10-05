@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<!-- Versión en español de index.html. Mismos estilos, scripts e imágenes; cambia solo el texto. -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="en" href="index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Marca la página como «los scripts pueden correr»: la pantalla de inicio solo ocupa todo el visor cuando esto está puesto. -->
+  <script>document.documentElement.classList.add("js");</script>
+
+  <title>Mónica Arcila — Diseñadora interactiva</title>
+
+  <meta name="description" content="Portafolio de Mónica Arcila, diseñadora interactiva especializada en implementación de UI, sistemas de diseño y flujos de diseño con IA, que estudia entre EAFIT (Colombia) y Te Herenga Waka — Victoria University of Wellington." />
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css?v=20261005f" />
+
+  <!-- El loto 3D de la pantalla de inicio usa Three.js (versión clásica, no módulo, para que funcione también al abrir el archivo con doble clic). -->
+  <script src="https://unpkg.com/three@0.140.0/build/three.min.js" defer></script>
+  <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/GLTFLoader.js" defer></script>
+  <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/OBJLoader.js" defer></script>
+  <script src="landing-3d.js?v=20261005f" defer></script>
+  <script src="landing-fx.js?v=20261005f" defer></script>
+  <script src="projects-board.js?v=20261005f" defer></script>
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <nav class="lotus-nav" aria-label="Ir a una sección" style="--cur: -1">
+      <a href="index.es.html" class="lotus-nav__home" id="portalToggle" aria-label="Volver al loto">
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <span class="lotus-nav__label">Volver al loto</span>
+      </a>
+      <div class="lotus-nav__leaves">
+        <span class="lotus-nav__pulse" aria-hidden="true"></span>
+        <a href="#about" class="lotus-nav__leaf" data-section="about" style="--i:0"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Sobre mí</span></a>
+        <a href="#case-studies" class="lotus-nav__leaf" data-section="case-studies" style="--i:1"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Proyectos</span></a>
+        <a href="#experience" class="lotus-nav__leaf" data-section="experience" style="--i:2"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Experiencia</span></a>
+        <a href="#skills" class="lotus-nav__leaf" data-section="skills" style="--i:3"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Habilidades</span></a>
+        <a href="#contact" class="lotus-nav__leaf" data-section="contact" style="--i:4"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Contacto</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="lang-switch" role="group" aria-label="Idioma">
+    <a class="lang-switch__opt" href="index.html" data-base="index.html" hreflang="en" lang="en" aria-label="View this page in English" title="English">EN</a>
+    <span class="lang-switch__opt" lang="es" aria-current="true">ES</span>
+  </div>
+
+  <main id="main">
+
+    <!-- ===================== 1. PANTALLA DE INICIO ===================== -->
+    <div class="landing-stage" id="landingStage">
+      <div class="landing-bg" aria-hidden="true"></div>
+      <canvas class="landing-fx" id="fxDroplets" aria-hidden="true"></canvas>
+      <canvas class="landing-fx" id="fxDust" aria-hidden="true"></canvas>
+
+      <!-- El lema. Los ids de las palabras son los destinos de los tallos brillantes (landing-fx.js). Es un solo h1 para que se lea como una frase. -->
+      <h1 class="landing-motto" id="landingMotto">
+        <span class="landing-motto__part landing-motto__title"><span id="wordDesigning">Diseñar</span></span>
+        <span class="landing-motto__part landing-motto__sub">para ser <span id="wordFelt">sentido</span><br />y <span id="wordValued">valorado,</span></span>
+        <span class="landing-motto__part landing-motto__end">no solo visto.</span>
+      </h1>
+
+      <div class="lotus-spotlight" aria-hidden="true"></div>
+      <canvas class="lotus-canvas" id="lotusCanvas" aria-hidden="true"></canvas>
+      <p class="lotus-hint" id="lotusHint">Haz clic para empezar</p>
+      <button class="lotus-start-cta" id="lotusStartCta" type="button">Entrar al sitio</button>
+
+      <img class="lotus-still" src="assets/site/lotus-open-neon.png" alt="" aria-hidden="true" />
+
+      <canvas class="landing-fx" id="fxLines" aria-hidden="true"></canvas>
+
+      <section id="hero" class="hero" aria-hidden="true"></section>
+
+      <div class="orb-cluster" id="orbCluster">
+        <a href="#about" class="orb orb--about" data-section="about" style="--i:0">
+          <img class="orb__img" src="assets/site/orb-about.png" alt="" />
+          <span class="orb__label">Sobre mí</span>
+        </a>
+        <a href="#skills" class="orb orb--skills" data-section="skills" style="--i:1">
+          <img class="orb__img" src="assets/site/orb-skills.png" alt="" />
+          <span class="orb__label">Habilidades</span>
+        </a>
+        <a href="#case-studies" class="orb orb--case-studies" data-section="case-studies" style="--i:2">
+          <img class="orb__img" src="assets/site/orb-case-studies.png" alt="" />
+          <span class="orb__label">Proyectos</span>
+        </a>
+        <a href="#experience" class="orb orb--experience" data-section="experience" style="--i:3">
+          <img class="orb__img" src="assets/site/orb-experience.png" alt="" />
+          <span class="orb__label">Experiencia profesional</span>
+        </a>
+        <a href="#contact" class="orb orb--contact" data-section="contact" style="--i:4">
+          <img class="orb__img" src="assets/site/orb-contact.png" alt="" />
+          <span class="orb__label">Contacto</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ===================== PROYECTOS ===================== -->
+    <div id="case-studies">
+      <section class="projects-hero" id="projectsBanner" aria-label="Introducción a los proyectos">
+        <div class="projects-hero__inner">
+        <p class="projects-hero__statement" id="projectsStatement">Diseño <em class="pem pem--1">experiencias interactivas,</em> sistemas de diseño y flujos de trabajo <span class="nowrap">con IA</span> — <em class="pem pem--2">moviéndome entre</em> investigación UX, diseño de juegos y medios inmersivos,</p>
+        <p class="projects-hero__from"><span class="pem pem--3">de <span class="from__a">Medellín</span> a <span class="from__b">Wellington.</span></span></p>
+
+        <div class="route">
+          <svg class="route__svg" viewBox="0 0 1000 150" focusable="false" aria-hidden="true">
+            <defs>
+              <linearGradient id="routeGrad" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="1000" y2="0">
+                <stop offset="0" stop-color="#fd7069"/><stop offset="0.35" stop-color="#f887fa"/><stop offset="0.7" stop-color="#8f5cff"/><stop offset="1" stop-color="#22d3ee"/>
+              </linearGradient>
+            </defs>
+            <g class="route__lines" fill="none" stroke="url(#routeGrad)" stroke-linecap="round">
+              <path id="routeMain" pathLength="1" d="M30 100 C250 -24 750 -24 970 100" stroke-width="2.2"/>
+              <path pathLength="1" d="M30 100 C250 -10 750 -10 970 100" stroke-width="1.2" opacity="0.7"/>
+              <path pathLength="1" d="M30 100 C250 -38 750 -38 970 100" stroke-width="1" opacity="0.55"/>
+            </g>
+            <g class="route__stops">
+              <circle cx="146" cy="52.6" r="5.5" fill="#f887fa"/>
+              <circle cx="319" cy="17.7" r="5.5" fill="#c58bff"/>
+              <circle cx="500" cy="7" r="5.5" fill="#8f5cff"/>
+              <circle cx="681" cy="17.7" r="5.5" fill="#4d7dff"/>
+              <circle cx="854" cy="52.6" r="5.5" fill="#22d3ee"/>
+            </g>
+            <defs><path id="routeLabelPath" d="M30 126 C250 2 750 2 970 126"/></defs>
+            <g class="route__labels" font-size="10.8" text-anchor="middle">
+              <text style="--c:#f887fa"><textPath href="#routeLabelPath" startOffset="13.9%">Sistemas de diseño</textPath></text>
+              <text style="--c:#c58bff"><textPath href="#routeLabelPath" startOffset="31.5%">Flujos con IA</textPath></text>
+              <text style="--c:#8f5cff"><textPath href="#routeLabelPath" startOffset="50%">Investigación UX</textPath></text>
+              <text style="--c:#4d7dff"><textPath href="#routeLabelPath" startOffset="68.5%">Diseño de juegos</textPath></text>
+              <text style="--c:#22d3ee"><textPath href="#routeLabelPath" startOffset="86.1%">Medios inmersivos</textPath></text>
+            </g>
+            <circle class="route__end route__end--a" cx="30" cy="100" r="9" fill="#fd7069"/>
+            <circle class="route__end route__end--b" cx="970" cy="100" r="9" fill="#22d3ee"/>
+            <circle class="route__orb" cx="30" cy="100" r="7" fill="#ffffff"/>
+          </svg>
+
+          <ul class="route__skills" aria-label="Entre qué me muevo">
+            <li style="--c:#f887fa">Sistemas de diseño</li>
+            <li style="--c:#c58bff">Flujos con IA</li>
+            <li style="--c:#8f5cff">Investigación UX</li>
+            <li style="--c:#4d7dff">Diseño de juegos</li>
+            <li style="--c:#22d3ee">Medios inmersivos</li>
+          </ul>
+
+          <div class="route__ends">
+            <p class="route__place route__place--a"><span class="route__city">Medellín</span><span class="route__where"><span>Colombia</span><span>EAFIT</span></span></p>
+            <p class="route__place route__place--b"><span class="route__city">Wellington</span><span class="route__where"><span>Aotearoa Nueva Zelanda</span><span>Te Herenga Waka</span></span></p>
+          </div>
+        </div>
+        </div>
+        <p class="projects-hero__cue" aria-hidden="true"><span>desplázate para ver los proyectos</span><i></i></p>
+      </section>
+
+      <header class="projects-head">
+        <h2 class="section__title projects-title" id="projectsTitle">Proyectos académicos y personales</h2>
+      </header>
+
+      <section class="projects-intro">
+        <p>
+          Trabajos de mi carrera de Diseño Interactivo en EAFIT, en Medellín, y
+          de mi semestre de intercambio en Te Herenga Waka — Victoria
+          University of Wellington. En EAFIT siempre trabajé con compañeros, así
+          que cada proyecto dice cuál fue mi parte. Las habilidades de cada
+          tarjeta son las que usé, más las que aprendí del propio proyecto y de
+          mis compañeros. Mi investigación más allá del programa tiene su
+          propia franja más abajo.
+        </p>
+      </section>
+
+      <section id="work" class="projects-board-section" aria-label="Proyectos">
+        <div class="container projects-bar">
+          <div class="projects-bar__filters">
+            <div class="filter" role="group" aria-label="Filtrar proyectos por categoría" hidden>
+              <button class="filter__button" type="button" data-filter="all" aria-pressed="true">Todos los proyectos</button>
+              <button class="filter__button" type="button" data-filter="featured" aria-pressed="false">Destacados</button>
+              <button class="filter__button" type="button" data-filter="ux" aria-pressed="false">UX, investigación y diseño de producto</button>
+              <button class="filter__button" type="button" data-filter="immersive" aria-pressed="false">Experiencias inmersivas y de VR</button>
+              <button class="filter__button" type="button" data-filter="game" aria-pressed="false">Diseño de juegos y mundos narrativos</button>
+              <button class="filter__button" type="button" data-filter="ai" aria-pressed="false">Diseño interactivo con IA</button>
+              <button class="filter__button" type="button" data-filter="motion" aria-pressed="false">3D, movimiento y diseño visual</button>
+            </div>
+            <p class="filter__status" aria-live="polite"></p>
+          </div>
+        </div>
+
+        <div class="board" id="projectsBoard" tabindex="0" role="region" aria-label="Tarjetas de proyectos. Arrastra, desliza o usa las flechas para moverte por el tablero.">
+
+          <ul class="board__canvas" id="projectsCanvas">
+
+            <li class="pcard" data-category="ux ai featured" data-cat="ux" data-cat2="ai" data-featured>
+              <a class="pcard__link" href="project-siata.es.html" data-video="assets/siata/siata-prototype.mp4">
+                <div class="pcard__media"><img src="assets/cards/siata.jpg" alt="Pantalla de mapa del prototipo con un panel de capas activas para encender y apagar lluvia, calidad del aire y nivel de los ríos." loading="lazy" decoding="async" draggable="false" style="object-position: 50% 62%" /><span class="pcard__pill">Destacado</span></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">SIATA Geoportal Ciudadanos</h3>
+                  <p class="pcard__hook">La mayoría ni siquiera sabe que este portal ciudadano del clima existe.</p>
+                  <p class="pcard__brief">Cinco personas rediseñamos el portal de clima y riesgo de Medellín. Hice las entrevistas y construí el prototipo funcional.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Entrevistas con usuarios</li><li>Lean UX</li><li>Prototipado (Figma, HTML)</li><li>Redacción UX</li><li>Pruebas de usabilidad</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="immersive game featured" data-cat="immersive" data-cat2="game" data-featured>
+              <a class="pcard__link" href="project-night-at-the-museum.es.html" data-video="assets/night-at-the-museum/museum-menu-tutorial.mp4">
+                <div class="pcard__media"><img src="assets/cards/night-museum.jpg" alt="El menú de inicio en Meta Quest 3 con el título Noche en el Museo y los botones Iniciar y Tutorial." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Destacado</span></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Una noche en el museo</h3>
+                  <p class="pcard__hook">Una noche de VR en el museo, hecha para correr en Meta Quest 3.</p>
+                  <p class="pcard__brief">Fui la desarrolladora líder de Unity de un equipo de seis, y convertí nuestro diseño de una página en una versión funcional.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Desarrollo en Unity</li><li>Interacción en VR</li><li>Colaboración en GitHub</li><li>Planeación de proyecto</li><li>Narrativa en VR</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="immersive game featured" data-cat="immersive" data-cat2="game" data-featured>
+              <a class="pcard__link" href="project-nuris-greenhouse.es.html" data-video="assets/nuris-greenhouse/nuris-greenhouse-loop.mp4" data-loop="0,30">
+                <div class="pcard__media"><img src="assets/cards/nuris-greenhouse.jpg" alt="La cúpula final de la constelación: hilos dorados brillantes que forman un mapa de estrellas alrededor de una esfera pálida." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Destacado</span></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Nuri's Greenhouse</h3>
+                  <p class="pcard__hook">Un mundo de VR entero, hecho sola, en un motor recién conocido.</p>
+                  <p class="pcard__brief">Mi primer proyecto en Unreal tras tres semestres en Unity: un entorno individual en VR para el VR Studio de VUW.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Unreal Engine</li><li>Narrativa ambiental</li><li>Audio espacial</li><li>Diseño de niveles de VR</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="game featured" data-cat="game" data-featured>
+              <a class="pcard__link" href="project-meldiria.es.html" data-video="assets/meldiria/meldiria-loop.mp4" data-loop="0,30">
+                <div class="pcard__media"><img src="assets/cards/meldiria.jpg" alt="Diapositiva del quiz de personalidad «¿Qué personaje eres?» con cinco personajes del universo de Meldiria." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill">Destacado</span></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Meldiria</h3>
+                  <p class="pcard__hook">Un universo se volvió juego, animación, quiz y biblia del mundo.</p>
+                  <p class="pcard__brief">Proyecto Más Creativo, Inventiva 2024. Lideré el desarrollo en un equipo de seis y construí el Mythos, el Ethos y el Topos del mundo.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Desarrollo 2D en Unity</li><li>Construcción de mundos</li><li>Redacción técnica</li><li>Narrativa transmedia</li><li>Animación 2D</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="ai ux featured" data-cat="ai" data-cat2="ux" data-featured>
+              <a class="pcard__link" href="project-designing-choices.es.html" data-video="assets/designing-choices/designing-choices-loop.mp4" data-loop="0,30">
+                <div class="pcard__media"><img src="assets/cards/designing-choices.jpg" alt="Una pantalla del quiz, «La vajilla de la boda», con una situación y tres botones de elección de colores." loading="lazy" decoding="async" draggable="false" style="object-position: 50% 30%" /><span class="pcard__pill">Destacado</span></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">¿Qué tipo de animal serías durante una crisis de vida?</h3>
+                  <p class="pcard__hook">Cinco elecciones, tres finales posibles, un animal.</p>
+                  <p class="pcard__brief">Un quiz ramificado hecho sola en Figma Make. Usé Claude y Gemini para probar la lógica, no para diseñarlo.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Diseño de interacción</li><li>Narrativa ramificada</li><li>Redacción UX</li><li>Figma Make</li><li>Pruebas de lógica con IA</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="ux motion" data-cat="ux" data-cat2="motion">
+              <a class="pcard__link" href="project-el-feeling.es.html" data-video="assets/el-feeling/el-feeling-prototype.mp4">
+                <div class="pcard__media"><img src="assets/cards/el-feeling.jpg" alt="Pantalla de inicio del prototipo «Deslízate hacia la aventura» con patines sobre un fondo retro colorido." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">El Feeling</h3>
+                  <p class="pcard__hook">Todas sus clases de patinaje vivían en Instagram. Les dimos un hogar.</p>
+                  <p class="pcard__brief">Equipo de cinco. Hice la arquitectura de información y diseñé la sección de Clases con su animación.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Arquitectura de información</li><li>UX/UI en Figma</li><li>UI kit y componentes</li><li>Diseño de interacción</li><li>Diseño responsive</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="ux" data-cat="ux">
+              <a class="pcard__link" href="project-hugger-island.es.html">
+                <div class="pcard__media"><img src="assets/cards/hugger-island.jpg" alt="Diapositiva de la pregunta de investigación «Pregunta de Investigación» con flores de colores y una figura rosada." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Hugger Island</h3>
+                  <p class="pcard__hook">¿Es un gasto o una inversión? Les preguntamos a los padres.</p>
+                  <p class="pcard__brief">Investigación de mercados y posicionamiento en un equipo de cinco, presentada a la cliente en 2026.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Investigación de mercados</li><li>Buyer personas</li><li>Entrevistas y encuestas</li><li>Observación en redes sociales</li><li>Informe y pitch</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="ux" data-cat="ux">
+              <a class="pcard__link" href="project-consumer-behaviour.es.html">
+                <div class="pcard__media"><img src="assets/cards/consumer-behaviour.jpg" alt="Gráfico de la tarjeta: una compradora, una regla de decisión, con sus pesos de compra: 40 por ciento diseño visual, 40 por ciento rendimiento funcional y 20 por ciento comodidad." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Comportamiento del consumidor: un perfil y una estrategia de marca</h3>
+                  <p class="pcard__hook">¿Cómo decide una compradora? Luego, una marca hecha a su medida.</p>
+                  <p class="pcard__brief">Un perfil con siete cuestionarios y la estrategia de producto, precio, plaza y promoción que se desprende de él.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Investigación del consumidor</li><li>Recorrido de decisión</li><li>Persona</li><li>Estrategia de marca</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="game" data-cat="game">
+              <a class="pcard__link" href="project-hansel-gretel.es.html" data-video="assets/hansel-gretel/hansel-gretel-loop.mp4" data-loop="0,30">
+                <div class="pcard__media"><img src="assets/cards/hansel-gretel.jpg" alt="Un bosque azul oscuro de árboles en silueta con rostros tallados brillantes y dos murciélagos." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Hansel &amp; Gretel: Blood and Crumbs</h3>
+                  <p class="pcard__hook">Búrlate de la leyenda y luego piérdete en el bosque donde ocurrió.</p>
+                  <p class="pcard__brief">Lideré el desarrollo e hice la versión final de este juego de terror y supervivencia en Unity, en un equipo de seis.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Desarrollo 3D en Unity</li><li>Scripts y mecánicas de juego</li><li>NavMesh y NPC</li><li>Depuración</li><li>Diseño de juegos de terror</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="ai motion" data-cat="ai" data-cat2="motion">
+              <a class="pcard__link" href="project-surviving-amongst-nature.es.html">
+                <div class="pcard__media"><img src="assets/cards/surviving-nature.jpg" alt="Una figura con capucha apuntando un lanzacohetes con cuerpo de libélula en un invernadero cubierto de vegetación." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Surviving Amongst Nature</h3>
+                  <p class="pcard__hook">Una receta de prompt que mantiene unida toda una cuadrícula de imágenes.</p>
+                  <p class="pcard__brief">Un brief de diseño generativo individual: escribí y refiné un prompt repetible en Gemini y luego curé la cuadrícula.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Ingeniería de prompts</li><li>Imágenes con IA generativa</li><li>Documentación del proceso</li><li>Curaduría visual</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="ai motion" data-cat="ai" data-cat2="motion">
+              <a class="pcard__link" href="project-natures-embodiment-of-wine.es.html">
+                <div class="pcard__media"><img src="assets/cards/nature-wine.jpg" alt="Un avestruz en un escenario de cabaret con cortinas de terciopelo, vestido como una botella de vino y con una copa." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Nature's Embodiment of Wine</h3>
+                  <p class="pcard__hook">Animales en un cabaret, cada uno vestido como una botella de vino.</p>
+                  <p class="pcard__brief">Un generador de imágenes temático hecho sola: concepto, ingeniería de prompts y curaduría en Gemini.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Diseño generativo</li><li>Ingeniería de prompts</li><li>Curaduría visual</li><li>Desarrollo de concepto</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="motion" data-cat="motion">
+              <a class="pcard__link" href="project-capitanas-del-fuego.es.html" data-video="assets/capitanas-del-fuego/capitanas-loop.mp4" data-loop="0,30">
+                <div class="pcard__media"><img src="assets/cards/capitanas.jpg" alt="Diapositiva de portada «Las Capitanas del Fuego», una experiencia audiovisual interactiva para una fiesta de Dancehall y Sunset, sobre un degradado de fuego." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Capitanas del Fuego</h3>
+                  <p class="pcard__hook">Visuales que reaccionan a la música, para una fiesta de Dancehall &amp; Sunset.</p>
+                  <p class="pcard__brief">Equipo de tres para una DJ de Medellín. Desarrollé las visuales finales en TouchDesigner y se las presenté a ella.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>TouchDesigner</li><li>Visuales reactivas al audio</li><li>Interacción con Kinect</li><li>Presentar a una cliente</li></ul>
+                </div>
+              </a>
+            </li>
+
+            <li class="pcard" data-category="motion" data-cat="motion">
+              <a class="pcard__link" href="project-3d-reel.es.html" data-video="assets/3d-reel/3d-animation-excerpt.mp4">
+                <div class="pcard__media"><img src="assets/cards/3d-reel.jpg" alt="Collage de escenas modeladas: una pistola de juguete, un tren de vapor colorido, una vaca con patrones brillantes y una casa pequeña." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__body">
+                  <h3 class="pcard__title">Reel de modelado y animación 3D</h3>
+                  <p class="pcard__hook">De un solo objeto a una animación terminada: mi proceso 3D.</p>
+                  <p class="pcard__brief">Trabajos de curso en Maya, más iluminación, renderizado y sonido en una animación de un equipo de seis.</p>
+                </div>
+                <div class="pcard__skills" aria-label="Habilidades principales">
+                  <ul class="pgroup"><li>Modelado 3D (Maya)</li><li>Rigging básico</li><li>Animación</li><li>Iluminación y renderizado</li><li>Sonido y música</li></ul>
+                </div>
+              </a>
+            </li>
+
+          </ul>
+
+        </div>
+        <p class="visually-hidden" id="boardLive" aria-live="polite"></p>
+      </section>
+
+    <!-- ===================== SEMILLEROS DE INVESTIGACIÓN ===================== -->
+    <section id="seedbeds" class="seedbeds">
+      <div class="seedbeds__head">
+        <h2 class="section__title">Semilleros de investigación</h2>
+        <p class="seedbeds__intro">
+          Proyectos de investigación en los que participé en EAFIT, paralelos a
+          mi carrera (<i lang="es">semilleros de investigación</i>). No fueron
+          parte de ningún curso, por eso viven aparte de los proyectos de
+          arriba.
+        </p>
+      </div>
+      <ul class="seedbeds__grid">
+
+        <li class="pcard rcard" data-research>
+          <a class="pcard__link rcard__link" href="project-ciudades-posibles.es.html">
+            <div class="pcard__media"><img src="assets/cards/ciudades-posibles.jpg" alt="Render 3D del montaje de la exposición: una mesa redonda con el mapa hexagonal de la ciudad, dos soportes de pósters y un pedestal verde sobre un tapete naranja." loading="lazy" decoding="async" draggable="false" /></div>
+            <div class="pcard__body">
+              <p class="pcard__kicker"><span>Semillero de investigación · Semillero Cosmogénesis</span></p>
+              <h3 class="pcard__title">Ciudades Posibles</h3>
+              <p class="pcard__hook">¿Cómo logras que el espacio público se sienta de todos?</p>
+              <p class="pcard__brief">Diseño especulativo de diez personas en el Distrito SUR de Medellín. Codiseñé las piezas hexagonales, hice entrevistas y la guía de piso.</p>
+              <div class="pcard__skills" aria-label="Habilidades principales">
+                <ul class="pgroup"><li>Diseño especulativo</li><li>Encuestas cualitativas</li><li>Prototipado participativo</li><li>Entrevistas</li><li>Diseño de pósters</li></ul>
+              </div>
+            </div>
+            <span class="rcard__seeds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </a>
+        </li>
+
+        <li class="pcard rcard" data-research>
+          <a class="pcard__link rcard__link" href="project-vr-emotion-research.es.html" data-video="assets/vr-emotion-research/vr-onboarding-tutorial.mp4">
+            <div class="pcard__media"><img src="assets/cards/vr-emotion.jpg" alt="Escena del tutorial en Unity: controles de VR que apuntan a un marcador brillante junto a una mesa, con la indicación «Avance al punto iluminado»." loading="lazy" decoding="async" draggable="false" /></div>
+            <div class="pcard__body">
+              <p class="pcard__kicker"><span>Semillero de investigación · Universidad EAFIT · en curso</span></p>
+              <h3 class="pcard__title">VR y emociones: investigación</h3>
+              <p class="pcard__hook">¿Pueden las emociones en VR cambiar qué tan bien piensas?</p>
+              <p class="pcard__brief">Una de tres desarrolladoras de un estudio en curso. Investigué la háptica y luego construí el tutorial de bienvenida y el chequeo de emociones.</p>
+              <div class="pcard__skills" aria-label="Habilidades principales">
+                <ul class="pgroup"><li>Unity</li><li>Háptica</li><li>Bienvenida en VR</li><li>Cuestionario de emociones</li><li>GitHub</li></ul>
+              </div>
+            </div>
+            <span class="rcard__seeds" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+          </a>
+        </li>
+
+      </ul>
+    </section>
+    </div><!-- /#case-studies -->
+
+    <!-- ===================== EXPERIENCIA ===================== -->
+    <section id="experience" class="section container exp">
+      <h2 class="section__title">Experiencia profesional</h2>
+
+      <div class="exp__layout">
+          <div class="experience__item">
+            <h3 class="experience__role">Asistente de comunicaciones (Monitora Administrativa)</h3>
+            <p class="experience__meta">Escuela de Finanzas, Economía y Gobierno (FEG), Universidad EAFIT · ene. 2024 – jun. 2026 · medio tiempo</p>
+            <p>
+              Entré como diseñadora gráfica y terminé siendo la mano derecha de
+              la líder de comunicaciones, en un equipo que siempre tenía que
+              adaptarse rápido.
+            </p>
+            <ul>
+              <li>Diseñadora principal de las publicaciones, historias y piezas de eventos de Instagram de la Escuela, tanto estáticas como animadas. Trabajé dentro de los lineamientos de marca existentes de la Escuela para crear diseños nuevos; yo no creé los lineamientos.</li>
+              <li>Escribí guiones técnicos, visuales y narrativos para vídeos y eventos.</li>
+              <li>Cubrí eventos en vivo en X, en español e inglés. Éramos gente de diseño cubriendo eventos de finanzas, economía y política que casi no entendíamos, así que usamos IA para asegurarnos de no equivocarnos con la información. Llegaba unos diez minutos antes del comienzo y buscaba los perfiles de X de los panelistas (nombre completo y cargo), el nombre y el propósito del evento y con quién se hacía. Durante el evento recogía los comentarios del público, los traducía con IA, los reescribía con el tono de la Escuela para que cupieran en el límite de caracteres de X y los publicaba en orden, con las fotos que una colega enviaba en vivo por un enlace de Drive (descargadas en buena calidad) emparejadas con el contexto que habíamos preparado con IA.</li>
+              <li>Administré el calendario de contenido, asigné y revisé el trabajo del equipo, y escribí textos.</li>
+              <li>Inicié el Boletín Especial, un boletín con las noticias más interesantes de la Escuela cada mes (pasó de salir cada tres meses a salir casi cada mes). Yo era la única persona a cargo: investigaba las historias, las reescribía con el tono de voz de EAFIT y de la Escuela, diseñaba el boletín y lo enviaba por correo a una lista específica de personas de la Escuela desde la cuenta principal de correo de la Escuela.</li>
+              <li>Ayudé a poner en práctica una estrategia mensual de contenido, cuya idea principal vino de la líder de comunicaciones, para dar visibilidad a las mujeres en finanzas, economía y ciencias políticas: charlas, eventos y la campaña #YoHagoParte. Con una compañera diseñé su contenido de Instagram, y en un momento lideré ese trabajo.</li>
+              <li>Codiseñé una estrategia basada en personajes para darle a la Escuela una voz más personal en línea.</li>
+            </ul>
+          </div>
+
+        <!-- Una columna de «stickers», uno por cada publicación pública en la que trabajé (enlaces a Instagram y X). -->
+        <aside class="stickers" aria-label="Publicaciones públicas en las que contribuí">
+          <p class="stickers__label" aria-hidden="true">una selección de publicaciones públicas en las que trabajé</p>
+          <div class="stickers__scroll" id="stickersScroll" tabindex="0">
+            <ul class="stickers__track">
+              <li class="sticker sticker--series"><a href="https://www.instagram.com/reel/C4QNk6grpVw/" target="_blank" rel="noopener noreferrer" aria-label="#YoHagoParte · Parte 1: El comienzo de la estrategia. La acompañé e hice unas 50 pulseras a mano en unos dos días. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/01.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Reel</span><span class="sticker__title">#YoHagoParte · Parte 1</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">El comienzo de la estrategia. La acompañé e hice unas 50 pulseras a mano en unos dos días.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--series"><a href="https://www.instagram.com/p/DG8wJMJxERn/" target="_blank" rel="noopener noreferrer" aria-label="#YoHagoParte · Parte 2: Investigación, redacción y todo el diseño gráfico, con una colega. Hice la parte 2. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/11.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Publicación</span><span class="sticker__title">#YoHagoParte · Parte 2</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Investigación, redacción y todo el diseño gráfico, con una colega. Hice la parte 2.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--series"><a href="https://www.instagram.com/p/DHMxUVNSEge/" target="_blank" rel="noopener noreferrer" aria-label="#YoHagoParte · Parte 3: Investigación, redacción y diseño gráfico. Hice la parte 3. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/12.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Publicación</span><span class="sticker__title">#YoHagoParte · Parte 3</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Investigación, redacción y diseño gráfico. Hice la parte 3.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--series"><a href="https://www.instagram.com/p/DHev06Yxau7/" target="_blank" rel="noopener noreferrer" aria-label="#YoHagoParte · Parte 4: La idea, investigación, redacción y diseño gráfico. Hice la parte 4. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/13.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Publicación</span><span class="sticker__title">#YoHagoParte · Parte 4</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">La idea, investigación, redacción y diseño gráfico. Hice la parte 4.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--file"><a href="assets/stickers/bol-sept-1.jpg" target="_blank" rel="noopener" data-pages="bol-sept-1,bol-sept-2,bol-sept-3,bol-sept-4,bol-sept-5" data-kicker="Una muestra de los boletines que hice" data-caption="Investigué las noticias, las reescribí con el tono de la Escuela, diseñé la edición y la envié por correo. El boletín está en español." data-title="Boletín Especial, primer trimestre de 2025" data-alt="Página del Boletín Especial, primer trimestre de 2025 (en español)" aria-label="Boletín · mar. 2025: Investigué las noticias, las reescribí con el tono de la Escuela, diseñé la edición y la envié por correo. Una muestra de los boletines que hice. Abre un visor en esta página.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/bol-sept-sq.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--doc" aria-hidden="true"></span><span class="sticker__type">Boletín</span><span class="sticker__title">Boletín · mar. 2025</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Investigué las noticias, las reescribí con el tono de la Escuela, diseñé la edición y la envié por correo. Una muestra de los boletines que hice.</span><span class="sticker__open" aria-hidden="true">Leer la edición ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--file"><a href="assets/stickers/bol-janmay-1.jpg" target="_blank" rel="noopener" data-pages="bol-janmay-1,bol-janmay-2,bol-janmay-3,bol-janmay-4,bol-janmay-5,bol-janmay-6,bol-janmay-7,bol-janmay-8,bol-janmay-9,bol-janmay-10,bol-janmay-11" data-kicker="Una muestra de los boletines que hice" data-caption="Investigué las noticias, las reescribí con el tono de la Escuela, diseñé la edición y la envié por correo. El boletín está en español." data-title="Boletín Especial, enero a mayo de 2026" data-alt="Página del Boletín Especial, enero a mayo de 2026 (en español)" aria-label="Boletín · may. 2026: Investigué las noticias, las reescribí con el tono de la Escuela, diseñé la edición y la envié por correo. Una muestra de los boletines que hice. Abre un visor en esta página.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/bol-janmay-sq.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--doc" aria-hidden="true"></span><span class="sticker__type">Boletín</span><span class="sticker__title">Boletín · may. 2026</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Investigué las noticias, las reescribí con el tono de la Escuela, diseñé la edición y la envié por correo. Una muestra de los boletines que hice.</span><span class="sticker__open" aria-hidden="true">Leer la edición ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--file"><a href="assets/stickers/backing.jpg" target="_blank" rel="noopener" data-pages="backing" data-video="assets/stickers/backing.mp4" data-kicker="Diseñado para un evento de la Escuela" data-caption="El backing que se mostró en pantalla en el evento de los 30 años del pregrado en Economía. El vídeo no tiene sonido." data-title="Backing para el evento: 30 años del pregrado en Economía" data-alt="Diseño del backing para el evento de la Escuela por los 30 años del pregrado en Economía" aria-label="Backing del evento: Diseñé el backing que se mostró en pantalla en el evento de los 30 años del pregrado en Economía. Abre un visor en esta página.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/backing-sq.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--design" aria-hidden="true"></span><span class="sticker__type">Diseño</span><span class="sticker__title">Backing del evento</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Diseñé el backing que se mostró en pantalla en el evento de los 30 años del pregrado en Economía.</span><span class="sticker__open" aria-hidden="true">Ver el diseño ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--reel"><a href="https://www.instagram.com/reel/C5rWiyTrIPY/" target="_blank" rel="noopener noreferrer" aria-label="Guion: Escribí el guion. La idea no fue mía. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/02.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Reel</span><span class="sticker__title">Guion</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Escribí el guion. La idea no fue mía.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--reel"><a href="https://www.instagram.com/reel/C6OtJZALQuh/" target="_blank" rel="noopener noreferrer" aria-label="Apoyo en la grabación: Apoyé la grabación. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/03.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Reel</span><span class="sticker__title">Apoyo en la grabación</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Apoyé la grabación.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--reel"><a href="https://www.instagram.com/reel/C6ga3lqrhBD/" target="_blank" rel="noopener noreferrer" aria-label="Reel de origami: Logística, origami, investigación de las figuras de los origamis y redacción, organización del evento y apoyo en el vídeo. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/04.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Reel</span><span class="sticker__title">Reel de origami</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Logística, origami, investigación de las figuras de los origamis y redacción, organización del evento y apoyo en el vídeo.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--reel"><a href="https://www.instagram.com/reel/DBe8jNjRtAE/" target="_blank" rel="noopener noreferrer" aria-label="Datos y guion: Investigué los datos para el guion del vídeo y escribí el guion. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/07.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Reel</span><span class="sticker__title">Datos y guion</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Investigué los datos para el guion del vídeo y escribí el guion.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--reel"><a href="https://www.instagram.com/reel/DFvTX5QRadn/" target="_blank" rel="noopener noreferrer" aria-label="Investigación y guion: Investigación y redacción del guion. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/09.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Reel</span><span class="sticker__title">Investigación y guion</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Investigación y redacción del guion.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--reel"><a href="https://www.instagram.com/reel/DU045cLjZaE/" target="_blank" rel="noopener noreferrer" aria-label="Investigación y grabación: Investigación, redacción y apoyo durante la grabación. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/14.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Reel</span><span class="sticker__title">Investigación y grabación</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Investigación, redacción y apoyo durante la grabación.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--reel"><a href="https://www.instagram.com/reel/DWHuOFDDKId/" target="_blank" rel="noopener noreferrer" aria-label="Portada del reel: Creé la portada del reel. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/15.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Reel</span><span class="sticker__title">Portada del reel</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Creé la portada del reel.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--reel"><a href="https://www.instagram.com/reel/DYKJ-1nszSW/" target="_blank" rel="noopener noreferrer" aria-label="Día de grabación: Logística el día de la grabación, el guion completo para la grabación de los profesores, la logística de los regalos con otro profesor de la Escuela y apoyo durante la grabación. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/16.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Reel</span><span class="sticker__title">Día de grabación</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Logística el día de la grabación, el guion completo para la grabación de los profesores, la logística de los regalos con otro profesor de la Escuela y apoyo durante la grabación.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--post"><a href="https://www.instagram.com/p/C-BtI8eNLr7/" target="_blank" rel="noopener noreferrer" aria-label="Publicación del evento: Cubrí el evento en vivo en X. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/05.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Publicación</span><span class="sticker__title">Publicación del evento</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Cubrí el evento en vivo en X.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--post"><a href="https://www.instagram.com/p/DAensxGxKvd/" target="_blank" rel="noopener noreferrer" aria-label="Investigación y diseño: Investigación, redacción y todo el diseño gráfico, con una colega. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/06.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Publicación</span><span class="sticker__title">Investigación y diseño</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Investigación, redacción y todo el diseño gráfico, con una colega.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--post"><a href="https://www.instagram.com/p/DC9wR0YyZgB/" target="_blank" rel="noopener noreferrer" aria-label="Investigación y diseño: Investigación, redacción y ayuda con el diseño gráfico, con una colega. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/08.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Publicación</span><span class="sticker__title">Investigación y diseño</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Investigación, redacción y ayuda con el diseño gráfico, con una colega.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--post"><a href="https://www.instagram.com/p/DGB-Lnuylw8/" target="_blank" rel="noopener noreferrer" aria-label="Idea y diseño: La idea, investigación, redacción y todo el diseño gráfico, con una colega. Se abre en Instagram en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/10.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--ig" aria-hidden="true"></span><span class="sticker__type">Publicación</span><span class="sticker__title">Idea y diseño</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">La idea, investigación, redacción y todo el diseño gráfico, con una colega.</span><span class="sticker__open" aria-hidden="true">Abrir en Instagram ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--x"><a href="https://x.com/FEG_EAFIT/status/2062545996849054169" target="_blank" rel="noopener noreferrer" aria-label="Cobertura en vivo: Cobertura en vivo del evento en X: panelistas investigados de antemano, comentarios del público convertidos en publicaciones con el tono de la Escuela y fotos de una colega publicadas en orden. Se abre en X en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/17.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--x" aria-hidden="true"></span><span class="sticker__type">Publicación en X</span><span class="sticker__title">Cobertura en vivo</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Cobertura en vivo del evento en X: panelistas investigados de antemano, comentarios del público convertidos en publicaciones con el tono de la Escuela y fotos de una colega publicadas en orden.</span><span class="sticker__open" aria-hidden="true">Abrir en X ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--x"><a href="https://x.com/FEG_EAFIT/status/2052158019115331822" target="_blank" rel="noopener noreferrer" aria-label="Cobertura en vivo: Cobertura en vivo del evento en X: panelistas investigados de antemano, comentarios del público convertidos en publicaciones con el tono de la Escuela y fotos de una colega publicadas en orden. Se abre en X en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/18.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--x" aria-hidden="true"></span><span class="sticker__type">Publicación en X</span><span class="sticker__title">Cobertura en vivo</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Cobertura en vivo del evento en X: panelistas investigados de antemano, comentarios del público convertidos en publicaciones con el tono de la Escuela y fotos de una colega publicadas en orden.</span><span class="sticker__open" aria-hidden="true">Abrir en X ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--x"><a href="https://x.com/FEG_EAFIT/status/1980403471137509691" target="_blank" rel="noopener noreferrer" aria-label="Cobertura en vivo: Cobertura en vivo del evento en X: panelistas investigados de antemano, comentarios del público convertidos en publicaciones con el tono de la Escuela y fotos de una colega publicadas en orden. Se abre en X en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/19.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--x" aria-hidden="true"></span><span class="sticker__type">Publicación en X</span><span class="sticker__title">Cobertura en vivo</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Cobertura en vivo del evento en X: panelistas investigados de antemano, comentarios del público convertidos en publicaciones con el tono de la Escuela y fotos de una colega publicadas en orden.</span><span class="sticker__open" aria-hidden="true">Abrir en X ↗</span></span>
+              </a></li>
+              <li class="sticker sticker--x"><a href="https://x.com/FEG_EAFIT/status/1897768090772860974" target="_blank" rel="noopener noreferrer" aria-label="Cobertura en vivo: Cobertura en vivo del evento en X: panelistas investigados de antemano, comentarios del público convertidos en publicaciones con el tono de la Escuela y fotos de una colega publicadas en orden. Se abre en X en una pestaña nueva.">
+                <span class="sticker__face"><img class="sticker__pic" src="assets/stickers/20.jpg" alt="" width="480" height="480" loading="lazy" decoding="async" /><span class="sticker__glyph sticker__glyph--x" aria-hidden="true"></span><span class="sticker__type">Publicación en X</span><span class="sticker__title">Cobertura en vivo</span></span>
+                <span class="sticker__role"><span class="sticker__role-text">Cobertura en vivo del evento en X: panelistas investigados de antemano, comentarios del público convertidos en publicaciones con el tono de la Escuela y fotos de una colega publicadas en orden.</span><span class="sticker__open" aria-hidden="true">Abrir en X ↗</span></span>
+              </a></li>
+            </ul>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- ===================== HABILIDADES ===================== -->
+    <section id="skills" class="section container">
+      <h2 class="section__title">Habilidades</h2>
+      <p class="section__intro">
+        Lo que puedo hacer como diseñadora interactiva, agrupado por área.
+        Vienen de lo que hice en mis proyectos y trabajos, y de lo que aprendí
+        junto a mis compañeros.
+      </p>
+
+      <div class="skills">
+
+        <div class="skills__group">
+          <span class="skills__number">01</span>
+          <h3 class="skills__title">UX e investigación de usuarios</h3>
+          <ul class="skills__list">
+            <li>Entrevistas con usuarios</li>
+            <li>Encuestas y cuestionarios</li>
+            <li>Personas y proto-personas</li>
+            <li>Lean UX y design thinking</li>
+            <li>Recorridos cognitivos y pruebas de árbol</li>
+            <li>Pruebas de usabilidad (Hotjar, Maze)</li>
+            <li>Arquitectura de información</li>
+            <li>Investigación de mercados y observación</li>
+            <li>Síntesis de resultados, con apoyo de IA</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">02</span>
+          <h3 class="skills__title">Interacción y diseño de producto</h3>
+          <ul class="skills__list">
+            <li>Diseño UI/UX en Figma</li>
+            <li>Prototipos interactivos (Figma, Figma Make, HTML)</li>
+            <li>Flujos de interacción y retroalimentación</li>
+            <li>UI kits y componentes</li>
+            <li>Diseño responsive</li>
+            <li>Diseño de apps móviles</li>
+            <li>Gamificación</li>
+            <li>Redacción UX</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">03</span>
+          <h3 class="skills__title">Desarrollo de juegos y experiencias interactivas</h3>
+          <ul class="skills__list">
+            <li>Unity (2D y 3D)</li>
+            <li>Unreal Engine</li>
+            <li>Scripts y mecánicas de juego</li>
+            <li>NavMesh, NPC y partículas</li>
+            <li>Depuración</li>
+            <li>Control de versiones con GitHub</li>
+            <li>Liderar una versión hasta la entrega</li>
+            <li>Planeación y cronogramas de desarrollo</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">04</span>
+          <h3 class="skills__title">VR e inmersión</h3>
+          <ul class="skills__list">
+            <li>Diseño de interacción en VR (Meta Quest 3)</li>
+            <li>Retroalimentación háptica (investigada)</li>
+            <li>Diseño de bienvenida y tutoriales</li>
+            <li>Chequeos de emociones dentro de la experiencia</li>
+            <li>Narrativa ambiental</li>
+            <li>Audio espacial</li>
+            <li>Diseño de niveles y distribución en VR</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">05</span>
+          <h3 class="skills__title">Narrativa y construcción de mundos</h3>
+          <ul class="skills__list">
+            <li>Construcción de mundos (Mythos, Ethos, Topos)</li>
+            <li>Narrativa ramificada y finales</li>
+            <li>Narrativa transmedia</li>
+            <li>Biblias de mundo y redacción técnica</li>
+            <li>One-pagers de juegos y experiencias</li>
+            <li>Guiones para vídeo y eventos</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">06</span>
+          <h3 class="skills__title">Diseño generativo y con IA</h3>
+          <ul class="skills__list">
+            <li>Ingeniería de prompts y diseño de recetas</li>
+            <li>Sistemas generativos de imágenes</li>
+            <li>Scripts y depuración con ayuda de IA</li>
+            <li>Pruebas de lógica con ayuda de IA</li>
+            <li>Documentar abiertamente el proceso y el uso de IA</li>
+            <li>Claude, ChatGPT, Gemini, Midjourney</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">07</span>
+          <h3 class="skills__title">3D, movimiento y diseño visual</h3>
+          <ul class="skills__list">
+            <li>Maya (modelado, rigging básico, animación)</li>
+            <li>Iluminación y renderizado</li>
+            <li>Diseño de sonido y música para animación</li>
+            <li>Substance 3D Painter</li>
+            <li>TouchDesigner y visuales reactivas al audio</li>
+            <li>Interacción con Kinect y cámara</li>
+            <li>After Effects y Animate</li>
+            <li>Illustrator, Photoshop, Affinity, Canva</li>
+            <li>Recursos vectoriales de UI</li>
+            <li>Gráficos para redes sociales, estáticos y animados</li>
+          </ul>
+        </div>
+
+        <div class="skills__group">
+          <span class="skills__number">08</span>
+          <h3 class="skills__title">Comunicación y colaboración</h3>
+          <ul class="skills__list">
+            <li>Presentar a clientes reales</li>
+            <li>Presentar a profesores y clientes</li>
+            <li>Calendarios de contenido y redacción de textos</li>
+            <li>Producción de boletines: investigación, tono de voz institucional, diseño y envío por correo</li>
+            <li>Cobertura de eventos en vivo en español e inglés</li>
+            <li>Revisión y coordinación del trabajo del equipo</li>
+            <li>Trabajo en equipos de tres a diez personas</li>
+            <li>Planeación de proyectos</li>
+            <li>Bilingüe: español e inglés</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ===================== SOBRE MÍ ===================== -->
+    <section id="about" class="section container">
+      <div class="about-card" id="aboutCard">
+        <div class="about-card__glow" aria-hidden="true"></div>
+
+        <p class="about__eyebrow">Sobre mí</p>
+        <h2 class="about__name">Mónica Arcila Larrea</h2>
+
+        <div class="about">
+          <figure class="about__photo" id="aboutPhoto">
+            <span class="about__ring" aria-hidden="true"></span>
+            <img class="about-card__sun" src="assets/site/orb-about.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+            <img class="about__img about__img--a" src="assets/about/portrait-lake.jpg" width="1100" height="825" alt="Una selfi cercana y soleada de Mónica sonriendo, con el cabello rojo y rizado y una sudadera blanca, junto a un lago turquesa." decoding="async" />
+            <img class="about__img about__img--b" src="assets/about/portrait-mountains.jpg" width="900" height="1153" alt="Mónica sonriendo por encima del hombro, con el cabello largo y rizado y una sudadera verde azulada, de pie en un sendero con montañas nevadas y un lago detrás." loading="lazy" decoding="async" />
+          </figure>
+
+          <div class="about__text">
+            <p>
+              Soy diseñadora interactiva y vivo en Wellington, Nueva Zelanda,
+              especializada en implementación de UI, sistemas de diseño y
+              flujos de diseño con IA. Mi camino me ha llevado por seis
+              semestres en EAFIT (Medellín, Colombia) y, este año, por un
+              intercambio en Diseño de Medios Interactivos en Te Herenga Waka —
+              Victoria University of Wellington.
+            </p>
+            <p>
+              Para mí, diseñar es una colaboración: me gusta mostrar el
+              pensamiento detrás de los píxeles, la investigación, los
+              wireframes, los primeros borradores torpes, y no solo la pantalla
+              final pulida. Mi trabajo abarca investigación UX, prototipos
+              interactivos, diseño de juegos, realidad virtual y diseño
+              generativo y asistido por IA, y ahora busco una práctica de diseño
+              interactivo en Wellington o Auckland.
+            </p>
+
+            <h3 class="about__tools-title">Herramientas y software</h3>
+            <ul class="tools">
+              <li class="tool" tabindex="0"><img src="assets/tools/figma.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Figma</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/figma-make.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Figma Make</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/ps.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe Photoshop</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/ai.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe Illustrator</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/ae.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe After Effects</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/an.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe Animate</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/au.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Adobe Audition</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/affinity.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Affinity</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/canva.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Canva</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/maya.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Maya</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/substance-painter.svg" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Substance 3D Painter</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/unity.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Unity</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/unreal.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Unreal Engine</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/touchdesigner.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">TouchDesigner</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/vscode.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Visual Studio Code</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/google-sites.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Google Sites</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/lovable.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Lovable</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/claude.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Claude</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/chatgpt.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">ChatGPT</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/gemini.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Gemini</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/midjourney.png" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Midjourney</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/meta-quest.svg" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Meta Quest 3 / Oculus</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/html-css.svg" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">HTML &amp; CSS</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/cpp.svg" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">C++</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/python.svg" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Python</span></li>
+              <li class="tool" tabindex="0"><img src="assets/tools/arduino-wokwi.svg" alt="" width="44" height="44" loading="lazy" /><span class="tool__name">Arduino &amp; Wokwi</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTACTO ===================== -->
+    <section id="contact" class="section container contact" aria-labelledby="contactTitle">
+      <canvas class="contact__water" id="contactWater" aria-hidden="true"></canvas>
+
+      <div class="contact__inner">
+        <p class="contact__eyebrow">Trabajemos juntos</p>
+
+        <h2 class="contact__title" id="contactTitle">
+          <span class="contact__snake" id="contactSnake">¿Tienes algún proyecto en mente?</span>
+        </h2>
+
+        <a class="contact__cta" href="mailto:monicamarcilal.design@gmail.com" aria-label="Hablemos: escríbeme un correo a monicamarcilal.design@gmail.com">
+          <svg class="contact__envelope" viewBox="0 0 32 24" aria-hidden="true" focusable="false">
+            <rect x="1.500" y="1.500" width="29" height="21" rx="4" />
+            <path class="contact__flap" d="M3 5.500 16 14 29 5.500" />
+          </svg>
+          <span class="contact__cta-text">¡Hablemos!</span>
+          <span class="contact__arrow" aria-hidden="true">↗</span>
+        </a>
+
+        <p class="contact__or">
+          <button class="contact__copy" type="button" id="contactCopy" data-address="monicamarcilal.design@gmail.com">Copiar mi correo</button>
+          <span class="contact__copied" id="contactCopied" role="status" aria-live="polite"></span>
+        </p>
+
+        <div class="contact__grid">
+          <div>
+            <h3 class="contact__label">Vivo en</h3>
+            <p>Wellington, Nueva Zelanda</p>
+            <p class="contact__note">dispuesta a mudarme a Auckland</p>
+          </div>
+          <div>
+            <h3 class="contact__label">Redes</h3>
+            <ul class="contact__list">
+              <li><a href="https://www.linkedin.com/in/m%C3%B3nica-arcila-478575387" target="_blank" rel="noopener noreferrer">LinkedIn <span aria-hidden="true">↗</span></a></li>
+              <li><a href="https://www.instagram.com/monicaarcila_design" target="_blank" rel="noopener noreferrer">Instagram <span aria-hidden="true">↗</span></a></li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="contact__label">Disponibilidad</h3>
+            <p>Abierta a prácticas relacionadas con el diseño en Wellington o Auckland, en cualquier modalidad</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-footer" id="siteFooter">
+    <div class="container site-footer__row">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+      <a class="footer__contact" href="#contact">Escríbeme <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+
+  <!-- Visor para lo que existe solo como archivo (los boletines y el backing del evento). script.js lo llena. -->
+  <dialog class="viewer" id="viewer" aria-labelledby="viewerTitle">
+    <div class="viewer__glow" aria-hidden="true"></div>
+    <header class="viewer__bar">
+      <div class="viewer__heading">
+        <p class="viewer__kicker" id="viewerKicker"></p>
+        <h3 class="viewer__title" id="viewerTitle"></h3>
+      </div>
+      <button class="viewer__close" type="button" id="viewerClose" aria-label="Cerrar">×</button>
+    </header>
+    <div class="viewer__pages" id="viewerPages" tabindex="0"></div>
+    <p class="viewer__caption" id="viewerCaption"></p>
+  </dialog>
+
+  <script src="script.js?v=20261005f"></script>
+</body>
+</html>

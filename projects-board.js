@@ -28,6 +28,9 @@
 
 (function () {
 
+// The page language, so the words this file writes follow it.
+const ES = (document.documentElement.lang || "").toLowerCase().indexOf("es") === 0;
+
 const section = document.getElementById("case-studies");
 const board = document.getElementById("projectsBoard");
 const canvas = document.getElementById("projectsCanvas");
@@ -349,7 +352,9 @@ function layout(animate) {
 
 function updateStatus() {
   const shown = visibleCards().length;
-  if (statusEl) statusEl.textContent = `Showing ${shown} of ${cards.length} projects` + " · a card's colour is its main category" + (mode === "arrange" ? " — drag the cards to rearrange them." : ".");
+  if (statusEl) statusEl.textContent = ES
+      ? `Mostrando ${shown} de ${cards.length} proyectos` + " · el color de una tarjeta es su categoría principal" + (mode === "arrange" ? " — arrastra las tarjetas para reordenarlas." : ".")
+      : `Showing ${shown} of ${cards.length} projects` + " · a card's colour is its main category" + (mode === "arrange" ? " — drag the cards to rearrange them." : ".");
 }
 
 // A short, reusable FLIP: run `change` (which reorders the DOM) and glide
@@ -643,7 +648,7 @@ function dropCardDrag() {
     const domOrder = Array.from(canvas.children).filter((c) => c.classList.contains("pcard") && !c.hidden);
     order = [...domOrder, ...order.filter((c) => !domOrder.includes(c))];
     const pos1 = domOrder.indexOf(d.card) + 1;
-    if (liveEl) liveEl.textContent = `${d.card.querySelector(".pcard__title").textContent} moved to position ${pos1} of ${domOrder.length}.`;
+    if (liveEl) liveEl.textContent = ES ? `${d.card.querySelector(".pcard__title").textContent} movida a la posición ${pos1} de ${domOrder.length}.` : `${d.card.querySelector(".pcard__title").textContent} moved to position ${pos1} of ${domOrder.length}.`;
   };
   if (reduced) {
     finish();
@@ -670,19 +675,15 @@ function moveCardByKey(card, key) {
   card.focus();
   const domOrder = Array.from(canvas.children).filter((c) => c.classList.contains("pcard") && !c.hidden);
   order = [...domOrder, ...order.filter((c) => !domOrder.includes(c))];
-  if (liveEl) liveEl.textContent = `${card.querySelector(".pcard__title").textContent} moved to position ${j + 1} of ${list.length}.`;
+  if (liveEl) liveEl.textContent = ES ? `${card.querySelector(".pcard__title").textContent} movida a la posición ${j + 1} de ${list.length}.` : `${card.querySelector(".pcard__title").textContent} moved to position ${j + 1} of ${list.length}.`;
 }
 
 /* ---- colour means something: the category on every card ----
    The card's border/glow is its main category; this small label says
    which one in words (and names a second category if it has one). */
-const CATEGORY_NAMES = {
-  ux: "UX & Research",
-  immersive: "Immersive & VR",
-  game: "Game & Narrative",
-  ai: "AI-Driven Design",
-  motion: "3D & Motion",
-};
+const CATEGORY_NAMES = ES
+  ? { ux: "UX e investigación", immersive: "Inmersivo y VR", game: "Juegos y narrativa", ai: "Diseño con IA", motion: "3D y movimiento" }
+  : { ux: "UX & Research", immersive: "Immersive & VR", game: "Game & Narrative", ai: "AI-Driven Design", motion: "3D & Motion" };
 const CATEGORY_COLOURS = { ux: "#4d7dff", immersive: "#8f5cff", game: "#f887fa", ai: "#22d3ee", motion: "#fd7069" };
 cards.forEach((card) => {
   const body = card.querySelector(".pcard__body");
@@ -751,7 +752,7 @@ cards.concat(researchCards).forEach((card) => {
   const badge = document.createElement("span");
   badge.className = "pcard__play";
   badge.setAttribute("aria-hidden", "true");
-  badge.textContent = "Video";
+  badge.textContent = ES ? "Vídeo" : "Video";
   media.appendChild(badge);
   const span = (link.dataset.loop || "2,9").split(",").map(Number);
   clips.push({ card, link, media, badge, video: null, broken: false, from: span[0] || 0, to: span[1] || 9 });

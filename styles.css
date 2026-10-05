@@ -4500,3 +4500,241 @@ html:not(.js) .route__skills li { opacity: 1; }
     padding: 0 1.2rem 1rem;
   }
 }
+
+/* ---------------------------------------------------------------
+   YouTube player in the gallery: a poster with a play button. The video
+   is only loaded from YouTube when the visitor presses play.
+   --------------------------------------------------------------- */
+.project__gallery .yt {
+  position: relative;
+  width: auto;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 18px;
+  background: #000;
+}
+
+.project__gallery .yt img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.project__gallery .yt .yt__link,
+.project__gallery .yt .yt__link:hover,
+.project__gallery .yt .yt__link:focus-visible {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 0;
+  background: linear-gradient(180deg, rgba(5, 3, 30, 0) 45%, rgba(5, 3, 30, 0.7) 100%);
+  box-shadow: none;
+  transform: none;
+}
+
+.yt__play {
+  display: grid;
+  place-items: center;
+  width: 4.2rem;
+  height: 4.2rem;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  background: rgba(10, 8, 40, 0.62);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 0 0 0 rgba(143, 92, 255, 0.5);
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+}
+
+.yt__play::before {
+  content: "";
+  margin-left: 0.28rem;
+  border-style: solid;
+  border-width: 0.75rem 0 0.75rem 1.2rem;
+  border-color: transparent transparent transparent #ffffff;
+}
+
+.yt__link:hover .yt__play,
+.yt__link:focus-visible .yt__play {
+  transform: scale(1.08);
+  background: rgba(143, 92, 255, 0.78);
+  box-shadow: 0 0 36px 4px rgba(143, 92, 255, 0.55);
+}
+
+.yt__label {
+  position: absolute;
+  left: 0.8rem;
+  bottom: 0.7rem;
+  right: 0.8rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #ffffff;
+  text-align: left;
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.7);
+}
+
+.project__gallery .yt.is-playing {
+  background: #000;
+}
+
+.project__gallery .yt iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* on phones the player takes the width of the screen, not a fixed height */
+@media (max-width: 700px) {
+  .project__gallery > .yt {
+    width: min(86vw, 520px);
+    height: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .yt__play {
+    transition: none;
+  }
+}
+
+/* ---------------------------------------------------------------
+   LANGUAGE SWITCH (EN / ES) — a small pill, apart from the lotus nav.
+   Desktop: bottom-right corner, below the stem. Phones: just under the
+   top bar. It also shows on the landing screen, where the nav is hidden.
+   Each page has an English and a Spanish version (…es.html); the pill
+   links to the other one.
+   --------------------------------------------------------------- */
+.lang-switch {
+  position: fixed;
+  right: 14px;
+  bottom: 16px;
+  z-index: 21;
+  display: flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(14, 10, 44, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: 0 10px 30px -14px rgba(0, 0, 0, 0.7);
+}
+
+.lang-switch__opt {
+  display: grid;
+  place-items: center;
+  min-width: 2.6rem;
+  min-height: 2.25rem;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-decoration: none;
+  color: rgba(214, 200, 255, 0.85);
+  transition: background 0.25s ease, color 0.25s ease;
+}
+
+a.lang-switch__opt:hover,
+a.lang-switch__opt:focus-visible {
+  color: #ffffff;
+  background: rgba(143, 92, 255, 0.4);
+}
+
+.lang-switch__opt[aria-current] {
+  color: #ffffff;
+  background: linear-gradient(135deg, #6a5cff, #b45cff);
+}
+
+@media (max-width: 900px) {
+  .lang-switch {
+    top: 74px;
+    right: 10px;
+    bottom: auto;
+  }
+
+  body.is-landing .lang-switch {
+    top: auto;
+    right: auto;
+    bottom: 16px;
+    left: 14px;
+  }
+
+  .lang-switch__opt {
+    min-width: 2.3rem;
+    min-height: 2.1rem;
+    padding: 0 0.55rem;
+  }
+}
+
+/* Spanish names are longer ("Experiencia", "Habilidades"): a touch smaller on the top bar. */
+@media (max-width: 900px) {
+  html[lang="es"] .lotus-nav__label,
+  html[lang="es"] .lotus-nav__leaf:hover .lotus-nav__label {
+    font-size: 0.52rem;
+    letter-spacing: 0;
+  }
+}
+
+/* Research seedbed cards on phones: the picture goes on top and the text
+   gets the full width and height it needs, instead of being squeezed beside
+   the picture and cut off (more important in Spanish, where words are longer). */
+@media (max-width: 700px) {
+  .rcard__link {
+    flex-direction: column;
+    min-height: 0;
+  }
+
+  .rcard .pcard__media {
+    flex: none;
+    aspect-ratio: 16 / 9;
+    width: 100%;
+  }
+
+  .rcard .pcard__media::after {
+    inset: auto 0 0 0;
+    width: auto;
+    height: 40%;
+    background: linear-gradient(180deg, transparent, rgba(10, 12, 30, 0.92));
+  }
+
+  .rcard .pcard__media::before {
+    inset: 0 0 auto 0;
+    width: auto;
+    height: 3px;
+    background: linear-gradient(90deg, var(--cat), transparent 85%);
+  }
+
+  .rcard .pcard__body {
+    padding: 0.8rem 0 0;
+  }
+
+  .rcard .pcard__body > * {
+    margin-inline: 1rem;
+  }
+
+  .rcard .pcard__title {
+    font-size: 1.12rem;
+    -webkit-line-clamp: unset;
+  }
+
+  .rcard .pcard__hook {
+    font-size: 0.92rem;
+    -webkit-line-clamp: unset;
+  }
+
+  .rcard .pcard__brief {
+    font-size: 0.8rem;
+    -webkit-line-clamp: unset;
+  }
+
+  .rcard .pcard__body > .pcard__skills {
+    margin: 0.8rem 0 0;
+    padding-bottom: 0.7rem;
+  }
+}

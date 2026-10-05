@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<!-- Versión en español de project-el-feeling.html. Mismos estilos, scripts e imágenes; cambia solo el texto. -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="en" href="project-el-feeling.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>El Feeling — Mónica Arcila</title>
+  <meta name="description" content="El diseño desde cero de un sitio de comercio electrónico para El Feeling, una marca de patinaje: arquitectura de información, manual de marca, UI kit y MVP." />
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+
+  <link rel="stylesheet" href="styles.css?v=20261005f" />
+</head>
+<body>
+
+  <a class="skip-link" href="#main">Saltar al contenido</a>
+
+  <header class="site-header">
+    <nav class="lotus-nav" aria-label="Ir a una sección" style="--cur: -1">
+      <a href="index.es.html" class="lotus-nav__home" aria-label="Volver a la página principal">
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <span class="lotus-nav__label">Volver a la página principal</span>
+      </a>
+      <div class="lotus-nav__leaves">
+        <span class="lotus-nav__pulse" aria-hidden="true"></span>
+        <a href="index.es.html#about" class="lotus-nav__leaf" data-section="about" style="--i:0"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Sobre mí</span></a>
+        <a href="index.es.html#case-studies" class="lotus-nav__leaf" data-section="case-studies" style="--i:1"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Proyectos</span></a>
+        <a href="index.es.html#experience" class="lotus-nav__leaf" data-section="experience" style="--i:2"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Experiencia</span></a>
+        <a href="index.es.html#skills" class="lotus-nav__leaf" data-section="skills" style="--i:3"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Habilidades</span></a>
+        <a href="index.es.html#contact" class="lotus-nav__leaf" data-section="contact" style="--i:4"><span class="lotus-nav__glyph" aria-hidden="true"><i></i><i></i><i></i></span><span class="lotus-nav__label">Contacto</span></a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="lang-switch" role="group" aria-label="Idioma">
+    <a class="lang-switch__opt" href="project-el-feeling.html" hreflang="en" lang="en" aria-label="View this page in English" title="English">EN</a>
+    <span class="lang-switch__opt" lang="es" aria-current="true">ES</span>
+  </div>
+
+  <main id="main">
+
+  <main id="main">
+    <article class="section container project">
+
+      <a class="project__back" href="index.es.html#work">← Volver a los proyectos</a>
+
+      <h1 class="project__title">El Feeling</h1>
+      <p class="project__meta">Prototipo de comercio electrónico, UI kit y manual de marca · Reto Medialab 3 (Interfaces), Universidad EAFIT</p>
+
+      <dl class="project__facts">
+        <div>
+          <dt>Mi rol</dt>
+          <dd>Equipo de 5. Hice la arquitectura de información y las necesidades del usuario, y diseñé la sección de Clases con su animación</dd>
+        </div>
+        <div>
+          <dt>Herramientas</dt>
+          <dd>Figma</dd>
+        </div>
+        <div>
+          <dt>Cliente (proyecto del curso)</dt>
+          <dd>El Feeling, las clases, el equipo personalizado y la mercancía de una profesora de patinaje</dd>
+        </div>
+      </dl>
+
+      <ul class="pitch" aria-label="Resumen del proyecto">
+        <li><span class="pitch__label">Contexto</span><p>Un proyecto de curso con una cliente real: una profesora de patinaje de Medellín cuyas clases, equipo personalizado y mercancía vivían solo en Instagram. Equipo de cinco.</p></li>
+        <li><span class="pitch__label">Reto</span><p>Organizar todo con claridad para que reservar una clase o comprar sea fácil, sin perder el tono de la marca.</p></li>
+        <li><span class="pitch__label">Solución</span><p>Un prototipo clicable de comercio electrónico en Figma, con una arquitectura de información, un manual de marca y un UI kit.</p></li>
+        <li><span class="pitch__label">Resultado</span><p>Cumplimos los objetivos del curso, como lo confirmó nuestro profesor, y ampliamos el aspecto de la marca sin perder su identidad. La cliente perdió el interés hacia el final y el proyecto terminó ahí.</p></li>
+        <li><span class="pitch__label">Aprendizaje</span><p>Decide cómo se organiza el contenido antes de diseñar cómo se ve.</p></li>
+      </ul>
+
+      <section class="project__section">
+        <h2 class="project__section-title">El problema</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Un gran contenido, sin un lugar donde vivir.</strong>
+            El Feeling lo dirige una profesora de patinaje de Medellín. Sus
+            clases, su equipo personalizado y su mercancía vivían solo en
+            Instagram, lo que dificultaba explorarlos, reservarlos o comprarlos.
+          </p>
+          <p>
+            Nuestro brief era diseñar un prototipo de comercio electrónico que
+            <mark>organice todo con claridad y haga fácil reservar una clase o
+            comprar algo</mark>, manteniendo el tono actual de la marca.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Mi rol</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">El lado estructural de un equipo de cinco.</strong>
+          </p>
+          <ul>
+            <li>Organicé y analicé la arquitectura de información.</li>
+            <li>Definí las necesidades del usuario y cómo se relacionan los servicios y los productos.</li>
+            <li>Ayudé a planear el cronograma.</li>
+            <li>Definí interacciones y componentes de tarjetas para el UI kit, como base para que las personas del equipo con más enfoque visual los refinaran.</li>
+            <li>Diseñé toda la sección de Clases, con su animación y una versión responsive.</li>
+            <li>Ayudé a armar el prototipo final.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Proceso</h2>
+        <ol class="process-steps">
+          <li>
+            <span class="step__date">Escuchar a la cliente y a la comunidad</span>
+            <p>
+              Reunimos los requerimientos de la cliente y encuestamos a la
+              comunidad de patinaje de Medellín. Una persona del equipo patina
+              en sus clases, lo que nos ayudó a llegar a la gente.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Saber para quién diseñamos</span>
+            <p>
+              La encuesta nos mostró al público. Lo convertimos en un
+              arquetipo de usuaria: una estudiante de 21 años que trabaja
+              medio tiempo, patina tres o cuatro veces por semana y aprende
+              trucos en Instagram y TikTok.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Referentes y estructura</span>
+            <p>
+              Miramos marcas como Cloudworldwide, WhyNot y Clap Burgers, y
+              luego construimos la arquitectura de información y un manual de
+              marca que amplía su identidad actual.
+            </p>
+          </li>
+          <li>
+            <span class="step__date">Construir el UI kit y las páginas</span>
+            <p>
+              Un kit que cubre el índice, la retícula, las escalas tipográficas
+              de escritorio y móvil, botones, tarjetas y navegación. Luego las
+              páginas individuales y, por último, las interacciones y
+              animaciones, con un plan que fue de febrero a mayo.
+            </p>
+          </li>
+        </ol>
+        <details class="more">
+          <summary>Lo que nos dijo la encuesta a la comunidad</summary>
+          <div class="more__body">
+            <ul>
+              <li>Sobre todo mujeres de 17 a 26 años, que estudian y trabajan, y se sienten cómodas pagando en línea.</li>
+              <li>Usan sobre todo el celular, así que el sitio tenía que ser totalmente responsive.</li>
+              <li>Instagram y TikTok son sus canales principales, así que esperan contenido visual, rápido y directo.</li>
+              <li>Un fuerte sentido de comunidad; para ellas patinar es liberación emocional y crecimiento personal.</li>
+            </ul>
+          </div>
+        </details>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Decisiones</h2>
+        <ul class="callouts">
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Estructura antes que estilo</h3>
+            <p>Definí primero la arquitectura y las reglas de tarjetas e interacción, para que las personas del equipo más visuales pudieran vectorizar y refinar sobre una base clara.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Reservar sin salir de la página</h3>
+            <p>La página de Clases usa un flujo de reserva en ventana emergente, para que alguien pueda pasar de descubrir una clase a reservarla en un solo lugar, en escritorio y en el celular.</p>
+          </li>
+          <li class="callout callout--decision">
+            <span class="callout__label">Decisión</span>
+            <h3>Una tienda que no es solo una tienda</h3>
+            <p>La comunidad valora la conexión y el bienestar, así que el sitio comparte esos valores y comprar no es su único objetivo.</p>
+          </li>
+        </ul>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Solución</h2>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Un prototipo clicable de comercio electrónico en Figma</strong>
+            construido sobre la arquitectura de información, el manual de marca
+            y el UI kit. Incluye una página de Clases para escritorio y móvil y
+            un flujo de reserva en ventana emergente.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Resultado y reflexión</h2>
+        <ul class="stats">
+          <li><strong>5</strong><span>personas en el equipo</span></li>
+          <li><strong>4</strong><span>meses de trabajo planeado, de febrero a mayo</span></li>
+          <li><strong>2</strong><span>diseños para Clases: escritorio y móvil</span></li>
+        </ul>
+        <div class="project__description">
+          <p>
+            <strong class="lede">Cumplimos los objetivos del proyecto, y nuestro profesor lo confirmó.</strong>
+            El prototipo cubre las necesidades de la cliente y amplía el aspecto
+            de la marca sin perder su identidad, y el sitio refleja los valores
+            de la comunidad de patinaje.
+          </p>
+          <p>
+            <mark>La cliente perdió el interés.</mark> Hacia el final ya no
+            estaba tan entusiasmada como al principio con usar el prototipo ni
+            con seguir trabajando con nosotros en un mejor sitio web para ella,
+            así que el proyecto terminó ahí.
+          </p>
+          <!-- BORRADOR de la reflexión (traducción del borrador en inglés, escrito por Claude con el tono de Mónica para que ella lo revise). -->
+          <p>
+            Siendo honesta, esta es la parte que cambiaría. Un sitio web solo
+            importa si la persona para la que es de verdad lo quiere, y creo que
+            no la mantuvimos lo suficientemente involucrada en el camino. La
+            próxima vez le mostraría piezas pequeñas más temprano y le
+            preguntaría qué usaría de verdad, para construirlo con ella y no
+            solo para ella.
+          </p>
+          <p>
+            Puedes probarlo tú misma o mismo:
+            <a href="https://www.figma.com/proto/JuYwkmS1HJzH8ftT6j29e4/El-Feeling--Copy-?node-id=1099-754&amp;t=qfMlpAw313vKibjy-1&amp;scaling=min-zoom&amp;content-scaling=fixed&amp;page-id=5%3A9&amp;starting-point-node-id=1173%3A1772&amp;show-proto-sidebar=1" target="_blank" rel="noopener">abre el prototipo clicable en Figma ↗</a>.
+            En la galería hay un vídeo de cómo se usa.
+          </p>
+        </div>
+      </section>
+
+      <section class="project__section">
+        <h2 class="project__section-title">Herramientas y software</h2>
+        <ul class="tag-list">
+          <li class="tag">Figma</li>
+          <li class="tag">Arquitectura de información</li>
+          <li class="tag">UI kit</li>
+          <li class="tag">Manual de marca</li>
+        </ul>
+      </section>
+
+      <div class="project__gallery">
+        <video controls preload="none" poster="assets/el-feeling/el-feeling-prototype-poster.jpg" aria-label="Grabación de pantalla del prototipo del sitio de El Feeling en uso: inicio, clases, productos y carrito.">
+          <source src="assets/el-feeling/el-feeling-prototype.mp4" type="video/mp4" />
+          Tu navegador no puede reproducir este vídeo.
+        </video>
+        <a data-stage="Inicio" href="assets/el-feeling/10-survey-summary.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/10-survey-summary.jpg" alt="Diapositiva que resume la encuesta a miembros de la comunidad de patinaje de Medellín." width="1610" height="1080" loading="lazy" /></a>
+        <a data-stage="Inicio" href="assets/el-feeling/11-user-archetype.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/11-user-archetype.jpg" alt="La tarjeta del arquetipo de usuaria: una estudiante de 21 años que trabaja medio tiempo en Medellín y patina tres o cuatro veces por semana, con sus metas, frustraciones, hábitos y uso de tecnología." width="1610" height="1080" loading="lazy" /></a>
+        <a data-stage="Inicio" href="assets/el-feeling/12-project-schedule.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/12-project-schedule.jpg" alt="Cronograma del proyecto de febrero a mayo, con tareas desde las preguntas de entrevista y el brief hasta el UI kit, las páginas individuales y las animaciones de interacción." width="1610" height="1080" loading="lazy" /></a>
+        <a data-stage="Inicio" href="assets/el-feeling/03-information-architecture.jpg" class="gallery__wide" data-lang="es" data-pair="ia" target="_blank" rel="noopener"><img src="assets/el-feeling/03-information-architecture.jpg" alt="Diagrama de la arquitectura de información del sitio de El Feeling, que muestra cómo se conectan las páginas, las clases, los productos y la reserva." width="2700" height="2700" loading="lazy" /></a>
+        <a data-stage="Inicio" href="assets/el-feeling/03-information-architecture-en.jpg" data-lang="en" data-pair="ia" target="_blank" rel="noopener"><img src="assets/el-feeling/03-information-architecture-en.jpg" alt="La misma arquitectura de información en inglés: Inicio, luego un menú con Productos, Clases, Carrito de compras, Barra de búsqueda y ¿Quiénes somos?, los flujos de personalización y de compra, y abajo las necesidades, los objetivos y la relación con el servicio." width="3000" height="3000" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/el-feeling/07-brand-manual.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/07-brand-manual.jpg" alt="Página del manual de marca de El Feeling con el logo retro, la paleta de color, la tipografía y los elementos de stickers." width="2100" height="3730" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/el-feeling/08-ui-kit-buttons.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/08-ui-kit-buttons.jpg" alt="Página del UI kit «Botones PC» con botones primarios, secundarios y de ícono en distintos estados." width="1439" height="1024" loading="lazy" /></a>
+        <a data-stage="Nudo" href="assets/el-feeling/09-ui-kit-cards.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/09-ui-kit-cards.jpg" alt="Página del UI kit «Cards» que muestra los componentes de tarjeta para escritorio y celular." width="2100" height="1667" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/el-feeling/02-prototype-hero.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/02-prototype-hero.jpg" alt="Pantalla de inicio del prototipo «Deslízate hacia la aventura» con patines sobre un fondo retro colorido." width="638" height="414" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/el-feeling/01-prototype-customise.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/01-prototype-customise.jpg" alt="Pantalla del prototipo que invita a personalizar los patines, con una foto de patines rosados." width="638" height="414" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/el-feeling/04-classes-desktop.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/04-classes-desktop.jpg" alt="Versión de escritorio de la página de Clases del prototipo de El Feeling, en coral, rosado y crema, con fotos de patinadoras." width="1440" height="2585" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/el-feeling/05-classes-mobile.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/05-classes-mobile.jpg" alt="Versión móvil de la página de Clases: una columna larga de tarjetas de clases." width="393" height="1832" loading="lazy" /></a>
+        <a data-stage="Desenlace" href="assets/el-feeling/06-booking-popup.jpg" target="_blank" rel="noopener"><img src="assets/el-feeling/06-booking-popup.jpg" alt="Ventana emergente de reserva del prototipo, «Proceso de reserva», con botones de Instagram y WhatsApp para asegurar un cupo." width="1558" height="1084" loading="lazy" /></a>
+      </div>
+
+    </article>
+  </main>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container site-footer__row">
+      <p>© <span id="year"></span> Mónica Arcila</p>
+      <a class="footer__contact" href="index.es.html#contact">Escríbeme <span aria-hidden="true">↗</span></a>
+    </div>
+  </footer>
+
+  <script src="script.js?v=20261005f"></script>
+  <script src="case-study.js?v=20261005f"></script>
+</body>
+</html>

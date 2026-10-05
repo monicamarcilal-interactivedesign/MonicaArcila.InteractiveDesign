@@ -18,12 +18,13 @@
 <html lang="en-NZ">
 <head>
   <meta charset="UTF-8" />
+  <link rel="alternate" hreflang="es" href="project-nuris-greenhouse.es.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Nuri's Greenhouse — Mónica Arcila</title>
   <meta name="description" content="A VR environment that tells an unseen character's story through spatial design, props and sound alone, built for Virtual Reality Studio at Victoria University of Wellington." />
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
 
-  <link rel="stylesheet" href="styles.css?v=20261005c" />
+  <link rel="stylesheet" href="styles.css?v=20261005f" />
 </head>
 <body>
 
@@ -56,6 +57,11 @@
       </div>
     </nav>
   </header>
+
+  <div class="lang-switch" role="group" aria-label="Language">
+    <span class="lang-switch__opt" lang="en" aria-current="true">EN</span>
+    <a class="lang-switch__opt" href="project-nuris-greenhouse.es.html" data-base="project-nuris-greenhouse.es.html" hreflang="es" lang="es" aria-label="Ver esta página en español" title="Español">ES</a>
+  </div>
 
   <main id="main">
     <article class="section container project">
@@ -275,10 +281,13 @@
         Web-sized exports live in assets/nuris-greenhouse/. Each image links to its full-size
         file; the alt text says what it shows. -->
       <div class="project__gallery">
-        <video controls preload="none" poster="assets/nuris-greenhouse/nuris-gameplay-excerpt-poster.jpg" aria-label="One-minute excerpt of the gameplay recording: following the golden thread through the greenhouse to the final constellation.">
-          <source src="assets/nuris-greenhouse/nuris-gameplay-excerpt.mp4" type="video/mp4" />
-          Your browser can't play this video.
-        </video>
+        <div class="yt" data-yt="h0gSxu93ROM" data-title="Nuri's Greenhouse: full gameplay recording">
+          <img src="assets/nuris-greenhouse/nuris-gameplay-excerpt-poster.jpg" alt="" width="1920" height="1080" loading="lazy" />
+          <a class="yt__link" href="https://youtu.be/h0gSxu93ROM" target="_blank" rel="noopener" aria-label="Play the full gameplay recording of Nuri's Greenhouse (2 minutes 58 seconds). Opens YouTube.">
+            <span class="yt__play" aria-hidden="true"></span>
+            <span class="yt__label">Full gameplay recording · 2:58</span>
+          </a>
+        </div>
         <a data-stage="Beginning" href="assets/nuris-greenhouse/01-lantern-and-journal.jpg" target="_blank" rel="noopener"><img src="assets/nuris-greenhouse/01-lantern-and-journal.jpg" alt="Dim greenhouse interior with an oil lantern beside an open journal and clay pots." width="1920" height="1080" loading="lazy" /></a>
         <a data-stage="Middle" href="assets/nuris-greenhouse/02-botanical-book.jpg" target="_blank" rel="noopener"><img src="assets/nuris-greenhouse/02-botanical-book.jpg" alt="An open botanical book on a table in the dark greenhouse." width="1920" height="1080" loading="lazy" /></a>
         <a data-stage="Middle" href="assets/nuris-greenhouse/03-golden-thread.jpg" target="_blank" rel="noopener"><img src="assets/nuris-greenhouse/03-golden-thread.jpg" alt="A golden thread of light glowing along the greenhouse floor, leading the player onward." width="1920" height="1080" loading="lazy" /></a>
@@ -296,7 +305,7 @@
     </div>
   </footer>
 
-  <script src="script.js?v=20261005c"></script>
-  <script src="case-study.js?v=20261005c"></script>
+  <script src="script.js?v=20261005f"></script>
+  <script src="case-study.js?v=20261005f"></script>
 </body>
 </html>
