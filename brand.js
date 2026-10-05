@@ -30,6 +30,9 @@
   }
   var saved = null;
   try { saved = localStorage.getItem("brandSkin"); } catch (e) { /* private mode */ }
+  var params = new URLSearchParams(window.location.search);
+  // ?skin=night or ?skin=daylight forces a skin (used for screenshots)
+  if (params.get("skin") === "night" || params.get("skin") === "daylight") saved = params.get("skin");
   setSkin(saved === "night" ? "night" : "daylight");
   if (skinBtn) {
     skinBtn.addEventListener("click", function () {
@@ -99,4 +102,14 @@
   chips.forEach(function (chip) {
     chip.addEventListener("click", function () { ask(chip); });
   });
+
+  // ?ask=ai,proud opens those answers straight away (used for screenshots)
+  var open = params.get("ask");
+  if (open) {
+    reduced = true;
+    open.split(",").forEach(function (id) {
+      var chip = document.querySelector('.b-chip[data-q="' + id + '"]');
+      if (chip) ask(chip);
+    });
+  }
 })();

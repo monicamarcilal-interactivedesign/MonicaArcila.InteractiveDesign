@@ -72,29 +72,31 @@
 
     /* ---- applications: all sized in cqw so they scale with their box ---- */
     .ig { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; max-width:560px; }
-    .ig .t { aspect-ratio:1/1; container-type:inline-size; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; padding:8cqw; }
+    .ig .t { aspect-ratio:1/1; container-type:inline-size; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; padding:8%; }
     .ig .t .sm { font-size:5cqw; font-weight:700; letter-spacing:.16em; text-transform:uppercase; opacity:.7; }
     .ig .t .big { font-size:11cqw; font-weight:800; line-height:1.08; letter-spacing:-.02em; }
     .ig .t .hand { font-family:var(--font-script); font-size:10cqw; line-height:1; color:var(--b-blue-text); }
     .ig .t img.mk { width:16cqw; height:auto; }
     .ig .t .spark { width:5cqw; height:5cqw; }
     .ig .t .num { font-size:26cqw; font-weight:800; line-height:.9; color:transparent; -webkit-text-stroke:.6cqw var(--b-blue); }
+    .ig .t { box-shadow: inset 0 0 0 1px var(--b-line); }
     .ig .t.pic { padding:0; }
     .ig .t.pic img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
     .ig .t.pic .lab { position:absolute; left:6cqw; bottom:6cqw; right:6cqw; padding:3cqw 4cqw; border-radius:3cqw; background:rgba(5,3,24,.72); color:#f4f1ff; font-size:5.2cqw; font-weight:700; }
-    .ig .t.pat { background-image:url("assets/personal-brand/logo.png"); background-size:30cqw auto; }
-    .ig .t.pat::after { content:""; position:absolute; inset:0; background:var(--b-bg); opacity:.82; }
+    .ig .t.pat { isolation:isolate; --pt-img:url(assets/personal-brand/pattern-b.webp); --pt-size:70% auto; }
+    .ig .t.pat::before { content:""; position:absolute; inset:0; z-index:0; background:var(--pt-img) 0 0/var(--pt-size) repeat; mix-blend-mode:multiply; opacity:.85; }
     .ig .t.pat > * { position:relative; z-index:1; }
 
-    .li { aspect-ratio:4/1; container-type:inline-size; display:flex; align-items:center; gap:3cqw; padding:0 5cqw; border-radius:10px; position:relative; overflow:hidden; border:1px solid var(--b-line); }
+    .li { aspect-ratio:4/1; container-type:inline-size; display:flex; align-items:center; gap:3%; padding:0 5%; border-radius:10px; position:relative; overflow:hidden; border:1px solid var(--b-line); }
     .li img.mk { height:68%; width:auto; }
     .li .nm { font-size:4.4cqw; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
     .li .tg { font-size:2.1cqw; color:var(--b-muted); margin-top:.6cqw; }
     .li .hw { font-family:var(--font-script); font-size:3cqw; color:var(--b-blue-text); }
-    .li .ln { position:absolute; right:0; top:0; bottom:0; width:26%; background-image:url("assets/personal-brand/logo.png"); background-size:9cqw auto; opacity:.1; }
+    .li .ln { position:absolute; right:0; top:0; bottom:0; width:30%; background:url(assets/personal-brand/pattern-a.webp) right center/auto 170%; mix-blend-mode:multiply; opacity:.85; }
+    .sk-night.li .ln { filter:invert(1) hue-rotate(180deg); mix-blend-mode:screen; opacity:.4; }
     .li .ln + .spark { position:absolute; right:6cqw; top:50%; width:1.6cqw; height:1.6cqw; }
 
-    .card { aspect-ratio:7/4; container-type:inline-size; border-radius:6px; padding:6cqw; display:flex; flex-direction:column; justify-content:space-between; border:1px solid var(--b-line); box-shadow:0 18px 30px -22px rgba(0,0,0,.6); }
+    .card { aspect-ratio:7/4; container-type:inline-size; border-radius:6px; padding:6%; display:flex; flex-direction:column; justify-content:space-between; border:1px solid var(--b-line); box-shadow:0 18px 30px -22px rgba(0,0,0,.6); }
     .card .nm { font-size:7.4cqw; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
     .card .rl { font-size:3.2cqw; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--b-muted); }
     .card .sm { font-size:3.4cqw; color:var(--b-muted); }
@@ -115,6 +117,29 @@
     .nm-card b { font-size:1.25rem; font-weight:800; letter-spacing:-.02em; display:block; margin:.1rem 0 .3rem; }
     .nm-card p { margin:0 0 .4rem; font-size:.9rem; color:var(--b-muted); }
     .rec { color:var(--b-blue-text); font-weight:700; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; }
+    /* ---- patterns (her two pattern files, used as quiet backgrounds) ---- */
+    .pt { position:relative; overflow:hidden; isolation:isolate; background:var(--b-bg); }
+    .pt::before { content:""; position:absolute; inset:0; z-index:0; background:var(--pt-img) 0 0/var(--pt-size,300px auto) repeat; }
+    .pt.sk-day::before { mix-blend-mode:multiply; opacity:.9; }
+    .pt.sk-night::before { filter:invert(1) hue-rotate(180deg); mix-blend-mode:screen; opacity:.5; }
+    .pt > * { position:relative; z-index:1; }
+    .pt-box { height:190px; border-radius:12px; border:1px solid var(--b-line); }
+
+    /* ---- checklist ---- */
+    .ck { display:grid; gap:.6rem; margin-top:1rem; }
+    .ck-i { display:grid; grid-template-columns:auto 1fr; gap:.8rem; align-items:start; padding:.9rem 1rem; border:1px solid var(--b-line); border-radius:14px; background:var(--b-card); cursor:pointer; }
+    .ck-i input { width:1.25rem; height:1.25rem; margin-top:.25rem; accent-color:var(--b-blue); }
+    .ck-i b { font-size:1rem; }
+    .ck-i .st { display:inline-block; margin-left:.4rem; padding:.12rem .45rem; border-radius:999px; font-size:.64rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-style:normal; vertical-align:middle; }
+    .st-done { background:#c9f1d3; color:#0b4a1e; }
+    .st-part { background:#ffe3a8; color:#5c3600; }
+    .st-todo { background:#e3e1f2; color:#2a2660; }
+    .ck-i p { margin:.3rem 0 0; font-size:.9rem; color:var(--b-muted); }
+    .ck-i p strong { color:var(--b-ink); }
+    .ck-i input:checked ~ span b { text-decoration:line-through; opacity:.6; }
+    .src { font-size:.86rem; color:var(--b-muted); }
+    .src li { margin:.3rem 0; }
+
   </style>
 </head>
 <body class="brand-page" data-skin="daylight">
@@ -135,22 +160,22 @@
     </section>
 
     <!-- 1 LOCKUPS -->
-    <section class="bb-sec"><div class="bb-wrap">
+    <section class="bb-sec" id="s1"><div class="bb-wrap">
       <h2>1. Lockups</h2>
-      <p class="lead">How the logo, the name and the role sit together. Stacked is the main one; the row is for headers; the mark alone is for avatars and favicons.</p>
+      <p class="lead">How the logo, the name and your motto sit together. Stacked is the main one; the row is for headers; the mark alone is for avatars and favicons.</p>
       <div class="bb-grid g3">
-        <div class="sk-day lock lock--stack"><img src="assets/personal-brand/logo.png" alt="" width="110" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="rl">Interactive designer</span><span class="hw" style="font-size:1.3rem">designing to be felt and valued</span></div>
-        <div class="sk-day lock lock--row"><img src="assets/personal-brand/logo.png" alt="" width="64" /><div><span class="nm" style="font-size:1.4rem;display:block">Mónica Arcila</span><span class="rl">Interactive designer</span></div></div>
+        <div class="sk-day lock lock--stack"><img src="assets/personal-brand/logo.png" alt="" width="110" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="hw" style="font-size:1.3rem">designing to be felt and valued</span></div>
+        <div class="sk-day lock lock--row"><img src="assets/personal-brand/logo.png" alt="" width="64" /><div><span class="nm" style="font-size:1.4rem;display:block">Mónica Arcila</span></div></div>
         <div class="sk-day lock"><img src="assets/personal-brand/logo.png" alt="" width="96" /></div>
-        <div class="sk-night lock lock--stack"><img src="assets/personal-brand/logo.png" alt="" width="110" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="rl">Interactive designer</span><span class="hw" style="font-size:1.3rem">designing to be felt and valued</span></div>
-        <div class="sk-night lock lock--row"><img src="assets/personal-brand/logo.png" alt="" width="64" /><div><span class="nm" style="font-size:1.4rem;display:block">Mónica Arcila</span><span class="rl">Interactive designer</span></div></div>
+        <div class="sk-night lock lock--stack"><img src="assets/personal-brand/logo.png" alt="" width="110" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="hw" style="font-size:1.3rem">designing to be felt and valued</span></div>
+        <div class="sk-night lock lock--row"><img src="assets/personal-brand/logo.png" alt="" width="64" /><div><span class="nm" style="font-size:1.4rem;display:block">Mónica Arcila</span></div></div>
         <div class="sk-night lock"><img src="assets/personal-brand/logo.png" alt="" width="96" /></div>
       </div>
       <p class="cap">The motto is yours (<q>Designing to be felt and valued, not just seen</q>); the short form is used under the lockup. Keep clear space around the mark equal to the height of its glowing dot.</p>
     </div></section>
 
     <!-- 2 DEVICES -->
-    <section class="bb-sec"><div class="bb-wrap">
+    <section class="bb-sec" id="s2"><div class="bb-wrap">
       <h2>2. Four devices that make it recognisable</h2>
       <p class="lead">A brand is mostly a few things repeated. These four come straight from your logo and your portfolio, so the brand feels like yours and not like a template.</p>
       <div class="bb-grid g4">
@@ -158,14 +183,55 @@
           <svg viewBox="0 0 260 60" aria-hidden="true"><path d="M4 40 C 40 4, 70 4, 100 30 S 160 58, 200 28 S 236 20, 250 34" fill="none" stroke="#2048d8" stroke-width="3" stroke-linecap="round"/><circle cx="250" cy="34" r="6" fill="#22d3ee"/><circle cx="250" cy="34" r="11" fill="#22d3ee" opacity=".25"/></svg></div>
         <div class="sk-day panel dev"><div><h3>The spark</h3><p>The glowing dot. One per layout, always cyan, never on text. It marks <q>someone is here</q>: typing, live, new.</p></div>
           <div style="display:flex;gap:1rem;align-items:center"><span class="spark"></span><span style="font-size:.8rem;color:var(--b-muted)">1 per composition</span></div></div>
-        <div class="sk-day panel dev"><div><h3>The loops</h3><p>The logo repeated small and very faint, as texture behind quotes, covers and the back of a card.</p></div><div class="loops"></div></div>
+        <div class="sk-day panel dev"><div><h3>The loops</h3><p>Your two mirrored patterns, very faint, as texture behind quotes, covers and the back of a card (section 4).</p></div><div class="pt sk-day pt-box" style="--pt-img:url(assets/personal-brand/pattern-a.webp);--pt-size:300px auto;height:120px"></div></div>
         <div class="sk-day panel dev"><div><h3>The hand</h3><p>Your handwriting font for one short line per layout: the voice. Everything else is Sora.</p></div><div class="spec"><span class="sc">hello, I'm Mónica</span></div></div>
       </div>
     </div></section>
 
+    <!-- 3 READING THE MARK -->
+    <section class="bb-sec" id="s3"><div class="bb-wrap">
+      <h2>3. Does the mark say M A?</h2>
+      <p class="lead">Honest answer: partly. Your mark is an abstract symbol with the letters hidden inside it, which works well as long as it always sits next to your name.</p>
+      <div class="bb-grid g2">
+        <div class="sk-day panel">
+          <h3>What people will see</h3>
+          <p>The <b>M</b> is easy: two arches with a peak between them. The <b>A</b> is the harder letter: its point is the central peak, but its legs run into the loops. So most people will see a lotus, a bird or a knot first, and find the letters when you point them out.</p>
+          <p style="margin-top:.6rem">That is not a flaw. It makes the mark a small secret you can tell: <q>two letters, one line, one light.</q></p>
+        </div>
+        <div class="sk-day panel">
+          <h3>If you want M A at first glance</h3>
+          <ul style="margin:.4rem 0 0;padding-left:1.1rem;color:var(--b-muted);font-size:.92rem">
+            <li style="margin:.3rem 0"><b>Keep it and tell the secret (0 h).</b> Show your M and A trace next to the mark in the brand story. My recommendation for now.</li>
+            <li style="margin:.3rem 0"><b>Add a letter shortcut (about 1 h).</b> A small <b>MA</b> set in Sora for avatars and favicons, with the full mark on larger versions.</li>
+            <li style="margin:.3rem 0"><b>Redraw it (2 to 3 h, after submission).</b> Rebuild the line with the pen tool so the A's crossbar is explicit, and keep the dot.</li>
+          </ul>
+        </div>
+      </div>
+      <h3 style="margin:1.6rem 0 .6rem">The three versions you made</h3>
+      <div class="bb-grid g2" style="align-items:center">
+        <div class="sk-day lock" style="min-height:0"><img src="assets/personal-brand/logo-versions.png" alt="Three versions of the mark: a line version, a solid version and a two-tone version with a darker central stroke." width="260" style="mix-blend-mode:multiply" /></div>
+        <div>
+          <p style="color:var(--b-muted)">I would use the <b>solid version</b> (top right) for anything under about 64 px (avatar, favicon): it keeps the two arches readable when small. The <b>line version</b> is for large uses, like the lockups above. The <b>two-tone version</b>, with its darker central stroke, makes the A's leg stand out, so it is the best one for explaining the letters.</p>
+          <p class="cap">This is my reading of your three files, not a rule. Test them at 32 px before choosing.</p>
+        </div>
+      </div>
+    </div></section>
+
+    <!-- 4 PATTERNS -->
+    <section class="bb-sec" id="s4"><div class="bb-wrap">
+      <h2>4. Patterns</h2>
+      <p class="lead">Your two patterns, as part of the system. Both mirror the mark so the dots meet or part. Keep them quiet: backgrounds for covers, quote tiles and the back of a card, never behind a paragraph.</p>
+      <div class="bb-grid g2">
+        <div class="sk-day panel"><div class="pt sk-day pt-box" style="--pt-img:url(assets/personal-brand/pattern-a.webp);--pt-size:360px auto"></div><h3 style="margin-top:.8rem">Pattern A: the meeting</h3><p>Two marks mirrored top and bottom, their dots meeting in the middle. Calm and symmetrical: the default.</p></div>
+        <div class="sk-day panel"><div class="pt sk-day pt-box" style="--pt-img:url(assets/personal-brand/pattern-b.webp);--pt-size:360px auto"></div><h3 style="margin-top:.8rem">Pattern B: the opening</h3><p>The mirror turned the other way, with the dots at the outer ends. More energetic: covers and bigger moments.</p></div>
+        <div class="sk-night panel"><div class="pt sk-night pt-box" style="--pt-img:url(assets/personal-brand/pattern-a.webp);--pt-size:360px auto"></div><h3 style="margin-top:.8rem">Pattern A on Night</h3><p>Inverted and very faint, so it adds texture without competing with text.</p></div>
+        <div class="sk-night panel"><div class="pt sk-night pt-box" style="--pt-img:url(assets/personal-brand/pattern-b.webp);--pt-size:360px auto"></div><h3 style="margin-top:.8rem">Pattern B on Night</h3><p>Same idea, for the portfolio's side of the brand.</p></div>
+      </div>
+    </div></section>
+
     <!-- 3 COLOUR -->
-    <section class="bb-sec"><div class="bb-wrap">
-      <h2>3. Colour</h2>
+    <section class="bb-sec" id="s5"><div class="bb-wrap">
+      <h2>5. Colour</h2>
       <p class="lead">Your logo blue is the signature. Daylight and Night use the same roles; only the base flips. Proportion: mostly the base, then ink, then blue, with the spark as a rare accent.</p>
       <div class="sw">
         <div><i style="background:#f5efe6"></i><b>Paper</b><span>#F5EFE6 · base in Daylight</span></div>
@@ -195,8 +261,8 @@
     </div></section>
 
     <!-- 4 TYPE + VOICE -->
-    <section class="bb-sec"><div class="bb-wrap">
-      <h2>4. Type and voice</h2>
+    <section class="bb-sec" id="s6"><div class="bb-wrap">
+      <h2>6. Type and voice</h2>
       <p class="lead">Two fonts you already own on the site, used with a rule: Sora does the work, the handwriting says one short thing.</p>
       <div class="bb-grid g2">
         <div class="sk-day panel spec"><span class="rec">Sora ExtraBold, 800</span><h4>Say it plainly.</h4><p style="margin-top:.8rem">Sora Regular for every paragraph: clear, even, easy to read at length. Spaced capitals for small labels.</p><span class="sc" style="display:block;margin-top:.6rem">Over the Rainbow: one short line, never a paragraph</span></div>
@@ -208,11 +274,11 @@
     </div></section>
 
     <!-- 5 NAMES -->
-    <section class="bb-sec"><div class="bb-wrap">
-      <h2>5. If it were a studio: naming ideas</h2>
+    <section class="bb-sec" id="s7"><div class="bb-wrap">
+      <h2>7. If it were a studio: naming ideas</h2>
       <p class="lead">You asked how it could look as an enterprise, a service or a product. A name is the first decision. These are ideas to react to, not decisions.</p>
       <div class="bb-grid g3 sk-day" style="padding:0">
-        <div class="nm-card"><span class="rec">Recommended for now</span><b>Mónica Arcila · Interactive Design</b><p>Your name is the brand, which fits a personal brand and a freelance service. Nothing to explain.</p></div>
+        <div class="nm-card"><span class="rec">Your choice</span><b>Mónica Arcila</b><p>Your name is the brand, which fits a personal brand and a freelance service. Nothing to explain, and the motto carries the meaning.</p></div>
         <div class="nm-card"><b>Line &amp; Spark</b><p>Taken from the logo. Reads like a small studio. The tagline would carry <q>interactive design by Mónica Arcila</q>.</p></div>
         <div class="nm-card"><b>Felt &amp; Valued</b><p>Taken from your motto. Warm and memorable; says what the work is for, not what it is.</p></div>
       </div>
@@ -220,8 +286,8 @@
     </div></section>
 
     <!-- 6 APPLICATIONS -->
-    <section class="bb-sec"><div class="bb-wrap">
-      <h2>6. Where it lives</h2>
+    <section class="bb-sec" id="s8"><div class="bb-wrap">
+      <h2>8. Where it lives</h2>
       <p class="lead">The brand in use. Your outline mentioned a dedicated Instagram account as a start; this is what its first six posts could look like, plus a banner, a card and a signature.</p>
 
       <h3 style="margin:1.4rem 0 .6rem">Instagram grid</h3>
@@ -229,7 +295,7 @@
         <div class="t sk-day"><span class="sm">Ask Mónica</span><span class="big">How are you adapting to AI as an interactive designer?</span><span style="display:flex;align-items:center;justify-content:space-between"><span class="hand">swipe for my answer</span><span class="spark"></span></span></div>
         <div class="t sk-night"><span class="sm">Service 01</span><span><span class="num">01</span><span class="big" style="display:block;margin-top:2cqw">UX/UI and prototyping</span></span><span class="sm" style="opacity:.55">See your idea in action</span></div>
         <div class="t pic sk-night"><img src="assets/cards/nature-wine.jpg" alt="" /><span class="lab">Nature's Embodiment of Wine</span></div>
-        <div class="t pat sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" style="width:34cqw;margin:auto" /></div>
+        <div class="t pat sk-day"><span class="sm">Mónica Arcila</span><span class="hand" style="font-size:13cqw;line-height:1.05">designing to be felt and valued</span><span class="spark"></span></div>
         <div class="t sk-day"><span class="sm">What you can expect</span><span class="big">Rigour and honesty.</span><span class="hand">say what the data can and cannot show</span></div>
         <div class="t sk-night"><span class="sm">Let's talk</span><span class="big">Tell me what you are making and where it is stuck.</span><span style="display:flex;align-items:center;gap:3cqw"><span class="spark"></span><span class="sm">link in bio</span></span></div>
       </div>
@@ -237,31 +303,86 @@
 
       <h3 style="margin:2rem 0 .6rem">LinkedIn banner (4 : 1)</h3>
       <div class="bb-grid">
-        <div class="li sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">UX/UI, prototypes and a plan to get there</div><div class="tg">INTERACTIVE DESIGNER</div></div><div class="ln"></div><span class="spark"></span></div>
-        <div class="li sk-night"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">UX/UI, prototypes and a plan to get there</div><div class="tg">INTERACTIVE DESIGNER</div></div><div class="ln"></div><span class="spark"></span></div>
+        <div class="li sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">designing to be felt and valued</div></div><div class="ln"></div><span class="spark"></span></div>
+        <div class="li sk-night"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">designing to be felt and valued</div></div><div class="ln"></div><span class="spark"></span></div>
       </div>
 
       <h3 style="margin:2rem 0 .6rem">Business card, front and back (3.5 × 2 in)</h3>
       <div class="bb-grid g2" style="max-width:640px">
-        <div class="card sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="rl">Interactive designer</div></div></div>
+        <div class="card sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hand" style="font-size:6cqw">designing to be felt and valued</div></div></div>
         <div class="card sk-night"><span class="hand">designing to be felt and valued</span><div style="display:flex;align-items:center;justify-content:space-between"><span class="sm">[website]</span><span class="spark"></span></div></div>
       </div>
 
       <h3 style="margin:2rem 0 .6rem">Email signature</h3>
-      <div class="sig"><img src="assets/personal-brand/logo.png" alt="" /><div><b>Mónica Arcila</b><span class="hw">UX/UI, prototypes and a plan to get there</span><br /><small>Interactive designer · [website]</small></div></div>
+      <div class="sig"><img src="assets/personal-brand/logo.png" alt="" /><div><b>Mónica Arcila</b><span class="hw">designing to be felt and valued</span><br /><small>[website]</small></div></div>
     </div></section>
 
     <!-- 7 RELATION TO THE PORTFOLIO -->
-    <section class="bb-sec"><div class="bb-wrap">
-      <h2>7. How it relates to the portfolio</h2>
+    <section class="bb-sec" id="s9"><div class="bb-wrap">
+      <h2>9. How it relates to the portfolio</h2>
       <div class="bb-grid g2">
         <div class="sk-night panel"><h3>The portfolio is the stage</h3><p>Dark, lit, full of movement. It shows the work. Neon, glass and orbs belong here.</p></div>
         <div class="sk-day panel"><h3>The brand is the person</h3><p>Daylight by default, calm, made for reading and for printing. It shows how I think. It shares the logo, Sora, the handwriting, the blue and the spark with the stage, so the two are clearly the same person.</p></div>
       </div>
       <p class="lead" style="margin-top:1.2rem">You do not have to choose one skin: Daylight is the brand's home, Night is the same brand on the portfolio's stage. Use Night for screens next to the portfolio and Daylight for anything that is read or printed.</p>
     </div></section>
+    <!-- 10 CHECKLIST -->
+    <section class="bb-sec" id="checklist"><div class="bb-wrap">
+      <h2>10. Personal brand checklist</h2>
+      <p class="lead">What a personal brand is made of, where you are today, and one next step for each. Tick the boxes as you go; ticks are saved in this browser only. Today's status is based on what exists on your site, in your outline and on this board.</p>
+      <div class="ck" id="ck">
+        <label class="ck-i"><input type="checkbox" data-k="positioning" /><span><b>Positioning statement</b><i class="st st-todo">To do</i><p><strong>Today:</strong> your two services are drafted; there is no one-sentence statement yet.</p><p><strong>Next:</strong> write one sentence: <q>I help [who] do [what] so that [result]</q>. Test it on someone for ten seconds.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="audience" /><span><b>Audience</b><i class="st st-todo">To do</i><p><strong>Today:</strong> not written down.</p><p><strong>Next:</strong> choose one or two audiences (for example hiring teams for junior UX/UI roles, and small teams that need a prototype) and list what each needs to see in 30 seconds.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="values" /><span><b>Purpose and values</b><i class="st st-part">Partly</i><p><strong>Today:</strong> six strengths in your outline and your motto, <q>Designing to be felt and valued, not just seen</q>.</p><p><strong>Next:</strong> pick three values and write what each looks like in your work (a behaviour, not just a word).</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="offer" /><span><b>Value proposition and services</b><i class="st st-part">Partly</i><p><strong>Today:</strong> two services drafted: UX/UI and prototyping; coordination and planning of interactive projects.</p><p><strong>Next:</strong> for each, write who it is for, what they receive, how long it takes and how it is agreed.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="visual" /><span><b>Visual identity</b><i class="st st-part">Partly</i><p><strong>Today:</strong> logo in three versions, colours, fonts, two skins and two patterns, all on this board.</p><p><strong>Next:</strong> decide how the mark reads (section 3), export the logo as SVG and as PNG at 32, 64 and 512 px, and make a one-page brand sheet.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="voice" /><span><b>Voice and tone</b><i class="st st-part">Partly</i><p><strong>Today:</strong> analytical, narrative and conversational, from your outline.</p><p><strong>Next:</strong> write five sample sentences in your voice and a short list of what you do and do not say.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="platforms" /><span><b>Platforms</b><i class="st st-part">Partly</i><p><strong>Today:</strong> the portfolio site is live; a dedicated Instagram account is a goal in your outline.</p><p><strong>Next:</strong> pick two platforms where your audience already is (LinkedIn first) and align avatar, banner and bio. The article you found makes the same point: go where the audience is, and send them to your site from there.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="work" /><span><b>Proof: selected work</b><i class="st st-part">Partly</i><p><strong>Today:</strong> 15 case studies, 5 of them featured. Hiring guides suggest 3 to 5 strong case studies, with quality over quantity.</p><p><strong>Next:</strong> choose your three strongest and make sure the first screen of each shows the problem, your role and the outcome.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="testimonials" /><span><b>Proof: testimonials and recognition</b><i class="st st-todo">To do</i><p><strong>Today:</strong> none on the site yet (the Meldiria award is mentioned on its page).</p><p><strong>Next:</strong> ask two or three people (teammates, a teacher, a supervisor) for one honest sentence, with permission to quote them.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="story" /><span><b>Story</b><i class="st st-part">Partly</i><p><strong>Today:</strong> each project is told as a beginning, a middle and an end, and the About section exists.</p><p><strong>Next:</strong> write your own story in the first person: where you started, what you keep relearning, what you are building now.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="consistency" /><span><b>Consistency across places</b><i class="st st-todo">To do</i><p><strong>Today:</strong> applications are drafted in section 8 of this board.</p><p><strong>Next:</strong> apply the same name, mark, colours and tagline to LinkedIn, your CV and your email signature.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="promotion" /><span><b>Promotion and network</b><i class="st st-todo">To do</i><p><strong>Today:</strong> not started.</p><p><strong>Next:</strong> a simple four-week rhythm: one post a week and one message a week to someone whose work you admire. Join one community where your audience is.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="review" /><span><b>Review and update</b><i class="st st-todo">To do</i><p><strong>Today:</strong> not started.</p><p><strong>Next:</strong> add each new project to the site when it ends. Once a month, ask three people what they remember about you after 30 seconds.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="honesty" /><span><b>Honesty and authenticity</b><i class="st st-done">Strength</i><p><strong>Today:</strong> you credit teams with <q>we</q>, declare AI use, and avoid claims you cannot back with a project.</p><p><strong>Next:</strong> keep doing it, and say it out loud as one of your values.</p></span></label>
+      </div>
+
+      <h3 style="margin:2rem 0 .6rem">Where this comes from</h3>
+      <ul class="src">
+        <li>The article you found: LinkedIn community article <q>How can you showcase your portfolio online?</q> (six steps: platform, consistent brand, best work, story, social proof, promotion). It says it was written with AI help, so treat its advice as a starting point.</li>
+        <li><a href="https://www.adobe.com/express/learn/blog/ultimate-guide-to-personal-brand">Adobe Express: Personal Branding Guide</a> (positioning, audience, consistency across channels).</li>
+        <li><a href="https://www.ramotion.com/blog/personal-branding/">Ramotion: Personal Branding, definition, elements and examples</a> (purpose and values, voice, visual identity, proof).</li>
+        <li><a href="https://madegooddesigns.com/personal-branding-designers/">Made Good Designs: Personal Branding for Designers</a> (a considered mark, consistency of visuals).</li>
+        <li><a href="https://www.uxdesigninstitute.com/blog/hiring-managers-ux-portfolio/">UX Design Institute: what hiring managers look for in a UX portfolio</a> (fewer, deeper case studies; process and outcomes).</li>
+        <li><a href="https://blog.uxfol.io/ux-designer-portfolio/">Uxfolio: UX designer portfolio, what hiring managers look for</a>.</li>
+      </ul>
+      <p class="cap">Researched on 5 October 2026 with Claude Code (web search); the summaries are mine, written for your situation.</p>
+    </div></section>
+
   </main>
 
   <footer class="b-foot"><div class="b-wrap"><a href="ask-monica.html">Back to Ask Mónica</a></div></footer>
+  <script>
+    /* ?only=s4 shows just one section (used for screenshots) */
+    (function () {
+      var only = new URLSearchParams(window.location.search).get("only");
+      if (!only) return;
+      document.querySelectorAll(".b-hero, .bb-sec").forEach(function (s) { if (s.id !== only) s.style.display = "none"; });
+    })();
+    /* the checklist remembers its ticks in this browser (localStorage, wrapped in try/catch) */
+    (function () {
+      var boxes = document.querySelectorAll("#ck input[type=checkbox]");
+      var saved = {};
+      try { saved = JSON.parse(localStorage.getItem("brandChecklist") || "{}"); } catch (e) { saved = {}; }
+      boxes.forEach(function (b) {
+        b.checked = !!saved[b.dataset.k];
+        b.addEventListener("change", function () {
+          saved[b.dataset.k] = b.checked;
+          try { localStorage.setItem("brandChecklist", JSON.stringify(saved)); } catch (e) { /* ignore */ }
+        });
+      });
+    })();
+  </script>
+
 </body>
 </html>
