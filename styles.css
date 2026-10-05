@@ -5096,3 +5096,18 @@ body.is-landing .lang-switch {
 @media (prefers-reduced-motion: reduce) {
   .skwheel__panel.is-in { animation: none; }
 }
+
+/* Very small phones (320-380 px): the handwritten label above the stickers wraps
+   instead of running past the screen edge. */
+@media (max-width: 380px) {
+  .stickers__label {
+    white-space: normal;
+    padding-inline: 0.6rem;
+    font-size: 0.92rem;
+    line-height: 1.1;
+  }
+
+  .stickers__scroll {
+    inset: 2.5rem 0 0;
+  }
+}
