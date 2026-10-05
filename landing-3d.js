@@ -451,6 +451,24 @@ async function settle() {
   });
 }
 
+// Jump straight to the finished pose (big near-top flower, sunk a little)
+// with no ride: used when someone comes back to the lotus from another
+// section or page, so they land on the finished screen, not the idle one.
+async function jumpToSettled() {
+  try {
+    await ready;
+  } catch {
+    return;
+  }
+  stopIdleLoop();
+  poseStartAz = idleAngle;
+  poseT = 1;
+  applyPose(1);
+  coreShiftFrac = CORE_SHIFT;
+  applyCoreShift();
+  render();
+}
+
 async function reset() {
   // Fire-and-forget from script.js's point of view (its own type says
   // `() => void`) — swallow a failed load here instead of leaving an
@@ -554,7 +572,7 @@ function init() {
 
 init();
 
-window.lotusScene = { ready, activate, settle, reset, refresh, coreOffsetY };
+window.lotusScene = { ready, activate, settle, reset, refresh, coreOffsetY, jumpToSettled };
 // `ready` above is captured before the async chain settles is fine —
 // callers await window.lotusScene.ready directly; re-assign so it's
 // always the live promise rather than whatever it was at this exact line.

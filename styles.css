@@ -4651,6 +4651,11 @@ a.lang-switch__opt:focus-visible {
   background: linear-gradient(135deg, #6a5cff, #b45cff);
 }
 
+body.is-landing .lang-switch {
+  right: auto;
+  left: 14px;
+}
+
 @media (max-width: 900px) {
   .lang-switch {
     top: 74px;

@@ -9,6 +9,74 @@
 const PAGE_IS_ES = (document.documentElement.lang || "").toLowerCase().indexOf("es") === 0;
 
 /* -------------------------------------------------------------
+   LANGUAGE AND POSITION
+   - The language you pick (EN / ES) is remembered, so every page you open
+     afterwards comes in that language until you switch back.
+   - Switching language reloads the page in the other language and puts you
+     back where you were: the same page, the same section on the home page
+     (or the lotus, if you were on the finished lotus screen) and the same
+     place on the page.
+   - A reload of the page always starts the experience again (the idle lotus).
+   ------------------------------------------------------------- */
+const siteNavType = performance.getEntriesByType?.("navigation")?.[0]?.type;
+const siteHandoff = (() => {
+  let data = null;
+  try {
+    const raw = sessionStorage.getItem("siteHandoff");
+    sessionStorage.removeItem("siteHandoff");
+    data = raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    data = null;
+  }
+  // Only a language switch that just happened, never a reload.
+  if (!data || siteNavType === "reload" || Date.now() - data.t > 20000) return null;
+  return data;
+})();
+
+(() => {
+  let wanted = null;
+  try {
+    wanted = localStorage.getItem("siteLang");
+  } catch (error) {
+    wanted = null;
+  }
+  const here = PAGE_IS_ES ? "es" : "en";
+  if (wanted && wanted !== here) {
+    const other = document.querySelector('.lang-switch a[hreflang="' + wanted + '"]');
+    if (other && other.dataset.base) {
+      window.location.replace(other.dataset.base + window.location.hash);
+      return;
+    }
+  }
+  document.addEventListener("click", (event) => {
+    const link = event.target.closest && event.target.closest(".lang-switch a[hreflang]");
+    if (!link) return;
+    const state = window.siteState ? window.siteState() : {};
+    const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+    try {
+      localStorage.setItem("siteLang", link.getAttribute("hreflang"));
+      sessionStorage.setItem(
+        "siteHandoff",
+        JSON.stringify({ t: Date.now(), frac: Math.min(1, window.scrollY / max), landing: state.landing || null, section: state.section || null })
+      );
+    } catch (error) {
+      /* the switch still works, it just can't remember where you were */
+    }
+  });
+  // Put the reader back at the same height on the page they switched from.
+  if (siteHandoff && siteHandoff.frac > 0) {
+    const restore = () => {
+      const max = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+      window.scrollTo({ top: siteHandoff.frac * max, left: 0, behavior: "instant" });
+    };
+    window.addEventListener("load", () => {
+      window.setTimeout(restore, 350);
+      window.setTimeout(restore, 1100);
+    });
+  }
+})();
+
+/* -------------------------------------------------------------
    1. MOBILE MENU
    (Retired 2026-10-04: the hamburger menu was replaced by the lotus nav.)
    Kept only so an old page that still has a hamburger button keeps working: it shows/hides the
@@ -810,6 +878,36 @@ if (trailBuds.length && heroSection) {
     }
   }
 
+  /* Jump straight to the finished lotus screen (flower sunk, orbs out, stems
+     grown), with no ride from idle. Used when you touch the lotus from a
+     section or from another page, and when a language switch happens while
+     you are on that screen. Only a reload starts from the idle lotus. */
+  const enterSettled = () => {
+    if (!landingStage) return;
+    runId += 1;
+    timers.forEach((id) => window.clearTimeout(id));
+    timers = [];
+    landingState = "settled";
+    landingStage.classList.add("is-awake", "is-settling");
+    landingStage.dataset.lotusState = "settled";
+    if (orbCluster) {
+      orbCluster.querySelectorAll(".orb").forEach((orb) => {
+        orb.style.setProperty("--ox", "0px");
+        orb.style.setProperty("--oy", "0px");
+      });
+      orbCluster.classList.remove("is-closing");
+      orbCluster.classList.add("is-visible");
+    }
+    window.lotusScene?.jumpToSettled?.();
+    window.lotusScene?.refresh?.();
+    later(() => window.landingFx?.growLines(), 700);
+    later(() => window.landingFx?.ensureLines?.(), 3000);
+  };
+  const enterSettledWhenLoaded = () => {
+    if (document.readyState === "complete") enterSettled();
+    else window.addEventListener("load", enterSettled, { once: true });
+  };
+
   /* ---- scene switching ---- */
   // The EN / ES pill follows you: switching language keeps the section you are in.
   const langLinks = document.querySelectorAll(".lang-switch a[data-base]");
@@ -853,6 +951,7 @@ if (trailBuds.length && heroSection) {
     window.scrollTo(0, 0);
   };
 
+  window.siteState = () => ({ landing: activeId ? null : landingState, section: activeId });
   const showLanding = () => {
     homeSections.forEach((section) => {
       section.hidden = true;
@@ -895,6 +994,7 @@ if (trailBuds.length && heroSection) {
     portalToggle.addEventListener("click", (event) => {
       event.preventDefault();
       showLanding();
+      if (landingState === "idle") enterSettled();
     });
   }
 
@@ -919,12 +1019,18 @@ if (trailBuds.length && heroSection) {
   // which section was open before.
   const routeFromHash = () => {
     let requestedId = location.hash.slice(1);
+    if (requestedId === "lotus") {
+      showLanding();
+      enterSettledWhenLoaded();
+      return;
+    }
     if (requestedId in legacyAliases) requestedId = legacyAliases[requestedId];
 
     if (requestedId && sectionMeta.some((section) => section.id === requestedId)) {
       showSection(requestedId);
     } else {
       showLanding();
+      if (siteHandoff && (siteHandoff.landing === "settled" || siteHandoff.landing === "activating")) enterSettledWhenLoaded();
     }
   };
 
