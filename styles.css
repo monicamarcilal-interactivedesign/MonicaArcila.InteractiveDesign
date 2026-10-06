@@ -5290,3 +5290,65 @@ html.lotus-poster.lotus-poster-out .lotus-canvas {
 @media (prefers-reduced-motion: reduce) {
   html.lotus-poster .lotus-still { animation: none; }
 }
+
+/* ============================================================
+   Landing on phones and tablets (2026-10-06, for smoothness)
+   A touch screen cannot keep up with everything moving at once, so on
+   touch devices only the show is drawn to rest and then glows:
+     - the orbs no longer float about (the float moved their position every
+       frame, which made the phone re-lay-out the page each time); each stays
+       in its place and fades softly in and out instead
+     - the drifting colour droplets are drawn once, as the shapes they would
+       have mid-drift (landing-fx.js)
+     - the connections grow as before, then stay as a finished picture that
+       glows (a fade on the canvas, which costs the phone nothing)
+     - the glow behind the flower and the page's own background blobs stay
+       still
+   Desktop keeps everything moving.
+   ============================================================ */
+@media (pointer: coarse) {
+  .orb {
+    animation: none;
+  }
+
+  .orb__img {
+    animation: orb-glisten 4.6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * -1.1s);
+    animation-play-state: paused;
+  }
+
+  .orb-cluster.is-visible .orb__img {
+    animation-play-state: running;
+  }
+
+  .orb-cluster.is-closing .orb__img {
+    animation-play-state: paused;
+  }
+
+  .lotus-spotlight {
+    animation: none;
+    opacity: 0.5;
+  }
+
+  body::before {
+    animation: none;
+  }
+
+  #fxLines.is-frozen {
+    animation: lines-glisten 5.4s ease-in-out infinite;
+  }
+}
+
+@keyframes orb-glisten {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1; }
+}
+
+@keyframes lines-glisten {
+  0%, 100% { opacity: 0.72; }
+  50%      { opacity: 1; }
+}
+
+@media (pointer: coarse) and (prefers-reduced-motion: reduce) {
+  .orb__img, #fxLines.is-frozen { animation: none; }
+}

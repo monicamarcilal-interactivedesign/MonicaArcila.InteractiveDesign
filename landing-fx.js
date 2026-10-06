@@ -129,6 +129,14 @@ let dropEvery = isTouch ? 2 : 1; // redraw the droplets every n-th frame (they m
 let dropCount = 0;
 let lineCount = 0;
 let lineAcc = 0;
+// On phones the show is drawn once and then left alone: the droplets and
+// the dust are still pictures, and the connections grow and then stay as a
+// finished picture that only glows (a CSS fade on the canvas, which costs
+// the phone nothing). See section 3 and the .is-frozen rule in styles.css.
+let linesFrozen = false;
+let dropsStatic = false;
+let dustStatic = false;
+const STILL_TIME = 20; // the moment in the droplets' paths that is drawn on phones
 
 function dropletAt(d, t) {
   return {
@@ -287,6 +295,7 @@ const lean = () => isTouch || tier >= 1;
 const rgba = (rgb, a) => `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`;
 
 function drawLines(t, dt) {
+  if (linesFrozen) return;
   lineCtx.clearRect(0, 0, W, H);
   if (!linesOn) return;
   resolveNodes();
@@ -297,6 +306,10 @@ function drawLines(t, dt) {
     linesPending = false;
   }
   const elapsed = reduced ? 1e6 : t - linesStart;
+  // On phones, once every bundle has grown, draw one last, finished frame
+  // and freeze it.
+  const lastConn = conns[conns.length - 1];
+  const finalFrame = isTouch && !!lastConn && elapsed >= lastConn.start + (STRANDS - 1) * STRAND_DELAY + GROW + 0.3;
   lineCtx.globalCompositeOperation = "lighter";
   lineCtx.lineCap = "round";
 
@@ -307,7 +320,7 @@ function drawLines(t, dt) {
     const local = elapsed - conn.start;
     if (local <= 0) continue;
 
-    const glow = 0.72 + 0.28 * Math.sin(t * 0.8 + conn.phase); // the forever-breathing glow
+    const glow = finalFrame ? 0.9 : 0.72 + 0.28 * Math.sin(t * 0.8 + conn.phase); // the forever-breathing glow
     const grad = lineCtx.createLinearGradient(A.x, A.y, B.x, B.y);
     grad.addColorStop(0, rgba(A.rgb, 0.9));
     grad.addColorStop(1, rgba(B.rgb, 0.9));
@@ -335,7 +348,7 @@ function drawLines(t, dt) {
     // A node where the bundle crosses its middle, once it's fully grown.
     if (mid) {
       const p = bez(mid.A, mid.c1, mid.c2, mid.B, 0.5);
-      const na = 0.55 + 0.45 * Math.sin(t * 1.3 + conn.phase * 2);
+      const na = finalFrame ? 0.85 : 0.55 + 0.45 * Math.sin(t * 1.3 + conn.phase * 2);
       blob(lineCtx, p.x, p.y, 7, A.rgb, 0.35 * na);
       lineCtx.fillStyle = rgba([235, 245, 255], 0.8 * na);
       lineCtx.beginPath();
@@ -348,7 +361,7 @@ function drawLines(t, dt) {
     for (const end of [conn.a, conn.b]) {
       if (end[0] !== "w") continue;
       const n = nodes[end];
-      const fade = clamp(local / 1.2, 0, 1) * (0.7 + 0.3 * Math.sin(t * 1.1 + conn.phase));
+      const fade = clamp(local / 1.2, 0, 1) * (finalFrame ? 0.85 : 0.7 + 0.3 * Math.sin(t * 1.1 + conn.phase));
       blob(lineCtx, n.x, n.y, 11, WORD_RGB, 0.5 * fade);
       lineCtx.fillStyle = rgba([240, 250, 255], 0.9 * fade);
       lineCtx.beginPath();
@@ -357,7 +370,7 @@ function drawLines(t, dt) {
     }
 
     // Lights travelling along the bundle, orb to orb / orb to word.
-    if (fullyGrown && !reduced) {
+    if (fullyGrown && !reduced && !isTouch) {
       const p = conn.pulse;
       if (p.wait > 0) {
         p.wait -= dt;
@@ -390,6 +403,10 @@ function drawLines(t, dt) {
     }
   }
   lineCtx.globalCompositeOperation = "source-over";
+  if (finalFrame) {
+    linesFrozen = true;
+    cLines.classList.add("is-frozen");
+  }
 }
 
 /* -------------------------------------------------------------
@@ -413,6 +430,10 @@ function size() {
     ctx.setTransform(k, 0, 0, k, 0, 0);
   }
   seedDust();
+  linesFrozen = false;
+  cLines.classList.remove("is-frozen");
+  dropsStatic = false;
+  dustStatic = false;
   return true;
 }
 
@@ -512,16 +533,28 @@ function frame(now) {
     if (t - lastAwake < 3.8) {
       // The droplets take 30-40 s per loop, so on a struggling device they
       // are redrawn only every n-th frame; the canvas keeps what is on it.
-      if (++dropCount >= dropEvery) {
+      if (isTouch) {
+        if (!dropsStatic) {
+          drawDroplets(STILL_TIME);
+          dropsStatic = true;
+        }
+      } else if (++dropCount >= dropEvery) {
         dropCount = 0;
         drawDroplets(t);
       }
-    } else dropCtx.clearRect(0, 0, W, H);
+    } else {
+      dropCtx.clearRect(0, 0, W, H);
+      dropsStatic = false;
+    }
   } catch (error) {
     console.warn("landing-fx: droplets", error);
   }
   try {
-    drawDust(t, dt);
+    if (!isTouch) drawDust(t, dt);
+    else if (!dustStatic) {
+      drawDust(1.7, 0);
+      dustStatic = true;
+    }
   } catch (error) {
     console.warn("landing-fx: dust", error);
   }
@@ -553,6 +586,8 @@ function setActive(on) {
 }
 
 function growLines() {
+  linesFrozen = false;
+  cLines.classList.remove("is-frozen");
   buildConnections();
   linesPending = true;
   linesOn = true;
@@ -565,6 +600,8 @@ function ensureLines() {
 }
 
 function clearLines() {
+  linesFrozen = false;
+  cLines.classList.remove("is-frozen");
   linesOn = false;
   linesPending = false;
   conns = [];
