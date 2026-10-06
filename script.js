@@ -195,8 +195,8 @@ if (stickerScroll) {
   });
 
   if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-    let lastTop = stickerScroll.scrollTop;
-    let lastLeft = stickerScroll.scrollLeft;
+    let lastTop = 0;  // not read from the element at load: that forced a layout of the whole page (110 ms on a phone)
+    let lastLeft = 0;
     let trailY = 0;
     let trailX = 0;
     let wantY = 0;
@@ -874,7 +874,16 @@ if (trailBuds.length && heroSection) {
     // Fallback only (html.no-webgl): the static image stands in for the
     // flower, so tapping it should start the sequence just like the canvas.
     if (lotusStill) {
-      lotusStill.addEventListener("click", triggerLanding);
+      lotusStill.addEventListener("click", () => {
+        // While the still is only a poster for the 3D flower (html.lotus-poster),
+        // a tap starts loading the 3D scene and the sequence begins by itself
+        // when it is ready (landing-3d.js). Without WebGL it starts directly.
+        if (document.documentElement.classList.contains("lotus-poster") && window.lotusScene && window.lotusScene.start) {
+          window.lotusScene.start({ autoBegin: true });
+        } else {
+          triggerLanding();
+        }
+      });
     }
   }
 

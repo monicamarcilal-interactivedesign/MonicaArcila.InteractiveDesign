@@ -206,7 +206,7 @@
   var core = document.createElement("span");
   core.className = "skwheel__core";
   core.setAttribute("aria-hidden", "true");
-  core.innerHTML = '<img src="assets/site/orb-skills.png" alt="" width="254" height="246" decoding="async" />';
+  core.innerHTML = '<img src="assets/site/orb-skills.webp" alt="" width="254" height="246" decoding="async" />';
   stage.appendChild(core);
 
   var petals = data.map(function (d, i) {

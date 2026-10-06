@@ -3,11 +3,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <link rel="alternate" hreflang="en" href="index.html" />
+  <link rel="alternate" hreflang="es" href="https://monicamarcilal-interactivedesign.github.io/MonicaArcila.InteractiveDesign/index.es.html" />
+  <link rel="alternate" hreflang="en" href="https://monicamarcilal-interactivedesign.github.io/MonicaArcila.InteractiveDesign/" />
+  <link rel="alternate" hreflang="x-default" href="https://monicamarcilal-interactivedesign.github.io/MonicaArcila.InteractiveDesign/" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
   <!-- Marca la página como «los scripts pueden correr»: la pantalla de inicio solo ocupa todo el visor cuando esto está puesto. -->
-  <script>document.documentElement.classList.add("js");</script>
+  <script>document.documentElement.classList.add("js", "lotus-poster");</script>
 
   <title>Mónica Arcila — Diseñadora interactiva</title>
 
@@ -17,15 +19,12 @@
   <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
 
-  <link rel="stylesheet" href="styles.css?v=20261005w" />
+  <link rel="stylesheet" href="styles.css?v=20261006b" />
 
   <!-- El loto 3D de la pantalla de inicio usa Three.js (versión clásica, no módulo, para que funcione también al abrir el archivo con doble clic). -->
-  <script src="https://unpkg.com/three@0.140.0/build/three.min.js" defer></script>
-  <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/GLTFLoader.js" defer></script>
-  <script src="https://unpkg.com/three@0.140.0/examples/js/loaders/OBJLoader.js" defer></script>
-  <script src="landing-3d.js?v=20261005w" defer></script>
-  <script src="landing-fx.js?v=20261005w" defer></script>
-  <script src="projects-board.js?v=20261005w" defer></script>
+  <script src="landing-boot.js?v=20261006b" defer></script>
+  <script src="landing-fx.js?v=20261006b" defer></script>
+  <script src="projects-board.js?v=20261006b" defer></script>
 </head>
 <body>
 
@@ -34,8 +33,8 @@
   <header class="site-header">
     <nav class="lotus-nav" aria-label="Ir a una sección" style="--cur: -1">
       <a href="index.es.html" class="lotus-nav__home" id="portalToggle" aria-label="Volver al loto">
-        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.png" alt="" width="64" height="52" decoding="async" />
-        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.png" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.webp" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.webp" alt="" width="64" height="52" decoding="async" />
         <span class="lotus-nav__label">Volver al loto</span>
       </a>
       <div class="lotus-nav__leaves">
@@ -74,7 +73,7 @@
       <p class="lotus-hint" id="lotusHint">Haz clic para empezar</p>
       <button class="lotus-start-cta" id="lotusStartCta" type="button">Entrar al sitio</button>
 
-      <img class="lotus-still" src="assets/site/lotus-open-neon.png" alt="" aria-hidden="true" />
+      <img class="lotus-still" src="assets/site/lotus-open-neon.webp" alt="" aria-hidden="true" width="529" height="471" fetchpriority="high" decoding="async" />
 
       <canvas class="landing-fx" id="fxLines" aria-hidden="true"></canvas>
 
@@ -82,23 +81,23 @@
 
       <div class="orb-cluster" id="orbCluster">
         <a href="#about" class="orb orb--about" data-section="about" style="--i:0">
-          <img class="orb__img" src="assets/site/orb-about.png" alt="" />
+          <img class="orb__img" src="assets/site/orb-about.webp" width="320" height="350" alt="" />
           <span class="orb__label">Sobre mí</span>
         </a>
         <a href="#skills" class="orb orb--skills" data-section="skills" style="--i:1">
-          <img class="orb__img" src="assets/site/orb-skills.png" alt="" />
+          <img class="orb__img" src="assets/site/orb-skills.webp" width="320" height="309" alt="" />
           <span class="orb__label">Habilidades</span>
         </a>
         <a href="#case-studies" class="orb orb--case-studies" data-section="case-studies" style="--i:2">
-          <img class="orb__img" src="assets/site/orb-case-studies.png" alt="" />
+          <img class="orb__img" src="assets/site/orb-case-studies.webp" width="320" height="336" alt="" />
           <span class="orb__label">Proyectos</span>
         </a>
         <a href="#experience" class="orb orb--experience" data-section="experience" style="--i:3">
-          <img class="orb__img" src="assets/site/orb-experience.png" alt="" />
+          <img class="orb__img" src="assets/site/orb-experience.webp" width="320" height="309" alt="" />
           <span class="orb__label">Experiencia profesional</span>
         </a>
         <a href="#contact" class="orb orb--contact" data-section="contact" style="--i:4">
-          <img class="orb__img" src="assets/site/orb-contact.png" alt="" />
+          <img class="orb__img" src="assets/site/orb-contact.webp" width="320" height="309" alt="" />
           <span class="orb__label">Contacto</span>
         </a>
       </div>
@@ -718,7 +717,7 @@
         <div class="about">
           <figure class="about__photo" id="aboutPhoto">
             <span class="about__ring" aria-hidden="true"></span>
-            <img class="about-card__sun" src="assets/site/orb-about.png" alt="" aria-hidden="true" loading="lazy" decoding="async" />
+            <img class="about-card__sun" src="assets/site/orb-about.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
             <img class="about__img about__img--a" src="assets/about/portrait-lake.jpg" width="1100" height="825" alt="Una selfi cercana y soleada de Mónica sonriendo, con el cabello rojo y rizado y una sudadera blanca, junto a un lago turquesa." decoding="async" />
             <img class="about__img about__img--b" src="assets/about/portrait-mountains.jpg" width="900" height="1153" alt="Mónica sonriendo por encima del hombro, con el cabello largo y rizado y una sudadera verde azulada, de pie en un sendero con montañas nevadas y un lago detrás." loading="lazy" decoding="async" />
           </figure>
@@ -845,7 +844,7 @@
     <p class="viewer__caption" id="viewerCaption"></p>
   </dialog>
 
-  <script src="script.js?v=20261005w"></script>
-  <script src="skills-wheel.js?v=20261005w"></script>
+  <script src="script.js?v=20261006b"></script>
+  <script src="skills-wheel.js?v=20261006b"></script>
 </body>
 </html>

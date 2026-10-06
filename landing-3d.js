@@ -51,6 +51,7 @@
 // as a WebGL failure instead of throwing and leaving an empty canvas.
 if (typeof THREE === "undefined" || typeof THREE.GLTFLoader === "undefined") {
   document.documentElement.classList.add("no-webgl");
+  document.documentElement.classList.remove("lotus-poster");
   return;
 }
 
@@ -437,6 +438,7 @@ function applyPose(p) {
 }
 
 async function activate() {
+  startOnce({ autoBegin: false });
   await ready;
   stopIdleLoop();
   poseStartAz = idleAngle;
@@ -485,6 +487,7 @@ async function settle() {
 // with no ride: used when someone comes back to the lotus from another
 // section or page, so they land on the finished screen, not the idle one.
 async function jumpToSettled() {
+  startOnce({ autoBegin: false });
   try {
     await ready;
   } catch {
@@ -554,36 +557,69 @@ function refresh() {
    even before the model has finished loading (activate()/reset() both
    just await `ready` internally).
    ------------------------------------------------------------- */
+/* POSTER, THEN 3D (2026-10-06, for speed on phones).
+   This file is no longer loaded with the page. landing-boot.js shows the
+   still poster of the flower, and loads Three.js and then this file only when
+   the 3D scene is wanted (first touch, click or key, or a few seconds after
+   the page has loaded, or when something asks for the scene). It then calls
+   startOnce(), exported as window.__lotusImpl.start; landing-boot.js
+   exposes the public window.lotusScene and forwards to this. When the 3D
+   flower is ready the still fades out; if WebGL or the model fails,
+   html.no-webgl takes over as before. */
 let ready;
+let resolveReady;
+let rejectReady;
+ready = new Promise((resolve, reject) => {
+  resolveReady = resolve;
+  rejectReady = reject;
+});
+ready.catch(() => {}); // the callers that await it handle a failure themselves
 
-function init() {
+let started = false;
+let autoBegin = false;
+const rootEl = document.documentElement;
+
+function endPoster(fade) {
+  if (!rootEl.classList.contains("lotus-poster")) return;
+  if (fade) {
+    rootEl.classList.add("lotus-poster-out");
+    window.setTimeout(() => rootEl.classList.remove("lotus-poster", "lotus-poster-out"), 1000);
+  } else {
+    rootEl.classList.remove("lotus-poster", "lotus-poster-out");
+  }
+}
+
+function startOnce(options) {
+  if (options && options.autoBegin) autoBegin = true;
+  if (started) return;
+  started = true;
+
   if (!canvas) {
-    // Still expose a no-op-ish API so script.js's optional calls don't
-    // throw — script.js's own triggerLanding() has a same-tick fallback
-    // for exactly this (no 3D scene) case.
-    ready = Promise.reject(new Error("no #lotusCanvas on this page"));
-    ready.catch(() => {});
+    // Still expose the API so script.js's optional calls don't throw: its own
+    // triggerLanding() has a same-tick fallback for the no-3D-scene case.
+    endPoster(false);
+    rejectReady(new Error("no #lotusCanvas on this page"));
     return;
   }
 
   try {
     initRenderer();
   } catch (error) {
-    // WebGL unavailable — fall back to the static image + orbs layout.
-    document.documentElement.classList.add("no-webgl");
-    ready = Promise.reject(error);
-    ready.catch(() => {});
+    // WebGL unavailable: fall back to the static image + orbs layout.
+    rootEl.classList.add("no-webgl");
+    endPoster(false);
+    rejectReady(error);
     return;
   }
 
   buildScene();
 
-  // Nothing to begin until the model is in — the hint shows download
-  // progress meanwhile (see loadLotusModel) and the canvas ignores taps.
+  // The hint shows the download progress meanwhile (see loadLotusModel) and
+  // the canvas ignores taps until the model is in.
   if (landingStageEl) landingStageEl.classList.add("is-loading");
   if (hintEl) hintEl.textContent = LANDING_ES ? "Cargando…" : "Loading…";
 
-  ready = loadLotusModel()
+  loadLotusModel()
     .then((loaded) => {
       model = loaded;
       scene.add(model);
@@ -591,21 +627,20 @@ function init() {
       startIdleLoop();
       if (hintEl) hintEl.textContent = LANDING_ES ? (isTouch ? "Toca para empezar" : "Haz clic para empezar") : (isTouch ? "Tap to begin" : "Click to begin");
       if (landingStageEl) landingStageEl.classList.remove("is-loading");
+      endPoster(true);
+      resolveReady();
+      // They tapped the poster: carry on into the sequence without a second tap.
+      if (autoBegin && canvas) canvas.click();
     })
     .catch((error) => {
       console.error("Lotus model failed to load:", error);
-      document.documentElement.classList.add("no-webgl"); // reuse the same fallback styling
+      rootEl.classList.add("no-webgl"); // reuse the same fallback styling
+      endPoster(false);
       if (landingStageEl) landingStageEl.classList.remove("is-loading");
-      throw error;
+      rejectReady(error);
     });
 }
 
-init();
-
-window.lotusScene = { setQuality, ready, activate, settle, reset, refresh, coreOffsetY, jumpToSettled };
-// `ready` above is captured before the async chain settles is fine —
-// callers await window.lotusScene.ready directly; re-assign so it's
-// always the live promise rather than whatever it was at this exact line.
-Object.defineProperty(window.lotusScene, "ready", { get: () => ready });
+window.__lotusImpl = { setQuality, ready, activate, settle, reset, refresh, coreOffsetY, jumpToSettled, start: startOnce };
 
 })();

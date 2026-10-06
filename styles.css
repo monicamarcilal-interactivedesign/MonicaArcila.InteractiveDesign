@@ -5240,3 +5240,41 @@ html.fx-lite #fxDroplets {
 html.fx-lite .lotus-spotlight {
   filter: blur(18px);
 }
+
+/* ============================================================
+   Landing poster (2026-10-06, for speed)
+   Until the 3D flower has loaded, the still flower image stands in for it
+   (html.lotus-poster is set in the page head; landing-3d.js removes it when
+   the 3D scene is ready, fading the still out). Tapping the still starts the
+   3D scene and the sequence begins by itself when it is ready.
+   ============================================================ */
+html.lotus-poster {
+  --still-size: clamp(150px, min(52vw, 40vh), 320px);
+}
+
+html.lotus-poster .lotus-still {
+  display: block;
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  z-index: 5;
+  width: var(--still-size);
+  height: auto;
+  cursor: pointer;
+  animation: lotus-pulse-2d 3.4s ease-in-out infinite;
+  transition: opacity 0.9s ease;
+}
+
+html.lotus-poster.lotus-poster-out .lotus-still {
+  opacity: 0;
+  animation: none;
+  pointer-events: none;
+}
+
+html.lotus-poster .lotus-canvas {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.lotus-poster .lotus-still { animation: none; }
+}
