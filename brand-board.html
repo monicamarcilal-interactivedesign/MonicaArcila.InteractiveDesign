@@ -148,6 +148,41 @@
     .ck-i input:checked ~ span b { text-decoration:line-through; opacity:.6; }
     .src { font-size:.86rem; color:var(--b-muted); }
     .src li { margin:.3rem 0; }
+    /* ---- textures: the six material states from the Figma Make manual, recreated in CSS ---- */
+    .tx-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
+    @media (max-width: 900px) { .tx-grid { grid-template-columns:repeat(2,1fr); } }
+    @media (max-width: 520px) { .tx-grid { grid-template-columns:1fr; } }
+    .tx { --void:#09090e; --cloud:#f4f1ed; --cobalt:#3157ff; --electric:#19c8ff; --plasma:#ff4fc8; --pulse:#b7ff3c;
+          position:relative; isolation:isolate; overflow:hidden; min-height:260px; padding:20px; color:var(--cloud); background-color:var(--void); border-radius:4px; }
+    .tx::before, .tx::after { content:""; position:absolute; inset:0; z-index:-1; }
+    .tx > span { letter-spacing:.14em; text-transform:uppercase; font-size:.62rem; font-weight:700; }
+    .tx > p { position:absolute; left:20px; bottom:18px; margin:0; font-size:.68rem; line-height:1.5; opacity:.72; }
+    .tx-noise::before { opacity:.5; mix-blend-mode:screen; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); }
+    .tx-noise::after { background:radial-gradient(circle at 68% 42%, var(--cobalt), transparent 42%); mix-blend-mode:color-dodge; }
+    .tx-topo::before { background:repeating-radial-gradient(#0000 0 12px, #6c4bffb3 13px, #0000 14px 22px); border-radius:46%; inset:-40%; transform:rotate(-24deg) scale(1.2); }
+    .tx-topo::after { background:radial-gradient(circle at center, transparent, var(--void) 72%); }
+    .tx-bloom::before { background:radial-gradient(circle, white 0 2%, var(--pulse) 4%, var(--plasma) 10%, var(--electric) 25%, transparent 64%); filter:blur(7px); border-radius:50%; inset:14%; animation:tx-pulse 3s ease-in-out infinite; }
+    .tx-scan::before { background:repeating-linear-gradient(0deg, #0000 0 4px, #e8e5f126 5px); }
+    .tx-scan::after { background:var(--plasma); width:2px; box-shadow:0 0 30px var(--plasma); left:60%; animation:tx-scan 5s ease-in-out infinite; }
+    .tx-mesh::before { background:conic-gradient(from 80deg, var(--plasma), var(--cobalt), var(--pulse), var(--electric), var(--plasma)); filter:blur(28px) saturate(1.5); inset:-25%; animation:tx-orbit 16s linear infinite; }
+    .tx-mesh::after { opacity:.7; background:radial-gradient(circle at 40% 45%, transparent, var(--void) 68%); }
+    .tx-ghost::before { opacity:.15; background:url(assets/personal-brand/logo-night.png) center/cover no-repeat; inset:-30%; transform:rotate(-7deg); }
+    .tx-ghost::after { opacity:.35; background-image:linear-gradient(#e8e5f126 1px, #0000 1px), linear-gradient(90deg, #e8e5f126 1px, #0000 1px); background-size:24px 24px; }
+    @keyframes tx-pulse { 50% { opacity:.65; } }
+    @keyframes tx-scan { 0%, 100% { transform:translateX(-120px); } 50% { transform:translateX(120px); } }
+    @keyframes tx-orbit { to { transform:rotate(360deg); } }
+    @media (prefers-reduced-motion: reduce) { .tx-bloom::before, .tx-scan::after, .tx-mesh::before { animation:none; } }
+    .tx-recipe { margin-top:12px; padding:22px; background:#09090e; color:#f4f1ed; border-radius:4px; }
+    .tx-recipe .lab { color:#b7ff3c; }
+    .tx-recipe ol { display:flex; flex-wrap:wrap; gap:8px; margin:14px 0 0; padding:0; list-style:none; counter-reset:r; }
+    .tx-recipe li { counter-increment:r; padding:.55rem .8rem; border:1px solid rgba(232,229,241,.2); font-size:.7rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+    .tx-recipe li::before { content:"0" counter(r) " "; opacity:.6; }
+    .tx-recipe p { margin:14px 0 0; font-size:.78rem; opacity:.7; max-width:44rem; }
+    .gal { display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:12px; }
+    .gal a { display:block; text-decoration:none; color:var(--b-ink); border:1px solid var(--b-line); border-radius:10px; overflow:hidden; background:var(--b-card); }
+    .gal img { display:block; width:100%; aspect-ratio:4/3; object-fit:cover; object-position:top; }
+    .gal span { display:block; padding:.5rem .7rem .6rem; font-size:.74rem; font-weight:700; }
+
   </style>
 </head>
 <body class="brand-page" data-skin="daylight">
@@ -185,12 +220,13 @@
           <tr><td>Cobalt as the bridge to the portfolio</td><td><span class="from f-both">Both</span></td><td>The portfolio's blue and violet glow sit in the same family</td></tr>
           <tr><td>Tracked uppercase labels</td><td><span class="from f-make">Make manual</span></td><td>Small functional labels only</td></tr>
           <tr><td>Asymmetric corners</td><td><span class="from f-first">First board</span></td><td>Cards, bubbles, tiles</td></tr>
+          <tr><td>The six textures: signal noise, topography, light bloom, scan field, living mesh, ghost mark</td><td><span class="from f-make">Make manual</span></td><td>Kept whole as a live section (6): one at a time, for special moments</td></tr>
           <tr><td>A path with nodes</td><td><span class="from f-both">Both</span></td><td>Dividers, steps, connectors</td></tr>
           <tr><td>Patterns from the mark (ghost mark)</td><td><span class="from f-both">Both</span></td><td>Your two pattern ideas, redrawn with the new mark, kept very faint</td></tr>
           <tr><td>One idea per layout; handwriting once; glow never on a paragraph</td><td><span class="from f-both">Both</span></td><td>The guardrails</td></tr>
         </table>
       </div>
-      <div class="dropped"><b>Left out on purpose:</b> Sora (it stays in the portfolio only); the manual's Instrument Serif Italic (your handwriting does that job); the scan field, living mesh and signal-noise textures (too many effects for a small brand: one texture is enough); colours beyond the five plus two bridges; and the example text Make invented in your manual (a website address, a city, project names and dates), which are not facts about you.</div>
+      <div class="dropped"><b>Left out on purpose:</b> Sora (it stays in the portfolio only); the manual's Instrument Serif Italic (your handwriting does that job); colours beyond the five plus two bridges; and the example text Make invented in your manual (a website address, a city, project names and dates), which are not facts about you.</div>
     </div></section>
 
     <!-- 2 LOCKUPS -->
@@ -266,9 +302,44 @@
       </div>
     </div></section>
 
+    <!-- 6 TEXTURES -->
+    <section class="bb-sec" id="textures"><div class="bb-wrap">
+      <h2>6. Textures: digital matter</h2>
+      <p class="lead">The six textures Figma Make built for your manual, kept here so they are not lost. They are live (CSS only, no images except the ghost mark, which is your final logo), made for a dark base. In your manual's words: <q>texture gives the system a pulse.</q> Use one at a time, never all together.</p>
+      <div class="tx-grid">
+        <div class="tx tx-noise"><span>01 / Signal noise</span><p>12–22% opacity<br />Screen blend</p></div>
+        <div class="tx tx-topo"><span>02 / Topography</span><p>1px contours<br />Low contrast</p></div>
+        <div class="tx tx-bloom"><span>03 / Light bloom</span><p>Soft radial core<br />One focal point</p></div>
+        <div class="tx tx-scan"><span>04 / Scan field</span><p>Horizontal rhythm<br />Digital context</p></div>
+        <div class="tx tx-mesh"><span>05 / Living mesh</span><p>Organic gradient<br />Slow movement</p></div>
+        <div class="tx tx-ghost"><span>06 / Ghost mark</span><p>Overscale to 140%<br />Your final logo, faint</p></div>
+      </div>
+      <div class="tx-recipe">
+        <span class="lab">Texture recipe · atmospheric mode</span>
+        <ol><li>Void base</li><li>Grid 8%</li><li>Bloom 40%</li><li>Noise 18%</li><li>Signal path</li></ol>
+        <p>Build depth through transparent layers. Never flatten the system into one decorative effect.</p>
+      </div>
+      <p class="cap">How these are used in the mixed brand: the ghost mark and the two patterns are the everyday textures; the others (noise, topography, bloom, scan field, mesh) are for special moments such as a cover, a launch post or a title screen, and for Night only.</p>
+
+      <h3 style="margin:2rem 0 .6rem">Your Make manual, kept</h3>
+      <p class="lead" style="margin-bottom:1rem">Screenshots of its sections, so the whole system is in one place. Click one to open it full size. (A complete copy of the manual's files is kept privately in the project folder.)</p>
+      <div class="gal">
+        <a href="assets/personal-brand/make-manual/07-texture-states.jpg"><img src="assets/personal-brand/make-manual/07-texture-states.jpg" alt="The six texture states from the manual: signal noise, topography, light bloom, scan field, living mesh and ghost mark." loading="lazy" /><span>Textures: six material states</span></a>
+        <a href="assets/personal-brand/make-manual/02-signature.jpg"><img src="assets/personal-brand/make-manual/02-signature.jpg" alt="The signature section of the manual: the MA monogram, its anatomy and three modes." loading="lazy" /><span>The signature and its anatomy</span></a>
+        <a href="assets/personal-brand/make-manual/03-behavior.jpg"><img src="assets/personal-brand/make-manual/03-behavior.jpg" alt="The behavior section: structure, emergence and connection." loading="lazy" /><span>Behavior: structure, emergence, connection</span></a>
+        <a href="assets/personal-brand/make-manual/04-logic-feeling.jpg"><img src="assets/personal-brand/make-manual/04-logic-feeling.jpg" alt="The duality section: logic set in Space Grotesk, feeling set in Instrument Serif." loading="lazy" /><span>Logic and feeling</span></a>
+        <a href="assets/personal-brand/make-manual/05-colour.jpg"><img src="assets/personal-brand/make-manual/05-colour.jpg" alt="The colour section: Obsidian, Paper, Cobalt, Current, Plasma and Pulse." loading="lazy" /><span>Colour: darkness and signal</span></a>
+        <a href="assets/personal-brand/make-manual/06-typography.jpg"><img src="assets/personal-brand/make-manual/06-typography.jpg" alt="The typography section with the type scale." loading="lazy" /><span>Typography</span></a>
+        <a href="assets/personal-brand/make-manual/08-composition.jpg"><img src="assets/personal-brand/make-manual/08-composition.jpg" alt="The composition section: a twelve-column grid and four layout examples." loading="lazy" /><span>Composition: one grid</span></a>
+        <a href="assets/personal-brand/make-manual/09-graphic-language.jpg"><img src="assets/personal-brand/make-manual/09-graphic-language.jpg" alt="The graphic language section: nodes, paths, labels and frames." loading="lazy" /><span>Graphic language: nodes, paths, labels, frames</span></a>
+        <a href="assets/personal-brand/make-manual/10-motion.jpg"><img src="assets/personal-brand/make-manual/10-motion.jpg" alt="The motion section: trace, pulse, morph and shift, with timing." loading="lazy" /><span>Motion: trace, pulse, morph, shift</span></a>
+        <a href="assets/personal-brand/make-manual/13-guardrails.jpg"><img src="assets/personal-brand/make-manual/13-guardrails.jpg" alt="The guardrails section: dos and don'ts and a pre-publish checklist." loading="lazy" /><span>Guardrails: keep the signal clear</span></a>
+      </div>
+    </div></section>
+
     <!-- 6 COLOUR -->
     <section class="bb-sec" id="s6"><div class="bb-wrap">
-      <h2>6. Colour</h2>
+      <h2>7. Colour</h2>
       <p class="lead">Violet is the signature, the cyan current is the light, Obsidian and Paper are the two bases. Cobalt, Plasma and Pulse are for the edges. Proportion: mostly base, then ink, then violet, with the current as a rare accent.</p>
       <div class="sw">
         <div><i style="background:#f4f1ed"></i><b>Paper</b><span>#F4F1ED · base in Daylight</span></div>
@@ -300,7 +371,7 @@
 
     <!-- 7 TYPE AND VOICE -->
     <section class="bb-sec" id="s7"><div class="bb-wrap">
-      <h2>7. Type and voice</h2>
+      <h2>8. Type and voice</h2>
       <p class="lead">Two voices, with your manual's rule: structure speaks, feeling answers. Space Grotesk carries everything you read; your handwriting font is used once per layout, for one short human line.</p>
       <div class="bb-grid g2">
         <div class="sk-day panel spec"><span class="lab">Space Grotesk · structure</span><h4>Say it plainly.</h4><p style="margin-top:.8rem">Space Grotesk Regular for every paragraph: clear, even, easy to read at length. Tracked capitals for small labels.</p><span class="sc" style="display:block;margin-top:.6rem">Your handwriting: one short line, never a paragraph</span></div>
@@ -313,7 +384,7 @@
 
     <!-- 8 APPLICATIONS -->
     <section class="bb-sec" id="s8"><div class="bb-wrap">
-      <h2>8. Where it lives</h2>
+      <h2>9. Where it lives</h2>
       <p class="lead">The brand in use. Your outline mentioned a dedicated Instagram account as a start; this is what its first six posts could look like, plus a banner, a card and a signature.</p>
 
       <h3 style="margin:1.4rem 0 .6rem">Instagram grid</h3>
@@ -345,7 +416,7 @@
 
     <!-- 9 RELATION TO THE PORTFOLIO -->
     <section class="bb-sec" id="s9"><div class="bb-wrap">
-      <h2>9. How it relates to the portfolio</h2>
+      <h2>10. How it relates to the portfolio</h2>
       <div class="bb-grid g2">
         <div class="sk-night panel"><h3>The portfolio is the stage</h3><p>Dark, lit, full of movement, in the lotus system (Sora, the handwriting font, neon violet and cyan glow). It shows the work. The only piece of the brand it carries is the MA monogram as its tab icon.</p></div>
         <div class="sk-day panel"><h3>The brand is the person</h3><p>Daylight by default, calm, made for reading and printing, in the mixed system above. It shows how I think. Night is the same brand next to the portfolio. Both share your handwriting font and the cyan and violet family, so the two read as the same person.</p></div>
@@ -355,7 +426,7 @@
 
     <!-- 10 CHECKLIST -->
     <section class="bb-sec" id="checklist"><div class="bb-wrap">
-      <h2>10. Personal brand checklist</h2>
+      <h2>11. Personal brand checklist</h2>
       <p class="lead">What a personal brand is made of, where you are today, and one next step for each. Tick the boxes as you go; ticks are saved in this browser only. Today's status is based on what exists on your site, in your outline and on this board.</p>
       <div class="ck" id="ck">
         <label class="ck-i"><input type="checkbox" data-k="positioning" /><span><b>Positioning statement</b><i class="st st-todo">To do</i><p><strong>Today:</strong> your two services are drafted; there is no one-sentence statement yet.</p><p><strong>Next:</strong> write one sentence: <q>I help [who] do [what] so that [result]</q>. Test it on someone for ten seconds.</p></span></label>
@@ -368,7 +439,7 @@
         <label class="ck-i"><input type="checkbox" data-k="work" /><span><b>Proof: selected work</b><i class="st st-part">Partly</i><p><strong>Today:</strong> 15 case studies, 5 of them featured. Hiring guides suggest 3 to 5 strong case studies, with quality over quantity.</p><p><strong>Next:</strong> choose your three strongest and make sure the first screen of each shows the problem, your role and the outcome.</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="testimonials" /><span><b>Proof: testimonials and recognition</b><i class="st st-todo">To do</i><p><strong>Today:</strong> none on the site yet (the Meldiria award is mentioned on its page).</p><p><strong>Next:</strong> ask two or three people (teammates, a teacher, a supervisor) for one honest sentence, with permission to quote them.</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="story" /><span><b>Story</b><i class="st st-part">Partly</i><p><strong>Today:</strong> each project is told as a beginning, a middle and an end, and the About section exists.</p><p><strong>Next:</strong> write your own story in the first person: where you started, what you keep relearning, what you are building now.</p></span></label>
-        <label class="ck-i"><input type="checkbox" data-k="consistency" /><span><b>Consistency across places</b><i class="st st-todo">To do</i><p><strong>Today:</strong> applications are drafted in section 8 of this board.</p><p><strong>Next:</strong> apply the same name, mark, colours and tagline to LinkedIn, your CV and your email signature.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="consistency" /><span><b>Consistency across places</b><i class="st st-todo">To do</i><p><strong>Today:</strong> applications are drafted in section 9 of this board.</p><p><strong>Next:</strong> apply the same name, mark, colours and tagline to LinkedIn, your CV and your email signature.</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="promotion" /><span><b>Promotion and network</b><i class="st st-todo">To do</i><p><strong>Today:</strong> not started.</p><p><strong>Next:</strong> a simple four-week rhythm: one post a week and one message a week to someone whose work you admire. Join one community where your audience is.</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="review" /><span><b>Review and update</b><i class="st st-todo">To do</i><p><strong>Today:</strong> not started.</p><p><strong>Next:</strong> add each new project to the site when it ends. Once a month, ask three people what they remember about you after 30 seconds.</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="honesty" /><span><b>Honesty and authenticity</b><i class="st st-done">Strength</i><p><strong>Today:</strong> you credit teams with <q>we</q>, declare AI use, and avoid claims you cannot back with a project.</p><p><strong>Next:</strong> keep doing it, and say it out loud as one of your values.</p></span></label>

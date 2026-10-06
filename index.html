@@ -87,8 +87,8 @@
   <header class="site-header">
     <nav class="lotus-nav" aria-label="Jump to a section" style="--cur: -1">
       <a href="index.html" class="lotus-nav__home" id="portalToggle" aria-label="Back to the lotus">
-        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.webp" alt="" width="64" height="52" decoding="async" />
-        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.webp" alt="" width="64" height="52" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--blue" src="assets/nav/lotus-blue.webp" alt="" width="64" height="52" loading="lazy" decoding="async" />
+        <img class="lotus-nav__lotus lotus-nav__lotus--purple" src="assets/nav/lotus-purple.webp" alt="" width="64" height="52" loading="lazy" decoding="async" />
         <span class="lotus-nav__label">Back to the lotus</span>
       </a>
       <div class="lotus-nav__leaves">
@@ -163,23 +163,23 @@
            still reach and activate them even before that plays. -->
       <div class="orb-cluster" id="orbCluster">
         <a href="#about" class="orb orb--about" data-section="about" style="--i:0">
-          <img class="orb__img" src="assets/site/orb-about.webp" width="320" height="350" alt="" />
+          <img class="orb__img" src="assets/site/orb-about.webp" width="320" height="350" fetchpriority="low" decoding="async" alt="" />
           <span class="orb__label">About</span>
         </a>
         <a href="#skills" class="orb orb--skills" data-section="skills" style="--i:1">
-          <img class="orb__img" src="assets/site/orb-skills.webp" width="320" height="309" alt="" />
+          <img class="orb__img" src="assets/site/orb-skills.webp" width="320" height="309" fetchpriority="low" decoding="async" alt="" />
           <span class="orb__label">Skills</span>
         </a>
         <a href="#case-studies" class="orb orb--case-studies" data-section="case-studies" style="--i:2">
-          <img class="orb__img" src="assets/site/orb-case-studies.webp" width="320" height="336" alt="" />
+          <img class="orb__img" src="assets/site/orb-case-studies.webp" width="320" height="336" fetchpriority="low" decoding="async" alt="" />
           <span class="orb__label">Projects</span>
         </a>
         <a href="#experience" class="orb orb--experience" data-section="experience" style="--i:3">
-          <img class="orb__img" src="assets/site/orb-experience.webp" width="320" height="309" alt="" />
+          <img class="orb__img" src="assets/site/orb-experience.webp" width="320" height="309" fetchpriority="low" decoding="async" alt="" />
           <span class="orb__label">Professional Experience</span>
         </a>
         <a href="#contact" class="orb orb--contact" data-section="contact" style="--i:4">
-          <img class="orb__img" src="assets/site/orb-contact.webp" width="320" height="309" alt="" />
+          <img class="orb__img" src="assets/site/orb-contact.webp" width="320" height="309" fetchpriority="low" decoding="async" alt="" />
           <span class="orb__label">Contact</span>
         </a>
       </div>
@@ -445,7 +445,7 @@
               <a class="pcard__link" href="ask-monica.html">
                 <div class="pcard__media"><img src="assets/cards/personal-brand.jpg" alt="My logo, a flowing blue monogram made of loops, glowing on a deep indigo background." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill pcard__pill--personal">Personal project</span></div>
                 <div class="pcard__body">
-                  <h3 class="pcard__title">Ask Mónica &amp; Work with me</h3>
+                  <h3 class="pcard__title">Ask Mónica and Work with me: a mini experience</h3>
                   <p class="pcard__hook">My personal brand, as a small conversation you can have with me.</p>
                   <p class="pcard__brief">The one project here I'm making only because I want to. In progress: you pick a question and read my answer, then see how I could work with you.</p>
                 </div>
@@ -850,7 +850,7 @@
           <figure class="about__photo" id="aboutPhoto">
             <span class="about__ring" aria-hidden="true"></span>
             <img class="about-card__sun" src="assets/site/orb-about.webp" alt="" aria-hidden="true" loading="lazy" decoding="async" />
-            <img class="about__img about__img--a" src="assets/about/portrait-lake.jpg" width="1100" height="825" alt="A close, sunny selfie of Mónica smiling, with curly red hair and a white sweatshirt, by a turquoise lake." decoding="async" />
+            <img class="about__img about__img--a" src="assets/about/portrait-lake.jpg" loading="lazy" decoding="async" width="1100" height="825" alt="A close, sunny selfie of Mónica smiling, with curly red hair and a white sweatshirt, by a turquoise lake." decoding="async" />
             <img class="about__img about__img--b" src="assets/about/portrait-mountains.jpg" width="900" height="1153" alt="Mónica smiling over her shoulder, with long curly hair and a teal hoodie, standing on a path with snow-capped mountains and a lake behind her." loading="lazy" decoding="async" />
           </figure>
 
