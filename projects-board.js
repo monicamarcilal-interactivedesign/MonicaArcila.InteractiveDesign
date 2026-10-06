@@ -249,6 +249,32 @@ let order = cards
   .map((x) => x.card);
 
 let filter = "all";
+
+// A link made for one job (index.html?pick=siata,meldiria) shows only the projects
+// it names, in that order, with a "Selected for you" chip that sits before
+// "All projects" so the visitor can still see everything in one click.
+const picks = (window.pickedProjects || []).map((p) => p.replace(/^project-/, "").replace(/.(es.)?html$/, ""));
+let hasPicks = false;
+if (picks.length) {
+  const slugOf = (card) => {
+    const link = card.querySelector(".pcard__link");
+    return link ? link.getAttribute("href").replace(/^project-/, "").replace(/.(es.)?html$/, "") : "";
+  };
+  cards.forEach((card) => {
+    if (picks.includes(slugOf(card))) {
+      card.dataset.category += " picked";
+      hasPicks = true;
+    }
+  });
+  if (hasPicks) {
+    order = [...order].sort((a, b) => {
+      const ia = picks.indexOf(slugOf(a));
+      const ib = picks.indexOf(slugOf(b));
+      return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
+    });
+    filter = "picked";
+  }
+}
 let pos = { x: 0, y: 0 };
 let vel = { x: 0, y: 0 };
 let metrics = { cw: 0, ch: 0, bw: 0, bh: 0, minX: 0, minY: 0, maxX: 0, maxY: 0, panX: false, panY: false, cols: 1, rows: 1 };
@@ -844,7 +870,16 @@ cards.concat(researchCards).forEach((card) => {
    3. THE FILTER
    ------------------------------------------------------------- */
 if (filterBar) {
+  if (hasPicks) {
+    const chip = document.createElement("button");
+    chip.className = "filter__button";
+    chip.type = "button";
+    chip.dataset.filter = "picked";
+    chip.textContent = ES ? "Selección para ti" : "Selected for you";
+    filterBar.querySelector(".filter__button").before(chip);
+  }
   const buttons = Array.from(filterBar.querySelectorAll(".filter__button"));
+  buttons.forEach((b) => b.setAttribute("aria-pressed", b.dataset.filter === filter));
   buttons.forEach((button) =>
     button.addEventListener("click", () => {
       filter = button.dataset.filter;

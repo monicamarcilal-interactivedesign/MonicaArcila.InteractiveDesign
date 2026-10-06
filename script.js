@@ -1118,8 +1118,14 @@ if (trailBuds.length && heroSection) {
   };
   const params = new URLSearchParams(location.search);
   const roleFilter = ROLE_FILTERS[(params.get("role") || "").toLowerCase()];
-  if (params.has("role")) {
+  // ?pick=siata,meldiria opens Projects showing only those projects (the names
+  // are the project page names without "project-" and ".html"). projects-board.js
+  // reads window.pickedProjects.
+  const pickedProjects = (params.get("pick") || "").toLowerCase().split(",").map((s) => s.trim()).filter(Boolean);
+  window.pickedProjects = pickedProjects;
+  if (params.has("role") || params.has("pick")) {
     params.delete("role");
+    params.delete("pick");
     const rest = params.toString();
     try {
       history.replaceState(null, "", location.pathname + (rest ? "?" + rest : "") + location.hash);
@@ -1128,7 +1134,9 @@ if (trailBuds.length && heroSection) {
     }
   }
 
-  if (roleFilter && !isReload) {
+  if (pickedProjects.length && !isReload && !roleFilter) {
+    showSection("case-studies");
+  } else if (roleFilter && !isReload) {
     showSection("case-studies");
     // the filter chips are wired up by projects-board.js, which loads after
     // this file, so choose the chip once everything has loaded
