@@ -5351,11 +5351,12 @@ html.lotus-poster.lotus-poster-out .lotus-canvas {
   }
 }
 
-/* A fade plus a light bounce in place. Opacity and transform are the two
-   things a phone animates without redoing the page layout. */
+/* A light bounce in place (the fade in and out was taken out on 2026-10-06,
+   at Mónica's request, for now). Transform is something a phone animates
+   without redoing the page layout. */
 @keyframes orb-glisten {
-  0%, 100% { opacity: 0.7; transform: translateY(0); }
-  50%      { opacity: 1;   transform: translateY(-5px); }
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-5px); }
 }
 
 @keyframes lines-glisten {
