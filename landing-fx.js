@@ -125,8 +125,10 @@ const DROPLETS = [
 const TRAIL_SECONDS = 7.5;
 const TRAIL_STEPS = 44;
 let trailSteps = TRAIL_STEPS; // fewer, stronger steps if the device struggles
-let dropEvery = 1; // redraw the droplets every n-th frame (they move very slowly)
+let dropEvery = isTouch ? 2 : 1; // redraw the droplets every n-th frame (they move very slowly)
 let dropCount = 0;
+let lineCount = 0;
+let lineAcc = 0;
 
 function dropletAt(d, t) {
   return {
@@ -264,15 +266,23 @@ function bez(A, c1, c2, B, u) {
   return { x: a * A.x + b * c1.x + c * c2.x + d * B.x, y: a * A.y + b * c1.y + c * c2.y + d * B.y };
 }
 
-function strokeCurve(A, c1, c2, B, from, to, steps) {
-  lineCtx.beginPath();
+function traceCurve(A, c1, c2, B, from, to, steps) {
   for (let i = 0; i <= steps; i++) {
     const p = bez(A, c1, c2, B, from + ((to - from) * i) / steps);
     if (i === 0) lineCtx.moveTo(p.x, p.y);
     else lineCtx.lineTo(p.x, p.y);
   }
+}
+
+function strokeCurve(A, c1, c2, B, from, to, steps) {
+  lineCtx.beginPath();
+  traceCurve(A, c1, c2, B, from, to, steps);
   lineCtx.stroke();
 }
+
+// Phones (and any device the governor has stepped down) get the same lines
+// drawn more cheaply: one stroke per bundle and fewer segments per curve.
+const lean = () => isTouch || tier >= 1;
 
 const rgba = (rgb, a) => `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`;
 
@@ -307,14 +317,18 @@ function drawLines(t, dt) {
 
     let fullyGrown = true;
     let mid = null;
+    const batch = lean();
+    if (batch) lineCtx.beginPath();
     conn.strands.forEach((strand, k) => {
       const g = clamp((local - k * STRAND_DELAY) / GROW, 0, 1);
       if (g < 1) fullyGrown = false;
       if (g <= 0) return;
       const [c1, c2] = controlPoints(A, B, conn, strand, t);
-      strokeCurve(A, c1, c2, B, 0, easeSine(g), Math.max(6, Math.ceil(26 * g)));
+      if (batch) traceCurve(A, c1, c2, B, 0, easeSine(g), Math.max(5, Math.ceil(16 * g)));
+      else strokeCurve(A, c1, c2, B, 0, easeSine(g), Math.max(6, Math.ceil(26 * g)));
       if (k === (STRANDS >> 1) && g >= 1) mid = { A, c1, c2, B };
     });
+    if (batch) lineCtx.stroke();
 
     lineCtx.globalAlpha = 1;
 
@@ -393,7 +407,7 @@ function size() {
   if (w === W && h === H) return true;
   W = w;
   H = h;
-  for (const [c, ctx, k] of [[cDust, dustCtx, dprNow], [cLines, lineCtx, dprNow], [cDrop, dropCtx, DROP_SCALE]]) {
+  for (const [c, ctx, k] of [[cDust, dustCtx, dprNow], [cLines, lineCtx, isTouch ? Math.min(dprNow, 1.25) : dprNow], [cDrop, dropCtx, DROP_SCALE]]) {
     c.width = Math.round(W * k);
     c.height = Math.round(H * k);
     ctx.setTransform(k, 0, 0, k, 0, 0);
@@ -429,7 +443,7 @@ let lastTierChange = 0;
 function applyTier(n) {
   tier = n;
   trailSteps = [TRAIL_STEPS, 28, 16][n];
-  dropEvery = [1, 3, 4][n];
+  dropEvery = [isTouch ? 2 : 1, 3, 4][n];
   dprNow = n >= 2 ? 1 : DPR;
   document.documentElement.classList.toggle("fx-lite", n >= 2);
   W = 0; // makes size() rebuild the canvases at the new resolution
@@ -512,7 +526,14 @@ function frame(now) {
     console.warn("landing-fx: dust", error);
   }
   try {
-    drawLines(t, dt);
+    // The lines only breathe and sway, so on a phone they are redrawn every
+    // other frame (30 a second) with the time that passed; the canvas keeps
+    // what is on it in between.
+    lineAcc += dt;
+    if (!lean() || ++lineCount % 2 === 1) {
+      drawLines(t, lineAcc);
+      lineAcc = 0;
+    }
   } catch (error) {
     console.warn("landing-fx: connections", error);
   }
