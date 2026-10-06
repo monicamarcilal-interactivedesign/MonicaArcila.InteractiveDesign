@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <!--
-  BRAND BOARD — a working proposal for Mónica's brand identity (2026-10-05)
-  Not linked from the site. It shows the identity as a system: lockups, the
-  devices that make it recognisable, colour, type, voice, naming ideas and
-  applications (Instagram grid, LinkedIn banner, business card, signature).
-  Every element is HTML/CSS so it can be screenshotted for the journal.
-  Colours: the logo blue was sampled from assets/site/logo-mark.png.
-  Nothing here states a fact about Mónica that is not on her site or in her
-  outline; naming ideas are labelled as ideas.
+  BRAND BOARD v2 — Mónica Arcila (2026-10-06)
+  A working proposal for the brand identity, built as a MIX of two systems:
+  the Figma Make manual (V3.0) and the first board. Section 1 lists what was
+  kept from each. Not linked from the portfolio site; English only (it is
+  linked from the journal). Every element is HTML/CSS so it can be screenshotted.
+  Facts about Mónica come only from her site, her outline and her own manual;
+  the invented example text in the Make manual (website address, city, project
+  names, dates) is NOT used.
 -->
 <html lang="en-NZ">
 <head>
@@ -16,42 +16,68 @@
   <meta name="robots" content="noindex" />
   <title>Brand board — Mónica Arcila</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
   <link rel="stylesheet" href="styles.css?v=20261005x" />
-  <link rel="stylesheet" href="brand.css?v=20261005x" />
+  <link rel="stylesheet" href="brand.css?v=20261006b" />
   <style>
     /* the same tokens as brand.css, scoped so both skins can sit side by side */
-    .sk-day   { --b-bg:#f5efe6; --b-bg-2:#fbf7f1; --b-ink:#15123b; --b-muted:#5a5680; --b-blue:#2048d8; --b-blue-text:#1c3fbd; --b-spark:#22d3ee; --b-warm:#fd7069; --b-card:rgba(255,255,255,.78); --b-line:rgba(21,18,59,.16); background:var(--b-bg); color:var(--b-ink); }
-    .sk-night { --b-bg:#050318; --b-bg-2:#0b0637; --b-ink:#f4f1ff; --b-muted:#b6aede; --b-blue:#4d7dff; --b-blue-text:#8fa8ff; --b-spark:#22d3ee; --b-warm:#fd7069; --b-card:rgba(255,255,255,.07); --b-line:rgba(255,255,255,.16); background:var(--b-bg); color:var(--b-ink); }
+    .sk-day   { --b-bg:#f4f1ed; --b-bg-2:#faf8f5; --b-ink:#111118; --b-muted:#5b5870; --b-signal:#5400b4; --b-signal-text:#4a00a0; --b-spark:#19c8ff; --b-warm:#ff4fc8; --b-card:rgba(255,255,255,.78); --b-line:rgba(17,17,24,.16); background:var(--b-bg); color:var(--b-ink); }
+    .sk-night { --b-bg:#111118; --b-bg-2:#181826; --b-ink:#f4f1ed; --b-muted:#b9b6cc; --b-signal:#8a5cff; --b-signal-text:#b79cff; --b-spark:#19c8ff; --b-warm:#ff4fc8; --b-card:rgba(255,255,255,.07); --b-line:rgba(255,255,255,.16); background:var(--b-bg); color:var(--b-ink); }
 
     .bb-top { position:static; }
     .bb-wrap { width:min(100% - 2.4rem, 1040px); margin-inline:auto; }
     .bb-sec { padding: clamp(2.2rem, 6vw, 4rem) 0; border-top: 1px solid var(--b-line); }
-    .bb-sec > .bb-wrap > h2 { margin:0 0 .3rem; font-size:clamp(1.6rem,5.5vw,2.4rem); font-weight:800; letter-spacing:-.02em; line-height:1.1; }
+    .bb-sec > .bb-wrap > h2 { margin:0 0 .3rem; font-size:clamp(1.6rem,5.5vw,2.4rem); font-weight:700; letter-spacing:-.02em; line-height:1.1; }
     .bb-sec .lead { margin:.2rem 0 1.6rem; color:var(--b-muted); max-width:42rem; }
     .bb-grid { display:grid; gap:1rem; }
     @media (min-width: 720px) { .g2 { grid-template-columns:1fr 1fr; } .g3 { grid-template-columns:repeat(3,1fr); } .g4 { grid-template-columns:repeat(4,1fr); } }
-    .tag-note { display:inline-block; margin:0 0 .8rem; padding:.3rem .55rem; font:800 .62rem/1 var(--font-body); letter-spacing:.14em; text-transform:uppercase; color:var(--b-draft-text); background:var(--b-draft-bg); border-radius:6px; }
     .panel { border:1px solid var(--b-line); border-radius:22px 6px 22px 6px; padding:1.2rem; container-type:inline-size; }
-    .panel h3 { margin:.2rem 0 .3rem; font-size:1rem; font-weight:800; }
+    .panel h3 { margin:.2rem 0 .3rem; font-size:1rem; font-weight:700; }
     .panel p { margin:0; font-size:.92rem; color:var(--b-muted); }
     .cap { margin:.5rem 0 0; font-size:.78rem; color:var(--b-muted); }
+    .lab { font-size:.64rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--b-muted); }
+    .hand { font-family:var(--font-script); color:var(--b-signal-text); line-height:1.1; }
+
+    /* ---- the mix table ---- */
+    table.mix { width:100%; border-collapse:collapse; font-size:.9rem; }
+    table.mix th, table.mix td { text-align:left; padding:.6rem .6rem; border-bottom:1px solid var(--b-line); vertical-align:top; }
+    table.mix th { font-size:.66rem; letter-spacing:.14em; text-transform:uppercase; color:var(--b-muted); }
+    .from { display:inline-block; padding:.12rem .5rem; border-radius:999px; font-size:.68rem; font-weight:700; letter-spacing:.06em; white-space:nowrap; }
+    .f-make { background:color-mix(in srgb, var(--b-signal) 14%, transparent); color:var(--b-signal-text); }
+    .f-first { background:color-mix(in srgb, var(--b-spark) 22%, transparent); color:#00506b; }
+    .f-both { background:color-mix(in srgb, var(--b-warm) 20%, transparent); color:#7a0a5b; }
+    .dropped { margin-top:1.2rem; padding:1rem 1.2rem; border:1.5px dashed var(--b-line); border-radius:14px; font-size:.9rem; color:var(--b-muted); }
+    .dropped b { color:var(--b-ink); }
 
     /* ---- lockups ---- */
-    .lock { display:flex; align-items:center; justify-content:center; min-height:220px; padding:1.4rem; border-radius:18px; border:1px solid var(--b-line); }
-    .lock--stack { flex-direction:column; text-align:center; gap:.5rem; }
+    .lock { display:flex; align-items:center; justify-content:center; min-height:230px; padding:1.4rem; border-radius:18px; border:1px solid var(--b-line); }
+    .lock--stack { flex-direction:column; text-align:center; gap:.45rem; }
     .lock--row { gap:1rem; }
     .lock img { display:block; height:auto; }
-    .lock .nm { font-weight:800; letter-spacing:-.02em; line-height:1.05; }
-    .lock .rl { font-size:.62rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--b-muted); }
-    .lock .hw { font-family:var(--font-script); color:var(--b-blue-text); line-height:1.1; }
-    .sk-night .lock img { filter:drop-shadow(0 0 18px rgba(77,125,255,.5)); }
+    .lock .nm { font-weight:700; letter-spacing:-.02em; line-height:1.05; }
+
+    /* ---- anatomy ---- */
+    .anat { position:relative; max-width:460px; margin:0 auto; }
+    .anat img { display:block; width:100%; height:auto; }
+    .anat i { position:absolute; display:grid; place-items:center; width:1.7rem; height:1.7rem; border-radius:50%; background:var(--b-ink); color:var(--b-bg); font:700 .78rem/1 var(--font-body); font-style:normal; transform:translate(-50%,-50%); box-shadow:0 0 0 4px color-mix(in srgb, var(--b-bg) 70%, transparent); }
+    .sizes { display:flex; align-items:end; gap:1.6rem; flex-wrap:wrap; }
+    .sizes figure { margin:0; text-align:center; font-size:.7rem; color:var(--b-muted); }
+    .sizes img { display:block; margin:0 auto .3rem; height:auto; }
 
     /* ---- devices ---- */
-    .dev { min-height:200px; display:flex; flex-direction:column; justify-content:space-between; }
-    .dev svg { width:100%; height:auto; display:block; }
+    .dev { min-height:210px; display:flex; flex-direction:column; justify-content:space-between; gap:.8rem; }
     .spark { display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--b-spark); box-shadow:0 0 0 4px color-mix(in srgb,var(--b-spark) 22%,transparent), 0 0 16px var(--b-spark); }
-    .loops { height:120px; border-radius:12px; background-color:var(--b-bg-2); background-image:url("assets/personal-brand/logo.png"); background-size:62px auto; background-repeat:repeat; background-position:0 0; position:relative; overflow:hidden; }
-    .loops::after { content:""; position:absolute; inset:0; background:var(--b-bg); opacity:.86; }
+    .ghost { position:relative; overflow:hidden; border-radius:12px; height:120px; background:var(--b-bg-2); border:1px solid var(--b-line); }
+    .ghost img { position:absolute; width:150%; left:-20%; top:-28%; opacity:.07; }
+    .ghost span { position:relative; display:block; padding:1rem; font-weight:700; font-size:1.05rem; letter-spacing:-.01em; }
+
+    /* ---- patterns ---- */
+    .pt { position:relative; overflow:hidden; isolation:isolate; background:var(--b-bg); }
+    .pt::before { content:""; position:absolute; inset:0; z-index:0; background:var(--pt-img) 0 0/var(--pt-size,260px auto) repeat; opacity:var(--pt-op,.18); }
+    .pt.sk-day::before { mix-blend-mode:multiply; }
+    .pt > * { position:relative; z-index:1; }
+    .pt-box { height:190px; border-radius:12px; border:1px solid var(--b-line); }
 
     /* ---- colour ---- */
     .sw { display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:.8rem; }
@@ -64,73 +90,56 @@
     table.ct { width:100%; border-collapse:collapse; font-size:.86rem; margin-top:1rem; }
     table.ct th, table.ct td { text-align:left; padding:.5rem .6rem; border-bottom:1px solid var(--b-line); }
     table.ct th { font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--b-muted); }
-    .chip-s { display:inline-block; padding:.15rem .5rem; border-radius:6px; font-weight:700; font-size:.78rem; }
 
     /* ---- type ---- */
-    .spec h4 { margin:0; font-size:clamp(2rem,8vw,3.4rem); font-weight:800; letter-spacing:-.025em; line-height:1.02; }
-    .spec .sc { font-family:var(--font-script); font-size:clamp(1.4rem,5vw,2rem); color:var(--b-blue-text); }
+    .spec h4 { margin:0; font-size:clamp(2rem,8vw,3.4rem); font-weight:700; letter-spacing:-.025em; line-height:1.02; }
+    .spec .sc { font-family:var(--font-script); font-size:clamp(1.5rem,5.2vw,2.1rem); color:var(--b-signal-text); line-height:1.1; }
+    .dd ul { margin:.4rem 0 0; padding-left:1.1rem; color:var(--b-muted); font-size:.92rem; }
+    .dd li { margin:.25rem 0; }
 
-    /* ---- applications: all sized in cqw so they scale with their box ---- */
+    /* ---- applications: sized in cqw so they scale with their box ---- */
     .ig { display:grid; grid-template-columns:repeat(3,1fr); gap:6px; max-width:560px; }
-    .ig .t { aspect-ratio:1/1; container-type:inline-size; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; padding:8%; }
-    .ig .t .sm { font-size:5cqw; font-weight:700; letter-spacing:.16em; text-transform:uppercase; opacity:.7; }
-    .ig .t .big { font-size:11cqw; font-weight:800; line-height:1.08; letter-spacing:-.02em; }
-    .ig .t .hand { font-family:var(--font-script); font-size:10cqw; line-height:1; color:var(--b-blue-text); }
-    .ig .t img.mk { width:16cqw; height:auto; }
+    .ig .t { aspect-ratio:1/1; container-type:inline-size; position:relative; overflow:hidden; display:flex; flex-direction:column; justify-content:space-between; padding:8%; box-shadow: inset 0 0 0 1px var(--b-line); }
+    .ig .t .sm { font-size:4.6cqw; font-weight:700; letter-spacing:.16em; text-transform:uppercase; opacity:.7; }
+    .ig .t .big { font-size:11cqw; font-weight:700; line-height:1.08; letter-spacing:-.02em; }
+    .ig .t .hand { font-size:12cqw; line-height:1; }
+    .ig .t img.mk { width:30cqw; height:auto; }
     .ig .t .spark { width:5cqw; height:5cqw; }
-    .ig .t .num { font-size:26cqw; font-weight:800; line-height:.9; color:transparent; -webkit-text-stroke:.6cqw var(--b-blue); }
-    .ig .t { box-shadow: inset 0 0 0 1px var(--b-line); }
+    .ig .t .num { font-size:26cqw; font-weight:700; line-height:.9; color:transparent; -webkit-text-stroke:.6cqw var(--b-signal); }
     .ig .t.pic { padding:0; }
     .ig .t.pic img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
-    .ig .t.pic .lab { position:absolute; left:6cqw; bottom:6cqw; right:6cqw; padding:3cqw 4cqw; border-radius:3cqw; background:rgba(5,3,24,.72); color:#f4f1ff; font-size:5.2cqw; font-weight:700; }
-    .ig .t.pat { isolation:isolate; --pt-img:url(assets/personal-brand/pattern-b.webp); --pt-size:70% auto; }
-    .ig .t.pat::before { content:""; position:absolute; inset:0; z-index:0; background:var(--pt-img) 0 0/var(--pt-size) repeat; mix-blend-mode:multiply; opacity:.85; }
+    .ig .t.pic .lab2 { position:absolute; left:6cqw; bottom:6cqw; right:6cqw; padding:3cqw 4cqw; border-radius:3cqw; background:rgba(17,17,24,.74); color:#f4f1ed; font-size:5.2cqw; font-weight:700; }
+    .ig .t.pat { isolation:isolate; --pt-img:url(assets/personal-brand/pattern-quad-day.png); --pt-size:70% auto; --pt-op:.22; }
+    .ig .t.pat::before { content:""; position:absolute; inset:0; z-index:0; background:var(--pt-img) 0 0/var(--pt-size) repeat; opacity:var(--pt-op); mix-blend-mode:multiply; }
     .ig .t.pat > * { position:relative; z-index:1; }
 
     .li { aspect-ratio:4/1; container-type:inline-size; display:flex; align-items:center; gap:3%; padding:0 5%; border-radius:10px; position:relative; overflow:hidden; border:1px solid var(--b-line); }
-    .li img.mk { height:68%; width:auto; }
-    .li .nm { font-size:4.4cqw; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
-    .li .tg { font-size:2.1cqw; color:var(--b-muted); margin-top:.6cqw; }
-    .li .hw { font-family:var(--font-script); font-size:3cqw; color:var(--b-blue-text); }
-    .li .ln { position:absolute; right:0; top:0; bottom:0; width:30%; background:url(assets/personal-brand/pattern-a.webp) right center/auto 170%; mix-blend-mode:multiply; opacity:.85; }
-    .sk-night.li .ln { filter:invert(1) hue-rotate(180deg); mix-blend-mode:screen; opacity:.4; }
-    .li .ln + .spark { position:absolute; right:6cqw; top:50%; width:1.6cqw; height:1.6cqw; }
+    .li img.mk { height:62%; width:auto; }
+    .li .nm { font-size:4.4cqw; font-weight:700; letter-spacing:-.02em; line-height:1.05; }
+    .li .hw { font-family:var(--font-script); font-size:3.6cqw; color:var(--b-signal-text); line-height:1.1; }
+    .li .ln { position:absolute; right:0; top:0; bottom:0; width:30%; background:var(--pt-img) right center/auto 130%; opacity:.5; }
+    .li.sk-day .ln { mix-blend-mode:multiply; }
+    .li .spark-pos { position:absolute; right:6cqw; top:50%; width:1.6cqw; height:1.6cqw; }
 
-    .card { aspect-ratio:7/4; container-type:inline-size; border-radius:6px; padding:6%; display:flex; flex-direction:column; justify-content:space-between; border:1px solid var(--b-line); box-shadow:0 18px 30px -22px rgba(0,0,0,.6); }
-    .card .nm { font-size:7.4cqw; font-weight:800; letter-spacing:-.02em; line-height:1.05; }
-    .card .rl { font-size:3.2cqw; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--b-muted); }
-    .card .sm { font-size:3.4cqw; color:var(--b-muted); }
-    .card img.mk { width:15cqw; height:auto; }
-    .card .hand { font-family:var(--font-script); font-size:8cqw; color:var(--b-blue-text); line-height:1.05; }
+    .card { aspect-ratio:7/4; container-type:inline-size; border-radius:6px; padding:6%; display:flex; flex-direction:column; justify-content:space-between; border:1px solid var(--b-line); box-shadow:0 18px 30px -22px rgba(0,0,0,.6); position:relative; overflow:hidden; }
+    .card .nm { font-size:7.4cqw; font-weight:700; letter-spacing:-.02em; line-height:1.05; }
+    .card .sm { font-size:3.4cqw; color:var(--b-muted); letter-spacing:.14em; text-transform:uppercase; font-weight:700; }
+    .card img.mk { width:26cqw; height:auto; }
+    .card .hand { font-size:8.5cqw; line-height:1.05; }
+    .card .gh { position:absolute; width:120%; right:-30%; top:-20%; opacity:.07; }
 
-    .sig { padding:1rem 1.2rem; border-radius:12px; border:1px solid var(--b-line); font-size:.88rem; display:flex; gap:.9rem; align-items:center; background:#fff; color:#15123b; --b-muted:#5a5680; }
-    .sig img { width:54px; height:auto; }
+    .sig { padding:1rem 1.2rem; border-radius:12px; border:1px solid var(--b-line); font-size:.88rem; display:flex; gap:.9rem; align-items:center; background:#fff; color:#111118; }
+    .sig img { width:70px; height:auto; }
     .sig b { display:block; font-size:1rem; }
-    .sig .hw { font-family:var(--font-script); color:#1c3fbd; font-size:1.1rem; }
-    .sig small { color:#5a5680; }
-
-    .dd { display:grid; gap:.8rem; }
-    @media (min-width: 720px) { .dd { grid-template-columns:1fr 1fr; } }
-    .dd ul { margin:.4rem 0 0; padding-left:1.1rem; color:var(--b-muted); font-size:.92rem; }
-    .dd li { margin:.25rem 0; }
-    .nm-card { border:1px solid var(--b-line); border-radius:18px; padding:1.1rem; background:var(--b-card); }
-    .nm-card b { font-size:1.25rem; font-weight:800; letter-spacing:-.02em; display:block; margin:.1rem 0 .3rem; }
-    .nm-card p { margin:0 0 .4rem; font-size:.9rem; color:var(--b-muted); }
-    .rec { color:var(--b-blue-text); font-weight:700; font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; }
-    /* ---- patterns (her two pattern files, used as quiet backgrounds) ---- */
-    .pt { position:relative; overflow:hidden; isolation:isolate; background:var(--b-bg); }
-    .pt::before { content:""; position:absolute; inset:0; z-index:0; background:var(--pt-img) 0 0/var(--pt-size,300px auto) repeat; }
-    .pt.sk-day::before { mix-blend-mode:multiply; opacity:.9; }
-    .pt.sk-night::before { filter:invert(1) hue-rotate(180deg); mix-blend-mode:screen; opacity:.5; }
-    .pt > * { position:relative; z-index:1; }
-    .pt-box { height:190px; border-radius:12px; border:1px solid var(--b-line); }
+    .sig .hw { font-family:var(--font-script); color:#4a00a0; font-size:1.2rem; }
+    .sig small { color:#5b5870; }
 
     /* ---- checklist ---- */
     .ck { display:grid; gap:.6rem; margin-top:1rem; }
     .ck-i { display:grid; grid-template-columns:auto 1fr; gap:.8rem; align-items:start; padding:.9rem 1rem; border:1px solid var(--b-line); border-radius:14px; background:var(--b-card); cursor:pointer; }
-    .ck-i input { width:1.25rem; height:1.25rem; margin-top:.25rem; accent-color:var(--b-blue); }
+    .ck-i input { width:1.25rem; height:1.25rem; margin-top:.25rem; accent-color:var(--b-signal); }
     .ck-i b { font-size:1rem; }
-    .ck-i .st { display:inline-block; margin-left:.4rem; padding:.12rem .45rem; border-radius:999px; font-size:.64rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; font-style:normal; vertical-align:middle; }
+    .ck-i .st { display:inline-block; margin-left:.4rem; padding:.12rem .45rem; border-radius:999px; font-size:.64rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; font-style:normal; vertical-align:middle; }
     .st-done { background:#c9f1d3; color:#0b4a1e; }
     .st-part { background:#ffe3a8; color:#5c3600; }
     .st-todo { background:#e3e1f2; color:#2a2660; }
@@ -139,153 +148,170 @@
     .ck-i input:checked ~ span b { text-decoration:line-through; opacity:.6; }
     .src { font-size:.86rem; color:var(--b-muted); }
     .src li { margin:.3rem 0; }
-
   </style>
 </head>
 <body class="brand-page" data-skin="daylight">
 
   <header class="b-top bb-top">
     <a class="b-back" href="ask-monica.html">← Ask Mónica</a>
-    <span class="b-eyebrow" style="margin:0">Brand board · working proposal</span>
+    <span class="b-eyebrow" style="margin:0">Brand board v2 · the mix</span>
   </header>
 
   <main>
     <section class="b-hero" style="padding-bottom:2.4rem">
       <div class="b-wrap">
         <p class="b-eyebrow">Personal project · identity system</p>
-        <h1 class="b-title" style="font-size:clamp(2.2rem,9vw,4.2rem)">One line,<br />one light.</h1>
+        <h1 class="b-title" style="font-size:clamp(2.2rem,9vw,4.2rem)">Two gestures,<br />one current.</h1>
         <p class="b-script">a brand you can put on a profile, a card or a screen</p>
-        <p class="b-lede">This is my reading of your logo: a single line that keeps looping and ends in a glowing dot. Everything below is built from those two things, plus the type and the blue you already use. If the logo means something else to you, tell me and the system changes with it.</p>
+        <p class="b-lede">Your final logo, your Figma Make manual and my first board, mixed. This page keeps the strongest graphic ideas of each and says which is which (section 1). The idea underneath is yours: two letters, one shape, and a single cyan current that activates it.</p>
       </div>
     </section>
 
-    <!-- 1 LOCKUPS -->
+    <!-- 1 THE MIX -->
     <section class="bb-sec" id="s1"><div class="bb-wrap">
-      <h2>1. Lockups</h2>
-      <p class="lead">How the logo, the name and your motto sit together. Stacked is the main one; the row is for headers; the mark alone is for avatars and favicons.</p>
-      <div class="bb-grid g3">
-        <div class="sk-day lock lock--stack"><img src="assets/personal-brand/logo.png" alt="" width="110" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="hw" style="font-size:1.3rem">designing to be felt and valued</span></div>
-        <div class="sk-day lock lock--row"><img src="assets/personal-brand/logo.png" alt="" width="64" /><div><span class="nm" style="font-size:1.4rem;display:block">Mónica Arcila</span></div></div>
-        <div class="sk-day lock"><img src="assets/personal-brand/logo.png" alt="" width="96" /></div>
-        <div class="sk-night lock lock--stack"><img src="assets/personal-brand/logo.png" alt="" width="110" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="hw" style="font-size:1.3rem">designing to be felt and valued</span></div>
-        <div class="sk-night lock lock--row"><img src="assets/personal-brand/logo.png" alt="" width="64" /><div><span class="nm" style="font-size:1.4rem;display:block">Mónica Arcila</span></div></div>
-        <div class="sk-night lock"><img src="assets/personal-brand/logo.png" alt="" width="96" /></div>
+      <h2>1. The mix: what was kept from each</h2>
+      <p class="lead">Two systems, one brand. Where they agreed, that is the core. Where they differed, I kept the stronger graphic idea. The one type decision that is yours: Space Grotesk with your handwriting font.</p>
+      <div class="sk-day panel" style="padding:.4rem 1rem">
+        <table class="mix">
+          <tr><th>Idea</th><th>From</th><th>What it does here</th></tr>
+          <tr><td>The MA monogram and its cyan current</td><td><span class="from f-make">Your final logo</span></td><td>The mark, the tab icon, every lockup</td></tr>
+          <tr><td>Space Grotesk for structure</td><td><span class="from f-make">Make manual</span></td><td>All text, labels and headings of the brand</td></tr>
+          <tr><td>Your handwriting font, once per layout</td><td><span class="from f-both">Your choice</span></td><td>The one human line. It is also the thread to the portfolio, which uses the same font</td></tr>
+          <tr><td>Obsidian and Paper as the two bases</td><td><span class="from f-make">Make manual</span></td><td>The Night and Daylight skins</td></tr>
+          <tr><td>Daylight and Night on the same tokens</td><td><span class="from f-first">First board</span></td><td>One layout, two moods; Night sits next to the portfolio</td></tr>
+          <tr><td>Violet as the signature colour</td><td><span class="from f-make">Your final logo</span></td><td>Buttons, links, question bubbles</td></tr>
+          <tr><td>The cyan Current as the only light</td><td><span class="from f-both">Both</span></td><td>My <q>spark</q> and your <q>current</q> are the same idea: one per layout, meaning <q>someone is here</q></td></tr>
+          <tr><td>Plasma as a soft highlighter; Pulse lime very rarely</td><td><span class="from f-make">Make manual</span></td><td>Accents, never on paragraphs</td></tr>
+          <tr><td>Cobalt as the bridge to the portfolio</td><td><span class="from f-both">Both</span></td><td>The portfolio's blue and violet glow sit in the same family</td></tr>
+          <tr><td>Tracked uppercase labels</td><td><span class="from f-make">Make manual</span></td><td>Small functional labels only</td></tr>
+          <tr><td>Asymmetric corners</td><td><span class="from f-first">First board</span></td><td>Cards, bubbles, tiles</td></tr>
+          <tr><td>A path with nodes</td><td><span class="from f-both">Both</span></td><td>Dividers, steps, connectors</td></tr>
+          <tr><td>Patterns from the mark (ghost mark)</td><td><span class="from f-both">Both</span></td><td>Your two pattern ideas, redrawn with the new mark, kept very faint</td></tr>
+          <tr><td>One idea per layout; handwriting once; glow never on a paragraph</td><td><span class="from f-both">Both</span></td><td>The guardrails</td></tr>
+        </table>
       </div>
-      <p class="cap">The motto is yours (<q>Designing to be felt and valued, not just seen</q>); the short form is used under the lockup. Keep clear space around the mark equal to the height of its glowing dot.</p>
+      <div class="dropped"><b>Left out on purpose:</b> Sora (it stays in the portfolio only); the manual's Instrument Serif Italic (your handwriting does that job); the scan field, living mesh and signal-noise textures (too many effects for a small brand: one texture is enough); colours beyond the five plus two bridges; and the example text Make invented in your manual (a website address, a city, project names and dates), which are not facts about you.</div>
     </div></section>
 
-    <!-- 2 DEVICES -->
+    <!-- 2 LOCKUPS -->
     <section class="bb-sec" id="s2"><div class="bb-wrap">
-      <h2>2. Four devices that make it recognisable</h2>
-      <p class="lead">A brand is mostly a few things repeated. These four come straight from your logo and your portfolio, so the brand feels like yours and not like a template.</p>
-      <div class="bb-grid g4">
-        <div class="sk-day panel dev"><div><h3>The line</h3><p>One continuous curve, as in the logo. Used as a divider, a connector between steps, an underline.</p></div>
-          <svg viewBox="0 0 260 60" aria-hidden="true"><path d="M4 40 C 40 4, 70 4, 100 30 S 160 58, 200 28 S 236 20, 250 34" fill="none" stroke="#2048d8" stroke-width="3" stroke-linecap="round"/><circle cx="250" cy="34" r="6" fill="#22d3ee"/><circle cx="250" cy="34" r="11" fill="#22d3ee" opacity=".25"/></svg></div>
-        <div class="sk-day panel dev"><div><h3>The spark</h3><p>The glowing dot. One per layout, always cyan, never on text. It marks <q>someone is here</q>: typing, live, new.</p></div>
-          <div style="display:flex;gap:1rem;align-items:center"><span class="spark"></span><span style="font-size:.8rem;color:var(--b-muted)">1 per composition</span></div></div>
-        <div class="sk-day panel dev"><div><h3>The loops</h3><p>Your two mirrored patterns, very faint, as texture behind quotes, covers and the back of a card (section 4).</p></div><div class="pt sk-day pt-box" style="--pt-img:url(assets/personal-brand/pattern-a.webp);--pt-size:300px auto;height:120px"></div></div>
-        <div class="sk-day panel dev"><div><h3>The hand</h3><p>Your handwriting font for one short line per layout: the voice. Everything else is Sora.</p></div><div class="spec"><span class="sc">hello, I'm Mónica</span></div></div>
+      <h2>2. Lockups</h2>
+      <p class="lead">The mark, the name and your motto. Stacked is the main one; the row is for headers; the mark alone is for avatars. Violet on Daylight, light lavender on Night; the cyan stays the same in both.</p>
+      <div class="bb-grid g3">
+        <div class="sk-day lock lock--stack"><img src="assets/personal-brand/logo.png" alt="" width="190" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="hand" style="font-size:1.45rem">designing to be felt and valued</span></div>
+        <div class="sk-day lock lock--row"><img src="assets/personal-brand/logo.png" alt="" width="96" /><div><span class="nm" style="font-size:1.45rem;display:block">Mónica Arcila</span><span class="lab">Portfolio</span></div></div>
+        <div class="sk-day lock"><img src="assets/personal-brand/logo.png" alt="" width="170" /></div>
+        <div class="sk-night lock lock--stack"><img src="assets/personal-brand/logo-night.png" alt="" width="190" /><span class="nm" style="font-size:1.7rem">Mónica Arcila</span><span class="hand" style="font-size:1.45rem">designing to be felt and valued</span></div>
+        <div class="sk-night lock lock--row"><img src="assets/personal-brand/logo-night.png" alt="" width="96" /><div><span class="nm" style="font-size:1.45rem;display:block">Mónica Arcila</span><span class="lab">Portfolio</span></div></div>
+        <div class="sk-night lock"><img src="assets/personal-brand/logo-night.png" alt="" width="170" /></div>
       </div>
+      <p class="cap">The motto is yours (<q>Designing to be felt and valued, not just seen</q>); the short form sits under the lockup, in your handwriting. Keep clear space around the mark equal to the width of the cyan stroke.</p>
     </div></section>
 
     <!-- 3 READING THE MARK -->
     <section class="bb-sec" id="s3"><div class="bb-wrap">
-      <h2>3. Does the mark say M A?</h2>
-      <p class="lead">Honest answer: partly. Your mark is an abstract symbol with the letters hidden inside it, which works well as long as it always sits next to your name.</p>
-      <div class="bb-grid g2">
-        <div class="sk-day panel">
-          <h3>What people will see</h3>
-          <p>The <b>M</b> is easy: two arches with a peak between them. The <b>A</b> is the harder letter: its point is the central peak, but its legs run into the loops. So most people will see a lotus, a bird or a knot first, and find the letters when you point them out.</p>
-          <p style="margin-top:.6rem">That is not a flaw. It makes the mark a small secret you can tell: <q>two letters, one line, one light.</q></p>
-        </div>
-        <div class="sk-day panel">
-          <h3>If you want M A at first glance</h3>
-          <ul style="margin:.4rem 0 0;padding-left:1.1rem;color:var(--b-muted);font-size:.92rem">
-            <li style="margin:.3rem 0"><b>Keep it and tell the secret (0 h).</b> Show your M and A trace next to the mark in the brand story. My recommendation for now.</li>
-            <li style="margin:.3rem 0"><b>Add a letter shortcut (about 1 h).</b> A small <b>MA</b> set in Sora for avatars and favicons, with the full mark on larger versions.</li>
-            <li style="margin:.3rem 0"><b>Redraw it (2 to 3 h, after submission).</b> Rebuild the line with the pen tool so the A's crossbar is explicit, and keep the dot.</li>
-          </ul>
-        </div>
-      </div>
-      <h3 style="margin:1.6rem 0 .6rem">The three versions you made</h3>
+      <h2>3. Reading the mark</h2>
+      <p class="lead">Your manual explains the anatomy in three steps. The new mark says M much more clearly than the old knot, and the A is now built in: the shared centre rises again, and the cyan stroke is its crossbar.</p>
       <div class="bb-grid g2" style="align-items:center">
-        <div class="sk-day lock" style="min-height:0"><img src="assets/personal-brand/logo-versions.png" alt="Three versions of the mark: a line version, a solid version and a two-tone version with a darker central stroke." width="260" style="mix-blend-mode:multiply" /></div>
-        <div>
-          <p style="color:var(--b-muted)">I would use the <b>solid version</b> (top right) for anything under about 64 px (avatar, favicon): it keeps the two arches readable when small. The <b>line version</b> is for large uses, like the lockups above. The <b>two-tone version</b>, with its darker central stroke, makes the A's leg stand out, so it is the best one for explaining the letters.</p>
-          <p class="cap">This is my reading of your three files, not a rule. Test them at 32 px before choosing.</p>
+        <div class="sk-day panel"><div class="anat"><img src="assets/personal-brand/logo.png" alt="The mark with three numbered points: the M gesture on the left, the A gesture on the right and the cyan current between them." width="720" height="451" /><i style="left:21%;top:50%">1</i><i style="left:84%;top:26%">2</i><i style="left:71%;top:61%">3</i></div></div>
+        <div class="sk-day panel dd">
+          <h3>Anatomy, from your manual</h3>
+          <ul>
+            <li><b>1. First gesture, the M.</b> A broad entry rises, narrows and turns inward with calligraphic contrast.</li>
+            <li><b>2. Second gesture, the A.</b> The shared centre rises again, letting the A emerge without separating the initials.</li>
+            <li><b>3. The current.</b> The cyan sweep activates the mark: the moment intent becomes an interactive response.</li>
+          </ul>
+          <p style="margin-top:.8rem">My honest note: the A is still a gesture rather than a plain triangle, so at first glance some people will read <q>M</q> and a flourish. That is a feature if you always show the name beside it, as the lockups do.</p>
         </div>
       </div>
+      <h3 style="margin:1.6rem 0 .8rem">Does it hold at small sizes?</h3>
+      <div class="sk-day panel">
+        <div class="sizes">
+          <figure><img src="assets/personal-brand/logo.png" alt="" width="160" />160 px</figure>
+          <figure><img src="assets/personal-brand/logo.png" alt="" width="96" />96 px</figure>
+          <figure><img src="assets/personal-brand/logo.png" alt="" width="48" />48 px</figure>
+          <figure><img src="assets/personal-brand/logo.png" alt="" width="32" />32 px</figure>
+          <figure><img src="assets/favicon-64.png" alt="" width="48" />tab icon, 48</figure>
+          <figure><img src="assets/favicon-32.png" alt="" width="32" />tab icon, 32</figure>
+        </div>
+        <p class="cap">Down to 48 px the mark reads. Below that, use the tab icon version (the mark on a Paper tile), as the portfolio now does.</p>
+      </div>
     </div></section>
 
-    <!-- 4 PATTERNS -->
+    <!-- 4 DEVICES -->
     <section class="bb-sec" id="s4"><div class="bb-wrap">
-      <h2>4. Patterns</h2>
-      <p class="lead">Your two patterns, as part of the system. Both mirror the mark so the dots meet or part. Keep them quiet: backgrounds for covers, quote tiles and the back of a card, never behind a paragraph.</p>
-      <div class="bb-grid g2">
-        <div class="sk-day panel"><div class="pt sk-day pt-box" style="--pt-img:url(assets/personal-brand/pattern-a.webp);--pt-size:360px auto"></div><h3 style="margin-top:.8rem">Pattern A: the meeting</h3><p>Two marks mirrored top and bottom, their dots meeting in the middle. Calm and symmetrical: the default.</p></div>
-        <div class="sk-day panel"><div class="pt sk-day pt-box" style="--pt-img:url(assets/personal-brand/pattern-b.webp);--pt-size:360px auto"></div><h3 style="margin-top:.8rem">Pattern B: the opening</h3><p>The mirror turned the other way, with the dots at the outer ends. More energetic: covers and bigger moments.</p></div>
-        <div class="sk-night panel"><div class="pt sk-night pt-box" style="--pt-img:url(assets/personal-brand/pattern-a.webp);--pt-size:360px auto"></div><h3 style="margin-top:.8rem">Pattern A on Night</h3><p>Inverted and very faint, so it adds texture without competing with text.</p></div>
-        <div class="sk-night panel"><div class="pt sk-night pt-box" style="--pt-img:url(assets/personal-brand/pattern-b.webp);--pt-size:360px auto"></div><h3 style="margin-top:.8rem">Pattern B on Night</h3><p>Same idea, for the portfolio's side of the brand.</p></div>
+      <h2>4. Four devices that make it recognisable</h2>
+      <p class="lead">A brand is mostly a few things repeated. These come from the mark and from your manual, so the brand feels like yours and not like a template.</p>
+      <div class="bb-grid g4">
+        <div class="sk-day panel dev"><div><h3>The current</h3><p>The cyan stroke of the logo as the one light: a live state, a hover, a progress mark. One per layout.</p></div>
+          <svg viewBox="0 0 180 60" width="100%" aria-hidden="true"><defs><linearGradient id="cg" x1="0" x2="1"><stop stop-color="#19c8ff"/><stop offset="1" stop-color="#3157ff"/></linearGradient><filter id="cb"><feGaussianBlur stdDeviation="3"/></filter></defs><path d="M20 42C60 22 110 14 160 18C118 28 74 42 26 54Z" fill="url(#cg)" opacity=".5" filter="url(#cb)"/><path d="M20 42C60 22 110 14 160 18C118 28 74 42 26 54Z" fill="url(#cg)"/></svg></div>
+        <div class="sk-day panel dev"><div><h3>The path</h3><p>A line with nodes: endpoint, junction and one active node in cyan. For steps, dividers and connections.</p></div>
+          <svg viewBox="0 0 260 60" width="100%" aria-hidden="true"><path d="M8 40C50 6 80 6 110 30S170 54 210 26" fill="none" stroke="#5400b4" stroke-width="3" stroke-linecap="round"/><circle cx="8" cy="40" r="5" fill="#f4f1ed" stroke="#5400b4" stroke-width="2.5"/><circle cx="110" cy="30" r="7" fill="#f4f1ed" stroke="#5400b4" stroke-width="2.5"/><circle cx="210" cy="26" r="6" fill="#19c8ff"/><circle cx="210" cy="26" r="11" fill="#19c8ff" opacity=".25"/></svg></div>
+        <div class="sk-day panel dev"><div><h3>The ghost mark</h3><p>The mark overscaled to about 140 percent at 3 to 8 percent opacity, behind a headline.</p></div>
+          <div class="ghost"><img src="assets/personal-brand/logo.png" alt="" /><span>Systems can feel.</span></div></div>
+        <div class="sk-day panel dev"><div><h3>The voice</h3><p>Space Grotesk does the work; your handwriting says one short, human thing.</p></div>
+          <div class="spec"><b style="font-size:1.4rem;line-height:1.1;display:block">Bold ideas,</b><span class="sc">soft edges.</span></div></div>
       </div>
     </div></section>
 
-    <!-- 3 COLOUR -->
+    <!-- 5 PATTERNS -->
     <section class="bb-sec" id="s5"><div class="bb-wrap">
-      <h2>5. Colour</h2>
-      <p class="lead">Your logo blue is the signature. Daylight and Night use the same roles; only the base flips. Proportion: mostly the base, then ink, then blue, with the spark as a rare accent.</p>
+      <h2>5. Patterns</h2>
+      <p class="lead">Your two pattern ideas, redrawn with the new mark: one mirrors it top and bottom, the other mirrors it four ways. Keep them quiet: backgrounds for covers, quote tiles and the back of a card, never behind a paragraph.</p>
+      <div class="bb-grid g2">
+        <div class="sk-day panel"><div class="pt sk-day pt-box" style="--pt-img:url(assets/personal-brand/pattern-mirror-day.png);--pt-size:200px auto"></div><h3 style="margin-top:.8rem">Pattern A: mirror</h3><p>The mark above its reflection. Calm and symmetrical: the default.</p></div>
+        <div class="sk-day panel"><div class="pt sk-day pt-box" style="--pt-img:url(assets/personal-brand/pattern-quad-day.png);--pt-size:260px auto"></div><h3 style="margin-top:.8rem">Pattern B: four ways</h3><p>The mark mirrored left, right, up and down, so the cyan strokes meet in the middle. More energetic: covers and bigger moments.</p></div>
+        <div class="sk-night panel"><div class="pt sk-night pt-box" style="--pt-img:url(assets/personal-brand/pattern-mirror-night.png);--pt-size:200px auto;--pt-op:.22"></div><h3 style="margin-top:.8rem">Pattern A on Night</h3><p>Light lavender at low opacity: texture without competing with text.</p></div>
+        <div class="sk-night panel"><div class="pt sk-night pt-box" style="--pt-img:url(assets/personal-brand/pattern-quad-night.png);--pt-size:260px auto;--pt-op:.22"></div><h3 style="margin-top:.8rem">Pattern B on Night</h3><p>The same idea for the portfolio's side of the brand.</p></div>
+      </div>
+    </div></section>
+
+    <!-- 6 COLOUR -->
+    <section class="bb-sec" id="s6"><div class="bb-wrap">
+      <h2>6. Colour</h2>
+      <p class="lead">Violet is the signature, the cyan current is the light, Obsidian and Paper are the two bases. Cobalt, Plasma and Pulse are for the edges. Proportion: mostly base, then ink, then violet, with the current as a rare accent.</p>
       <div class="sw">
-        <div><i style="background:#f5efe6"></i><b>Paper</b><span>#F5EFE6 · base in Daylight</span></div>
-        <div><i style="background:#15123b"></i><b>Ink</b><span>#15123B · text in Daylight, base of cards</span></div>
-        <div><i style="background:#2048d8"></i><b>Signal blue</b><span>#2048D8 · from your logo</span></div>
-        <div><i style="background:#4d7dff"></i><b>Signal blue, Night</b><span>#4D7DFF · the portfolio's blue</span></div>
-        <div><i style="background:#22d3ee"></i><b>Spark</b><span>#22D3EE · the dot only</span></div>
-        <div><i style="background:#050318"></i><b>Night</b><span>#050318 · base in Night</span></div>
-        <div><i style="background:#fd7069"></i><b>Ember</b><span>#FD7069 · soft highlighter</span></div>
-        <div><i style="background:#8747f8"></i><b>Orchid</b><span>#8747F8 · link to the portfolio's glow</span></div>
+        <div><i style="background:#f4f1ed"></i><b>Paper</b><span>#F4F1ED · base in Daylight</span></div>
+        <div><i style="background:#111118"></i><b>Obsidian</b><span>#111118 · ink in Daylight, base in Night</span></div>
+        <div><i style="background:#5400b4"></i><b>Violet</b><span>#5400B4 · from your final logo</span></div>
+        <div><i style="background:#b79cff"></i><b>Lavender</b><span>#B79CFF · violet's text colour on Night</span></div>
+        <div><i style="background:#19c8ff"></i><b>Current</b><span>#19C8FF · the cyan stroke, one per layout</span></div>
+        <div><i style="background:#ff4fc8"></i><b>Plasma</b><span>#FF4FC8 · soft highlighter, accents</span></div>
+        <div><i style="background:#3157ff"></i><b>Cobalt</b><span>#3157FF · the bridge to the portfolio</span></div>
+        <div><i style="background:#b7ff3c"></i><b>Pulse</b><span>#B7FF3C · very rare</span></div>
       </div>
-      <div class="ratio" aria-label="Proportion of the colours: 60 base, 25 ink, 10 signal blue, 5 spark and ember">
-        <i style="width:60%;background:#f5efe6"></i><i style="width:25%;background:#15123b"></i><i style="width:10%;background:#2048d8"></i><i style="width:5%;background:#22d3ee"></i>
+      <div class="ratio" aria-label="Proportion of the colours: 60 base, 25 ink, 10 violet, 5 current and accents">
+        <i style="width:60%;background:#f4f1ed"></i><i style="width:25%;background:#111118"></i><i style="width:10%;background:#5400b4"></i><i style="width:5%;background:#19c8ff"></i>
       </div>
-      <p class="cap">60 base · 25 ink · 10 signal blue · 5 spark and ember</p>
+      <p class="cap">60 base · 25 ink · 10 violet · 5 current and accents</p>
       <table class="ct">
         <tr><th>Pair</th><th>Contrast</th><th>Use</th></tr>
-        <tr><td>Ink on Paper</td><td>15.5 : 1</td><td>Body text, headings</td></tr>
-        <tr><td>Muted on Paper</td><td>6.0 : 1</td><td>Secondary text</td></tr>
-        <tr><td>Blue text on Paper</td><td>7.4 : 1</td><td>Links, labels</td></tr>
-        <tr><td>White on Signal blue</td><td>7.0 : 1</td><td>Buttons, bubbles</td></tr>
-        <tr><td>Text on Night</td><td>18.3 : 1</td><td>Body text, headings</td></tr>
-        <tr><td>Blue text on Night</td><td>8.9 : 1</td><td>Links, labels</td></tr>
-        <tr><td>Spark on Night</td><td>11.3 : 1</td><td>The dot</td></tr>
-        <tr><td>Spark on Paper</td><td>1.6 : 1</td><td>Decoration only; never text</td></tr>
+        <tr><td>Obsidian on Paper</td><td>16.7 : 1</td><td>Body text, headings</td></tr>
+        <tr><td>Muted on Paper</td><td>6.1 : 1</td><td>Secondary text</td></tr>
+        <tr><td>Deep violet on Paper</td><td>10.4 : 1</td><td>Links, labels</td></tr>
+        <tr><td>White on Violet</td><td>10.3 : 1</td><td>Buttons, bubbles</td></tr>
+        <tr><td>Paper on Obsidian</td><td>16.7 : 1</td><td>Body text on Night</td></tr>
+        <tr><td>Lavender on Obsidian</td><td>8.2 : 1</td><td>Links, labels on Night</td></tr>
+        <tr><td>Current on Obsidian</td><td>9.6 : 1</td><td>The cyan light</td></tr>
+        <tr><td>Current on Paper</td><td>1.7 : 1</td><td>Decoration only; never text</td></tr>
+        <tr><td>Plasma on Obsidian</td><td>6.4 : 1</td><td>Accents</td></tr>
       </table>
     </div></section>
 
-    <!-- 4 TYPE + VOICE -->
-    <section class="bb-sec" id="s6"><div class="bb-wrap">
-      <h2>6. Type and voice</h2>
-      <p class="lead">Two fonts you already own on the site, used with a rule: Sora does the work, the handwriting says one short thing.</p>
+    <!-- 7 TYPE AND VOICE -->
+    <section class="bb-sec" id="s7"><div class="bb-wrap">
+      <h2>7. Type and voice</h2>
+      <p class="lead">Two voices, with your manual's rule: structure speaks, feeling answers. Space Grotesk carries everything you read; your handwriting font is used once per layout, for one short human line.</p>
       <div class="bb-grid g2">
-        <div class="sk-day panel spec"><span class="rec">Sora ExtraBold, 800</span><h4>Say it plainly.</h4><p style="margin-top:.8rem">Sora Regular for every paragraph: clear, even, easy to read at length. Spaced capitals for small labels.</p><span class="sc" style="display:block;margin-top:.6rem">Over the Rainbow: one short line, never a paragraph</span></div>
-        <div class="dd" style="grid-template-columns:1fr">
+        <div class="sk-day panel spec"><span class="lab">Space Grotesk · structure</span><h4>Say it plainly.</h4><p style="margin-top:.8rem">Space Grotesk Regular for every paragraph: clear, even, easy to read at length. Tracked capitals for small labels.</p><span class="sc" style="display:block;margin-top:.6rem">Your handwriting: one short line, never a paragraph</span></div>
+        <div class="dd" style="display:grid;gap:.8rem">
           <div class="panel sk-day"><h3>Voice, from your own outline</h3><ul><li><b>Analytical:</b> say what the data can and cannot show.</li><li><b>Narrative:</b> tell what happened, in order, as a person.</li><li><b>Conversational:</b> short sentences; write to one reader.</li><li><b>Clear for the average person:</b> explain, don't show off.</li></ul></div>
-          <div class="panel sk-night"><h3>What to avoid (your own notes)</h3><ul><li>Neon or thin type on anything long.</li><li>Space or astronaut imagery.</li><li>Claims you cannot back up with a project.</li></ul></div>
+          <div class="panel sk-night"><h3>What to avoid (your own notes)</h3><ul><li>Glow or thin type on anything long.</li><li>Space or astronaut imagery.</li><li>Claims you cannot back up with a project.</li><li>All the effects at once: one idea per layout.</li></ul></div>
         </div>
       </div>
     </div></section>
 
-    <!-- 5 NAMES -->
-    <section class="bb-sec" id="s7"><div class="bb-wrap">
-      <h2>7. If it were a studio: naming ideas</h2>
-      <p class="lead">You asked how it could look as an enterprise, a service or a product. A name is the first decision. These are ideas to react to, not decisions.</p>
-      <div class="bb-grid g3 sk-day" style="padding:0">
-        <div class="nm-card"><span class="rec">Your choice</span><b>Mónica Arcila</b><p>Your name is the brand, which fits a personal brand and a freelance service. Nothing to explain, and the motto carries the meaning.</p></div>
-        <div class="nm-card"><b>Line &amp; Spark</b><p>Taken from the logo. Reads like a small studio. The tagline would carry <q>interactive design by Mónica Arcila</q>.</p></div>
-        <div class="nm-card"><b>Felt &amp; Valued</b><p>Taken from your motto. Warm and memorable; says what the work is for, not what it is.</p></div>
-      </div>
-      <p class="cap">Your two services could be shown as named offers later (for example a prototype sprint and a project plan). That needs your wording and your prices, so I left them out.</p>
-    </div></section>
-
-    <!-- 6 APPLICATIONS -->
+    <!-- 8 APPLICATIONS -->
     <section class="bb-sec" id="s8"><div class="bb-wrap">
       <h2>8. Where it lives</h2>
       <p class="lead">The brand in use. Your outline mentioned a dedicated Instagram account as a start; this is what its first six posts could look like, plus a banner, a card and a signature.</p>
@@ -294,8 +320,8 @@
       <div class="ig" style="border-radius:8px;overflow:hidden">
         <div class="t sk-day"><span class="sm">Ask Mónica</span><span class="big">How are you adapting to AI as an interactive designer?</span><span style="display:flex;align-items:center;justify-content:space-between"><span class="hand">swipe for my answer</span><span class="spark"></span></span></div>
         <div class="t sk-night"><span class="sm">Service 01</span><span><span class="num">01</span><span class="big" style="display:block;margin-top:2cqw">UX/UI and prototyping</span></span><span class="sm" style="opacity:.55">See your idea in action</span></div>
-        <div class="t pic sk-night"><img src="assets/cards/nature-wine.jpg" alt="" /><span class="lab">Nature's Embodiment of Wine</span></div>
-        <div class="t pat sk-day"><span class="sm">Mónica Arcila</span><span class="hand" style="font-size:13cqw;line-height:1.05">designing to be felt and valued</span><span class="spark"></span></div>
+        <div class="t pic sk-night"><img src="assets/cards/nature-wine.jpg" alt="" /><span class="lab2">Nature's Embodiment of Wine</span></div>
+        <div class="t pat sk-day"><span class="sm">Mónica Arcila</span><span class="hand" style="font-size:13cqw;line-height:1.05">designing to be felt and valued</span><img class="mk" src="assets/personal-brand/logo.png" alt="" /></div>
         <div class="t sk-day"><span class="sm">What you can expect</span><span class="big">Rigour and honesty.</span><span class="hand">say what the data can and cannot show</span></div>
         <div class="t sk-night"><span class="sm">Let's talk</span><span class="big">Tell me what you are making and where it is stuck.</span><span style="display:flex;align-items:center;gap:3cqw"><span class="spark"></span><span class="sm">link in bio</span></span></div>
       </div>
@@ -303,29 +329,30 @@
 
       <h3 style="margin:2rem 0 .6rem">LinkedIn banner (4 : 1)</h3>
       <div class="bb-grid">
-        <div class="li sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">designing to be felt and valued</div></div><div class="ln"></div><span class="spark"></span></div>
-        <div class="li sk-night"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">designing to be felt and valued</div></div><div class="ln"></div><span class="spark"></span></div>
+        <div class="li sk-day" style="--pt-img:url(assets/personal-brand/pattern-quad-day.png)"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">designing to be felt and valued</div></div><div class="ln"></div><span class="spark spark-pos"></span></div>
+        <div class="li sk-night" style="--pt-img:url(assets/personal-brand/pattern-quad-night.png)"><img class="mk" src="assets/personal-brand/logo-night.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hw">designing to be felt and valued</div></div><div class="ln"></div><span class="spark spark-pos"></span></div>
       </div>
 
       <h3 style="margin:2rem 0 .6rem">Business card, front and back (3.5 × 2 in)</h3>
       <div class="bb-grid g2" style="max-width:640px">
-        <div class="card sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hand" style="font-size:6cqw">designing to be felt and valued</div></div></div>
-        <div class="card sk-night"><span class="hand">designing to be felt and valued</span><div style="display:flex;align-items:center;justify-content:space-between"><span class="sm">[website]</span><span class="spark"></span></div></div>
+        <div class="card sk-day"><img class="mk" src="assets/personal-brand/logo.png" alt="" /><div><div class="nm">Mónica Arcila</div><div class="hand">designing to be felt and valued</div></div></div>
+        <div class="card sk-night"><img class="gh" src="assets/personal-brand/logo-night.png" alt="" /><span class="hand" style="position:relative">designing to be felt and valued</span><div style="display:flex;align-items:center;justify-content:space-between;position:relative"><span class="sm">[website]</span><span class="spark"></span></div></div>
       </div>
 
       <h3 style="margin:2rem 0 .6rem">Email signature</h3>
       <div class="sig"><img src="assets/personal-brand/logo.png" alt="" /><div><b>Mónica Arcila</b><span class="hw">designing to be felt and valued</span><br /><small>[website]</small></div></div>
     </div></section>
 
-    <!-- 7 RELATION TO THE PORTFOLIO -->
+    <!-- 9 RELATION TO THE PORTFOLIO -->
     <section class="bb-sec" id="s9"><div class="bb-wrap">
       <h2>9. How it relates to the portfolio</h2>
       <div class="bb-grid g2">
-        <div class="sk-night panel"><h3>The portfolio is the stage</h3><p>Dark, lit, full of movement. It shows the work. Neon, glass and orbs belong here.</p></div>
-        <div class="sk-day panel"><h3>The brand is the person</h3><p>Daylight by default, calm, made for reading and for printing. It shows how I think. It shares the logo, Sora, the handwriting, the blue and the spark with the stage, so the two are clearly the same person.</p></div>
+        <div class="sk-night panel"><h3>The portfolio is the stage</h3><p>Dark, lit, full of movement, in the lotus system (Sora, the handwriting font, neon violet and cyan glow). It shows the work. The only piece of the brand it carries is the MA monogram as its tab icon.</p></div>
+        <div class="sk-day panel"><h3>The brand is the person</h3><p>Daylight by default, calm, made for reading and printing, in the mixed system above. It shows how I think. Night is the same brand next to the portfolio. Both share your handwriting font and the cyan and violet family, so the two read as the same person.</p></div>
       </div>
-      <p class="lead" style="margin-top:1.2rem">You do not have to choose one skin: Daylight is the brand's home, Night is the same brand on the portfolio's stage. Use Night for screens next to the portfolio and Daylight for anything that is read or printed.</p>
+      <p class="lead" style="margin-top:1.2rem">The mark is used in two places only: the tab icon of the portfolio, and the personal brand (this board, Ask Mónica and the brand applications).</p>
     </div></section>
+
     <!-- 10 CHECKLIST -->
     <section class="bb-sec" id="checklist"><div class="bb-wrap">
       <h2>10. Personal brand checklist</h2>
@@ -335,7 +362,7 @@
         <label class="ck-i"><input type="checkbox" data-k="audience" /><span><b>Audience</b><i class="st st-todo">To do</i><p><strong>Today:</strong> not written down.</p><p><strong>Next:</strong> choose one or two audiences (for example hiring teams for junior UX/UI roles, and small teams that need a prototype) and list what each needs to see in 30 seconds.</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="values" /><span><b>Purpose and values</b><i class="st st-part">Partly</i><p><strong>Today:</strong> six strengths in your outline and your motto, <q>Designing to be felt and valued, not just seen</q>.</p><p><strong>Next:</strong> pick three values and write what each looks like in your work (a behaviour, not just a word).</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="offer" /><span><b>Value proposition and services</b><i class="st st-part">Partly</i><p><strong>Today:</strong> two services drafted: UX/UI and prototyping; coordination and planning of interactive projects.</p><p><strong>Next:</strong> for each, write who it is for, what they receive, how long it takes and how it is agreed.</p></span></label>
-        <label class="ck-i"><input type="checkbox" data-k="visual" /><span><b>Visual identity</b><i class="st st-part">Partly</i><p><strong>Today:</strong> logo in three versions, colours, fonts, two skins and two patterns, all on this board.</p><p><strong>Next:</strong> decide how the mark reads (section 3), export the logo as SVG and as PNG at 32, 64 and 512 px, and make a one-page brand sheet.</p></span></label>
+        <label class="ck-i"><input type="checkbox" data-k="visual" /><span><b>Visual identity</b><i class="st st-part">Partly</i><p><strong>Today:</strong> final MA logo, colours, fonts, two skins, patterns and applications, all on this board.</p><p><strong>Next:</strong> export the final logo as an SVG (the Make file holds an earlier version of the shape), export the small sizes, and make a one-page brand sheet.</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="voice" /><span><b>Voice and tone</b><i class="st st-part">Partly</i><p><strong>Today:</strong> analytical, narrative and conversational, from your outline.</p><p><strong>Next:</strong> write five sample sentences in your voice and a short list of what you do and do not say.</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="platforms" /><span><b>Platforms</b><i class="st st-part">Partly</i><p><strong>Today:</strong> the portfolio site is live; a dedicated Instagram account is a goal in your outline.</p><p><strong>Next:</strong> pick two platforms where your audience already is (LinkedIn first) and align avatar, banner and bio. The article you found makes the same point: go where the audience is, and send them to your site from there.</p></span></label>
         <label class="ck-i"><input type="checkbox" data-k="work" /><span><b>Proof: selected work</b><i class="st st-part">Partly</i><p><strong>Today:</strong> 15 case studies, 5 of them featured. Hiring guides suggest 3 to 5 strong case studies, with quality over quantity.</p><p><strong>Next:</strong> choose your three strongest and make sure the first screen of each shows the problem, your role and the outcome.</p></span></label>
@@ -358,10 +385,10 @@
       </ul>
       <p class="cap">Researched on 5 October 2026 with Claude Code (web search); the summaries are mine, written for your situation.</p>
     </div></section>
-
   </main>
 
   <footer class="b-foot"><div class="b-wrap"><a href="ask-monica.html">Back to Ask Mónica</a></div></footer>
+
   <script>
     /* ?only=s4 shows just one section (used for screenshots) */
     (function () {
@@ -383,6 +410,5 @@
       });
     })();
   </script>
-
 </body>
 </html>

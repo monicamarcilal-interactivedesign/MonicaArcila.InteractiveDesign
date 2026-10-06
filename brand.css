@@ -1,44 +1,56 @@
 /* =============================================================
-   BRAND.CSS — "Ask Mónica & Work with me" (personal project, provisional)
+   BRAND.CSS — "Ask Mónica & Work with me" and the brand board
    =============================================================
-   The brand page is built from its own small set of tokens (the --b-*
-   variables below), so it can wear two skins without touching the layout:
+   The brand is built from its own small set of tokens (the --b-*
+   variables below), so it can wear two skins without touching the layout.
+   It is a MIX of two systems (2026-10-06):
 
-     Daylight  warm paper, indigo ink, her logo blue, one cyan "spark".
-               The person, backstage: made for reading.
-     Night     the portfolio's ink-black and glow, so the page can sit next
-               to the rest of the site without a jolt.
+     From the Figma Make manual (V3.0)   the MA monogram with its cyan
+       current, Space Grotesk for structure, Obsidian and Paper, the cyan "Current",
+       Plasma as the accent, a ghost-mark texture, tracked functional
+       labels, "one idea per layout".
+     From the first board   her handwriting font (also the portfolio's) for one human line,
+       the two skins on the same tokens (Daylight and
+       Night), the asymmetric corners, "one light" used for one purpose
+       (the cyan current = someone is here), the rule that glow and
+       handwriting never carry a paragraph, the lockups and applications.
 
-   The toggle in the top bar flips body[data-skin]. Which one stays as
-   the brand's default is Mónica's decision (see the proposal in the
-   conversation of 2026-10-05).
+     Daylight  Paper base, Obsidian ink, Violet as the signature colour.
+     Night     Obsidian base, Paper ink, lavender for text and links.
 
-   What is shared with the portfolio: Sora for everything you read and
-   Over the Rainbow (her handwriting voice) for short lines only, the
-   blue of her logo, the cyan of its glowing dot, asymmetric corners.
-   What is different: no glass, no orbs, no neon on text; light is used
-   for ONE thing, the cyan spark, which always means "someone is here".
+   The portfolio keeps its own system (Sora, Over the Rainbow, blue and
+   neon glow). The MA monogram is the brand's mark and the site's tab
+   icon, and is not used anywhere else on the portfolio.
    ============================================================= */
 
+@font-face { font-family: "Space Grotesk"; font-style: normal; font-weight: 300 700; font-display: swap; src: url("assets/fonts/SpaceGrotesk-Variable.woff2") format("woff2"); }
+
 body.brand-page {
+  /* fonts: Space Grotesk does the work; Mónica's handwriting font (Over the Rainbow, the same one as the portfolio) speaks once per layout */
+  --font-body: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-heading: var(--font-body);
+  --font-display: var(--font-body);
+
   /* ---- Daylight (default) ---- */
-  --b-bg: #f5efe6;
-  --b-bg-2: #fbf7f1;
-  --b-ink: #15123b;
-  --b-muted: #5a5680;
-  --b-blue: #2048d8;          /* sampled from the logo */
-  --b-blue-text: #1c3fbd;     /* same blue, a touch deeper for small text on paper */
-  --b-spark: #22d3ee;         /* the glowing dot of the logo */
-  --b-warm: #fd7069;
+  --b-bg: #f4f1ed;            /* Paper */
+  --b-bg-2: #faf8f5;
+  --b-ink: #111118;           /* Obsidian */
+  --b-muted: #5b5870;
+  --b-signal: #5400b4;        /* Violet, sampled from the final logo */
+  --b-signal-text: #4a00a0;   /* the same violet a touch deeper for small text on paper */
+  --b-spark: #19c8ff;         /* Current: the cyan stroke of the logo */
+  --b-warm: #ff4fc8;          /* Plasma: soft highlighter and rare accents */
+  --b-cobalt: #3157ff;        /* the bridge to the portfolio's blue */
+  --b-pulse: #b7ff3c;         /* rare: one acid-lime moment */
   --b-card: rgba(255, 255, 255, 0.78);
-  --b-line: rgba(21, 18, 59, 0.16);
-  --b-shadow: 0 22px 44px -28px rgba(21, 18, 59, 0.5);
-  --b-bubble-q: #2048d8;
+  --b-line: rgba(17, 17, 24, 0.16);
+  --b-shadow: 0 22px 44px -28px rgba(17, 17, 24, 0.5);
+  --b-bubble-q: #5400b4;
   --b-bubble-q-text: #ffffff;
   --b-draft-bg: #ffd9a0;
   --b-draft-text: #6b3300;
-  --b-glow: radial-gradient(60% 50% at 18% 0%, rgba(253, 112, 105, 0.16), transparent 70%),
-            radial-gradient(50% 40% at 100% 20%, rgba(32, 72, 216, 0.1), transparent 70%);
+  --b-glow: radial-gradient(60% 50% at 18% 0%, rgba(255, 79, 200, 0.14), transparent 70%),
+            radial-gradient(50% 40% at 100% 20%, rgba(84, 0, 180, 0.10), transparent 70%);
 
   margin: 0;
   padding: 0;
@@ -50,25 +62,32 @@ body.brand-page {
 }
 
 body.brand-page[data-skin="night"] {
-  --b-bg: #050318;
-  --b-bg-2: #0b0637;
-  --b-ink: #f4f1ff;
-  --b-muted: #b6aede;
-  --b-blue: #4d7dff;
-  --b-blue-text: #8fa8ff;
+  --b-bg: #111118;            /* Obsidian */
+  --b-bg-2: #181826;
+  --b-ink: #f4f1ed;           /* Paper */
+  --b-muted: #b9b6cc;
+  --b-signal: #8a5cff;
+  --b-signal-text: #b79cff;   /* lavender: readable on Obsidian */
   --b-card: rgba(255, 255, 255, 0.07);
   --b-line: rgba(255, 255, 255, 0.16);
   --b-shadow: 0 22px 44px -28px rgba(0, 0, 0, 0.9);
-  --b-bubble-q: #2f5ff0;
+  --b-bubble-q: #6a35e0;
   --b-draft-bg: #ffd9a0;
   --b-draft-text: #4d2500;
-  --b-glow: radial-gradient(60% 50% at 18% 0%, rgba(135, 71, 248, 0.34), transparent 70%),
-            radial-gradient(50% 40% at 100% 24%, rgba(34, 211, 238, 0.14), transparent 70%);
+  --b-glow: radial-gradient(60% 50% at 18% 0%, rgba(84, 0, 180, 0.45), transparent 70%),
+            radial-gradient(50% 40% at 100% 24%, rgba(25, 200, 255, 0.14), transparent 70%);
 }
 
 /* the page colour also has to reach the overscroll area, which belongs to <html> */
-html:has(body.brand-page) { background: #f5efe6; }
-html:has(body.brand-page[data-skin="night"]) { background: #050318; }
+html:has(body.brand-page) { background: #f4f1ed; }
+html:has(body.brand-page[data-skin="night"]) { background: #111118; }
+
+/* two files for the mark: violet for Daylight, light lavender for Night */
+.logo-night { display: none; }
+body.brand-page[data-skin="night"] .logo-day { display: none; }
+body.brand-page[data-skin="night"] .logo-night { display: block; }
+
+
 
 body.brand-page::before { display: none; }          /* the portfolio's drifting blobs */
 body.brand-page .skip-link { z-index: 60; }
@@ -76,12 +95,12 @@ body.brand-page .skip-link { z-index: 60; }
 .brand-page *, .brand-page *::before, .brand-page *::after { box-sizing: border-box; }
 
 .brand-page :focus-visible {
-  outline: 3px solid var(--b-blue);
+  outline: 3px solid var(--b-signal);
   outline-offset: 3px;
   border-radius: 6px;
 }
 
-.brand-page a { color: var(--b-blue-text); }
+.brand-page a { color: var(--b-signal-text); }
 
 /* ---------- the language pill, re-skinned for paper ---------- */
 body.brand-page .lang-switch {
@@ -91,8 +110,8 @@ body.brand-page .lang-switch {
 }
 body.brand-page .lang-switch__opt { color: var(--b-muted); }
 body.brand-page a.lang-switch__opt:hover,
-body.brand-page a.lang-switch__opt:focus-visible { color: var(--b-ink); background: color-mix(in srgb, var(--b-blue) 18%, transparent); }
-body.brand-page .lang-switch__opt[aria-current] { color: #fff; background: var(--b-blue); }
+body.brand-page a.lang-switch__opt:focus-visible { color: var(--b-ink); background: color-mix(in srgb, var(--b-signal) 18%, transparent); }
+body.brand-page .lang-switch__opt[aria-current] { color: #fff; background: var(--b-signal); }
 @media (max-width: 900px) {
   body.brand-page .lang-switch { top: auto; bottom: 12px; right: 10px; opacity: 0.9; }
 }
@@ -134,9 +153,9 @@ body.brand-page .lang-switch__opt[aria-current] { color: #fff; background: var(-
   background: var(--b-glow);
   text-align: center;
 }
-.b-mark { width: clamp(150px, 38vw, 230px); margin: 0 auto 1.4rem; }
+.b-mark { width: clamp(220px, 62vw, 380px); margin: 0 auto 1.4rem; }
 .b-mark img { width: 100%; height: auto; }
-body.brand-page[data-skin="night"] .b-mark img { filter: drop-shadow(0 0 26px rgba(77, 125, 255, 0.5)); }
+body.brand-page[data-skin="night"] .b-mark img { filter: drop-shadow(0 0 30px rgba(138, 92, 255, 0.35)); }
 .b-eyebrow {
   margin: 0 0 0.8rem;
   font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
@@ -145,13 +164,13 @@ body.brand-page[data-skin="night"] .b-mark img { filter: drop-shadow(0 0 26px rg
 .b-title {
   margin: 0;
   font-size: clamp(2.7rem, 11vw, 5.2rem);
-  font-weight: 800; line-height: 1.02; letter-spacing: -0.025em;
+  font-weight: 700; line-height: 1.02; letter-spacing: -0.025em;
 }
 .b-script {
   margin: 0.5rem 0 0;
   font-family: var(--font-script);
   font-size: clamp(1.45rem, 5.4vw, 2rem);
-  color: var(--b-blue-text);
+  color: var(--b-signal-text);
   line-height: 1.25;
 }
 .b-lede { max-width: 34rem; margin: 1.3rem auto 1.8rem; color: var(--b-muted); font-size: 1.04rem; }
@@ -161,18 +180,18 @@ body.brand-page[data-skin="night"] .b-mark img { filter: drop-shadow(0 0 26px rg
   display: inline-flex; align-items: center; justify-content: center;
   min-height: 3rem; padding: 0 1.5rem;
   font: 700 0.9rem/1 var(--font-body); letter-spacing: 0.04em; text-decoration: none;
-  color: #fff !important; background: var(--b-blue);
+  color: #fff !important; background: var(--b-signal);
   border-radius: 999px; border: 0;
-  box-shadow: 0 14px 28px -16px var(--b-blue);
+  box-shadow: 0 14px 28px -16px var(--b-signal);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.b-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 30px -14px var(--b-blue); }
+.b-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 30px -14px var(--b-signal); }
 .b-link { font-size: 0.92rem; font-weight: 600; }
 
 /* ---------- the conversation ---------- */
 .b-section { padding: clamp(2.6rem, 8vw, 5rem) 0; }
-.b-h2 { margin: 0 0 0.3rem; font-size: clamp(1.8rem, 6.4vw, 2.8rem); font-weight: 800; letter-spacing: -0.02em; line-height: 1.1; }
-.b-sub { margin: 0 0 1.6rem; font-family: var(--font-script); font-size: clamp(1.25rem, 4.6vw, 1.6rem); color: var(--b-blue-text); }
+.b-h2 { margin: 0 0 0.3rem; font-size: clamp(1.8rem, 6.4vw, 2.8rem); font-weight: 700; letter-spacing: -0.02em; line-height: 1.1; }
+.b-sub { margin: 0 0 1.6rem; font-family: var(--font-script); font-size: clamp(1.25rem, 4.6vw, 1.6rem); color: var(--b-signal-text); }
 
 .b-chips { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0 0 1.6rem; padding: 0; list-style: none; }
 .b-chip {
@@ -208,7 +227,7 @@ body.brand-page[data-skin="night"] .b-mark img { filter: drop-shadow(0 0 26px rg
   border-radius: 22px 22px 22px 6px;
   box-shadow: var(--b-shadow);
 }
-.b-who { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.4rem; font-family: var(--font-script); font-size: 1.3rem; color: var(--b-blue-text); line-height: 1; }
+.b-who { display: flex; align-items: center; gap: 0.5rem; margin: 0 0 0.4rem; font-family: var(--font-script); font-size: 1.3rem; color: var(--b-signal-text); line-height: 1; }
 .b-who .b-spark { flex: none; }
 .b-msg--a p { margin: 0 0 0.7rem; }
 .b-msg--a p:last-child { margin-bottom: 0; }
@@ -247,24 +266,24 @@ body.brand-page[data-skin="night"] .b-mark img { filter: drop-shadow(0 0 26px rg
 }
 .b-service:nth-child(even) { border-radius: 8px 30px 8px 30px; }
 .b-service:hover { transform: translateY(-3px); }
-.b-num { display: block; font-size: 2.4rem; font-weight: 800; line-height: 1; color: transparent; -webkit-text-stroke: 1.5px var(--b-blue); margin-bottom: 0.5rem; }
-.b-service h3 { margin: 0 0 0.5rem; font-size: 1.2rem; font-weight: 800; line-height: 1.25; }
+.b-num { display: block; font-size: 2.4rem; font-weight: 700; line-height: 1; color: transparent; -webkit-text-stroke: 1.5px var(--b-signal); margin-bottom: 0.5rem; }
+.b-service h3 { margin: 0 0 0.5rem; font-size: 1.2rem; font-weight: 700; line-height: 1.25; }
 .b-service p { margin: 0; color: var(--b-muted); font-size: 0.97rem; }
-.b-tag { display: inline-block; margin-bottom: 0.7rem; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--b-blue-text); }
+.b-tag { display: inline-block; margin-bottom: 0.7rem; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--b-signal-text); }
 
-.b-h3 { margin: 2.4rem 0 1rem; font-size: 1.15rem; font-weight: 800; letter-spacing: -0.01em; }
+.b-h3 { margin: 2.4rem 0 1rem; font-size: 1.15rem; font-weight: 700; letter-spacing: -0.01em; }
 
 /* the steps hang on one thin line with a node on each, like the landing's connections */
 .b-steps { position: relative; margin: 0; padding: 0 0 0 1.9rem; list-style: none; counter-reset: s; }
-.b-steps::before { content: ""; position: absolute; left: 0.45rem; top: 0.5rem; bottom: 0.5rem; width: 2px; background: linear-gradient(var(--b-blue), var(--b-spark)); opacity: 0.6; }
+.b-steps::before { content: ""; position: absolute; left: 0.45rem; top: 0.5rem; bottom: 0.5rem; width: 2px; background: linear-gradient(var(--b-signal), var(--b-spark)); opacity: 0.6; }
 .b-steps li { position: relative; margin: 0 0 1.2rem; }
-.b-steps li::before { content: ""; position: absolute; left: -1.72rem; top: 0.42rem; width: 10px; height: 10px; border-radius: 50%; background: var(--b-bg); border: 2px solid var(--b-blue); }
+.b-steps li::before { content: ""; position: absolute; left: -1.72rem; top: 0.42rem; width: 10px; height: 10px; border-radius: 50%; background: var(--b-bg); border: 2px solid var(--b-signal); }
 .b-steps li:last-child::before { background: var(--b-spark); border-color: var(--b-spark); box-shadow: 0 0 12px var(--b-spark); }
 .b-steps strong { display: block; font-size: 1rem; }
 .b-steps span { color: var(--b-muted); font-size: 0.95rem; }
 
 .b-strengths { display: grid; gap: 0.9rem; margin: 0; padding: 0; list-style: none; }
-.b-strengths li { padding: 1rem 1.1rem; border-left: 3px solid var(--b-blue); background: color-mix(in srgb, var(--b-card) 70%, transparent); border-radius: 4px 16px 16px 4px; }
+.b-strengths li { padding: 1rem 1.1rem; border-left: 3px solid var(--b-signal); background: color-mix(in srgb, var(--b-card) 70%, transparent); border-radius: 4px 16px 16px 4px; }
 .b-strengths strong { display: block; margin-bottom: 0.15rem; }
 .b-strengths span { color: var(--b-muted); font-size: 0.95rem; }
 
@@ -272,7 +291,7 @@ body.brand-page[data-skin="night"] .b-mark img { filter: drop-shadow(0 0 26px rg
 .b-placeholder p { margin: 0; color: var(--b-muted); font-size: 0.95rem; }
 
 .b-cta { margin-top: 2.6rem; padding: 1.8rem 1.4rem; text-align: center; background: var(--b-ink); color: var(--b-bg); border-radius: 34px 10px 34px 10px; }
-.b-cta h3 { margin: 0 0 0.4rem; font-size: 1.5rem; font-weight: 800; }
+.b-cta h3 { margin: 0 0 0.4rem; font-size: 1.5rem; font-weight: 700; }
 .b-cta p { margin: 0 0 1.2rem; opacity: 0.8; }
 .b-cta .b-btn { background: var(--b-bg); color: var(--b-ink) !important; box-shadow: none; }
 

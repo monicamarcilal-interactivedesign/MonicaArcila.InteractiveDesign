@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 120" role="img" aria-labelledby="t d">
+  <title id="t">Mónica Arcila monogram, reversed</title>
+  <desc id="d">The merged M and A monogram in paper white, with a cyan current as the crossbar. For dark backgrounds.</desc>
+  <defs>
+    <linearGradient id="c" x1="101" y1="82" x2="157" y2="65" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#19C8FF"/>
+      <stop offset=".6" stop-color="#30C6FC"/>
+      <stop offset="1" stop-color="#6FA0FF"/>
+    </linearGradient>
+    <filter id="g" x="80" y="45" width="95" height="60" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="5"/></filter>
+  </defs>
+  <g fill="#F4F1ED">
+    <path d="M9 101C30 99 36 80 42 57C49 31 57 14 70 11C84 8 94 23 98 43C101 57 100 72 96 84C94 63 88 40 78 23C74 17 71 14 68 16C59 29 56 48 51 68C45 91 31 104 9 101Z"/>
+    <path d="M69 111C83 94 87 74 93 53C100 30 113 15 130 11C144 8 158 12 170 19C154 29 147 46 143 67C139 91 129 106 112 112C123 95 126 76 123 57C121 42 117 30 112 24C102 37 97 53 92 71C87 91 79 105 69 111Z"/>
+  </g>
+  <path fill="url(#c)" opacity=".75" filter="url(#g)" d="M102 78C119 69 139 64 158 65C143 72 125 81 105 91Z"/>
+  <path fill="url(#c)" d="M102 78C119 69 139 64 158 65C143 72 125 81 105 91Z"/>
+</svg>
