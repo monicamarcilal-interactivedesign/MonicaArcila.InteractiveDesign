@@ -1023,11 +1023,23 @@ html:not(.js) .landing-motto__part {
     font-size: min(9.2vw, 5.6vh);
   }
 
+  /* Placed by Mónica (2026-10-06): a square around the centre, Contact and
+     Skills across the top, Professional Experience and Projects across the
+     bottom, About in the middle. */
   .orb--about        { --px: 50; --py: 52; }
-  .orb--skills       { --px: 68; --py: 24; }
-  .orb--case-studies { --px: 85; --py: 46; }
-  .orb--experience   { --px: 62; --py: 72; }
-  .orb--contact      { --px: 18; --py: 43; }
+  .orb--skills       { --px: 79; --py: 31; }
+  .orb--case-studies { --px: 79; --py: 76; }
+  .orb--experience   { --px: 23; --py: 77; }
+  .orb--contact      { --px: 19; --py: 31; }
+
+  /* "Professional Experience" is wide; on two lines it stays on the screen
+     with its orb where she put it. */
+  .orb--experience .orb__label {
+    white-space: normal;
+    text-align: center;
+    width: 7.2rem;
+    line-height: 1.2;
+  }
 
   .landing-stage.is-settling .lotus-canvas {
     filter: saturate(0.55) contrast(0.92) brightness(0.62) blur(1.5px);
@@ -5339,9 +5351,11 @@ html.lotus-poster.lotus-poster-out .lotus-canvas {
   }
 }
 
+/* A fade plus a light bounce in place. Opacity and transform are the two
+   things a phone animates without redoing the page layout. */
 @keyframes orb-glisten {
-  0%, 100% { opacity: 0.7; }
-  50%      { opacity: 1; }
+  0%, 100% { opacity: 0.7; transform: translateY(0); }
+  50%      { opacity: 1;   transform: translateY(-5px); }
 }
 
 @keyframes lines-glisten {

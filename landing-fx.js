@@ -41,6 +41,20 @@ const DROP_SCALE = isTouch ? 0.5 : 0.45;
 // What the quality governor (section 5) changes if a device struggles.
 let dprNow = DPR;
 
+// Phones: the travelling lights get a small canvas of their own on top of the
+// frozen connections, so only they are redrawn (see drawPulses).
+let cPulse = null;
+let pulseCtx = null;
+if (isTouch) {
+  cPulse = document.createElement("canvas");
+  cPulse.id = "fxPulses";
+  cPulse.className = cLines.className.replace("is-frozen", "").trim();
+  cPulse.setAttribute("aria-hidden", "true");
+  cPulse.style.zIndex = "8";
+  cLines.after(cPulse);
+  pulseCtx = cPulse.getContext("2d");
+}
+
 const dropCtx = cDrop.getContext("2d");
 const dustCtx = cDust.getContext("2d");
 const lineCtx = cLines.getContext("2d");
@@ -202,7 +216,7 @@ const CONNECTIONS = [
 ];
 const WORD_IDS = { designing: "wordDesigning", felt: "wordFelt", valued: "wordValued" };
 
-const STRANDS = isTouch ? 3 : 6;
+const STRANDS = 6;
 const STAGGER = isTouch ? 0.3 : 0.36; // seconds between one connection starting and the next
 const GROW = 1.7; // seconds for a strand to grow its full length
 const STRAND_DELAY = 0.09;
@@ -330,15 +344,21 @@ function drawLines(t, dt) {
 
     let fullyGrown = true;
     let mid = null;
-    const batch = lean();
+    // The finished frame is drawn once, so it gets the full-quality version
+    // (every strand on its own, 34 segments) and its curves are kept for
+    // the travelling lights.
+    const batch = lean() && !finalFrame;
+    const frozen = { A, B, strands: [] };
+    if (finalFrame) conn.frozen = frozen;
     if (batch) lineCtx.beginPath();
     conn.strands.forEach((strand, k) => {
       const g = clamp((local - k * STRAND_DELAY) / GROW, 0, 1);
       if (g < 1) fullyGrown = false;
       if (g <= 0) return;
       const [c1, c2] = controlPoints(A, B, conn, strand, t);
-      if (batch) traceCurve(A, c1, c2, B, 0, easeSine(g), Math.max(5, Math.ceil(12 * g)));
-      else strokeCurve(A, c1, c2, B, 0, easeSine(g), Math.max(6, Math.ceil(26 * g)));
+      if (finalFrame) frozen.strands[k] = [c1, c2];
+      if (batch) traceCurve(A, c1, c2, B, 0, easeSine(g), Math.max(5, Math.ceil(16 * g)));
+      else strokeCurve(A, c1, c2, B, 0, easeSine(g), finalFrame ? 34 : Math.max(6, Math.ceil(26 * g)));
       if (k === (STRANDS >> 1) && g >= 1) mid = { A, c1, c2, B };
     });
     if (batch) lineCtx.stroke();
@@ -409,6 +429,56 @@ function drawLines(t, dt) {
   }
 }
 
+function pulseCurve(ctx, A, c1, c2, B, from, to, steps) {
+  ctx.beginPath();
+  for (let i = 0; i <= steps; i++) {
+    const p = bez(A, c1, c2, B, from + ((to - from) * i) / steps);
+    if (i === 0) ctx.moveTo(p.x, p.y);
+    else ctx.lineTo(p.x, p.y);
+  }
+  ctx.stroke();
+}
+
+// Phones: lights travelling along the frozen bundles, on their own canvas.
+function drawPulses(t, dt) {
+  pulseCtx.clearRect(0, 0, W, H);
+  if (!linesFrozen || reduced) return;
+  pulseCtx.globalCompositeOperation = "lighter";
+  pulseCtx.lineCap = "round";
+  for (const conn of conns) {
+    const f = conn.frozen;
+    if (!f) continue;
+    const p = conn.pulse;
+    if (p.wait > 0) {
+      p.wait -= dt;
+      continue;
+    }
+    p.t += dt * p.speed;
+    if (p.t > 1.12) {
+      p.t = 0;
+      p.wait = rand(0.4, 3.2);
+      p.strand = (Math.random() * STRANDS) | 0;
+      p.dir = Math.random() < 0.5 ? 1 : -1;
+      continue;
+    }
+    const [c1, c2] = f.strands[p.strand];
+    const head = clamp(p.t, 0, 1);
+    const tail = clamp(p.t - 0.16, 0, 1);
+    const u0 = p.dir === 1 ? tail : 1 - tail;
+    const u1 = p.dir === 1 ? head : 1 - head;
+    const src = p.dir === 1 ? f.A.rgb : f.B.rgb;
+    pulseCtx.strokeStyle = rgba(src, 0.16);
+    pulseCtx.lineWidth = 5;
+    pulseCurve(pulseCtx, f.A, c1, c2, f.B, u0, u1, 10);
+    pulseCtx.strokeStyle = rgba([235, 248, 255], 0.85);
+    pulseCtx.lineWidth = 1.5;
+    pulseCurve(pulseCtx, f.A, c1, c2, f.B, u0, u1, 10);
+    const hp = bez(f.A, c1, c2, f.B, u1);
+    blob(pulseCtx, hp.x, hp.y, 9, src, 0.6);
+  }
+  pulseCtx.globalCompositeOperation = "source-over";
+}
+
 /* -------------------------------------------------------------
    4. THE LOOP, SIZING AND THE PUBLIC API
    ------------------------------------------------------------- */
@@ -424,7 +494,9 @@ function size() {
   if (w === W && h === H) return true;
   W = w;
   H = h;
-  for (const [c, ctx, k] of [[cDust, dustCtx, dprNow], [cLines, lineCtx, isTouch ? Math.min(dprNow, 1.25) : dprNow], [cDrop, dropCtx, DROP_SCALE]]) {
+  const canvases = [[cDust, dustCtx, dprNow], [cLines, lineCtx, dprNow], [cDrop, dropCtx, DROP_SCALE]];
+  if (cPulse) canvases.push([cPulse, pulseCtx, Math.min(dprNow, 1.25)]);
+  for (const [c, ctx, k] of canvases) {
     c.width = Math.round(W * k);
     c.height = Math.round(H * k);
     ctx.setTransform(k, 0, 0, k, 0, 0);
@@ -565,6 +637,7 @@ function frame(now) {
     lineAcc += dt;
     if (!lean() || ++lineCount % 2 === 1) {
       drawLines(t, lineAcc);
+      if (pulseCtx) drawPulses(t, lineAcc);
       lineAcc = 0;
     }
   } catch (error) {
@@ -606,6 +679,7 @@ function clearLines() {
   linesPending = false;
   conns = [];
   if (W) lineCtx.clearRect(0, 0, W, H);
+  if (W && pulseCtx) pulseCtx.clearRect(0, 0, W, H);
 }
 
 window.addEventListener("resize", size);
