@@ -583,7 +583,7 @@ function endPoster(fade) {
   if (!rootEl.classList.contains("lotus-poster")) return;
   if (fade) {
     rootEl.classList.add("lotus-poster-out");
-    window.setTimeout(() => rootEl.classList.remove("lotus-poster", "lotus-poster-out"), 1000);
+    window.setTimeout(() => rootEl.classList.remove("lotus-poster", "lotus-poster-out"), 1300);
   } else {
     rootEl.classList.remove("lotus-poster", "lotus-poster-out");
   }

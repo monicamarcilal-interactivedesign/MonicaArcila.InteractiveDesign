@@ -634,6 +634,50 @@ if (contactSection && pondCanvas && !contactReduced) {
   }
 }
 
+/* ---- (b2) every "Contact me" link opens a new email AND copies the address,
+   so someone with no mail app set up (common on a laptop) still gets it. ---- */
+document.addEventListener("click", (event) => {
+  const link = event.target.closest && event.target.closest('a[href^="mailto:"]');
+  if (!link) return;
+  const address = link.getAttribute("href").slice(7).split("?")[0];
+  const showNote = (ok) => {
+    let note = document.getElementById("mailNote");
+    if (!note) {
+      note = document.createElement("div");
+      note.id = "mailNote";
+      note.setAttribute("role", "status");
+      note.style.cssText = "position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:9999;max-width:min(92vw,28rem);padding:.7rem 1.1rem;border-radius:999px;background:#111118;color:#f4f1ed;border:1px solid rgba(183,156,255,.55);font:600 .9rem/1.3 system-ui,sans-serif;text-align:center;box-shadow:0 8px 30px rgba(0,0,0,.35);transition:opacity .25s;pointer-events:none";
+      document.body.appendChild(note);
+    }
+    note.textContent = ok
+      ? (PAGE_IS_ES ? `Correo copiado: ${address}. Si no se abre tu app de correo, pégalo y escríbeme.` : `My email is copied: ${address}. If your mail app doesn't open, paste it and write to me.`)
+      : (PAGE_IS_ES ? `Mi correo: ${address}` : `My email: ${address}`);
+    note.style.opacity = "1";
+    window.clearTimeout(showNote.timer);
+    showNote.timer = window.setTimeout(() => (note.style.opacity = "0"), 4500);
+  };
+  // No preventDefault: the mail app opens as usual; the copy happens alongside.
+  const legacyCopy = () => {
+    const field = document.createElement("textarea");
+    field.value = address;
+    field.setAttribute("readonly", "");
+    field.style.cssText = "position:fixed;left:-9999px;top:0";
+    document.body.appendChild(field);
+    field.select();
+    let ok = false;
+    try {
+      ok = document.execCommand("copy");
+    } catch (e) {
+      ok = false;
+    }
+    field.remove();
+    showNote(ok);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(address).then(() => showNote(true), legacyCopy);
+  } else legacyCopy();
+});
+
 /* ---- (c) copy the address ---- */
 const copyButton = document.getElementById("contactCopy");
 const copiedNote = document.getElementById("contactCopied");

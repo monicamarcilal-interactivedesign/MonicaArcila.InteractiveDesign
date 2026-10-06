@@ -194,7 +194,7 @@ const CONNECTIONS = [
 ];
 const WORD_IDS = { designing: "wordDesigning", felt: "wordFelt", valued: "wordValued" };
 
-const STRANDS = isTouch ? 4 : 6;
+const STRANDS = isTouch ? 3 : 6;
 const STAGGER = isTouch ? 0.3 : 0.36; // seconds between one connection starting and the next
 const GROW = 1.7; // seconds for a strand to grow its full length
 const STRAND_DELAY = 0.09;
@@ -324,7 +324,7 @@ function drawLines(t, dt) {
       if (g < 1) fullyGrown = false;
       if (g <= 0) return;
       const [c1, c2] = controlPoints(A, B, conn, strand, t);
-      if (batch) traceCurve(A, c1, c2, B, 0, easeSine(g), Math.max(5, Math.ceil(16 * g)));
+      if (batch) traceCurve(A, c1, c2, B, 0, easeSine(g), Math.max(5, Math.ceil(12 * g)));
       else strokeCurve(A, c1, c2, B, 0, easeSine(g), Math.max(6, Math.ceil(26 * g)));
       if (k === (STRANDS >> 1) && g >= 1) mid = { A, c1, c2, B };
     });
