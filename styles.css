@@ -5393,3 +5393,99 @@ html[lang^="es"] [data-pair="ia"][data-lang="en"] {
 .pcard__media[data-slides] > .pcard__pill {
   z-index: 3;
 }
+
+/* ---------------- the drag hint on the projects board ----------------
+   An animated finger and a line of words that say how to move around the
+   board; it goes away once someone does (projects-board.js). */
+.board__hint {
+  position: relative;
+  display: none;
+  margin: 1.1rem 0 -0.3rem;
+  width: max-content;
+  max-width: 100%;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.55rem 1.1rem 0.55rem 0.7rem;
+  border-radius: 999px;
+  background: rgba(12, 12, 40, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  color: #f3f1ff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.45);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+
+.board__hint.is-on {
+  display: flex;
+  animation: board-hint-in 0.6s ease both;
+}
+
+@keyframes board-hint-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* The finger: a soft round touch point that moves the way the board moves. */
+.board__finger {
+  position: relative;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.board__finger::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 0.9rem;
+  height: 0.9rem;
+  margin: -0.45rem 0 0 -0.45rem;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.22), 0 0 14px rgba(120, 220, 255, 0.9);
+  animation: board-finger-x 2.4s ease-in-out infinite;
+}
+
+.board__hint[data-axis="y"] .board__finger::before {
+  animation-name: board-finger-y;
+}
+
+.board__hint[data-axis="xy"] .board__finger::before {
+  animation-name: board-finger-xy;
+}
+
+@keyframes board-finger-x {
+  0%, 100% { transform: translateX(-0.45rem); }
+  50%      { transform: translateX(0.45rem); }
+}
+
+@keyframes board-finger-y {
+  0%, 100% { transform: translateY(0.45rem); }
+  50%      { transform: translateY(-0.45rem); }
+}
+
+@keyframes board-finger-xy {
+  0%, 100% { transform: translate(-0.4rem, 0.4rem); }
+  33%      { transform: translate(0.4rem, 0.4rem); }
+  66%      { transform: translate(0, -0.45rem); }
+}
+
+@media (max-width: 480px) {
+  .board__hint {
+    font-size: 0.78rem;
+    white-space: normal;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .board__finger::before { animation: none; }
+}

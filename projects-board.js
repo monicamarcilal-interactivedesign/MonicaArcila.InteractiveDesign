@@ -241,11 +241,11 @@ const statusEl = section.querySelector(".filter__status");
 const liveEl = document.getElementById("boardLive");
 const cards = Array.from(canvas.querySelectorAll(".pcard"));
 
-// Featured projects first (they're the strongest), otherwise the order
-// they're written in.
+// The personal project first, then the featured projects (they're the
+// strongest), otherwise the order they're written in.
 let order = cards
   .map((card, i) => ({ card, i }))
-  .sort((a, b) => (b.card.hasAttribute("data-featured") ? 1 : 0) - (a.card.hasAttribute("data-featured") ? 1 : 0) || a.i - b.i)
+  .sort((a, b) => (b.card.hasAttribute("data-personal") ? 1 : 0) - (a.card.hasAttribute("data-personal") ? 1 : 0) || (b.card.hasAttribute("data-featured") ? 1 : 0) - (a.card.hasAttribute("data-featured") ? 1 : 0) || a.i - b.i)
   .map((x) => x.card);
 
 let filter = "all";
@@ -379,8 +379,8 @@ function layout(animate) {
 function updateStatus() {
   const shown = visibleCards().length;
   if (statusEl) statusEl.textContent = ES
-      ? `Mostrando ${shown} de ${cards.length} proyectos` + " · el color de una tarjeta es su categoría principal" + (mode === "arrange" ? " — arrastra las tarjetas para reordenarlas." : ".")
-      : `Showing ${shown} of ${cards.length} projects` + " · a card's colour is its main category" + (mode === "arrange" ? " — drag the cards to rearrange them." : ".");
+      ? `Mostrando ${shown} de ${cards.length} proyectos` + " · el color de una tarjeta es su categoría principal" + (mode === "arrange" ? " — arrastra las tarjetas para reordenarlas." : " · arrastra el tablero para ver más.")
+      : `Showing ${shown} of ${cards.length} projects` + " · a card's colour is its main category" + (mode === "arrange" ? " — drag the cards to rearrange them." : " · drag the board to see more.");
 }
 
 // A short, reusable FLIP: run `change` (which reorders the DOM) and glide
@@ -910,6 +910,66 @@ if (window.ResizeObserver) new ResizeObserver(queueLayout).observe(board);
 window.addEventListener("resize", queueLayout);
 phoneQuery.addEventListener && phoneQuery.addEventListener("change", queueLayout);
 
+
+/* -------------------------------------------------------------
+   5. THE DRAG HINT
+   A small animated finger and a line of text on the board, saying how to
+   move around it (sideways on a phone; any direction on a laptop; up and
+   down if that is all there is). It shows while the board has more cards
+   than fit and goes away for good (this visit) once someone drags, scrolls
+   sideways or uses the arrow keys.
+   ------------------------------------------------------------- */
+(function dragHint() {
+  const hint = document.createElement("div");
+  hint.className = "board__hint";
+  hint.setAttribute("aria-hidden", "true");
+  hint.innerHTML = '<span class="board__finger"></span><span class="board__hint-text"></span>';
+  board.parentNode.insertBefore(hint, board);
+  const text = hint.querySelector(".board__hint-text");
+  let seen = false;
+  try {
+    seen = sessionStorage.getItem("boardHintSeen") === "1";
+  } catch (error) { /* it just shows again */ }
+  const words = {
+    x: ES ? "Desliza hacia los lados para ver más proyectos" : "Swipe sideways to see more projects",
+    y: ES ? "Arrastra hacia arriba y abajo para ver más proyectos" : "Drag up and down to see more projects",
+    xy: ES ? "Arrastra en cualquier dirección para ver más proyectos" : "Drag in any direction to see more projects",
+  };
+  let last = "";
+  const update = () => {
+    const phone = phoneQuery.matches;
+    const axis = phone || !metrics.panY ? "x" : !metrics.panX ? "y" : "xy";
+    const show = !seen && mode === "pan" && (metrics.panX || metrics.panY);
+    const key = axis + show;
+    if (key === last) return;
+    last = key;
+    hint.dataset.axis = axis;
+    text.textContent = words[axis];
+    hint.classList.toggle("is-on", show);
+  };
+  const done = () => {
+    if (seen) return;
+    seen = true;
+    try {
+      sessionStorage.setItem("boardHintSeen", "1");
+    } catch (error) { /* fine */ }
+    update();
+  };
+  let startX = 0;
+  let startY = 0;
+  board.addEventListener("pointerdown", (e) => {
+    startX = e.clientX;
+    startY = e.clientY;
+  });
+  board.addEventListener("pointermove", (e) => {
+    if (e.buttons && Math.hypot(e.clientX - startX, e.clientY - startY) > 14) done();
+  });
+  board.addEventListener("touchmove", done, { passive: true });
+  board.addEventListener("wheel", (e) => { if (Math.abs(e.deltaX) > 2) done(); }, { passive: true });
+  board.addEventListener("keydown", (e) => { if (e.key.indexOf("Arrow") === 0) done(); });
+  update();
+  window.setInterval(update, 600);
+})();
 
 /* -------------------------------------------------------------
    4. CARD SLIDESHOWS
