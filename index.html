@@ -43,7 +43,7 @@
   <link rel="icon" href="assets/favicon-32.png?v=20261006" sizes="32x32" type="image/png" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png?v=20261006" />
 
-  <link rel="stylesheet" href="styles.css?v=20261007a" />
+  <link rel="stylesheet" href="styles.css?v=20261007b" />
 
   <!-- The 3D lotus on the landing screen (landing-3d.js) uses Three.js,
        loaded straight from a CDN — no build step, same "just open
@@ -60,13 +60,13 @@
        (so landing-3d.js can find #lotusCanvas), matching how the ES-module
        version used to behave automatically. Pinned to an exact version
        since there's no lockfile to catch a breaking update later. -->
-  <script src="landing-boot.js?v=20261007a" defer></script>
+  <script src="landing-boot.js?v=20261007b" defer></script>
   <!-- Dust/stars, drifting colour droplets and the glowing connections
        between the orbs and motto words — plain 2D canvas, no libraries. -->
-  <script src="landing-fx.js?v=20261007a" defer></script>
+  <script src="landing-fx.js?v=20261007b" defer></script>
   <!-- The Projects section: filter, the draggable card board, and the
        hero's arched statement. -->
-  <script src="projects-board.js?v=20261007a" defer></script>
+  <script src="projects-board.js?v=20261007b" defer></script>
 </head>
 <body>
 
@@ -401,7 +401,7 @@
 
             <li class="pcard" data-category="ux" data-cat="ux">
               <a class="pcard__link" href="project-hugger-island.html">
-                <div class="pcard__media"><img src="assets/cards/hugger-island.jpg" alt="Research-question slide “Pregunta de Investigación” with colourful flowers and a pink figure." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__media" data-slides="assets/cards/slides/hugger-1.jpg|assets/cards/slides/hugger-2.jpg|assets/cards/slides/hugger-3.jpg|assets/cards/slides/hugger-4.jpg"><img src="assets/cards/hugger-island.jpg" alt="Research-question slide “Pregunta de Investigación” with colourful flowers and a pink figure." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Hugger Island</h3>
                   <p class="pcard__hook">Is it an expense or an investment? We asked the parents.</p>
@@ -415,7 +415,7 @@
 
             <li class="pcard" data-category="ux" data-cat="ux">
               <a class="pcard__link" href="project-consumer-behaviour.html">
-                <div class="pcard__media"><img src="assets/cards/consumer-behaviour.jpg" alt="Card graphic: one buyer, one decision rule, with her purchase weights shown as 40 percent visual design, 40 percent functional performance and 20 percent comfort." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__media" data-slides="assets/cards/slides/consumer-1.jpg|assets/cards/slides/consumer-2.jpg|assets/cards/slides/consumer-3.jpg|assets/cards/slides/consumer-4.jpg"><img src="assets/cards/consumer-behaviour.jpg" alt="Card graphic: one buyer, one decision rule, with her purchase weights shown as 40 percent visual design, 40 percent functional performance and 20 percent comfort." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Consumer Behaviour: a profile and a brand strategy</h3>
                   <p class="pcard__hook">How does one buyer decide? Then a brand built around her.</p>
@@ -443,7 +443,7 @@
 
             <li class="pcard pcard--personal" data-category="game personal" data-cat="game" data-personal>
               <a class="pcard__link" href="ask-monica.html">
-                <div class="pcard__media"><img src="assets/cards/personal-brand.jpg" alt="My logo, a flowing blue monogram made of loops, glowing on a deep indigo background." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill pcard__pill--personal">Personal project</span></div>
+                <div class="pcard__media" data-slides="assets/cards/slides/brand-1.jpg|assets/cards/slides/brand-2.jpg|assets/cards/slides/brand-3.jpg|assets/cards/slides/brand-4.jpg"><img src="assets/cards/personal-brand.jpg" alt="My logo, a flowing blue monogram made of loops, glowing on a deep indigo background." loading="lazy" decoding="async" draggable="false" /><span class="pcard__pill pcard__pill--personal">Personal project</span></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Ask Mónica and Work with me: a mini experience</h3>
                   <p class="pcard__hook">My personal brand, as a small conversation you can have with me.</p>
@@ -457,7 +457,7 @@
 
             <li class="pcard" data-category="ai motion" data-cat="ai" data-cat2="motion">
               <a class="pcard__link" href="project-surviving-amongst-nature.html">
-                <div class="pcard__media"><img src="assets/cards/surviving-nature.jpg" alt="A hooded figure aiming a dragonfly-bodied rocket launcher in an overgrown glasshouse." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__media" data-slides="assets/cards/slides/surviving-1.jpg|assets/cards/slides/surviving-2.jpg|assets/cards/slides/surviving-3.jpg|assets/cards/slides/surviving-4.jpg|assets/cards/slides/surviving-5.jpg"><img src="assets/cards/surviving-nature.jpg" alt="A hooded figure aiming a dragonfly-bodied rocket launcher in an overgrown glasshouse." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Surviving Amongst Nature</h3>
                   <p class="pcard__hook">One prompt recipe that holds a whole image grid together.</p>
@@ -471,7 +471,7 @@
 
             <li class="pcard" data-category="ai motion" data-cat="ai" data-cat2="motion">
               <a class="pcard__link" href="project-natures-embodiment-of-wine.html">
-                <div class="pcard__media"><img src="assets/cards/nature-wine.jpg" alt="An ostrich on a velvet-curtained cabaret stage, dressed as a bottle of wine and holding a glass." loading="lazy" decoding="async" draggable="false" /></div>
+                <div class="pcard__media" data-slides="assets/cards/slides/wine-1.jpg|assets/cards/slides/wine-2.jpg|assets/cards/slides/wine-3.jpg|assets/cards/slides/wine-4.jpg"><img src="assets/cards/nature-wine.jpg" alt="An ostrich on a velvet-curtained cabaret stage, dressed as a bottle of wine and holding a glass." loading="lazy" decoding="async" draggable="false" /></div>
                 <div class="pcard__body">
                   <h3 class="pcard__title">Nature's Embodiment of Wine</h3>
                   <p class="pcard__hook">Animals in a cabaret, each one dressed as a bottle of wine.</p>
@@ -537,7 +537,7 @@
 
         <li class="pcard rcard" data-research>
           <a class="pcard__link rcard__link" href="project-ciudades-posibles.html">
-            <div class="pcard__media"><img src="assets/cards/ciudades-posibles.jpg" alt="3D render of the exhibition setup: a round table with the hexagon city map, two poster stands and a green pedestal on an orange mat." loading="lazy" decoding="async" draggable="false" /></div>
+            <div class="pcard__media" data-slides="assets/cards/slides/ciudades-1.jpg|assets/cards/slides/ciudades-2.jpg|assets/cards/slides/ciudades-3.jpg|assets/cards/slides/ciudades-4.jpg"><img src="assets/cards/ciudades-posibles.jpg" alt="3D render of the exhibition setup: a round table with the hexagon city map, two poster stands and a green pedestal on an orange mat." loading="lazy" decoding="async" draggable="false" /></div>
             <div class="pcard__body">
               <p class="pcard__kicker"><span>Research seedbed · Semillero Cosmogénesis</span></p>
               <h3 class="pcard__title">Ciudades Posibles</h3>
@@ -992,7 +992,7 @@
     <p class="viewer__caption" id="viewerCaption"></p>
   </dialog>
 
-  <script src="script.js?v=20261007a"></script>
-  <script src="skills-wheel.js?v=20261007a"></script>
+  <script src="script.js?v=20261007b"></script>
+  <script src="skills-wheel.js?v=20261007b"></script>
 </body>
 </html>

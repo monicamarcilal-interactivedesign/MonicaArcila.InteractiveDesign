@@ -910,4 +910,54 @@ if (window.ResizeObserver) new ResizeObserver(queueLayout).observe(board);
 window.addEventListener("resize", queueLayout);
 phoneQuery.addEventListener && phoneQuery.addEventListener("change", queueLayout);
 
+
+/* -------------------------------------------------------------
+   4. CARD SLIDESHOWS
+   A card without a video shows a short slideshow of its project's own
+   pictures (data-slides on .pcard__media, separated by |) while it is on
+   screen, cross-fading every couple of seconds. The pictures load the first
+   time the card is seen. Nothing plays with reduced motion.
+   ------------------------------------------------------------- */
+(function slideshows() {
+  const medias = Array.from(document.querySelectorAll(".pcard__media[data-slides]"));
+  if (!medias.length || reduced || !("IntersectionObserver" in window)) return;
+  medias.forEach((media) => {
+    const urls = media.dataset.slides.split("|").filter(Boolean);
+    const slides = [];
+    let current = -1; // -1 is the card's own picture
+    let timer = 0;
+    const build = () => {
+      if (slides.length) return;
+      urls.forEach((url) => {
+        const img = new Image();
+        img.className = "pcard__slide";
+        img.alt = "";
+        img.decoding = "async";
+        img.draggable = false;
+        img.src = url;
+        media.appendChild(img);
+        slides.push(img);
+      });
+    };
+    const step = () => {
+      current = current + 1 >= slides.length ? -1 : current + 1;
+      slides.forEach((s, k) => s.classList.toggle("is-on", k === current));
+    };
+    new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            build();
+            if (!timer) timer = window.setInterval(step, 2300);
+          } else if (timer) {
+            window.clearInterval(timer);
+            timer = 0;
+          }
+        });
+      },
+      { threshold: 0.4 }
+    ).observe(media);
+  });
+})();
+
 })();

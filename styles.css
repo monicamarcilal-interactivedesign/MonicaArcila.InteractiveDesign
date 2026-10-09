@@ -5367,3 +5367,29 @@ html.lotus-poster.lotus-poster-out .lotus-canvas {
 @media (pointer: coarse) and (prefers-reduced-motion: reduce) {
   .orb__img, #fxLines.is-frozen { animation: none; }
 }
+
+/* El Feeling: the information architecture comes in two languages; each page
+   shows the one that matches its own language. */
+html[lang^="en"] [data-pair="ia"][data-lang="es"],
+html[lang^="es"] [data-pair="ia"][data-lang="en"] {
+  display: none;
+}
+
+/* Cards without a video: a short slideshow of the project's own pictures
+   plays inside the card while it is on screen (projects-board.js). */
+.pcard__media .pcard__slide {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+  pointer-events: none;
+}
+
+.pcard__media .pcard__slide.is-on {
+  opacity: 1;
+}
+
+.pcard__media[data-slides] > .pcard__pill {
+  z-index: 3;
+}

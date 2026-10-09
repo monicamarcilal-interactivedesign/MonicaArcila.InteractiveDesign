@@ -29,7 +29,7 @@
 
   var THREE_URL = "https://unpkg.com/three@0.140.0/build/three.min.js";
   var GLTF_URL = "https://unpkg.com/three@0.140.0/examples/js/loaders/GLTFLoader.js";
-  var SCENE_URL = "landing-3d.js?v=20261007a";
+  var SCENE_URL = "landing-3d.js?v=20261007b";
 
   var root = document.documentElement;
   var canvas = document.getElementById("lotusCanvas");

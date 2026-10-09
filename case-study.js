@@ -94,6 +94,31 @@
     observer.observe(box);
   });
 
+  /* ---- Videos that are files on the site (not YouTube) do the same: they start
+     by themselves, muted, and loop while they are on screen, and pause when
+     they scroll away. The controls stay, so a visitor can add sound or stop. ---- */
+  var calm = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  Array.prototype.forEach.call(document.querySelectorAll(".project__gallery video, .project__media video"), function (video) {
+    if (calm || !("IntersectionObserver" in window)) return;
+    video.muted = true;
+    video.loop = true;
+    video.setAttribute("playsinline", "");
+    video.preload = "metadata";
+    new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            var p = video.play();
+            if (p && p.catch) p.catch(function () {});
+          } else {
+            video.pause();
+          }
+        });
+      },
+      { threshold: 0.4 }
+    ).observe(video);
+  });
+
   /* ---- 1. "Jump to" chips ---- */
   var slug = function (text) {
     return text
